@@ -10,6 +10,16 @@
       "SmartNinja": "Smart Ninja",
       "DedicatedNinja": "Dedicated Ninja",
       "CharismaticNinja": "Charismatic Ninja"
+    },
+    "VILLAGES": {
+      "Hisuigakure": "Hisuigakure",
+      "Houohgakure": "Houohgakure",
+      "Kanigakure": "Kanigakure",
+      "Kiringakure": "Kiringakure",
+      "Ryuugakure": "Ryuugakure",
+      "Sasorigakure": "Sasorigakure",
+      "Shishigakure": "Shishigakure",
+      "Tsurugakure": "Tsurugakure"
     }
   }
 }
