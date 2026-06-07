@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.1.2 - 2026-06-07
+
+### Added
+- `packs/questions` compendium with 9 PF1e trait items covering 20-Questions
+  Q4 / Q7 / Q8 mechanical grants:
+  - **Q4 Elemental Affinity** (5 items): Fire, Water, Earth, Wind, Lightning.
+    Each tags the character with `system.flags.dictionary.affinity = <element>`
+    (forward-looking hook for D2.3b wizard and possible D2.X technique gating).
+  - **Q7 Village Relationship** (2 items): Village Loyalist (+1 Reputation),
+    Village Outsider (+1 class skill of player's choice — doc-only).
+  - **Q8 Shinobi Code Stance** (2 items): Code Adherent (+2 Action Points),
+    Code Sceptic (+4 skill points to Craft or Profession — doc-only).
+- New Python generator (`scripts/generate-questions.py`) mirroring
+  `scripts/generate-villages.py` — vault YAML → PF1e trait JSON with
+  deterministic UUIDs and the mandatory `_key: "!items!<_id>"` field.
+- New `minor_benefit.kind` values: `affinity` (validates against the 5 element
+  set) and `doc_only` (description-only, no mechanical effect).
+- 5 element icons in `assets/questions/elements/` copied from
+  `naruto-d20-zen-theme`. Q7 / Q8 items use Foundry built-in icons.
+- Pytest suite extended by `tests/test_generate_questions.py` (~18 tests
+  covering basic shape, `_key` invariant, affinity per-element + invalid
+  rejection, reputation / action_point / doc_only encodings, img
+  pass-through, deterministic UUID, write-to-file, and CLI parsing).
+
+### Known limitations
+- Q4 affinity per-level Learn Bonus and Energy Resistance are **doc-only**
+  references to `Mechanics/Basic_Rules/Chakra.md` (the trait only tags the
+  affinity; level-scaling is GM/manual).
+- Q7 Village Outsider "+1 class skill of your choice" is **doc-only** —
+  player picks the skill at character creation; not auto-applied.
+- Q8 Code Sceptic "+4 skill points to Craft or Profession" is **doc-only** —
+  PF1e cannot grant choice-based skill ranks via static trait; player picks
+  the subskill manually.
+- The 20-Questions narrative-answer capture (write all 20 player answers
+  into the actor's biography tab) is deferred to **D2.3b** — a separate
+  sheet-wizard release with its own design + plan cycle.
+
 ## v1.1.1 - 2026-06-07
 
 ### Fixed
