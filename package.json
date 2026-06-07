@@ -13,7 +13,7 @@
     "unpack:all": "npm run unpack:villages && npm run unpack:questions",
     "validate:compendia": "python3 scripts/validate-output.py",
     "validate:manifest": "node tools/validate-manifest.mjs",
-    "lint:js": "eslint --no-error-on-unmatched-pattern scripts tools eslint.config.mjs",
+    "lint:js": "eslint --no-error-on-unmatched-pattern scripts tools tests eslint.config.mjs vitest.config.mjs",
     "lint:css": "node node_modules/stylelint/bin/stylelint.mjs --allow-empty-input \"styles/**/*.css\"",
     "lint:format": "prettier --check \"eslint.config.mjs\" \"lang/**/*.json\"",
     "lint": "npm run lint:js && npm run lint:css && npm run lint:format",
@@ -21,7 +21,9 @@
     "generate-villages": "python3 scripts/generate-villages.py",
     "generate-questions": "python3 scripts/generate-questions.py",
     "validate-output": "python3 scripts/validate-output.py",
-    "test": "python3 -m pytest tests/ -v"
+    "test": "python3 -m pytest tests/ -v && npm run test:js",
+    "test:js": "vitest run",
+    "test:js:watch": "vitest"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -31,6 +33,7 @@
     "globals": "^17.6.0",
     "prettier": "^3.8.3",
     "stylelint": "^17.12.0",
-    "stylelint-config-standard": "^40.0.0"
+    "stylelint-config-standard": "^40.0.0",
+    "vitest": "^1.6.1"
   }
 }
