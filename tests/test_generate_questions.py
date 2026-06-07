@@ -59,3 +59,44 @@ def test_invalid_affinity_raises(tmp_path):
     )
     with pytest.raises(ValueError, match="plasma"):
         generate_questions.generate_one(fp, MAPPING_PATH)
+
+
+def test_reputation_kind(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-rep\nminor_benefit:\n  kind: reputation\n  value: 1\ntags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert data["system"]["flags"]["dictionary"]["reputation"] == 1
+
+
+def test_action_point_kind_value_2(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-ap\nminor_benefit:\n  kind: action_point\n  value: 2\ntags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert data["system"]["flags"]["dictionary"]["actionPoints"] == 2
+
+
+def test_doc_only_kind_has_no_mechanical_effect(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-doc\ndescription: |\n  Player picks something at creation.\n"
+        "minor_benefit:\n  kind: doc_only\n  value: '+1 of something'\ntags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    # doc_only must NOT produce changes or flags
+    assert data["system"].get("changes", []) == []
+    assert "flags" not in data["system"]
+    # Description survives
+    assert "Player picks something" in data["system"]["description"]["value"]
+
+
+def test_unknown_kind_raises(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-bad\nminor_benefit:\n  kind: nonsense\n  value: 1\ntags: []\n"
+    )
+    with pytest.raises(ValueError, match="nonsense"):
+        generate_questions.generate_one(fp, MAPPING_PATH)
