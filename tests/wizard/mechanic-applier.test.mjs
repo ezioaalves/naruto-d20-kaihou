@@ -7,6 +7,12 @@ import {
   revertQ7Loyalist,
   applyQ8Adherent,
   revertQ8Adherent,
+  applyQ1Village,
+  revertQ1Village,
+  applyQ7Outsider,
+  revertQ7Outsider,
+  applyQ8Sceptic,
+  revertQ8Sceptic,
 } from "../../scripts/wizard/mechanic-applier.mjs";
 
 function mockActor(overrides = {}) {
@@ -93,5 +99,91 @@ describe("Q8 Adherent (item add + actionPoints +2)", () => {
     const p = revertQ8Adherent(actor);
     expect(p.deletes).toContain("adh-marker");
     expect(p.updates["flags.naruto-d20.actionPoints"]).toBe(6);
+  });
+});
+
+describe("Q1 Village (item add only)", () => {
+  it("apply adds village item with q1Village marker", () => {
+    const actor = mockActor();
+    const villageItemData = { name: "Kanigakure", type: "feat" };
+    const p = applyQ1Village(actor, villageItemData);
+    expect(p.creates).toHaveLength(1);
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q1Village).toBe(true);
+    expect(Object.keys(p.updates)).toHaveLength(0);
+  });
+
+  it("revert deletes the village item", () => {
+    const actor = mockActor({
+      items: [{ _id: "vil1", flags: { "naruto-d20-kaihou": { wizard: { q1Village: true } } } }],
+    });
+    const p = revertQ1Village(actor);
+    expect(p.deletes).toContain("vil1");
+  });
+});
+
+describe("Q7 Outsider (item add + classSkill + snapshot)", () => {
+  it("apply adds marker item, sets classSkills[<key>] = true, snapshots the key", () => {
+    const p = applyQ7Outsider(mockActor(), { name: "Outsider", type: "feat" }, "sur");
+    expect(p.updates["system.classSkills.sur"]).toBe(true);
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"]).toBe("sur");
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q7Outsider).toBe(true);
+  });
+
+  it("revert deletes item, unsets classSkill from snapshot, clears snapshot", () => {
+    const actor = mockActor({
+      items: [{ _id: "out1", flags: { "naruto-d20-kaihou": { wizard: { q7Outsider: true } } } }],
+      flags: { "naruto-d20-kaihou": { wizard: { q7OutsiderClassSkill: "sur" } } },
+    });
+    const p = revertQ7Outsider(actor);
+    expect(p.deletes).toContain("out1");
+    expect(p.updates["system.classSkills.sur"]).toBe(false);
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"]).toBeNull();
+  });
+
+  it("revert with no snapshot does NOT touch classSkills", () => {
+    const actor = mockActor({
+      items: [{ _id: "out2", flags: { "naruto-d20-kaihou": { wizard: { q7Outsider: true } } } }],
+    });
+    const p = revertQ7Outsider(actor);
+    expect(p.deletes).toContain("out2");
+    expect(Object.keys(p.updates).some((k) => k.startsWith("system.classSkills"))).toBe(false);
+  });
+});
+
+describe("Q8 Sceptic (item add + subskill rank +1 + snapshot)", () => {
+  it("apply adds marker, bumps subskill rank, snapshots subskill key", () => {
+    const actor = mockActor({
+      system: { skills: { crf: { subSkills: { armor: { rank: 2 } } } }, classSkills: {} },
+    });
+    const p = applyQ8Sceptic(actor, { name: "Sceptic", type: "feat" }, "crf.subSkills.armor");
+    expect(p.updates["system.skills.crf.subSkills.armor.rank"]).toBe(3);
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q8ScepticSubskill"]).toBe("crf.subSkills.armor");
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q8Sceptic).toBe(true);
+  });
+
+  it("apply on subskill that didn't exist treats current as 0 (bump to 1)", () => {
+    const p = applyQ8Sceptic(mockActor(), { name: "S", type: "feat" }, "pro.subSkills.scribe");
+    expect(p.updates["system.skills.pro.subSkills.scribe.rank"]).toBe(1);
+  });
+
+  it("revert subtracts 1 from subskill rank using snapshot", () => {
+    const actor = mockActor({
+      system: { skills: { crf: { subSkills: { armor: { rank: 3 } } } }, classSkills: {} },
+      items: [{ _id: "scp1", flags: { "naruto-d20-kaihou": { wizard: { q8Sceptic: true } } } }],
+      flags: { "naruto-d20-kaihou": { wizard: { q8ScepticSubskill: "crf.subSkills.armor" } } },
+    });
+    const p = revertQ8Sceptic(actor);
+    expect(p.deletes).toContain("scp1");
+    expect(p.updates["system.skills.crf.subSkills.armor.rank"]).toBe(2);
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q8ScepticSubskill"]).toBeNull();
+  });
+
+  it("revert floors rank at 0 (no negatives)", () => {
+    const actor = mockActor({
+      system: { skills: { crf: { subSkills: { armor: { rank: 0 } } } }, classSkills: {} },
+      flags: { "naruto-d20-kaihou": { wizard: { q8ScepticSubskill: "crf.subSkills.armor" } } },
+    });
+    const p = revertQ8Sceptic(actor);
+    expect(p.updates["system.skills.crf.subSkills.armor.rank"]).toBe(0);
   });
 });
