@@ -1,0 +1,22 @@
+name: Test Ninja
+slug: test-ninja
+category: basic
+source: "Test Fixture v1"
+ability: int
+hit_die: d6
+action_points: "5 + level/2"
+bab: low
+saves:
+  fort: low
+  ref: mid
+  will: high
+defense_progression: low
+reputation_progression: mid
+class_skills:
+  - acrobatics
+  - chakra-control
+  - ninjutsu
+skill_points_first_level: "(4 + Int) × 4"
+skill_points_per_level: "4 + Int"
+prerequisites: null
+talents: []
