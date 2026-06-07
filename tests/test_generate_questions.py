@@ -134,3 +134,14 @@ def test_generate_and_write(tmp_path):
     import json
     loaded = json.loads(out_path.read_text())
     assert loaded["name"] == "Test Question Item"
+
+
+def test_parse_args_defaults():
+    args = generate_questions.parse_args([])
+    assert args.dry_run is False
+    assert args.vault_path == generate_questions.DEFAULT_VAULT_PATH
+
+
+def test_parse_args_dry_run():
+    args = generate_questions.parse_args(["--dry-run"])
+    assert args.dry_run is True

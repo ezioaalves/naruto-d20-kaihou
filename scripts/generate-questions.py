@@ -129,5 +129,54 @@ def generate_and_write(yaml_path: Path, mapping_path: Path, output_dir: Path) ->
     return out_path
 
 
+def parse_args(args: list[str]) -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--vault-path", type=Path, default=DEFAULT_VAULT_PATH,
+        help=f"Path to vault (default: {DEFAULT_VAULT_PATH})",
+    )
+    parser.add_argument(
+        "--output-dir", type=Path,
+        default=Path(__file__).resolve().parent.parent / "packs" / "_source" / "questions",
+        help="Where to write generated JSON",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true",
+        help="Print what would be generated, don't write files",
+    )
+    return parser.parse_args(args)
+
+
+def main(vault_path: Path, output_dir: Path, dry_run: bool) -> int:
+    """Generate question trait JSON files from vault YAML.
+
+    Returns 0 on success, 1 on error.
+    """
+    questions_dir = vault_path / QUESTIONS_SUBPATH
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+
+    yaml_files = sorted(questions_dir.glob("*.yaml"))
+    if not yaml_files:
+        print(f"Error: No YAML files found in {questions_dir}", file=sys.stderr)
+        return 1
+
+    print(f"{'Would generate' if dry_run else 'Generating'} {len(yaml_files)} questions from {vault_path}...")
+    for yp in yaml_files:
+        try:
+            if dry_run:
+                data = generate_one(yp, mapping_path)
+                print(f"  ✓ {data['name']}_{data['_id']}.json")
+            else:
+                op = generate_and_write(yp, mapping_path, output_dir)
+                print(f"  ✓ {op.name}")
+        except Exception as e:
+            print(f"  ✗ {yp.name}: {e}", file=sys.stderr)
+            return 1
+    print(f"Done. {'Would generate' if dry_run else 'Generated'} {len(yaml_files)} question JSON files.")
+    return 0
+
+
 if __name__ == "__main__":
-    pass  # CLI added in Task 12
+    args = parse_args(sys.argv[1:])
+    sys.exit(main(args.vault_path, args.output_dir, args.dry_run))
