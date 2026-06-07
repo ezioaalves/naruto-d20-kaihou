@@ -40,6 +40,13 @@
       "path": "packs/villages",
       "type": "Item",
       "system": "pf1"
+    },
+    {
+      "name": "questions",
+      "label": "Naruto D20 — 20 Questions (Q2–Q20) Grants",
+      "path": "packs/questions",
+      "type": "Item",
+      "system": "pf1"
     }
   ],
   "packFolders": [
@@ -47,7 +54,7 @@
       "name": "Naruto D20 — Kaihou",
       "color": "#1f6f8b",
       "sorting": "m",
-      "packs": ["villages"]
+      "packs": ["villages", "questions"]
     }
   ],
   "languages": [
