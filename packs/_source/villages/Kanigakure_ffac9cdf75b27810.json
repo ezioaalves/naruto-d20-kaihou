@@ -1,5 +1,6 @@
 {
   "_id": "ffac9cdf75b27810",
+  "_key": "!items!ffac9cdf75b27810",
   "name": "Kanigakure",
   "type": "feat",
   "system": {
@@ -24,5 +25,6 @@
         "priority": 0
       }
     ]
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/crab.svg"
 }

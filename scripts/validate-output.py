@@ -281,17 +281,15 @@ def validate_all(verbose: bool = False) -> int:
     Returns:
         Exit code: 0 if all valid, 1 if any invalid
     """
-    # Scan both directories for JSON files
+    # Discover every pack source dir under packs/_source/
     items_to_validate = []
-    for pack_dir in ["classes-basic", "villages"]:
-        source_dir = Path("packs/_source") / pack_dir
-        if source_dir.exists():
+    sources_root = Path("packs/_source")
+    if sources_root.is_dir():
+        for source_dir in sorted(p for p in sources_root.iterdir() if p.is_dir()):
             items_to_validate.extend(sorted(source_dir.glob("*.json")))
-        else:
-            print(f"Warning: directory '{source_dir}' does not exist", file=sys.stderr)
 
     if not items_to_validate:
-        print("No JSON files found in packs/_source/classes-basic/ or packs/_source/villages/")
+        print("No JSON files found in packs/_source/")
         return 0
 
     all_valid = True

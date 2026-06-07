@@ -1,5 +1,6 @@
 {
   "_id": "a18ed55e5e90130b",
+  "_key": "!items!a18ed55e5e90130b",
   "name": "Sasorigakure",
   "type": "feat",
   "system": {
@@ -21,5 +22,6 @@
         "reputation": 1
       }
     }
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/scorpion.svg"
 }

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.1.1 - 2026-06-07
+
+### Fixed
+- Compendia shipped empty in v1.0.0 and v1.1.0 because generated JSON
+  files lacked the `_key: "!items!<_id>"` field that Foundry's LevelDB
+  packer requires. Both generators now emit `_key`; tests pin the
+  invariant. Verified end-to-end against Foundry v13 + PF1e v11.11.
+
+### Changed
+- Dropped the `classes-basic` compendium. The public `naruto-d20`
+  module ≥ 1.0.10 ships a polished `classes` pack covering the same
+  6 base classes; carrying a parallel pack only produced name
+  collisions in-world. Dependency bumped to `naruto-d20 >= 1.0.10`.
+- Each village trait now ships an icon
+  (`modules/naruto-d20-kaihou/assets/villages/<icon>.svg`), with the
+  mapping authored in the vault YAML and passed through the generator.
+
 ## v1.1.0 - 2026-06-07
 
 ### Added

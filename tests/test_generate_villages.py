@@ -131,3 +131,30 @@ def test_parse_args_defaults():
 def test_parse_args_dry_run():
     args = generate_villages.parse_args(["--dry-run"])
     assert args.dry_run is True
+
+
+def test_has_foundry_leveldb_key():
+    # Foundry CLI silently drops entries missing _key during pack compilation.
+    # Must be "!items!<_id>" for items to land in LevelDB.
+    data = generate_villages.generate_one(FIXTURE_PATH, MAPPING_PATH)
+    assert data["_key"] == f"!items!{data['_id']}"
+
+
+def test_img_passed_through_when_present(tmp_path):
+    fp = tmp_path / "v.yaml"
+    fp.write_text(
+        "name: V\nslug: v\nimg: modules/naruto-d20-kaihou/assets/villages/crab.svg\n"
+        "minor_benefit:\n  kind: hp\n  value: 1\nclass_skills: []\ntags: []\n"
+    )
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    assert data["img"] == "modules/naruto-d20-kaihou/assets/villages/crab.svg"
+
+
+def test_img_absent_when_not_set(tmp_path):
+    fp = tmp_path / "v.yaml"
+    fp.write_text(
+        "name: V\nslug: v\nminor_benefit:\n  kind: hp\n  value: 1\n"
+        "class_skills: []\ntags: []\n"
+    )
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    assert "img" not in data

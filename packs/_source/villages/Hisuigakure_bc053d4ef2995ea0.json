@@ -1,5 +1,6 @@
 {
   "_id": "bc053d4ef2995ea0",
+  "_key": "!items!bc053d4ef2995ea0",
   "name": "Hisuigakure",
   "type": "feat",
   "system": {
@@ -16,5 +17,6 @@
       "sen": true
     },
     "changes": []
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/imperial.svg"
 }

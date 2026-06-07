@@ -1,5 +1,6 @@
 {
   "_id": "a8318ef3f955ee6f",
+  "_key": "!items!a8318ef3f955ee6f",
   "name": "Shishigakure",
   "type": "feat",
   "system": {
@@ -24,5 +25,6 @@
         "priority": 0
       }
     ]
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/lion.svg"
 }

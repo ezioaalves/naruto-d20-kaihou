@@ -1,5 +1,6 @@
 {
   "_id": "021058ee37acb649",
+  "_key": "!items!021058ee37acb649",
   "name": "Kiringakure",
   "type": "feat",
   "system": {
@@ -24,5 +25,6 @@
         "priority": 0
       }
     ]
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/unicorn.svg"
 }

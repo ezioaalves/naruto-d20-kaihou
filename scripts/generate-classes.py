@@ -109,6 +109,7 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
 
     return {
         "_id": uuid,
+        "_key": f"!items!{uuid}",
         "name": cls["name"],
         "type": "class",
         "system": {

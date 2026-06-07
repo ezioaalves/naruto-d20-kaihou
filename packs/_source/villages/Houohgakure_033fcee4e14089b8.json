@@ -1,5 +1,6 @@
 {
   "_id": "033fcee4e14089b8",
+  "_key": "!items!033fcee4e14089b8",
   "name": "Houohgakure",
   "type": "feat",
   "system": {
@@ -21,5 +22,6 @@
         "actionPoints": 1
       }
     }
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/phoenix.svg"
 }

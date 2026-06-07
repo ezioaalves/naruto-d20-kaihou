@@ -1,5 +1,6 @@
 {
   "_id": "bf4e2f24f90bb464",
+  "_key": "!items!bf4e2f24f90bb464",
   "name": "Tsurugakure",
   "type": "feat",
   "system": {
@@ -24,5 +25,6 @@
         "priority": 0
       }
     ]
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/crane.svg"
 }

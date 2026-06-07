@@ -192,3 +192,12 @@ def test_cli_args_dry_run_flag():
 def test_main_function_exists():
     """main() function exists and is callable."""
     assert callable(generate_classes.main)
+
+
+def test_has_foundry_leveldb_key():
+    # Foundry CLI silently drops entries missing _key during pack compilation.
+    # Must be "!items!<_id>" for items to land in LevelDB.
+    yaml_path = FIXTURES_DIR / "synthetic_class.yaml"
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    cls = generate_classes.generate_one(yaml_path, mapping_path)
+    assert cls["_key"] == f"!items!{cls['_id']}"

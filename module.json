@@ -2,7 +2,7 @@
   "id": "naruto-d20-kaihou",
   "title": "Naruto D20 — Kaihou Campaign Content",
   "description": "Kaihou-specific identity content (base classes, villages, flaws, schools, occupations, bloodlines, advanced classes) extending the public naruto-d20 module.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "compatibility": {
     "minimum": "11",
     "verified": "13"
@@ -22,7 +22,7 @@
         "id": "naruto-d20",
         "type": "module",
         "compatibility": {
-          "minimum": "1.0.8"
+          "minimum": "1.0.10"
         }
       }
     ]
@@ -34,13 +34,6 @@
     }
   ],
   "packs": [
-    {
-      "name": "classes-basic",
-      "label": "Naruto D20 — Base Classes",
-      "path": "packs/classes-basic",
-      "type": "Item",
-      "system": "pf1"
-    },
     {
       "name": "villages",
       "label": "Naruto D20 — Village Origins",
@@ -54,7 +47,7 @@
       "name": "Naruto D20 — Kaihou",
       "color": "#1f6f8b",
       "sorting": "m",
-      "packs": ["classes-basic", "villages"]
+      "packs": ["villages"]
     }
   ],
   "languages": [

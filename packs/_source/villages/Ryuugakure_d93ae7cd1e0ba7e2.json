@@ -1,5 +1,6 @@
 {
   "_id": "d93ae7cd1e0ba7e2",
+  "_key": "!items!d93ae7cd1e0ba7e2",
   "name": "Ryuugakure",
   "type": "feat",
   "system": {
@@ -24,5 +25,6 @@
         "priority": 0
       }
     ]
-  }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/villages/dragon.svg"
 }

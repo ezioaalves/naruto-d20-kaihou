@@ -82,6 +82,7 @@ jobs:
             module.json \
             lang \
             packs \
+            assets \
             README.md \
             LICENSE \
             -x "packs/_source/*"

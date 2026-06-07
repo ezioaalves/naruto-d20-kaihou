@@ -124,12 +124,17 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     if parts["flags"]:
         system["flags"] = {"dictionary": parts["flags"]}
 
-    return {
-        "_id": generate_uuid(vault["slug"]),
+    uuid = generate_uuid(vault["slug"])
+    out: dict[str, Any] = {
+        "_id": uuid,
+        "_key": f"!items!{uuid}",
         "name": vault["name"],
         "type": "feat",
         "system": system,
     }
+    if vault.get("img"):
+        out["img"] = vault["img"]
+    return out
 
 
 def generate_and_write(yaml_path: Path, mapping_path: Path, output_dir: Path) -> Path:
