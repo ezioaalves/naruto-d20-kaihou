@@ -35,6 +35,26 @@ def vault_class_yamls():
 
 
 @pytest.fixture
+def vault_village_yamls():
+    """Return paths to the village YAML files.
+
+    Reads from KAIHOU_VAULT_PATH env var if set, else defaults to
+    /home/ezioaalves/Documents/Kaihou (Naruto D20).
+    """
+    vault_path = Path(os.getenv(VAULT_PATH_ENV, DEFAULT_VAULT_PATH))
+    villages_dir = vault_path / "Mechanics" / "Character_Options" / "Villages"
+
+    if not villages_dir.exists():
+        pytest.skip(f"Vault villages directory not found: {villages_dir}")
+
+    # Collect all .yaml files (should be exactly 8)
+    yaml_files = sorted(villages_dir.glob("*.yaml"))
+    assert len(yaml_files) == 8, f"Expected 8 village YAML files, found {len(yaml_files)}: {yaml_files}"
+
+    return yaml_files
+
+
+@pytest.fixture
 def skill_mapping():
     """Load and return the skill-key-mapping.json dict."""
     mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
@@ -90,6 +110,51 @@ def test_all_vault_class_skills_have_mappings(vault_class_yamls, skill_mapping):
     print(f"\nFound {len(all_skills)} unique skills across {len(vault_class_yamls)} classes:")
     for class_name in sorted(skills_by_class.keys()):
         print(f"  {class_name}: {len(skills_by_class[class_name])} skills")
+    print(f"\nAll {len(all_skills)} skills have mappings in data/skill-key-mapping.json")
+
+
+def test_all_vault_village_skills_have_mappings(vault_village_yamls, skill_mapping):
+    """Verify every skill slug in vault village YAMLs has a mapping entry.
+
+    For each of the 8 vault village YAML files:
+    - Load the YAML
+    - Extract the class_skills list (if present)
+    - Collect all unique skill slugs
+    - Assert each slug exists in skill_mapping keys
+
+    Prints a summary of found skills and their mappings.
+    """
+    all_skills = set()
+    skills_by_village = {}
+
+    for yaml_path in vault_village_yamls:
+        with open(yaml_path) as fh:
+            village_data = yaml.safe_load(fh)
+
+        village_name = village_data.get("name", yaml_path.stem)
+        village_skills = village_data.get("class_skills", [])
+
+        # class_skills is a list of strings (skill slugs)
+        if village_skills:
+            skills_by_village[village_name] = set(village_skills)
+            all_skills.update(village_skills)
+
+    # Verify each skill slug is in the mapping
+    unmapped_skills = []
+    for skill_slug in sorted(all_skills):
+        if skill_slug not in skill_mapping:
+            unmapped_skills.append(skill_slug)
+
+    if unmapped_skills:
+        pytest.fail(
+            f"Found {len(unmapped_skills)} unmapped village skill slug(s):\n"
+            + "\n".join(f"  - {slug}" for slug in unmapped_skills)
+        )
+
+    # Print summary
+    print(f"\nFound {len(all_skills)} unique skills across {len(vault_village_yamls)} villages:")
+    for village_name in sorted(skills_by_village.keys()):
+        print(f"  {village_name}: {len(skills_by_village[village_name])} skills")
     print(f"\nAll {len(all_skills)} skills have mappings in data/skill-key-mapping.json")
 
 
