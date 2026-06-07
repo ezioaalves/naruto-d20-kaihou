@@ -47,3 +47,56 @@ def test_unknown_skill_slug_raises():
             generate_villages.generate_one(bad_yaml, MAPPING_PATH)
     finally:
         bad_yaml.unlink()
+
+
+def _make_fixture(tmp_path: Path, kind: str, value: int = 1) -> Path:
+    fp = tmp_path / "v.yaml"
+    fp.write_text(
+        f"name: V\nslug: v\nminor_benefit:\n  kind: {kind}\n  value: {value}\n"
+        f"class_skills: []\ntags: []\n"
+    )
+    return fp
+
+
+def test_minor_benefit_hp(tmp_path):
+    fp = _make_fixture(tmp_path, "hp", 2)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    changes = data["system"]["changes"]
+    assert any(c["target"] == "mhp" and c["formula"] == "2" and c["operator"] == "add" for c in changes)
+
+
+def test_minor_benefit_init(tmp_path):
+    fp = _make_fixture(tmp_path, "init", 1)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    assert any(c["target"] == "init" and c["formula"] == "1" for c in data["system"]["changes"])
+
+
+@pytest.mark.parametrize("kind,target", [("will", "saves.will"), ("fort", "saves.fort"), ("ref", "saves.ref")])
+def test_minor_benefit_saves(tmp_path, kind, target):
+    fp = _make_fixture(tmp_path, kind, 1)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    assert any(c["target"] == target and c["formula"] == "1" for c in data["system"]["changes"])
+
+
+def test_minor_benefit_action_point(tmp_path):
+    fp = _make_fixture(tmp_path, "action_point", 1)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    flags = data["system"].get("flags", {}).get("dictionary", {})
+    assert flags.get("actionPoints") == 1
+
+
+def test_minor_benefit_reputation(tmp_path):
+    fp = _make_fixture(tmp_path, "reputation", 1)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    flags = data["system"].get("flags", {}).get("dictionary", {})
+    assert flags.get("reputation") == 1
+
+
+def test_minor_benefit_point_build_doc_only(tmp_path):
+    fp = _make_fixture(tmp_path, "point_build", 2)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    # No mechanical change for point_build
+    assert data["system"].get("changes", []) == []
+    # But description should mention the +2 point-buy
+    desc = data["system"].get("description", {}).get("value", "")
+    assert "+2" in desc and ("point" in desc.lower() or "build" in desc.lower())

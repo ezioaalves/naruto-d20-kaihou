@@ -47,6 +47,60 @@ class SkillKeyMapper:
         return self._mapping[slug]
 
 
+def _change(target: str, value: int) -> dict[str, Any]:
+    """Create a PF1e change entry for a given target and value."""
+    return {
+        "_id": hashlib.md5(f"{target}-{value}".encode()).hexdigest()[:8],
+        "formula": str(value),
+        "target": target,
+        "operator": "add",
+        "priority": 0,
+    }
+
+
+def translate_minor_benefit(kind: str, value: int) -> dict[str, Any]:
+    """Translate one minor benefit into PF1e item-system additions.
+
+    Returns a dict with 'changes' (list of PF1e change entries), 'flags'
+    (system.flags.dictionary updates), and 'description_extra' (HTML
+    snippet appended to description for doc-only benefits).
+    """
+    out: dict[str, Any] = {"changes": [], "flags": {}, "description_extra": ""}
+
+    if kind == "hp":
+        out["changes"].append(_change("mhp", value))
+    elif kind == "init":
+        out["changes"].append(_change("init", value))
+    elif kind == "will":
+        out["changes"].append(_change("saves.will", value))
+    elif kind == "fort":
+        out["changes"].append(_change("saves.fort", value))
+    elif kind == "ref":
+        out["changes"].append(_change("saves.ref", value))
+    elif kind == "action_point":
+        out["flags"]["actionPoints"] = value
+    elif kind == "reputation":
+        out["flags"]["reputation"] = value
+    elif kind == "point_build":
+        out["description_extra"] = (
+            f"<p><b>Point Build:</b> +{value} to point-buy at character creation "
+            f"(apply manually; Foundry has no point-buy hook).</p>"
+        )
+    else:
+        raise ValueError(f"Unknown minor_benefit.kind: {kind!r}")
+
+    return out
+
+
+def _description_to_html(text: str) -> str:
+    """Render a plain-text description (with line breaks) as basic HTML."""
+    if not text:
+        return ""
+    # Simple: wrap each paragraph in <p>, preserve line breaks within
+    paragraphs = [p.strip() for p in text.strip().split("\n\n") if p.strip()]
+    return "".join(f"<p>{p.replace(chr(10), ' ')}</p>" for p in paragraphs)
+
+
 def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     """Generate one PF1e trait JSON dict from a village YAML file."""
     with open(yaml_path) as f:
@@ -55,14 +109,26 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     mapper = SkillKeyMapper(mapping_path)
     class_skills = {mapper.translate(slug): True for slug in vault.get("class_skills", [])}
 
+    benefit = vault["minor_benefit"]
+    parts = translate_minor_benefit(benefit["kind"], benefit["value"])
+
+    description_html = _description_to_html(vault.get("description", "")) + parts["description_extra"]
+
+    system: dict[str, Any] = {
+        "subType": "trait",
+        "description": {"value": description_html},
+        "tags": vault.get("tags", []),
+        "classSkills": class_skills,
+        "changes": parts["changes"],
+    }
+    if parts["flags"]:
+        system["flags"] = {"dictionary": parts["flags"]}
+
     return {
         "_id": generate_uuid(vault["slug"]),
         "name": vault["name"],
         "type": "feat",
-        "system": {
-            "subType": "trait",
-            "classSkills": class_skills,
-        },
+        "system": system,
     }
 
 
