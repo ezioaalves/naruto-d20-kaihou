@@ -101,6 +101,11 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
                 "will": translate_save(cls["saves"]["will"]),
             },
             "classSkills": class_skills,
+            "defense": cls["defense_progression"],
+            "reputation": cls["reputation_progression"],
+            "skillPointsPerLevel": cls["skill_points_per_level"],
+            "ability": cls["ability"],
+            "source": cls["source"],
         },
     }
 

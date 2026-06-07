@@ -106,3 +106,16 @@ def test_missing_skill_mapping_fails_loud():
     mapper = generate_classes.SkillKeyMapper(mapping_path)
     with pytest.raises(ValueError, match="unknown-skill"):
         mapper.translate("unknown-skill")
+
+
+def test_synthetic_class_pass_through_fields():
+    """Pass-through fields: defense_progression, reputation_progression, skill_points_per_level, ability, source."""
+    yaml_path = FIXTURES_DIR / "synthetic_class.yaml"
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    out = generate_classes.generate_one(yaml_path, mapping_path)
+    # synthetic has defense_progression: low, reputation_progression: mid, skill_points_per_level: "4 + Int", ability: int, source: "Test Fixture v1"
+    assert out["system"]["defense"] == "low"
+    assert out["system"]["reputation"] == "mid"
+    assert out["system"]["skillPointsPerLevel"] == "4 + Int"
+    assert out["system"]["ability"] == "int"
+    assert out["system"]["source"] == "Test Fixture v1"
