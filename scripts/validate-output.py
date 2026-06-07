@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Validation script for generated class JSON files.
+Validation script for generated class and trait JSON files.
 
-Validates all JSON files in a given directory against the PF1e class-item schema.
+Validates all JSON files in packs/_source/classes-basic/ and packs/_source/villages/
+against the PF1e class-item and trait-item schemas.
 Usage:
-  python3 scripts/validate-output.py [--directory DIR] [--verbose]
+  npm run validate-output
 """
 
 import argparse
@@ -176,35 +177,139 @@ def validate_class_item(data: dict, filename: str) -> tuple[bool, list[str]]:
     return (len(errors) == 0, errors)
 
 
-def validate_all(directory: Path, verbose: bool = False) -> int:
+def validate_trait_item(data: dict, filename: str) -> tuple[bool, list[str]]:
     """
-    Validate all JSON files in a directory.
+    Validate a trait item against the PF1e trait schema.
 
     Args:
-        directory: Path to directory containing JSON files
+        data: Parsed JSON object
+        filename: Name of the file (for error reporting)
+
+    Returns:
+        Tuple of (is_valid: bool, errors: list of error messages)
+    """
+    errors = []
+
+    # Check top-level required fields
+    if "_id" not in data:
+        errors.append("missing required field: _id")
+    elif not isinstance(data["_id"], str):
+        errors.append("_id must be a string")
+    elif len(data["_id"]) != 16 or not all(c in "0123456789abcdef" for c in data["_id"]):
+        errors.append(f"_id must be 16-char hex string, got '{data['_id']}'")
+
+    if "name" not in data:
+        errors.append("missing required field: name")
+    elif not isinstance(data["name"], str):
+        errors.append("name must be a string")
+    elif not data["name"]:
+        errors.append("name must not be empty")
+
+    if "type" not in data:
+        errors.append("missing required field: type")
+    elif data["type"] != "feat":
+        errors.append(f"type must be 'feat', got '{data['type']}'")
+
+    if "system" not in data:
+        errors.append("missing required field: system")
+        return (False, errors)  # Can't validate system without it
+
+    system = data["system"]
+    if not isinstance(system, dict):
+        errors.append("system must be an object")
+        return (False, errors)
+
+    # Validate system.subType
+    if "subType" not in system:
+        errors.append("missing required field: system.subType")
+    elif system["subType"] != "trait":
+        errors.append(f"system.subType must be 'trait', got '{system['subType']}'")
+
+    # Validate system.changes (required, must be list)
+    if "changes" not in system:
+        errors.append("missing required field: system.changes")
+    elif not isinstance(system["changes"], list):
+        errors.append(
+            f"system.changes must be array, got {type(system['changes']).__name__}"
+        )
+
+    # Validate system.description (required)
+    if "description" not in system:
+        errors.append("missing required field: system.description")
+    else:
+        desc = system["description"]
+        if not isinstance(desc, dict):
+            errors.append(
+                f"system.description must be an object, "
+                f"got {type(desc).__name__}"
+            )
+        elif "value" not in desc:
+            errors.append("missing required field: system.description.value")
+        elif not isinstance(desc["value"], str):
+            errors.append(
+                f"system.description.value must be string, "
+                f"got {type(desc['value']).__name__}"
+            )
+
+    # Validate system.classSkills (optional, but if present must be dict)
+    if "classSkills" in system:
+        class_skills = system["classSkills"]
+        if not isinstance(class_skills, dict):
+            errors.append(
+                f"system.classSkills must be object or absent, "
+                f"got {type(class_skills).__name__}"
+            )
+        else:
+            # Each key should be a 3-letter skill code, each value should be boolean
+            for code, enabled in class_skills.items():
+                if not isinstance(enabled, bool):
+                    errors.append(
+                        f"system.classSkills.{code} must be boolean, "
+                        f"got {type(enabled).__name__}"
+                    )
+
+    return (len(errors) == 0, errors)
+
+
+def validate_all(verbose: bool = False) -> int:
+    """
+    Validate all JSON files in packs/_source/classes-basic/ and packs/_source/villages/.
+
+    Args:
         verbose: If True, print all checks for valid files too
 
     Returns:
         Exit code: 0 if all valid, 1 if any invalid
     """
-    if not directory.exists():
-        print(f"Error: directory '{directory}' does not exist", file=sys.stderr)
-        return 1
+    # Scan both directories for JSON files
+    items_to_validate = []
+    for pack_dir in ["classes-basic", "villages"]:
+        source_dir = Path("packs/_source") / pack_dir
+        if source_dir.exists():
+            items_to_validate.extend(sorted(source_dir.glob("*.json")))
+        else:
+            print(f"Warning: directory '{source_dir}' does not exist", file=sys.stderr)
 
-    json_files = sorted(directory.glob("*.json"))
-    if not json_files:
-        print(f"No JSON files found in {directory}")
+    if not items_to_validate:
+        print("No JSON files found in packs/_source/classes-basic/ or packs/_source/villages/")
         return 0
 
     all_valid = True
 
-    for json_file in json_files:
+    for json_file in items_to_validate:
         data = load_json(json_file)
         if data is None:
             all_valid = False
             continue
 
-        is_valid, errors = validate_class_item(data, json_file.name)
+        # Dispatch validation based on item type
+        item_type = data.get("type")
+        if item_type == "class":
+            is_valid, errors = validate_class_item(data, json_file.name)
+        elif item_type == "feat" and data.get("system", {}).get("subType") == "trait":
+            is_valid, errors = validate_trait_item(data, json_file.name)
+        else:
+            is_valid, errors = False, [f"Unsupported item type: '{item_type}'"]
 
         if is_valid:
             if verbose:
@@ -217,24 +322,18 @@ def validate_all(directory: Path, verbose: bool = False) -> int:
 
     # Summary
     if all_valid:
-        print(f"\nAll {len(json_files)} files valid.")
+        print(f"\n✓ All {len(items_to_validate)} files valid.")
         return 0
     else:
-        invalid_count = len([f for f in json_files if load_json(f) is not None])
-        print(f"\n{invalid_count}/{len(json_files)} files failed validation.")
+        valid_count = sum(1 for f in items_to_validate if load_json(f) is not None)
+        print(f"\n✗ {valid_count}/{len(items_to_validate)} files failed validation.")
         return 1
 
 
 def main():
     """CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Validate generated class JSON files against PF1e schema."
-    )
-    parser.add_argument(
-        "--directory",
-        type=Path,
-        default=Path("packs/_source/classes-basic"),
-        help="Directory containing JSON files to validate (default: packs/_source/classes-basic/)",
+        description="Validate generated class and trait JSON files against PF1e schema."
     )
     parser.add_argument(
         "--verbose",
@@ -243,7 +342,7 @@ def main():
     )
 
     args = parser.parse_args()
-    exit_code = validate_all(args.directory, args.verbose)
+    exit_code = validate_all(args.verbose)
     sys.exit(exit_code)
 
 
