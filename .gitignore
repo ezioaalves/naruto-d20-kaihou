@@ -19,4 +19,4 @@ memory/
 
 # Compiled LevelDB pack output (rebuilt by npm run pack)
 packs/*/
-!packs/_source/package-lock.json
+!packs/_source/
