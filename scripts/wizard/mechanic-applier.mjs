@@ -150,3 +150,57 @@ export function revertQ8Sceptic(actor) {
   }
   return p;
 }
+
+// ─── Generic drag-drop (Q3, Q9, Q16) ──────────────────────────────────────────
+export function applyDragDropFeat(itemData, markerKey) {
+  const p = emptyPlan();
+  p.creates.push(withWizardMarker(itemData ?? {}, markerKey));
+  return p;
+}
+
+export function revertDragDropFeat(actor, markerKey) {
+  const p = emptyPlan();
+  const id = findItemIdByMarker(actor, markerKey);
+  if (id) p.deletes.push(id);
+  return p;
+}
+
+// ─── Q10 Coupled (flaw + bonus feat) ──────────────────────────────────────────
+export function applyQ10Coupled(flawItemData, bonusFeatItemData) {
+  const p = emptyPlan();
+  if (flawItemData) p.creates.push(withWizardMarker(flawItemData, "q10Flaw"));
+  if (bonusFeatItemData) p.creates.push(withWizardMarker(bonusFeatItemData, "q10BonusFeat"));
+  return p;
+}
+
+export function revertQ10Coupled(actor) {
+  const p = emptyPlan();
+  const flawId = findItemIdByMarker(actor, "q10Flaw");
+  const bonusId = findItemIdByMarker(actor, "q10BonusFeat");
+  if (flawId) p.deletes.push(flawId);
+  if (bonusId) p.deletes.push(bonusId);
+  return p;
+}
+
+// ─── Q13 Mentor (technique + classSkill) ──────────────────────────────────────
+export function applyQ13Mentor(_actor, techniqueItemData, classSkillKey) {
+  const p = emptyPlan();
+  p.creates.push(withWizardMarker(techniqueItemData ?? {}, "q13Mentor"));
+  if (classSkillKey) {
+    p.updates[`system.classSkills.${classSkillKey}`] = true;
+    p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"] = classSkillKey;
+  }
+  return p;
+}
+
+export function revertQ13Mentor(actor) {
+  const p = emptyPlan();
+  const id = findItemIdByMarker(actor, "q13Mentor");
+  if (id) p.deletes.push(id);
+  const snapshot = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q13ClassSkill;
+  if (snapshot) {
+    p.updates[`system.classSkills.${snapshot}`] = false;
+    p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"] = null;
+  }
+  return p;
+}

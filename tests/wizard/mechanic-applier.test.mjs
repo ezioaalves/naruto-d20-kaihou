@@ -13,6 +13,12 @@ import {
   revertQ7Outsider,
   applyQ8Sceptic,
   revertQ8Sceptic,
+  applyDragDropFeat,
+  revertDragDropFeat,
+  applyQ10Coupled,
+  revertQ10Coupled,
+  applyQ13Mentor,
+  revertQ13Mentor,
 } from "../../scripts/wizard/mechanic-applier.mjs";
 
 function mockActor(overrides = {}) {
@@ -185,5 +191,74 @@ describe("Q8 Sceptic (item add + subskill rank +1 + snapshot)", () => {
     });
     const p = revertQ8Sceptic(actor);
     expect(p.updates["system.skills.crf.subSkills.armor.rank"]).toBe(0);
+  });
+});
+
+describe("applyDragDropFeat / revertDragDropFeat (used for Q3, Q9, Q16)", () => {
+  it("apply adds item with the given marker flag", () => {
+    const p = applyDragDropFeat({ name: "Animal Bond", type: "feat" }, "q3HumanBonusFeat");
+    expect(p.creates).toHaveLength(1);
+    expect(p.creates[0].name).toBe("Animal Bond");
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q3HumanBonusFeat).toBe(true);
+  });
+
+  it("revert deletes item matched by marker flag", () => {
+    const actor = mockActor({
+      items: [{ _id: "feat1", flags: { "naruto-d20-kaihou": { wizard: { q9Level1Feat: true } } } }],
+    });
+    const p = revertDragDropFeat(actor, "q9Level1Feat");
+    expect(p.deletes).toContain("feat1");
+  });
+
+  it("revert with no matching item returns empty plan", () => {
+    const p = revertDragDropFeat(mockActor(), "q3HumanBonusFeat");
+    expect(p).toEqual({ updates: {}, creates: [], deletes: [] });
+  });
+});
+
+describe("Q10 coupled (flaw + bonus feat)", () => {
+  it("apply adds both items with respective markers", () => {
+    const flaw = { name: "Anxious", type: "feat" };
+    const bonus = { name: "Iron Will", type: "feat" };
+    const p = applyQ10Coupled(flaw, bonus);
+    expect(p.creates).toHaveLength(2);
+    const flawCreated = p.creates.find((c) => c.name === "Anxious");
+    const bonusCreated = p.creates.find((c) => c.name === "Iron Will");
+    expect(flawCreated.flags["naruto-d20-kaihou"].wizard.q10Flaw).toBe(true);
+    expect(bonusCreated.flags["naruto-d20-kaihou"].wizard.q10BonusFeat).toBe(true);
+  });
+
+  it("revert deletes both items if present", () => {
+    const actor = mockActor({
+      items: [
+        { _id: "fl1", flags: { "naruto-d20-kaihou": { wizard: { q10Flaw: true } } } },
+        { _id: "bf1", flags: { "naruto-d20-kaihou": { wizard: { q10BonusFeat: true } } } },
+      ],
+    });
+    const p = revertQ10Coupled(actor);
+    expect(p.deletes).toContain("fl1");
+    expect(p.deletes).toContain("bf1");
+  });
+});
+
+describe("Q13 Mentor (technique drag-drop + classSkill)", () => {
+  it("apply adds technique item, sets classSkills[<key>], snapshots key", () => {
+    const tech = { name: "Body Substitution", type: "feat" };
+    const p = applyQ13Mentor(mockActor(), tech, "khi");
+    expect(p.creates).toHaveLength(1);
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q13Mentor).toBe(true);
+    expect(p.updates["system.classSkills.khi"]).toBe(true);
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"]).toBe("khi");
+  });
+
+  it("revert deletes technique, unsets classSkill from snapshot, clears snapshot", () => {
+    const actor = mockActor({
+      items: [{ _id: "m1", flags: { "naruto-d20-kaihou": { wizard: { q13Mentor: true } } } }],
+      flags: { "naruto-d20-kaihou": { wizard: { q13ClassSkill: "khi" } } },
+    });
+    const p = revertQ13Mentor(actor);
+    expect(p.deletes).toContain("m1");
+    expect(p.updates["system.classSkills.khi"]).toBe(false);
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"]).toBeNull();
   });
 });
