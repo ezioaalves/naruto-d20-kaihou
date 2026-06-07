@@ -110,3 +110,13 @@ def test_deterministic_uuid():
     import hashlib as h
     expected = h.md5(b"test-village").hexdigest()[:16]
     assert a["_id"] == expected
+
+
+def test_generate_and_write(tmp_path):
+    out_path = generate_villages.generate_and_write(FIXTURE_PATH, MAPPING_PATH, tmp_path)
+    assert out_path.exists()
+    assert out_path.suffix == ".json"
+    assert "Test Village" in out_path.name
+    import json
+    loaded = json.loads(out_path.read_text())
+    assert loaded["name"] == "Test Village"

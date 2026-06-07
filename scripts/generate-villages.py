@@ -132,5 +132,18 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     }
 
 
+def generate_and_write(yaml_path: Path, mapping_path: Path, output_dir: Path) -> Path:
+    """Generate one village trait and write it to a JSON file.
+
+    Filename follows pattern: <Name>_<UUID>.json.
+    Returns the Path to the written file.
+    """
+    data = generate_one(yaml_path, mapping_path)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    out_path = output_dir / f"{data['name']}_{data['_id']}.json"
+    out_path.write_text(json.dumps(data, indent=2) + "\n")
+    return out_path
+
+
 if __name__ == "__main__":
     pass  # CLI added in Task 13
