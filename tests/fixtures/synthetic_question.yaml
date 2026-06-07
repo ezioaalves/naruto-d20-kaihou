@@ -1,11 +1,11 @@
 name: Test Question Item
 slug: test-question
-img: modules/naruto-d20-kaihou/assets/questions/elements/fire.svg
+img: icons/svg/upgrade.svg
 description: |
   A synthetic question item for unit tests. Not a real grant.
 minor_benefit:
-  kind: affinity
-  value: fire
+  kind: reputation
+  value: 1
 tags:
   - "20 Questions"
   - Test

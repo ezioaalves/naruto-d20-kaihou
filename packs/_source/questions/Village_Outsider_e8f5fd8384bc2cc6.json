@@ -6,7 +6,7 @@
   "system": {
     "subType": "trait",
     "description": {
-      "value": "<p>Your character's relationship with their home village is strained. Marked by friction \u2014 exiled, suspected, or simply tired of the place. This self-reliance has taught them something the academy didn't. <p><b>Player choice:</b> Gain +1 class skill of your choice at character creation (apply manually; no Foundry-side enforcement).</p></p>"
+      "value": "<p>Your character's relationship with their home village is strained. Marked by friction \u2014 exiled, suspected, or simply tired of the place. This self-reliance has taught them something the academy didn't. <p><b>Grants:</b> +1 class skill of your choice at character creation.</p></p>"
     },
     "tags": [
       "20 Questions Q7",

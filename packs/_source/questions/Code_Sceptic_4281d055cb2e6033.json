@@ -6,7 +6,7 @@
   "system": {
     "subType": "trait",
     "description": {
-      "value": "<p>Your character treats the Shinobi Code as one tool among many, not a creed. Pragmatism widens the field of view \u2014 there are worldly trades worth knowing that the academy never taught. <p><b>Player choice:</b> Gain 4 skill points to invest in Craft or Profession at character creation (apply manually; pick the subskill).</p></p>"
+      "value": "<p>Your character treats the Shinobi Code as one tool among many, not a creed. Pragmatism widens the field of view \u2014 there are worldly trades worth knowing that the academy never taught. <p><b>Grants:</b> 4 bonus skill points to invest in Craft or Profession at character creation.</p></p>"
     },
     "tags": [
       "20 Questions Q8",
@@ -14,5 +14,5 @@
     ],
     "changes": []
   },
-  "img": "icons/svg/circle-of-stars.svg"
+  "img": "icons/svg/book.svg"
 }

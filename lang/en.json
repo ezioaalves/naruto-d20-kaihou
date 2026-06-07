@@ -22,11 +22,6 @@
       "Tsurugakure": "Tsurugakure"
     },
     "QUESTIONS": {
-      "q04_affinity_fire": "Fire Affinity",
-      "q04_affinity_water": "Water Affinity",
-      "q04_affinity_earth": "Earth Affinity",
-      "q04_affinity_wind": "Wind Affinity",
-      "q04_affinity_lightning": "Lightning Affinity",
       "q07_relationship_loyalist": "Village Loyalist",
       "q07_relationship_outsider": "Village Outsider",
       "q08_code_adherent": "Code Adherent",

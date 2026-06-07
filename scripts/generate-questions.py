@@ -29,8 +29,6 @@ import yaml
 DEFAULT_VAULT_PATH = Path.home() / "Documents" / "Kaihou (Naruto D20)"
 QUESTIONS_SUBPATH = "Mechanics/Character_Options/20_Questions"
 
-VALID_AFFINITIES = {"fire", "water", "earth", "wind", "lightning"}
-
 
 def generate_uuid(slug: str) -> str:
     """Generate a deterministic 16-character UUID from a slug using md5."""
@@ -56,13 +54,7 @@ def translate_minor_benefit(kind: str, value: Any) -> dict[str, Any]:
     """
     out: dict[str, Any] = {"changes": [], "flags": {}, "description_extra": ""}
 
-    if kind == "affinity":
-        if value not in VALID_AFFINITIES:
-            raise ValueError(
-                f"Invalid affinity value: {value!r}. Must be one of {sorted(VALID_AFFINITIES)}."
-            )
-        out["flags"]["affinity"] = value
-    elif kind == "action_point":
+    if kind == "action_point":
         out["flags"]["actionPoints"] = value
     elif kind == "reputation":
         out["flags"]["reputation"] = value

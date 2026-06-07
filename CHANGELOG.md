@@ -8,39 +8,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## v1.1.2 - 2026-06-07
 
 ### Added
-- `packs/questions` compendium with 9 PF1e trait items covering 20-Questions
-  Q4 / Q7 / Q8 mechanical grants:
-  - **Q4 Elemental Affinity** (5 items): Fire, Water, Earth, Wind, Lightning.
-    Each tags the character with `system.flags.dictionary.affinity = <element>`
-    (forward-looking hook for D2.3b wizard and possible D2.X technique gating).
-  - **Q7 Village Relationship** (2 items): Village Loyalist (+1 Reputation),
-    Village Outsider (+1 class skill of player's choice — doc-only).
-  - **Q8 Shinobi Code Stance** (2 items): Code Adherent (+2 Action Points),
-    Code Sceptic (+4 skill points to Craft or Profession — doc-only).
+- `packs/questions` compendium with **4 PF1e marker traits** covering 20-Questions
+  Q7 / Q8 character-creation choices:
+  - **Q7 Village Relationship** (2 items): Village Loyalist, Village Outsider.
+  - **Q8 Shinobi Code Stance** (2 items): Code Adherent, Code Sceptic.
 - New Python generator (`scripts/generate-questions.py`) mirroring
   `scripts/generate-villages.py` — vault YAML → PF1e trait JSON with
   deterministic UUIDs and the mandatory `_key: "!items!<_id>"` field.
-- New `minor_benefit.kind` values: `affinity` (validates against the 5 element
-  set) and `doc_only` (description-only, no mechanical effect).
-- 5 element icons in `assets/questions/elements/` copied from
-  `naruto-d20-zen-theme`. Q7 / Q8 items use Foundry built-in icons.
-- Pytest suite extended by `tests/test_generate_questions.py` (~18 tests
-  covering basic shape, `_key` invariant, affinity per-element + invalid
-  rejection, reputation / action_point / doc_only encodings, img
-  pass-through, deterministic UUID, write-to-file, and CLI parsing).
+- Generator supports `action_point`, `reputation`, and `doc_only` benefit kinds
+  (all D2.2 D2.2 ish — same encoding pattern, no new behaviour).
+- Pytest suite extended by `tests/test_generate_questions.py` (12 tests
+  covering basic shape, `_key` invariant, reputation / action_point / doc_only
+  encodings, unknown-kind fail-loud, img pass-through, deterministic UUID,
+  write-to-file, and CLI parsing).
 
-### Known limitations
-- Q4 affinity per-level Learn Bonus and Energy Resistance are **doc-only**
-  references to `Mechanics/Basic_Rules/Chakra.md` (the trait only tags the
-  affinity; level-scaling is GM/manual).
-- Q7 Village Outsider "+1 class skill of your choice" is **doc-only** —
-  player picks the skill at character creation; not auto-applied.
-- Q8 Code Sceptic "+4 skill points to Craft or Profession" is **doc-only** —
-  PF1e cannot grant choice-based skill ranks via static trait; player picks
-  the subskill manually.
-- The 20-Questions narrative-answer capture (write all 20 player answers
-  into the actor's biography tab) is deferred to **D2.3b** — a separate
-  sheet-wizard release with its own design + plan cycle.
+### Notes on scope
+- **Q4 Elemental Affinity** is not shipped as a trait item — Foundry's chakra
+  tab already has an affinity selector that handles this without a separate
+  feat.
+- The 4 marker traits **do not auto-apply** their mechanical grants (+1
+  Reputation, +1 class skill, +2 Action Points, +4 skill points to
+  Craft/Profession). The naruto-d20 module's `actionPoints` / `reputation`
+  hero stats are not registered as PF1 buff targets, so the changes engine
+  can't write to them. Mechanical application — including the player-choice
+  picks (class skill for Outsider, Craft vs Profession subskill for Sceptic)
+  — ships with the **D2.3b** sheet wizard, which will read the traits'
+  `flags.dictionary.*` markers and update the actor directly.
+- 5 element icons remain bundled under `assets/questions/elements/` for use
+  by the D2.3b wizard's affinity-selection UI.
 
 ## v1.1.1 - 2026-06-07
 

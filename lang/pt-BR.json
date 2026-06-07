@@ -22,11 +22,6 @@
       "Tsurugakure": "Tsurugakure"
     },
     "QUESTIONS": {
-      "q04_affinity_fire": "Afinidade de Fogo",
-      "q04_affinity_water": "Afinidade de Água",
-      "q04_affinity_earth": "Afinidade de Terra",
-      "q04_affinity_wind": "Afinidade de Vento",
-      "q04_affinity_lightning": "Afinidade de Raio",
       "q07_relationship_loyalist": "Leal à Vila",
       "q07_relationship_outsider": "Distante da Vila",
       "q08_code_adherent": "Adepto do Código",
