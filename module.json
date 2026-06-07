@@ -2,7 +2,7 @@
   "id": "naruto-d20-kaihou",
   "title": "Naruto D20 — Kaihou Campaign Content",
   "description": "Kaihou-specific identity content (base classes, villages, flaws, schools, occupations, bloodlines, advanced classes) extending the public naruto-d20 module.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "compatibility": {
     "minimum": "11",
     "verified": "13"

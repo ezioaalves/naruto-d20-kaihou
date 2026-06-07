@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   tab already has an affinity selector that handles this without a separate
   feat.
 - The 4 marker traits **do not auto-apply** their mechanical grants (+1
-  Reputation, +1 class skill, +2 Action Points, +4 skill points to
+  Reputation, +1 class skill, +2 Action Points, +1 skill point to
   Craft/Profession). The naruto-d20 module's `actionPoints` / `reputation`
   hero stats are not registered as PF1 buff targets, so the changes engine
   can't write to them. Mechanical application — including the player-choice
