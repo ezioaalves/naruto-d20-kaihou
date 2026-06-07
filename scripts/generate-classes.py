@@ -21,6 +21,9 @@ import yaml
 
 _BAB_MAP = {"low": "low", "mid": "med", "high": "high"}
 
+# Kaihou house rule: mid-custom formula for saves
+_MID_CUSTOM_FORMULA = "floor((2 * @level + 6) / 5)"
+
 
 def translate_bab(vault_bab: str) -> str:
     """Vault `low/mid/high` -> Foundry PF1e `low/med/high`."""
@@ -28,6 +31,23 @@ def translate_bab(vault_bab: str) -> str:
         return _BAB_MAP[vault_bab]
     except KeyError as e:
         raise ValueError(f"Unknown BAB value: {vault_bab!r}") from e
+
+
+def translate_save(vault_save: str) -> dict[str, Any]:
+    """Vault `low/mid/high` -> Foundry PF1e save dict with custom formula for mid.
+
+    Kaihou house rule (per CLAUDE.md Hard Rule 4):
+    - low/high translate to {value: "low"/"high"} with no custom override
+    - mid translates to {value: "low", custom: "floor((2 * @level + 6) / 5)"}
+    """
+    if vault_save == "low":
+        return {"value": "low"}
+    elif vault_save == "mid":
+        return {"value": "low", "custom": _MID_CUSTOM_FORMULA}
+    elif vault_save == "high":
+        return {"value": "high"}
+    else:
+        raise ValueError(f"Unknown save progression: {vault_save!r}")
 
 
 def _hd_from_hit_die(hit_die: str) -> int:
@@ -52,6 +72,11 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
         "system": {
             "hd": _hd_from_hit_die(cls["hit_die"]),
             "bab": translate_bab(cls["bab"]),
+            "save": {
+                "fort": translate_save(cls["saves"]["fort"]),
+                "ref": translate_save(cls["saves"]["ref"]),
+                "will": translate_save(cls["saves"]["will"]),
+            },
         },
     }
 

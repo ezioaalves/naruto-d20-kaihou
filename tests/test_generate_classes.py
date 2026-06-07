@@ -41,3 +41,36 @@ def test_bab_string_mapping():
     assert generate_classes.translate_bab("low") == "low"
     assert generate_classes.translate_bab("mid") == "med"
     assert generate_classes.translate_bab("high") == "high"
+
+
+def test_synthetic_class_saves():
+    """Saves translate: fort low, ref mid (custom), will high."""
+    yaml_path = FIXTURES_DIR / "synthetic_class.yaml"
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    out = generate_classes.generate_one(yaml_path, mapping_path)
+    # synthetic has fort: low, ref: mid, will: high
+    assert out["system"]["save"]["fort"]["value"] == "low"
+    assert "custom" not in out["system"]["save"]["fort"]
+    # mid should have the custom formula
+    assert out["system"]["save"]["ref"]["value"] == "low"
+    assert out["system"]["save"]["ref"]["custom"] == "floor((2 * @level + 6) / 5)"
+    # high should have no custom
+    assert out["system"]["save"]["will"]["value"] == "high"
+    assert "custom" not in out["system"]["save"]["will"]
+
+
+def test_save_low_translation():
+    """vault `low` -> {value: low}."""
+    assert generate_classes.translate_save("low") == {"value": "low"}
+
+
+def test_save_mid_custom_translation():
+    """vault `mid` -> {value: low, custom: mid-custom formula}."""
+    result = generate_classes.translate_save("mid")
+    assert result["value"] == "low"
+    assert result["custom"] == "floor((2 * @level + 6) / 5)"
+
+
+def test_save_high_translation():
+    """vault `high` -> {value: high}."""
+    assert generate_classes.translate_save("high") == {"value": "high"}
