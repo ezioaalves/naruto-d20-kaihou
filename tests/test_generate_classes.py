@@ -25,3 +25,19 @@ def test_synthetic_class_basic_fields():
     out = generate_classes.generate_one(yaml_path, mapping_path)
     assert out["name"] == "Test Ninja"
     assert out["type"] == "class"
+
+
+def test_synthetic_class_hd_and_bab():
+    """hit_die `d6` -> system.hd 6; bab `low` -> system.bab `low`."""
+    yaml_path = FIXTURES_DIR / "synthetic_class.yaml"
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    out = generate_classes.generate_one(yaml_path, mapping_path)
+    assert out["system"]["hd"] == 6
+    assert out["system"]["bab"] == "low"
+
+
+def test_bab_string_mapping():
+    """vault `mid` -> PF1e `med` (Pathfinder uses `med`, not `mid`)."""
+    assert generate_classes.translate_bab("low") == "low"
+    assert generate_classes.translate_bab("mid") == "med"
+    assert generate_classes.translate_bab("high") == "high"

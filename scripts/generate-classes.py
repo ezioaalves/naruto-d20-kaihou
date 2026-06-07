@@ -19,6 +19,24 @@ from typing import Any
 import yaml
 
 
+_BAB_MAP = {"low": "low", "mid": "med", "high": "high"}
+
+
+def translate_bab(vault_bab: str) -> str:
+    """Vault `low/mid/high` -> Foundry PF1e `low/med/high`."""
+    try:
+        return _BAB_MAP[vault_bab]
+    except KeyError as e:
+        raise ValueError(f"Unknown BAB value: {vault_bab!r}") from e
+
+
+def _hd_from_hit_die(hit_die: str) -> int:
+    """Strip leading 'd' from 'd6'/'d8'/'d10' and return the integer."""
+    if not hit_die.startswith("d"):
+        raise ValueError(f"Unexpected hit_die format: {hit_die!r}")
+    return int(hit_die[1:])
+
+
 def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     """Read one class YAML and return its Foundry JSON dict.
 
@@ -31,6 +49,10 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     return {
         "name": cls["name"],
         "type": "class",
+        "system": {
+            "hd": _hd_from_hit_die(cls["hit_die"]),
+            "bab": translate_bab(cls["bab"]),
+        },
     }
 
 
