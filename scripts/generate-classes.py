@@ -27,8 +27,8 @@ _BAB_MAP = {"low": "low", "mid": "med", "high": "high"}
 # Kaihou house rule: mid-custom formula for saves
 _MID_CUSTOM_FORMULA = "floor((2 * @level + 6) / 5)"
 
-# Default vault path relative to the repo root
-DEFAULT_VAULT_PATH = Path(__file__).resolve().parent.parent.parent / "Kaihou (Naruto D20)"
+# Default vault path: user home directory
+DEFAULT_VAULT_PATH = Path.home() / "Documents" / "Kaihou (Naruto D20)"
 
 
 def generate_uuid(slug: str) -> str:
