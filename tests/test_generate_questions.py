@@ -100,3 +100,37 @@ def test_unknown_kind_raises(tmp_path):
     )
     with pytest.raises(ValueError, match="nonsense"):
         generate_questions.generate_one(fp, MAPPING_PATH)
+
+
+def test_img_passed_through_when_present():
+    # Fixture has img: modules/naruto-d20-kaihou/assets/questions/elements/fire.svg
+    data = generate_questions.generate_one(FIXTURE_PATH, MAPPING_PATH)
+    assert data["img"] == "modules/naruto-d20-kaihou/assets/questions/elements/fire.svg"
+
+
+def test_img_absent_when_not_set(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-noimg\nminor_benefit:\n  kind: doc_only\n  value: x\ntags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert "img" not in data
+
+
+def test_deterministic_uuid():
+    a = generate_questions.generate_one(FIXTURE_PATH, MAPPING_PATH)
+    b = generate_questions.generate_one(FIXTURE_PATH, MAPPING_PATH)
+    assert a["_id"] == b["_id"]
+    import hashlib as h
+    expected = h.md5(b"test-question").hexdigest()[:16]
+    assert a["_id"] == expected
+
+
+def test_generate_and_write(tmp_path):
+    out_path = generate_questions.generate_and_write(FIXTURE_PATH, MAPPING_PATH, tmp_path)
+    assert out_path.exists()
+    assert out_path.suffix == ".json"
+    assert "Test_Question_Item" in out_path.name
+    import json
+    loaded = json.loads(out_path.read_text())
+    assert loaded["name"] == "Test Question Item"
