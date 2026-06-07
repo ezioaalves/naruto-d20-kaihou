@@ -237,3 +237,88 @@ export function loadFromActor(actor) {
 
   return state;
 }
+
+/**
+ * Compute the set of fields that differ between two states.
+ *
+ * Returns { changedFields: string[], changes: { [field]: { from, to } } }.
+ * Narrative fields are addressed as "narratives.qN".
+ */
+export function diffStates(prev, next) {
+  const changes = {};
+  const changedFields = [];
+
+  const topFields = [
+    "q1_village_uuid",
+    "q3_human_bonus_feat_uuid",
+    "q4_affinity",
+    "q7_relationship",
+    "q7_outsider_class_skill",
+    "q8_code",
+    "q8_sceptic_subskill",
+    "q9_level1_feat_uuid",
+    "q10_flaw_uuid",
+    "q10_bonus_feat_uuid",
+    "q13_mentor_technique_uuid",
+    "q13_class_skill",
+    "q16_restricted_item_uuid",
+    "q17_skill_key",
+    "q18_heritage_roll",
+    "q18_heritage_locked_modifier",
+  ];
+
+  for (const f of topFields) {
+    if (JSON.stringify(prev[f]) !== JSON.stringify(next[f])) {
+      changes[f] = { from: prev[f], to: next[f] };
+      changedFields.push(f);
+    }
+  }
+
+  for (let i = 1; i <= 20; i++) {
+    const key = `q${i}`;
+    if ((prev.narratives?.[key] ?? "") !== (next.narratives?.[key] ?? "")) {
+      const field = `narratives.${key}`;
+      changes[field] = { from: prev.narratives?.[key] ?? "", to: next.narratives?.[key] ?? "" };
+      changedFields.push(field);
+    }
+  }
+
+  return { changedFields, changes };
+}
+
+/**
+ * Validate state for Finish-readiness.
+ *
+ * Rules:
+ *   - q1, q4, q7, q8 are required (REQUIRED)
+ *   - If q7_relationship === "outsider", q7_outsider_class_skill is SUB_REQUIRED
+ *   - If q8_code === "sceptic", q8_sceptic_subskill is SUB_REQUIRED
+ *   - If q13_mentor_technique_uuid is set, q13_class_skill is SUB_REQUIRED
+ *   - Q10: either both q10_flaw_uuid and q10_bonus_feat_uuid are set, or both null
+ */
+export function validate(state) {
+  const errors = [];
+
+  if (state.q1_village_uuid == null) errors.push({ field: "q1_village_uuid", code: "REQUIRED" });
+  if (state.q4_affinity == null) errors.push({ field: "q4_affinity", code: "REQUIRED" });
+  if (state.q7_relationship == null) errors.push({ field: "q7_relationship", code: "REQUIRED" });
+  if (state.q8_code == null) errors.push({ field: "q8_code", code: "REQUIRED" });
+
+  if (state.q7_relationship === "outsider" && state.q7_outsider_class_skill == null) {
+    errors.push({ field: "q7_outsider_class_skill", code: "SUB_REQUIRED" });
+  }
+  if (state.q8_code === "sceptic" && state.q8_sceptic_subskill == null) {
+    errors.push({ field: "q8_sceptic_subskill", code: "SUB_REQUIRED" });
+  }
+  if (state.q13_mentor_technique_uuid != null && state.q13_class_skill == null) {
+    errors.push({ field: "q13_class_skill", code: "SUB_REQUIRED" });
+  }
+
+  const flawSet = state.q10_flaw_uuid != null;
+  const bonusSet = state.q10_bonus_feat_uuid != null;
+  if (flawSet !== bonusSet) {
+    errors.push({ field: "q10", code: "Q10_COUPLED" });
+  }
+
+  return { ok: errors.length === 0, errors };
+}

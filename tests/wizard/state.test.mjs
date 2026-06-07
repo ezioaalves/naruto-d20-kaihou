@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { defaultState, loadFromActor } from "../../scripts/wizard/wizard-state.mjs";
+import { defaultState, loadFromActor, diffStates, validate } from "../../scripts/wizard/wizard-state.mjs";
 
 describe("defaultState", () => {
   it("returns null for all mechanical fields", () => {
@@ -124,5 +124,111 @@ describe("loadFromActor", () => {
     expect(s.narratives.q1).toBe("I am from the Iron Shell.");
     expect(s.narratives.q5).toBe("Protect the heir.");
     expect(s.narratives.q2).toBe("");
+  });
+});
+
+describe("diffStates", () => {
+  it("returns empty change list for identical states", () => {
+    const a = defaultState();
+    const b = defaultState();
+    expect(diffStates(a, b).changedFields).toEqual([]);
+  });
+
+  it("detects q4_affinity change", () => {
+    const a = defaultState();
+    const b = defaultState();
+    b.q4_affinity = "Fire";
+    const d = diffStates(a, b);
+    expect(d.changedFields).toContain("q4_affinity");
+    expect(d.changes.q4_affinity).toEqual({ from: null, to: "Fire" });
+  });
+
+  it("detects multiple changes including nested narratives", () => {
+    const a = defaultState();
+    const b = defaultState();
+    b.q1_village_uuid = "abc";
+    b.q7_relationship = "loyalist";
+    b.narratives.q5 = "Protect the heir";
+    const d = diffStates(a, b);
+    expect(d.changedFields.sort()).toEqual(
+      ["narratives.q5", "q1_village_uuid", "q7_relationship"].sort()
+    );
+  });
+});
+
+describe("validate", () => {
+  function withRequiredFilled(overrides = {}) {
+    const s = defaultState();
+    s.q1_village_uuid = "village-uuid";
+    s.q4_affinity = "Fire";
+    s.q7_relationship = "loyalist";
+    s.q8_code = "adherent";
+    return { ...s, ...overrides };
+  }
+
+  it("passes when all 4 required fields filled and no nested-sub triggered", () => {
+    expect(validate(withRequiredFilled())).toEqual({ ok: true, errors: [] });
+  });
+
+  it("fails when q1_village_uuid is null", () => {
+    const s = withRequiredFilled({ q1_village_uuid: null });
+    const r = validate(s);
+    expect(r.ok).toBe(false);
+    expect(r.errors).toContainEqual({ field: "q1_village_uuid", code: "REQUIRED" });
+  });
+
+  it("fails when q4_affinity is null", () => {
+    const s = withRequiredFilled({ q4_affinity: null });
+    const r = validate(s);
+    expect(r.ok).toBe(false);
+    expect(r.errors).toContainEqual({ field: "q4_affinity", code: "REQUIRED" });
+  });
+
+  it("requires q7_outsider_class_skill when q7_relationship === 'outsider'", () => {
+    const s = withRequiredFilled({ q7_relationship: "outsider", q7_outsider_class_skill: null });
+    const r = validate(s);
+    expect(r.ok).toBe(false);
+    expect(r.errors).toContainEqual({ field: "q7_outsider_class_skill", code: "SUB_REQUIRED" });
+  });
+
+  it("does not require q7_outsider_class_skill when q7_relationship === 'loyalist'", () => {
+    const s = withRequiredFilled({ q7_relationship: "loyalist", q7_outsider_class_skill: null });
+    expect(validate(s).ok).toBe(true);
+  });
+
+  it("requires q8_sceptic_subskill when q8_code === 'sceptic'", () => {
+    const s = withRequiredFilled({ q8_code: "sceptic", q8_sceptic_subskill: null });
+    const r = validate(s);
+    expect(r.errors).toContainEqual({ field: "q8_sceptic_subskill", code: "SUB_REQUIRED" });
+  });
+
+  it("requires q13_class_skill when q13_mentor_technique_uuid is set", () => {
+    const s = withRequiredFilled({
+      q13_mentor_technique_uuid: "tech-uuid",
+      q13_class_skill: null,
+    });
+    const r = validate(s);
+    expect(r.errors).toContainEqual({ field: "q13_class_skill", code: "SUB_REQUIRED" });
+  });
+
+  it("rejects Q10 partial: flaw set but bonus feat null", () => {
+    const s = withRequiredFilled({ q10_flaw_uuid: "flaw-uuid", q10_bonus_feat_uuid: null });
+    const r = validate(s);
+    expect(r.errors).toContainEqual({ field: "q10", code: "Q10_COUPLED" });
+  });
+
+  it("rejects Q10 partial: bonus feat set but flaw null", () => {
+    const s = withRequiredFilled({ q10_flaw_uuid: null, q10_bonus_feat_uuid: "bonus-uuid" });
+    const r = validate(s);
+    expect(r.errors).toContainEqual({ field: "q10", code: "Q10_COUPLED" });
+  });
+
+  it("accepts Q10 both filled", () => {
+    const s = withRequiredFilled({ q10_flaw_uuid: "flaw-uuid", q10_bonus_feat_uuid: "bonus-uuid" });
+    expect(validate(s).ok).toBe(true);
+  });
+
+  it("accepts Q10 both null", () => {
+    expect(validate(withRequiredFilled()).ok).toBe(true);
   });
 });
