@@ -38,3 +38,24 @@ def test_has_foundry_leveldb_key():
     # Must be "!items!<_id>" for items to land in LevelDB.
     data = generate_questions.generate_one(FIXTURE_PATH, MAPPING_PATH)
     assert data["_key"] == f"!items!{data['_id']}"
+
+
+@pytest.mark.parametrize("element", ["fire", "water", "earth", "wind", "lightning"])
+def test_affinity_kind_sets_flag(tmp_path, element):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        f"name: V\nslug: v-{element}\nminor_benefit:\n  kind: affinity\n  value: {element}\n"
+        f"tags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert data["system"]["flags"]["dictionary"]["affinity"] == element
+
+
+def test_invalid_affinity_raises(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-plasma\nminor_benefit:\n  kind: affinity\n  value: plasma\n"
+        "tags: []\n"
+    )
+    with pytest.raises(ValueError, match="plasma"):
+        generate_questions.generate_one(fp, MAPPING_PATH)
