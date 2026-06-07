@@ -1,0 +1,23 @@
+{
+  "_id": "04d9cdeafd9f362d",
+  "_key": "!items!04d9cdeafd9f362d",
+  "name": "Earth Affinity",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your character's primary elemental nature is Earth. You can learn, perform, and copy Doton (Earth-style) Ninjutsu. Per-level Learn Bonus and Energy Resistance scale per the Affinity table in Mechanics/Basic_Rules/Chakra.md. Earth is strong against Water and weak against Lightning.</p>"
+    },
+    "tags": [
+      "20 Questions Q4",
+      "Affinity"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "affinity": "earth"
+      }
+    }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/questions/elements/earth.svg"
+}

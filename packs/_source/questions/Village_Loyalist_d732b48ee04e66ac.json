@@ -1,0 +1,23 @@
+{
+  "_id": "d732b48ee04e66ac",
+  "_key": "!items!d732b48ee04e66ac",
+  "name": "Village Loyalist",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your character's relationship with their home village is positive. They are recognised as a loyal son or daughter of the village; doors open, names are remembered, favours are returned.</p>"
+    },
+    "tags": [
+      "20 Questions Q7",
+      "Village Relationship"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": 1
+      }
+    }
+  },
+  "img": "icons/svg/upgrade.svg"
+}

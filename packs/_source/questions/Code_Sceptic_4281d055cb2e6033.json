@@ -1,0 +1,18 @@
+{
+  "_id": "4281d055cb2e6033",
+  "_key": "!items!4281d055cb2e6033",
+  "name": "Code Sceptic",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your character treats the Shinobi Code as one tool among many, not a creed. Pragmatism widens the field of view \u2014 there are worldly trades worth knowing that the academy never taught. <p><b>Player choice:</b> Gain 4 skill points to invest in Craft or Profession at character creation (apply manually; pick the subskill).</p></p>"
+    },
+    "tags": [
+      "20 Questions Q8",
+      "Shinobi Code"
+    ],
+    "changes": []
+  },
+  "img": "icons/svg/circle-of-stars.svg"
+}

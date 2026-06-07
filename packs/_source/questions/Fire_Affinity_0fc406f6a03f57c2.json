@@ -1,0 +1,23 @@
+{
+  "_id": "0fc406f6a03f57c2",
+  "_key": "!items!0fc406f6a03f57c2",
+  "name": "Fire Affinity",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your character's primary elemental nature is Fire. You can learn, perform, and copy Katon (Fire-style) Ninjutsu. Per-level Learn Bonus and Energy Resistance scale per the Affinity table in Mechanics/Basic_Rules/Chakra.md. Fire is strong against Wind and weak against Water.</p>"
+    },
+    "tags": [
+      "20 Questions Q4",
+      "Affinity"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "affinity": "fire"
+      }
+    }
+  },
+  "img": "modules/naruto-d20-kaihou/assets/questions/elements/fire.svg"
+}

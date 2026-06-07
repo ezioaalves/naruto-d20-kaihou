@@ -1,0 +1,23 @@
+{
+  "_id": "41c7176338bd6d2d",
+  "_key": "!items!41c7176338bd6d2d",
+  "name": "Code Adherent",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your character holds to the Shinobi Code (Shinobido) with conviction. The path is the path; deviation costs more than death. This certainty is its own fuel.</p>"
+    },
+    "tags": [
+      "20 Questions Q8",
+      "Shinobi Code"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "actionPoints": 2
+      }
+    }
+  },
+  "img": "icons/svg/holy-shield.svg"
+}
