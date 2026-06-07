@@ -100,3 +100,13 @@ def test_minor_benefit_point_build_doc_only(tmp_path):
     # But description should mention the +2 point-buy
     desc = data["system"].get("description", {}).get("value", "")
     assert "+2" in desc and ("point" in desc.lower() or "build" in desc.lower())
+
+
+def test_deterministic_uuid():
+    a = generate_villages.generate_one(FIXTURE_PATH, MAPPING_PATH)
+    b = generate_villages.generate_one(FIXTURE_PATH, MAPPING_PATH)
+    assert a["_id"] == b["_id"]
+    # Specifically: md5("test-village")[:16]
+    import hashlib as h
+    expected = h.md5(b"test-village").hexdigest()[:16]
+    assert a["_id"] == expected
