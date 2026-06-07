@@ -48,14 +48,7 @@ const foundryGlobals = {
 
 export default [
   {
-    ignores: [
-      "node_modules/**",
-      "packs/**",
-      "dist/**",
-      "public/**",
-      "pf1/**",
-      "pf1-source/**",
-    ],
+    ignores: ["node_modules/**", "packs/**", "dist/**", "public/**", "pf1/**", "pf1-source/**"],
   },
   js.configs.recommended,
   // Module runtime — runs inside Foundry (browser + Foundry/PF1 globals).
@@ -70,10 +63,7 @@ export default [
       },
     },
     rules: {
-      "no-unused-vars": [
-        "warn",
-        { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
-      ],
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
       "no-undef": "error",
       eqeqeq: ["warn", "smart"],
       "prefer-const": "warn",
@@ -91,10 +81,7 @@ export default [
       },
     },
     rules: {
-      "no-unused-vars": [
-        "warn",
-        { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
-      ],
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
       "prefer-const": "warn",
       "no-var": "error",
     },
