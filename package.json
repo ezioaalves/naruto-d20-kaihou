@@ -16,7 +16,6 @@
     "lint:format": "prettier --check \"eslint.config.mjs\" \"lang/**/*.json\"",
     "lint": "npm run lint:js && npm run lint:css && npm run lint:format",
     "lint:fix": "eslint --fix --no-error-on-unmatched-pattern scripts tools eslint.config.mjs && node node_modules/stylelint/bin/stylelint.mjs --fix \"styles/**/*.css\" && prettier --write \"eslint.config.mjs\" \"lang/**/*.json\"",
-    "generate-classes": "python3 scripts/generate-classes.py",
     "generate-villages": "python3 scripts/generate-villages.py",
     "validate-output": "python3 scripts/validate-output.py",
     "test": "python3 -m pytest tests/ -v"
