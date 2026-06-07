@@ -1,0 +1,78 @@
+<form class="twenty-questions-wizard">
+  <header class="tqw-header">
+    <h1>{{localize "NARUTO_D20_KAIHOU.WIZARD.TITLE"}}</h1>
+    <div class="tqw-progress">{{currentStep}} / 20</div>
+  </header>
+
+  <div class="tqw-body">
+    <aside class="tqw-sidebar">
+      <ol>
+        {{#each questions}}
+          <li class="tqw-sidebar-item {{#if (eq id ../currentId)}}active{{/if}} {{statusClass}}"
+              data-qid="{{id}}">
+            <span class="tqw-sidebar-num">{{num}}.</span>
+            <span class="tqw-sidebar-label">{{sidebarLabel}}</span>
+            {{#if required}}<span class="tqw-required">*</span>{{/if}}
+          </li>
+        {{/each}}
+      </ol>
+    </aside>
+
+    <section class="tqw-pane" data-current="{{currentId}}">
+      <h2>{{current.questionText}}</h2>
+
+      {{!-- Per-pick-type body — filled in Task 17 --}}
+      <div class="tqw-pick-body" data-pick-type="{{current.pickType}}">
+        {{#if (eq current.pickType "none")}}
+          {{!-- narrative only --}}
+        {{/if}}
+        {{#if (eq current.pickType "radio")}}
+          {{> tqw-pick-radio}}
+        {{/if}}
+        {{#if (eq current.pickType "select")}}
+          {{> tqw-pick-select}}
+        {{/if}}
+        {{#if (eq current.pickType "nested")}}
+          {{> tqw-pick-nested}}
+        {{/if}}
+        {{#if (eq current.pickType "drag-drop")}}
+          {{> tqw-pick-dragdrop}}
+        {{/if}}
+        {{#if (eq current.pickType "drag-drop-coupled")}}
+          {{> tqw-pick-dragdrop-coupled}}
+        {{/if}}
+        {{#if (eq current.pickType "roll-table")}}
+          {{> tqw-pick-rolltable}}
+        {{/if}}
+      </div>
+
+      <label class="tqw-narrative">
+        <span class="tqw-narrative-prompt">{{current.narrativePrompt}}</span>
+        <textarea name="narrative" rows="5">{{narrativeText}}</textarea>
+      </label>
+
+      {{#if validationError}}
+        <div class="tqw-error">{{validationError}}</div>
+      {{/if}}
+    </section>
+  </div>
+
+  <footer class="tqw-footer">
+    <button type="button" class="tqw-back" {{#unless canBack}}disabled{{/unless}}>
+      {{localize "NARUTO_D20_KAIHOU.WIZARD.BACK"}}
+    </button>
+    <button type="button" class="tqw-cancel">
+      {{localize "NARUTO_D20_KAIHOU.WIZARD.CANCEL"}}
+    </button>
+    <div class="tqw-spacer"></div>
+    {{#if isLastStep}}
+      <button type="button" class="tqw-finish">
+        {{localize "NARUTO_D20_KAIHOU.WIZARD.FINISH"}}
+      </button>
+    {{else}}
+      <button type="button" class="tqw-next">
+        {{localize "NARUTO_D20_KAIHOU.WIZARD.NEXT"}}
+      </button>
+    {{/if}}
+  </footer>
+</form>
