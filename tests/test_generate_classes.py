@@ -2,6 +2,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from conftest import FIXTURES_DIR  # noqa: F401
 
 # Import the module under test. We use importlib because the script
@@ -74,3 +76,33 @@ def test_save_mid_custom_translation():
 def test_save_high_translation():
     """vault `high` -> {value: high}."""
     assert generate_classes.translate_save("high") == {"value": "high"}
+
+
+def test_synthetic_class_skills():
+    """Class skills: acrobatics, chakra-control, ninjutsu -> mapped PF1e keys."""
+    yaml_path = FIXTURES_DIR / "synthetic_class.yaml"
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    out = generate_classes.generate_one(yaml_path, mapping_path)
+    # synthetic has 3 skills: acrobatics, chakra-control, ninjutsu
+    skills = out["system"]["classSkills"]
+    assert skills["acr"] == True
+    assert skills["ckc"] == True
+    assert skills["nin"] == True
+    assert len(skills) == 3
+
+
+def test_skill_slug_to_key_mapping():
+    """Translate skill slug -> PF1e key using the mapping."""
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    mapper = generate_classes.SkillKeyMapper(mapping_path)
+    assert mapper.translate("acrobatics") == "acr"
+    assert mapper.translate("chakra-control") == "ckc"
+    assert mapper.translate("ninjutsu") == "nin"
+
+
+def test_missing_skill_mapping_fails_loud():
+    """Generator raises ValueError if a slug has no mapping."""
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    mapper = generate_classes.SkillKeyMapper(mapping_path)
+    with pytest.raises(ValueError, match="unknown-skill"):
+        mapper.translate("unknown-skill")

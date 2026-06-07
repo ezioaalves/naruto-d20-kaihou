@@ -50,6 +50,24 @@ def translate_save(vault_save: str) -> dict[str, Any]:
         raise ValueError(f"Unknown save progression: {vault_save!r}")
 
 
+class SkillKeyMapper:
+    """Load and use the skill-key mapping table."""
+
+    def __init__(self, mapping_path: Path):
+        """Load the mapping from data/skill-key-mapping.json."""
+        with open(mapping_path) as fh:
+            self._mapping = json.load(fh)
+
+    def translate(self, slug: str) -> str:
+        """Translate a vault skill slug to a PF1e 3-letter key.
+
+        Raises ValueError if the slug is not in the mapping (fail-loud per CLAUDE.md Hard Rule 5).
+        """
+        if slug not in self._mapping:
+            raise ValueError(f"Unknown skill slug in mapping: {slug!r}")
+        return self._mapping[slug]
+
+
 def _hd_from_hit_die(hit_die: str) -> int:
     """Strip leading 'd' from 'd6'/'d8'/'d10' and return the integer."""
     if not hit_die.startswith("d"):
@@ -60,12 +78,17 @@ def _hd_from_hit_die(hit_die: str) -> int:
 def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     """Read one class YAML and return its Foundry JSON dict.
 
-    `mapping_path` is the path to data/skill-key-mapping.json. Currently
-    unused by this minimal implementation; later tasks add field translations
-    that consume it.
+    `mapping_path` is the path to data/skill-key-mapping.json.
     """
     with open(yaml_path) as fh:
         cls = yaml.safe_load(fh)
+
+    mapper = SkillKeyMapper(mapping_path)
+    class_skills = {}
+    for slug in cls.get("class_skills", []):
+        key = mapper.translate(slug)  # Raises ValueError if slug is not in mapping
+        class_skills[key] = True
+
     return {
         "name": cls["name"],
         "type": "class",
@@ -77,6 +100,7 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
                 "ref": translate_save(cls["saves"]["ref"]),
                 "will": translate_save(cls["saves"]["will"]),
             },
+            "classSkills": class_skills,
         },
     }
 
