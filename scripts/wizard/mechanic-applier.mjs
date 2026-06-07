@@ -204,3 +204,47 @@ export function revertQ13Mentor(actor) {
   }
   return p;
 }
+
+// ─── Q17 0-rank Skill Bump ────────────────────────────────────────────────────
+export function applyQ17SkillBump(_actor, skillKey) {
+  const p = emptyPlan();
+  if (!skillKey) return p;
+  p.updates[`system.skills.${skillKey}.rank`] = 2;
+  p.updates["flags.naruto-d20-kaihou.wizard.q17PickedSkill"] = skillKey;
+  return p;
+}
+
+export function revertQ17SkillBump(actor) {
+  const p = emptyPlan();
+  const snapshot = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q17PickedSkill;
+  if (!snapshot) return p;
+  const currentRank = getDeepPath(actor.system?.skills, snapshot + ".rank") ?? 0;
+  p.updates[`system.skills.${snapshot}.rank`] = Math.max(0, currentRank - 2);
+  p.updates["flags.naruto-d20-kaihou.wizard.q17PickedSkill"] = null;
+  return p;
+}
+
+/**
+ * Enumerate skills on the actor with current rank === 0.
+ * Returns array of { key, label, currentRank } — label is the bare key (UI
+ * layer can resolve to display name via lang or skill-key-mapping).
+ *
+ * Walks top-level skills + subSkills (for crf, pro, etc.).
+ */
+export function listZeroRankSkills(actor) {
+  const out = [];
+  const skills = actor.system?.skills ?? {};
+  for (const [key, value] of Object.entries(skills)) {
+    if (value == null || typeof value !== "object") continue;
+    if (value.subSkills && typeof value.subSkills === "object") {
+      for (const [subKey, sub] of Object.entries(value.subSkills)) {
+        if (sub?.rank === 0) {
+          out.push({ key: `${key}.subSkills.${subKey}`, label: `${key} (${subKey})`, currentRank: 0 });
+        }
+      }
+    } else if (value.rank === 0) {
+      out.push({ key, label: key, currentRank: 0 });
+    }
+  }
+  return out;
+}
