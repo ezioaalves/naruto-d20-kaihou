@@ -64,9 +64,6 @@ jobs:
           console.log(`Stamped download=${m.download}`);
           EOF
 
-      - name: Validate module manifest
-        run: npm run validate:manifest
-
       - name: Validate compendium source JSON
         run: npm run validate:compendia
 
@@ -75,6 +72,9 @@ jobs:
 
       - name: Recompile compendia from source
         run: npm run pack:all
+
+      - name: Validate module manifest
+        run: npm run validate:manifest
 
       - name: Build module.zip (runtime artifacts only)
         run: |
