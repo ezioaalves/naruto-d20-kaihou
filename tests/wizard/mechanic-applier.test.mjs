@@ -22,6 +22,8 @@ import {
   applyQ17SkillBump,
   revertQ17SkillBump,
   listZeroRankSkills,
+  applyQ18Heritage,
+  revertQ18Heritage,
 } from "../../scripts/wizard/mechanic-applier.mjs";
 
 function mockActor(overrides = {}) {
@@ -324,5 +326,66 @@ describe("listZeroRankSkills (for Q17 UI picker)", () => {
     const keys = list.map((s) => s.key);
     expect(keys).toContain("crf.subSkills.armor");
     expect(keys).not.toContain("crf.subSkills.weapons");
+  });
+});
+
+describe("Q18 Heritage Modifier", () => {
+  it("apply for roll 1 ('+1 Reputation') bumps reputation by 1 + snapshots", () => {
+    const actor = mockActor({ flags: { "naruto-d20": { reputation: 2, actionPoints: 4 } } });
+    const p = applyQ18Heritage(actor, 1, { deltaRep: 1, deltaAP: 0 });
+    expect(p.updates["flags.naruto-d20.reputation"]).toBe(3);
+    expect(p.updates["flags.naruto-d20.actionPoints"]).toBe(4); // unchanged
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q18Heritage"]).toEqual({
+      roll: 1, deltaRep: 1, deltaAP: 0,
+    });
+  });
+
+  it("apply for roll 2 ('+2 AP, +2 Rep') bumps both", () => {
+    const actor = mockActor({ flags: { "naruto-d20": { reputation: 0, actionPoints: 0 } } });
+    const p = applyQ18Heritage(actor, 2, { deltaRep: 2, deltaAP: 2 });
+    expect(p.updates["flags.naruto-d20.reputation"]).toBe(2);
+    expect(p.updates["flags.naruto-d20.actionPoints"]).toBe(2);
+  });
+
+  it("apply for roll 8 ('-2 AP') decrements actionPoints", () => {
+    const actor = mockActor({ flags: { "naruto-d20": { reputation: 5, actionPoints: 5 } } });
+    const p = applyQ18Heritage(actor, 8, { deltaRep: 0, deltaAP: -2 });
+    expect(p.updates["flags.naruto-d20.actionPoints"]).toBe(3);
+    expect(p.updates["flags.naruto-d20.reputation"]).toBe(5); // unchanged
+  });
+
+  it("revert uses snapshot to inverse the delta", () => {
+    const actor = mockActor({
+      flags: {
+        "naruto-d20": { reputation: 3, actionPoints: 7 },
+        "naruto-d20-kaihou": { wizard: { q18Heritage: { roll: 2, deltaRep: 2, deltaAP: 2 } } },
+      },
+    });
+    const p = revertQ18Heritage(actor);
+    expect(p.updates["flags.naruto-d20.reputation"]).toBe(1);
+    expect(p.updates["flags.naruto-d20.actionPoints"]).toBe(5);
+    expect(p.updates["flags.naruto-d20-kaihou.wizard.q18Heritage"]).toBeNull();
+  });
+
+  it("revert with no snapshot returns empty plan", () => {
+    expect(revertQ18Heritage(mockActor())).toEqual({ updates: {}, creates: [], deletes: [] });
+  });
+
+  it("revert is the exact inverse of apply (round-trip)", () => {
+    let actor = mockActor({ flags: { "naruto-d20": { reputation: 5, actionPoints: 5 } } });
+    const applyP = applyQ18Heritage(actor, 7, { deltaRep: -1, deltaAP: 1 });
+    // Simulate apply: update actor flags from apply plan
+    actor = mockActor({
+      flags: {
+        "naruto-d20": {
+          reputation: applyP.updates["flags.naruto-d20.reputation"],
+          actionPoints: applyP.updates["flags.naruto-d20.actionPoints"],
+        },
+        "naruto-d20-kaihou": { wizard: { q18Heritage: applyP.updates["flags.naruto-d20-kaihou.wizard.q18Heritage"] } },
+      },
+    });
+    const revertP = revertQ18Heritage(actor);
+    expect(revertP.updates["flags.naruto-d20.reputation"]).toBe(5);
+    expect(revertP.updates["flags.naruto-d20.actionPoints"]).toBe(5);
   });
 });
