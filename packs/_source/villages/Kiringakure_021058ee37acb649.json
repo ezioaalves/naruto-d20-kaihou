@@ -1,0 +1,28 @@
+{
+  "_id": "021058ee37acb649",
+  "name": "Kiringakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kirin Village \u2014 open plains, fast riders, and survival on the move. Trained reading wind, weather, and the next ridge over.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "rid": true,
+      "sur": true
+    },
+    "changes": [
+      {
+        "_id": "26cc1eba",
+        "formula": "1",
+        "target": "init",
+        "operator": "add",
+        "priority": 0
+      }
+    ]
+  }
+}

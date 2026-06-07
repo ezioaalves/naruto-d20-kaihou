@@ -1,0 +1,25 @@
+{
+  "_id": "033fcee4e14089b8",
+  "name": "Houohgakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Phoenix Village \u2014 devotional rites, scholar-monks, and the long memory of tongues. Trained among temple bells and rebirth flames.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "kre": true,
+      "lin": true
+    },
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "actionPoints": 1
+      }
+    }
+  }
+}

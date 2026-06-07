@@ -1,0 +1,20 @@
+{
+  "_id": "bc053d4ef2995ea0",
+  "name": "Hisuigakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Jade Village \u2014 old nobility, polished manners, and patient watchers. Trained among silk-screen courtyards and tea-house intrigue.</p><p><b>Point Build:</b> +2 to point-buy at character creation (apply manually; Foundry has no point-buy hook).</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "kno": true,
+      "sen": true
+    },
+    "changes": []
+  }
+}

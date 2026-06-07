@@ -1,0 +1,28 @@
+{
+  "_id": "ffac9cdf75b27810",
+  "name": "Kanigakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Born in the Iron Shell \u2014 neon-rust steampunk Rokugan. Trained among saltwater forges and clockwork tide-gates. Kanigakure shinobi grow up reading shadow-currents and moving through tight machine-spaces.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "acr": true,
+      "kdu": true
+    },
+    "changes": [
+      {
+        "_id": "25a85776",
+        "formula": "2",
+        "target": "mhp",
+        "operator": "add",
+        "priority": 0
+      }
+    ]
+  }
+}

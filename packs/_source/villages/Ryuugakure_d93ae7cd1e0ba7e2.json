@@ -1,0 +1,28 @@
+{
+  "_id": "d93ae7cd1e0ba7e2",
+  "name": "Ryuugakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Dragon Village \u2014 long lineages, deep waters, and steady minds. Trained in the old texts and the long discipline of chakra-flow.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "khi": true,
+      "ckc": true
+    },
+    "changes": [
+      {
+        "_id": "fb425a24",
+        "formula": "1",
+        "target": "saves.will",
+        "operator": "add",
+        "priority": 0
+      }
+    ]
+  }
+}

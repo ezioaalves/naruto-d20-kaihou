@@ -1,0 +1,28 @@
+{
+  "_id": "bf4e2f24f90bb464",
+  "name": "Tsurugakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Crane Village \u2014 graceful courts, classical performance, and quick feet. Trained at the cushion-edge of high diplomacy and danced footwork.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "prf": true,
+      "dip": true
+    },
+    "changes": [
+      {
+        "_id": "5cd1fe8a",
+        "formula": "1",
+        "target": "saves.ref",
+        "operator": "add",
+        "priority": 0
+      }
+    ]
+  }
+}

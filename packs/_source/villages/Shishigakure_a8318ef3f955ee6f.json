@@ -1,0 +1,28 @@
+{
+  "_id": "a8318ef3f955ee6f",
+  "name": "Shishigakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Lion Village \u2014 proud pride-bands, occult lore, and a wall of presence. Trained in the older mysteries and the art of standing your ground.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "kar": true,
+      "int": true
+    },
+    "changes": [
+      {
+        "_id": "095886bf",
+        "formula": "1",
+        "target": "saves.fort",
+        "operator": "add",
+        "priority": 0
+      }
+    ]
+  }
+}

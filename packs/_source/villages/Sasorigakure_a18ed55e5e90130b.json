@@ -1,0 +1,25 @@
+{
+  "_id": "a18ed55e5e90130b",
+  "name": "Sasorigakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Scorpion Village \u2014 desert traders, sharp tongues, and reputations that travel further than the carriers. Trained in the gossip-and-coin arts of the open roads.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "klo": true,
+      "blf": true
+    },
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": 1
+      }
+    }
+  }
+}
