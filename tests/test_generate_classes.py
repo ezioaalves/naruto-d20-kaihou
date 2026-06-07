@@ -166,3 +166,29 @@ def test_write_class_json_creates_file(tmp_path):
         data = json.load(fh)
     assert data["name"] == "Test Ninja"
     assert data["type"] == "class"
+
+
+def test_cli_args_parsing_defaults():
+    """CLI parser has sensible defaults: vault defaults to ../Kaihou (Naruto D20), output to packs/_source."""
+    args = generate_classes.parse_args([])
+    assert "Kaihou (Naruto D20)" in str(args.vault_path)
+    assert "packs/_source" in str(args.output_dir)
+    assert args.dry_run == False
+
+
+def test_cli_args_parsing_custom_paths():
+    """CLI parser accepts custom --vault-path and --output-dir."""
+    args = generate_classes.parse_args(["--vault-path", "/custom/vault", "--output-dir", "/tmp/out"])
+    assert args.vault_path == Path("/custom/vault")
+    assert args.output_dir == Path("/tmp/out")
+
+
+def test_cli_args_dry_run_flag():
+    """CLI parser accepts --dry-run flag."""
+    args = generate_classes.parse_args(["--dry-run"])
+    assert args.dry_run == True
+
+
+def test_main_function_exists():
+    """main() function exists and is callable."""
+    assert callable(generate_classes.main)

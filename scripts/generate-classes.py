@@ -12,8 +12,10 @@ deterministic (md5(slug)[:16] UUIDs) so re-runs produce byte-identical output.
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +26,9 @@ _BAB_MAP = {"low": "low", "mid": "med", "high": "high"}
 
 # Kaihou house rule: mid-custom formula for saves
 _MID_CUSTOM_FORMULA = "floor((2 * @level + 6) / 5)"
+
+# Default vault path relative to the repo root
+DEFAULT_VAULT_PATH = Path(__file__).resolve().parent.parent.parent / "Kaihou (Naruto D20)"
 
 
 def generate_uuid(slug: str) -> str:
@@ -142,5 +147,99 @@ def generate_and_write(yaml_path: Path, mapping_path: Path, output_dir: Path) ->
     return output_path
 
 
+def parse_args(args: list[str] | None = None) -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate Foundry PF1e class JSON from Kaihou vault YAML."
+    )
+    parser.add_argument(
+        "--vault-path",
+        type=Path,
+        default=DEFAULT_VAULT_PATH,
+        help=f"Path to Kaihou vault root (default: {DEFAULT_VAULT_PATH})",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help="Output directory for generated JSON (default: repo's packs/_source/classes-basic/)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Parse and validate YAML without writing files",
+    )
+
+    parsed = parser.parse_args(args)
+
+    # Set default output dir if not specified
+    if parsed.output_dir is None:
+        repo_root = Path(__file__).resolve().parent.parent
+        parsed.output_dir = repo_root / "packs" / "_source" / "classes-basic"
+
+    return parsed
+
+
+def main(
+    vault_path: Path | None = None,
+    output_dir: Path | None = None,
+    dry_run: bool = False,
+) -> int:
+    """Main entry point: generate all 6 base classes from vault YAML.
+
+    Args:
+        vault_path: Path to Kaihou vault root
+        output_dir: Output directory for generated JSON
+        dry_run: If True, parse and validate without writing
+
+    Returns:
+        0 on success, 1 on failure
+    """
+    if vault_path is None:
+        vault_path = DEFAULT_VAULT_PATH
+    if output_dir is None:
+        repo_root = Path(__file__).resolve().parent.parent
+        output_dir = repo_root / "packs" / "_source" / "classes-basic"
+
+    # Find all base class YAML files
+    classes_dir = vault_path / "Mechanics" / "Character_Options" / "Classes" / "Basic"
+    yaml_files = sorted(classes_dir.glob("*.yaml"))
+
+    if not yaml_files:
+        print(f"Error: No YAML files found in {classes_dir}", file=sys.stderr)
+        return 1
+
+    # Path to mapping
+    repo_root = Path(__file__).resolve().parent.parent
+    mapping_path = repo_root / "data" / "skill-key-mapping.json"
+
+    if not mapping_path.exists():
+        print(f"Error: Mapping file not found at {mapping_path}", file=sys.stderr)
+        return 1
+
+    print(f"Generating {len(yaml_files)} base classes from {vault_path}...")
+
+    for yaml_file in yaml_files:
+        try:
+            if dry_run:
+                # Just validate by loading
+                generate_one(yaml_file, mapping_path)
+                print(f"✓ {yaml_file.stem} (validated)")
+            else:
+                output_path = generate_and_write(yaml_file, mapping_path, output_dir)
+                print(f"✓ {output_path.name}")
+        except Exception as e:
+            print(f"✗ {yaml_file.stem}: {e}", file=sys.stderr)
+            return 1
+
+    print(f"Done. Generated {len(yaml_files)} class JSON files.")
+    return 0
+
+
 if __name__ == "__main__":
-    raise SystemExit("CLI not yet implemented; see Task 13.")
+    parsed = parse_args()
+    sys.exit(main(
+        vault_path=parsed.vault_path,
+        output_dir=parsed.output_dir,
+        dry_run=parsed.dry_run,
+    ))
