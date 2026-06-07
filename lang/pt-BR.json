@@ -1,0 +1,15 @@
+{
+  "NARUTO_D20_KAIHOU": {
+    "PACK": {
+      "ClassesBasic": "Naruto D20 — Classes Base"
+    },
+    "CLASS": {
+      "StrongNinja": "Ninja Forte",
+      "FastNinja": "Ninja Rápido",
+      "ToughNinja": "Ninja Resistente",
+      "SmartNinja": "Ninja Astuto",
+      "DedicatedNinja": "Ninja Dedicado",
+      "CharismaticNinja": "Ninja Carismático"
+    }
+  }
+}
