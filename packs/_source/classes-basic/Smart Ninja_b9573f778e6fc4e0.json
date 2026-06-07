@@ -1,0 +1,47 @@
+{
+  "_id": "b9573f778e6fc4e0",
+  "name": "Smart Ninja",
+  "type": "class",
+  "system": {
+    "hd": 6,
+    "bab": "low",
+    "save": {
+      "fort": {
+        "value": "low"
+      },
+      "ref": {
+        "value": "low"
+      },
+      "will": {
+        "value": "low",
+        "custom": "floor((2 * @level + 6) / 5)"
+      }
+    },
+    "classSkills": {
+      "ckc": true,
+      "crf": true,
+      "dev": true,
+      "fui": true,
+      "gnj": true,
+      "kar": true,
+      "kdu": true,
+      "ken": true,
+      "khi": true,
+      "klo": true,
+      "kna": true,
+      "kno": true,
+      "kpl": true,
+      "kre": true,
+      "lin": true,
+      "nin": true,
+      "per": true,
+      "pro": true,
+      "slt": true
+    },
+    "defense": "low",
+    "reputation": "low",
+    "skillPointsPerLevel": "9 + Int",
+    "ability": "int",
+    "source": "NarutoD20 Redux v1.3"
+  }
+}
