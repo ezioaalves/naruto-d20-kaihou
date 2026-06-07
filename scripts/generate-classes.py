@@ -12,6 +12,7 @@ deterministic (md5(slug)[:16] UUIDs) so re-runs produce byte-identical output.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -23,6 +24,16 @@ _BAB_MAP = {"low": "low", "mid": "med", "high": "high"}
 
 # Kaihou house rule: mid-custom formula for saves
 _MID_CUSTOM_FORMULA = "floor((2 * @level + 6) / 5)"
+
+
+def generate_uuid(slug: str) -> str:
+    """Generate a deterministic 16-character UUID from a slug using md5.
+
+    Returns first 16 hex characters of md5(slug), ensuring re-runs produce
+    byte-identical output (no random UUIDs, no timestamps).
+    """
+    hash_obj = hashlib.md5(slug.encode("utf-8"))
+    return hash_obj.hexdigest()[:16]
 
 
 def translate_bab(vault_bab: str) -> str:
@@ -89,7 +100,10 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
         key = mapper.translate(slug)  # Raises ValueError if slug is not in mapping
         class_skills[key] = True
 
+    uuid = generate_uuid(cls["slug"])
+
     return {
+        "_id": uuid,
         "name": cls["name"],
         "type": "class",
         "system": {
@@ -108,6 +122,24 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
             "source": cls["source"],
         },
     }
+
+
+def generate_and_write(yaml_path: Path, mapping_path: Path, output_dir: Path) -> Path:
+    """Generate one class JSON and write it to a file.
+
+    Returns the path to the written file: output_dir/<Class Name>_<UUID>.json
+    """
+    cls_json = generate_one(yaml_path, mapping_path)
+
+    # Filename format: <Class Name>_<UUID>.json
+    filename = f"{cls_json['name']}_{cls_json['_id']}.json"
+    output_path = output_dir / filename
+
+    # Write as JSON with 2-space indent for readability
+    with open(output_path, "w") as fh:
+        json.dump(cls_json, fh, indent=2)
+
+    return output_path
 
 
 if __name__ == "__main__":

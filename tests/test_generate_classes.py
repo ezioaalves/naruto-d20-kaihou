@@ -119,3 +119,50 @@ def test_synthetic_class_pass_through_fields():
     assert out["system"]["skillPointsPerLevel"] == "4 + Int"
     assert out["system"]["ability"] == "int"
     assert out["system"]["source"] == "Test Fixture v1"
+
+
+def test_deterministic_uuid_generation():
+    """UUID is deterministic from slug: test-ninja -> same UUID every time."""
+    uuid1 = generate_classes.generate_uuid("test-ninja")
+    uuid2 = generate_classes.generate_uuid("test-ninja")
+    assert uuid1 == uuid2
+    # UUID should be 16 hex chars
+    assert len(uuid1) == 16
+    assert all(c in "0123456789abcdef" for c in uuid1)
+
+
+def test_uuid_from_different_slugs_differs():
+    """Different slugs produce different UUIDs."""
+    uuid_test = generate_classes.generate_uuid("test-ninja")
+    uuid_strong = generate_classes.generate_uuid("strong-ninja")
+    assert uuid_test != uuid_strong
+
+
+def test_generate_one_includes_id():
+    """Generated class JSON includes _id field with deterministic UUID."""
+    yaml_path = FIXTURES_DIR / "synthetic_class.yaml"
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    out = generate_classes.generate_one(yaml_path, mapping_path)
+    # synthetic_class.yaml has slug: test-ninja
+    expected_uuid = generate_classes.generate_uuid("test-ninja")
+    assert out["_id"] == expected_uuid
+
+
+def test_write_class_json_creates_file(tmp_path):
+    """generate_and_write creates a JSON file in the output directory."""
+    yaml_path = FIXTURES_DIR / "synthetic_class.yaml"
+    mapping_path = Path(__file__).resolve().parent.parent / "data" / "skill-key-mapping.json"
+    output_dir = tmp_path / "output"
+    output_dir.mkdir()
+
+    result_path = generate_classes.generate_and_write(yaml_path, mapping_path, output_dir)
+
+    # File should exist and be valid JSON
+    assert result_path.exists()
+    assert result_path.suffix == ".json"
+    assert "_" in result_path.stem  # Format: <Name>_<UUID>
+
+    with open(result_path) as fh:
+        data = json.load(fh)
+    assert data["name"] == "Test Ninja"
+    assert data["type"] == "class"
