@@ -31,10 +31,29 @@ def generate_uuid(slug: str) -> str:
     return hashlib.md5(slug.encode("utf-8")).hexdigest()[:16]
 
 
+class SkillKeyMapper:
+    """Translate vault skill slugs to PF1e 3-letter keys via JSON mapping."""
+
+    def __init__(self, mapping_path: Path):
+        with open(mapping_path) as f:
+            raw = json.load(f)
+        self._mapping = {k: v for k, v in raw.items() if k != "_meta" and not k.startswith("_")}
+
+    def translate(self, slug: str) -> str:
+        if slug not in self._mapping:
+            raise ValueError(
+                f"Unknown skill slug: {slug!r}. Add it to data/skill-key-mapping.json."
+            )
+        return self._mapping[slug]
+
+
 def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     """Generate one PF1e trait JSON dict from a village YAML file."""
     with open(yaml_path) as f:
         vault = yaml.safe_load(f)
+
+    mapper = SkillKeyMapper(mapping_path)
+    class_skills = {mapper.translate(slug): True for slug in vault.get("class_skills", [])}
 
     return {
         "_id": generate_uuid(vault["slug"]),
@@ -42,6 +61,7 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
         "type": "feat",
         "system": {
             "subType": "trait",
+            "classSkills": class_skills,
         },
     }
 
