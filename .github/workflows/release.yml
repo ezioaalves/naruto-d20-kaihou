@@ -80,12 +80,8 @@ jobs:
         run: |
           zip -r module.zip \
             module.json \
-            scripts \
-            templates \
-            styles \
             lang \
             packs \
-            icons \
             README.md \
             LICENSE \
             -x "packs/_source/*"
