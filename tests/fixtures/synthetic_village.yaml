@@ -1,0 +1,13 @@
+name: Test Village
+slug: test-village
+description: |
+  A synthetic village for unit tests. Not a real village.
+minor_benefit:
+  kind: hp
+  value: 2
+class_skills:
+  - acrobatics
+  - knowledge-history
+tags:
+  - Village
+  - Test
