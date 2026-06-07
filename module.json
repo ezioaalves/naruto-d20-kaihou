@@ -40,6 +40,13 @@
       "path": "packs/classes-basic",
       "type": "Item",
       "system": "pf1"
+    },
+    {
+      "name": "villages",
+      "label": "Naruto D20 — Village Origins",
+      "path": "packs/villages",
+      "type": "Item",
+      "system": "pf1"
     }
   ],
   "packFolders": [
@@ -47,7 +54,7 @@
       "name": "Naruto D20 — Kaihou",
       "color": "#1f6f8b",
       "sorting": "m",
-      "packs": ["classes-basic"]
+      "packs": ["classes-basic", "villages"]
     }
   ],
   "languages": [
