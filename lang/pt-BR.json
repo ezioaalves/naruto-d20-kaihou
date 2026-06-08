@@ -33,7 +33,12 @@
       "NEXT": "Next",
       "FINISH": "Finish",
       "CANCEL": "Cancel",
-      "ROLL": "Roll"
+      "CHOOSE": "Choose",
+      "DRAG_HERE": "Drag",
+      "CLEAR": "Clear",
+      "NARRATIVE": "Narrative",
+      "ROLL": "Roll",
+      "REROLL": "Reroll"
     },
     "THEME": {
       "SETTING_NAME": "Zen Scroll Theme — Enabled",

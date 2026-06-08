@@ -1,0 +1,26 @@
+{{!-- Wizard content — question h3 + per-pick-type body + narrative. --}}
+<section class="tqw-v2__content" data-current="{{currentId}}">
+  <h3 class="tqw-v2__question">{{current.questionText}}</h3>
+
+  {{#if (eq current.pickType "none")}}{{> "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-none.hbs"}}{{/if}}
+  {{#if (eq current.pickType "radio")}}{{> "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-radio.hbs"}}{{/if}}
+  {{#if (eq current.pickType "select")}}{{> "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-select.hbs"}}{{/if}}
+  {{#if (eq current.pickType "nested")}}{{> "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-nested.hbs"}}{{/if}}
+  {{#if (eq current.pickType "drag-drop")}}{{> "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-dragdrop.hbs"}}{{/if}}
+  {{#if (eq current.pickType "drag-drop-coupled")}}{{> "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-dragdrop-coupled.hbs"}}{{/if}}
+  {{#if (eq current.pickType "roll-table")}}{{> "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-rolltable.hbs"}}{{/if}}
+
+  <div class="zen-card zen-card--bold tqw-v2__narrative-section">
+    <div class="zen-card__label">{{localize "NARUTO_D20_KAIHOU.WIZARD.NARRATIVE"}}</div>
+    <textarea class="tqw-v2__narrative"
+              name="narrative"
+              data-action="tqw-narrative-change"
+              data-qid="{{current.id}}"
+              rows="5"
+              placeholder="{{current.narrativePrompt}}">{{narrativeText}}</textarea>
+  </div>
+
+  {{#if validationError}}
+    <div class="tqw-v2__error">{{validationError}}</div>
+  {{/if}}
+</section>
