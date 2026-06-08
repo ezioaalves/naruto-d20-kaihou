@@ -277,7 +277,7 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "",
     markerFlag: "q3HumanBonusFeat",
     dropAccepts: {type: "feat"},
-    browse: {kind: "pf1Browser", browser: "feats", label: "Browse Feats"},
+    browse: {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse Feats"},
   },
 
   // Q4 — Nature Affinity (radio)
