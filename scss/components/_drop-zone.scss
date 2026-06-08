@@ -1,7 +1,75 @@
 /**
  * .zen-drop-zone — drag-drop slot primitive.
  *
- * Phase 1: empty placeholder.
- * Phase 2: dashed brush-edge zone with parchment fill, used by wizard
- * Q2/Q3/Q9/Q10/Q13/Q16 and future drag-drop UIs.
+ * Default — dashed border, parchment fill, italic placeholder text.
+ * `--bold` — heavier dashed border, bolder placeholder.
+ * `--filled` — solid border, sage-green accent (successful drop signal),
+ *              flex row layout for item-name + clear button.
+ * `--drag-over` — applied by JS during dragover; ink-accent highlight.
  */
+
+.zen-drop-zone {
+  background: var(--zen-input-bg-strong);
+  border: var(--zen-border-base) dashed var(--zen-border);
+  padding: var(--zen-space-3);
+  text-align: center;
+  color: var(--zen-ink-mute);
+  font-style: italic;
+  font-size: var(--zen-text-sm);
+  cursor: copy;
+  transition: border-color var(--zen-duration-fast) var(--zen-easing-out),
+              background var(--zen-duration-fast) var(--zen-easing-out);
+}
+
+.zen-drop-zone--bold {
+  border: var(--zen-bold-border) dashed var(--zen-ink);
+  color: var(--zen-ink-mute);
+  padding: var(--zen-space-3);
+}
+
+.zen-drop-zone--drag-over {
+  border-color: var(--zen-ink-accent);
+  background: rgba(150, 60, 65, 0.08);
+}
+
+.zen-drop-zone--filled {
+  border-style: solid;
+  border-color: #5A6E5A;
+  font-style: normal;
+  color: var(--zen-ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--zen-space-2);
+}
+
+.zen-drop-zone__item-name {
+  font-weight: 600;
+  color: var(--zen-ink);
+}
+
+.zen-drop-zone__clear {
+  color: var(--zen-ink-accent);
+  cursor: pointer;
+  padding: 0 var(--zen-space-1);
+  font-weight: bold;
+  background: none;
+  border: none;
+  font-size: var(--zen-text-base);
+}
+
+.zen-drop-zone__browse {
+  background: var(--zen-surface);
+  border: var(--zen-bold-border);
+  color: var(--zen-ink);
+  padding: var(--zen-space-1) var(--zen-space-3);
+  font-size: var(--zen-text-sm);
+  font-weight: 600;
+  margin-top: var(--zen-space-2);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.zen-drop-zone__browse:hover {
+  background: var(--zen-row-hover);
+}
