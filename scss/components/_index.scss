@@ -1,13 +1,17 @@
 /**
  * Component primitives forward.
  *
- * Phase 2 fills these in. Phase 1 imports them so the SCSS graph is final
- * from day one — Phase 2 swaps content without restructuring imports.
+ * Phase 2 fills these in. Default variants (`.zen-card`, `.zen-chip`, etc.)
+ * are non-wizard surfaces (chakra tab, dialogs — future phases). Bold variants
+ * (`--bold` modifier) are wizard-only (.tqw-v2 root).
+ *
+ * `pick-grid` and `progress-strip` are bold-only — wizard-specific layout
+ * primitives with no soft-variant equivalent.
  */
 
-@use "card";
-@use "chip";
-@use "drop-zone";
-@use "pick-grid";
-@use "stepper-sidebar";
-@use "rolltable";
+@forward "card";
+@forward "chip";
+@forward "drop-zone";
+@forward "pick-grid";
+@forward "progress-strip";
+@forward "rolltable";
