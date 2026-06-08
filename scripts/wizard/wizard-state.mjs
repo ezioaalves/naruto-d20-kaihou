@@ -19,6 +19,7 @@
 export function defaultState() {
   return {
     q1_village_uuid: null,
+    q2_occupation_uuid: null,
     q3_human_bonus_feat_uuid: null,
     q4_affinity: null,
     q7_relationship: null,
@@ -129,6 +130,13 @@ export function loadFromActor(actor) {
   const q1Item = findItemByMarker(actor, "q1Village");
   if (q1Item) {
     state.q1_village_uuid = q1Item._id;
+  }
+
+  // Q2 — Occupation (marker flag q2OccupationItem; auto-apply hook in
+  // occupation-application.mjs handles class skills / feat / wealth / rep on createItem)
+  const q2Item = findItemByMarker(actor, "q2OccupationItem");
+  if (q2Item) {
+    state.q2_occupation_uuid = q2Item._id;
   }
 
   // Q3 — Human Bonus Feat (marker flag q3HumanBonusFeat)
@@ -250,6 +258,7 @@ export function diffStates(prev, next) {
 
   const topFields = [
     "q1_village_uuid",
+    "q2_occupation_uuid",
     "q3_human_bonus_feat_uuid",
     "q4_affinity",
     "q7_relationship",
@@ -321,4 +330,56 @@ export function validate(state) {
   }
 
   return { ok: errors.length === 0, errors };
+}
+
+/**
+ * Returns true iff the user can jump from the current state to question `qid`.
+ *
+ * Allowed when:
+ *   - `qid` is the current question (no-op jump)
+ *   - `qid` has been answered (any top-level state key starting with `${qid}_` is truthy)
+ *
+ * Future, unanswered questions are not jumpable — preserves the validation
+ * contract that intermediate required answers must be filled before advancing.
+ *
+ * Unknown `qid` (not matching q1–q20) returns false.
+ *
+ * @param {Object} state - wizard state
+ * @param {string} qid - question id (e.g. "q1", "q10")
+ * @returns {boolean}
+ */
+export function canJumpTo(state, qid) {
+  if (qid === state.currentId) return true;
+
+  // Unknown qid — only q1–q20 are valid question ids.
+  if (!/^q([1-9]|1[0-9]|20)$/.test(qid)) return false;
+
+  // Structural "answered" check — a question is considered answered iff any
+  // top-level state key starting with `${qid}_` has a truthy value.
+  const prefix = `${qid}_`;
+  return Object.entries(state).some(
+    ([key, value]) =>
+      key.startsWith(prefix) &&
+      value !== null &&
+      value !== "" &&
+      value !== undefined,
+  );
+}
+
+/**
+ * Returns a NEW state with currentId set to `qid`. Throws if !canJumpTo.
+ *
+ * Does not run validation on intermediate steps — the contract is that
+ * the caller already verified via canJumpTo before calling this.
+ *
+ * @param {Object} state - wizard state
+ * @param {string} qid - question id to jump to
+ * @returns {Object} new state
+ * @throws {Error} if the jump is not allowed
+ */
+export function jumpTo(state, qid) {
+  if (!canJumpTo(state, qid)) {
+    throw new Error(`jumpTo: cannot jump to ${qid} from ${state.currentId}`);
+  }
+  return { ...state, currentId: qid };
 }

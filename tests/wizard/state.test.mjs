@@ -1,10 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { defaultState, loadFromActor, diffStates, validate } from "../../scripts/wizard/wizard-state.mjs";
+import { defaultState, loadFromActor, diffStates, validate, canJumpTo, jumpTo } from "../../scripts/wizard/wizard-state.mjs";
 
 describe("defaultState", () => {
   it("returns null for all mechanical fields", () => {
     const s = defaultState();
     expect(s.q1_village_uuid).toBeNull();
+    expect(s.q2_occupation_uuid).toBeNull();
     expect(s.q3_human_bonus_feat_uuid).toBeNull();
     expect(s.q4_affinity).toBeNull();
     expect(s.q7_relationship).toBeNull();
@@ -69,6 +70,15 @@ describe("loadFromActor", () => {
       ],
     });
     expect(loadFromActor(actor).q1_village_uuid).toBe("abc123");
+  });
+
+  it("loads q2_occupation_uuid from item with q2OccupationItem marker flag", () => {
+    const actor = mockActor({
+      items: [
+        { _id: "occ1", flags: { "naruto-d20-kaihou": { wizard: { q2OccupationItem: true } } } },
+      ],
+    });
+    expect(loadFromActor(actor).q2_occupation_uuid).toBe("occ1");
   });
 
   it("loads q7_relationship + q7_outsider_class_skill from marker + flag snapshot", () => {
@@ -230,5 +240,47 @@ describe("validate", () => {
 
   it("accepts Q10 both null", () => {
     expect(validate(withRequiredFilled()).ok).toBe(true);
+  });
+});
+
+describe("canJumpTo", () => {
+  it("returns true when target is the current question", () => {
+    const state = defaultState();
+    state.currentId = "q3";
+    expect(canJumpTo(state, "q3")).toBe(true);
+  });
+
+  it("returns true when target is an answered question", () => {
+    const state = defaultState();
+    state.currentId = "q5";
+    state.q1_village = "kani";
+    expect(canJumpTo(state, "q1")).toBe(true);
+  });
+
+  it("returns false for an unanswered future question", () => {
+    const state = defaultState();
+    state.currentId = "q3";
+    expect(canJumpTo(state, "q10")).toBe(false);
+  });
+
+  it("returns false for an unknown qid", () => {
+    const state = defaultState();
+    expect(canJumpTo(state, "q99")).toBe(false);
+  });
+});
+
+describe("jumpTo", () => {
+  it("sets currentId when the jump is allowed", () => {
+    const state = defaultState();
+    state.currentId = "q5";
+    state.q1_village = "kani";
+    const next = jumpTo(state, "q1");
+    expect(next.currentId).toBe("q1");
+  });
+
+  it("throws when the jump is disallowed", () => {
+    const state = defaultState();
+    state.currentId = "q3";
+    expect(() => jumpTo(state, "q10")).toThrow();
   });
 });
