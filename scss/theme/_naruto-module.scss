@@ -1,3 +1,5 @@
+@use "colors";
+
 /**
  * naruto-d20 module-owned UI.
  *
@@ -12,11 +14,11 @@
  */
 
 $discipline-color: (
-    "tai": $nzen-tai,
-    "nin": $nzen-nin,
-    "gnj": $nzen-gnj,
-    "ckc": $nzen-ckc,
-    "fui": $nzen-fui,
+    "tai": colors.$nzen-tai,
+    "nin": colors.$nzen-nin,
+    "gnj": colors.$nzen-gnj,
+    "ckc": colors.$nzen-ckc,
+    "fui": colors.$nzen-fui,
 );
 
 // ----- Chakra tab ------------------------------------------------------------
@@ -97,11 +99,11 @@ $discipline-color: (
         // Elemental-affinity card: stamped `data-nature` (see main.mjs).
         // Color the left rule and the primary readout in the chosen nature.
         $natures-list: (
-            "earth": $nzen-earth,
-            "water": $nzen-water,
-            "fire": $nzen-fire,
-            "wind": $nzen-wind,
-            "lightning": $nzen-lightning,
+            "earth": colors.$nzen-earth,
+            "water": colors.$nzen-water,
+            "fire": colors.$nzen-fire,
+            "wind": colors.$nzen-wind,
+            "lightning": colors.$nzen-lightning,
         );
 
         .info-box-header.speed-details {
@@ -235,7 +237,7 @@ $discipline-color: (
         text-transform: uppercase;
         letter-spacing: 0.05rem;
         color: var(--zen-ink);
-        background: transparent url("modules/naruto-d20-kaihou/assets/theme/imgs/brush.webp") no-repeat left center;
+        background: transparent url("../../assets/theme/imgs/brush.webp") no-repeat left center;
         background-size: 35% auto;
         border-bottom: 1px solid var(--zen-border);
 
@@ -264,7 +266,7 @@ $discipline-color: (
         }
 
         .technique-cost {
-            color: $nzen-fire;
+            color: colors.$nzen-fire;
             font-weight: bold;
         }
 
@@ -293,7 +295,7 @@ $discipline-color: (
     }
 
     .sheet-header {
-        background: transparent url("modules/naruto-d20-kaihou/assets/theme/imgs/brush.webp") no-repeat left center;
+        background: transparent url("../../assets/theme/imgs/brush.webp") no-repeat left center;
         background-size: 55% auto;
         padding: 0.5rem;
         border-bottom: 2px solid var(--zen-border);

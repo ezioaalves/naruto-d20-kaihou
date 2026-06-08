@@ -1,3 +1,5 @@
+@use "colors";
+
 .application {
     color: var(--color-text-primary);
 
@@ -7,12 +9,12 @@
 
     .window-header {
         background: linear-gradient(
-            $nzen-linear-gradient-second,
-            $nzen-linear-gradient-second-dark,
-            $nzen-linear-gradient-second
+            colors.$nzen-linear-gradient-second,
+            colors.$nzen-linear-gradient-second-dark,
+            colors.$nzen-linear-gradient-second
         );
         .window-title {
-            font-family: $font-secondary;
+            font-family: colors.$font-secondary;
             font-size: 1.25rem;
         }
     }
@@ -48,16 +50,16 @@
 
 // Handle Sidebar here. Starting with custom icons
 $nzen-custom-icons: (
-  chatIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/chat.svg",
-  combatIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/combat-tracker.svg",
-  sceneIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/scenes.svg",
-  actorIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/actors.svg",
-  itemIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/object.svg",
-  journalIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/journal.svg",
-  rolltableIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/rolltable.svg",
-  playlistIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/playlist.svg",
-  compendiumIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/compendium.svg",
-  settingsIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/settings.svg"
+  chatIcon: "../../assets/theme/ui/sidebar/chat.svg",
+  combatIcon: "../../assets/theme/ui/sidebar/combat-tracker.svg",
+  sceneIcon: "../../assets/theme/ui/sidebar/scenes.svg",
+  actorIcon: "../../assets/theme/ui/sidebar/actors.svg",
+  itemIcon: "../../assets/theme/ui/sidebar/object.svg",
+  journalIcon: "../../assets/theme/ui/sidebar/journal.svg",
+  rolltableIcon: "../../assets/theme/ui/sidebar/rolltable.svg",
+  playlistIcon: "../../assets/theme/ui/sidebar/playlist.svg",
+  compendiumIcon: "../../assets/theme/ui/sidebar/compendium.svg",
+  settingsIcon: "../../assets/theme/ui/sidebar/settings.svg"
 );
 
 $selectors: (
@@ -111,8 +113,8 @@ $selectors: (
 
 
 #sidebar-content.expanded {
-    background: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp") no-repeat;
-    border-image: url("modules/naruto-d20-kaihou/assets/theme/ui/macro-button.webp") 10 repeat;
+    background: url("../../assets/theme/ui/bgSidebar.webp") no-repeat;
+    border-image: url("../../assets/theme/ui/macro-button.webp") 10 repeat;
     border-style: solid;
     border-image-width: 0.5rem;
     border-image-outset: 0px;
@@ -142,7 +144,7 @@ $selectors: (
     #action-bar {
         //flex: 0 0 100%;
         .slot {
-            border-image: url("modules/naruto-d20-kaihou/assets/theme/ui/macro-button.webp");
+            border-image: url("../../assets/theme/ui/macro-button.webp");
             border-image-slice: 8 fill;
             border-image-width: 0.25rem;
         }

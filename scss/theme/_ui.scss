@@ -1,6 +1,8 @@
+@use "colors";
+
 /* SCSS */
 
-$nzen-selection-circle-svg: "modules/naruto-d20-kaihou/assets/theme/icons/circle.svg";
+$nzen-selection-circle-svg: "../../assets/theme/icons/circle.svg";
 @mixin nzen-selection-circle($inset: -8px) {
     position: relative;
 
@@ -15,7 +17,7 @@ $nzen-selection-circle-svg: "modules/naruto-d20-kaihou/assets/theme/icons/circle
         inset: $inset;
         -webkit-mask: url("#{$nzen-selection-circle-svg}") center / contain no-repeat;
         mask: url("#{$nzen-selection-circle-svg}") center / contain no-repeat;
-        background-color: $nzen-selection-circle-color;
+        background-color: colors.$nzen-selection-circle-color;
         pointer-events: none;
         z-index: 0;
     }
@@ -48,7 +50,7 @@ $nzen-selection-circle-svg: "modules/naruto-d20-kaihou/assets/theme/icons/circle
     --nzen-chip-bg: rgba(93, 20, 43, 0.08);
     --nzen-chip-color: var(--color-dark-2, #222);
 
-    --nzen-gm-monitor-void-icon: #{$nzen-void};
+    --nzen-gm-monitor-void-icon: #{colors.$nzen-void};
     --nzen-combat-tracker-encounter-icon: #{var(--zen-ink)};
 }
 
@@ -87,7 +89,7 @@ button {
     .playlist {
         .playlist-header {
             h4 {
-                font: 0.75rem $font-primary;
+                font: 0.75rem colors.$font-primary;
                 text-transform: uppercase;
                 text-align: right;
             }
@@ -131,12 +133,12 @@ button {
                     @include nzen-selection-circle-state("active");
 
                     &.active {
-                        color: $nzen-maho;
+                        color: colors.$nzen-maho;
                         &:hover { text-shadow: none; }
                     }
 
                     &:hover {
-                        text-shadow: 0 0 8px $red;
+                        text-shadow: 0 0 8px colors.$red;
                     }
                 }
 
@@ -173,7 +175,7 @@ button {
 
 #pause {
     img {
-        content: url("modules/naruto-d20-kaihou/assets/theme/icons/pause.svg");
+        content: url("../../assets/theme/icons/pause.svg");
     }
 }
 
@@ -292,11 +294,11 @@ button {
 }
 
 @mixin nzen-card-base {
-    color: $black-light;
+    color: colors.$black-light;
     font-size: 0.8rem;
 
     * {
-        color: $black-light;
+        color: colors.$black-light;
     }
 
     section > ul {
@@ -326,7 +328,7 @@ button {
         width: 600px;
         height: auto;
         max-height: 100%;
-        background: #3e3a30 url("modules/naruto-d20-kaihou/assets/theme/imgs/bg-l5r.webp") no-repeat;
+        background: #3e3a30 url("../../assets/theme/imgs/bg-l5r.webp") no-repeat;
         text-align: left;
         border: 0 none;
         border-radius: 0;
@@ -353,7 +355,7 @@ button {
             border-radius: 0;
             top: -0.35rem;
             left: 0.25rem;
-            background: #3e3a30 url("modules/naruto-d20-kaihou/assets/theme/imgs/bg-l5r.webp") no-repeat;
+            background: #3e3a30 url("../../assets/theme/imgs/bg-l5r.webp") no-repeat;
         }
 
         &:after {
@@ -437,7 +439,7 @@ button {
             top: 0;
 
             i.i_void:before {
-                color: $nzen-void-light;
+                color: colors.$nzen-void-light;
             }
         }
         th, td {
@@ -515,7 +517,7 @@ button {
                 }
 
                 :hover {
-                    text-shadow: 0px 0px 5px $red;
+                    text-shadow: 0px 0px 5px colors.$red;
                 }
             }
 

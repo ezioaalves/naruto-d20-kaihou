@@ -1,3 +1,5 @@
+@use "colors";
+
 /** Global **/
 
 // Rules below already run inside `body.naruto-zen { ... }` via zen.scss.
@@ -31,7 +33,7 @@
         .help-dialog {
             background-position: top;
             background-size: 100%;
-            background: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp") no-repeat;
+            background: url("../../assets/theme/ui/bgSidebar.webp") no-repeat;
             background-color: var(--zen-surface);
             border: 1px solid var(--zen-border);
             border-radius: 0;
@@ -50,21 +52,21 @@
             padding: 0.5rem 1.5rem;
             button {
                 cursor: default;
-                color: $white;
+                color: colors.$white;
                 background: linear-gradient(
-                    $nzen-linear-gradient-third,
-                    $nzen-linear-gradient-third-dark,
-                    $nzen-linear-gradient-third
+                    colors.$nzen-linear-gradient-third,
+                    colors.$nzen-linear-gradient-third-dark,
+                    colors.$nzen-linear-gradient-third
                 );
                 background-origin: padding-box;
-                border-image: url("modules/naruto-d20-kaihou/assets/theme/ui/macro-button.webp") 10 repeat;
+                border-image: url("../../assets/theme/ui/macro-button.webp") 10 repeat;
                 border-image-width: 0.5rem;
                 border-image-outset: 0px;
                 &:hover {
                     background: linear-gradient(
-                        $nzen-linear-gradient-first-dark,
-                        $nzen-linear-gradient-first,
-                        $nzen-linear-gradient-first-dark
+                        colors.$nzen-linear-gradient-first-dark,
+                        colors.$nzen-linear-gradient-first,
+                        colors.$nzen-linear-gradient-first-dark
                     );
                 }
             }
@@ -108,7 +110,7 @@
     }
     .window-resizable-handle {
         z-index: 2;
-        background: $black-light;
+        background: colors.$black-light;
     }
     &.twenty-questions-dialog {
         .window-content {
@@ -124,16 +126,16 @@ input[type="number"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus,
 input[type="time"]:focus {
-    box-shadow: 0 0 6px $red;
+    box-shadow: 0 0 6px colors.$red;
 }
 .tabs .item.active {
-    text-shadow: 0 0 10px $red;
+    text-shadow: 0 0 10px colors.$red;
 }
 #controls .scene-control.active,
 #controls .control-tool.active,
 #controls .scene-control:hover,
 #controls .control-tool:hover {
-    box-shadow: 0 0 10px $red;
+    box-shadow: 0 0 10px colors.$red;
 }
 
 #sidebar #settings button,
@@ -148,10 +150,10 @@ input[type="time"]:focus {
 }
 
 button:hover {
-    box-shadow: 0 0 10px $red;
+    box-shadow: 0 0 10px colors.$red;
 }
 button:focus {
-    box-shadow: 0 0 10px $red;
+    box-shadow: 0 0 10px colors.$red;
 }
 
 .item-list {
@@ -239,13 +241,13 @@ sup {
 
 .prepared {
     &-character {
-        color: $nzen-earth;
+        color: colors.$nzen-earth;
     }
     &-adversary {
-        color: $nzen-fire;
+        color: colors.$nzen-fire;
     }
     &-minion {
-        color: $nzen-water;
+        color: colors.$nzen-water;
     }
     &-icon {
         font-weight: 900;

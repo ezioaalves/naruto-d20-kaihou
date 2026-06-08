@@ -1,33 +1,26 @@
 /**
- * Theme partials forward — wrapped in body.naruto-zen scoping.
+ * Theme partials — forwarded for composition by kaihou.scss.
  *
- * Mirrors the zen-theme zen.scss structure: outer wrapper enables global
- * chrome (background, sidebar, nav, fonts, ui); inner .naruto-zen-target
- * wrapper enables per-app styling that only applies to sheets/dialogs
- * Foundry has tagged.
+ * This module uses @use and @forward to make all 14 theme partials available
+ * as a single unit. The kaihou.scss entry point will apply body.naruto-zen
+ * scoping and compose them with proper nesting.
  *
- * _colors must be imported at top level (not inside any selector) because
- * it declares Sass $-variables consumed by _tokens.scss (already resolved
- * in Phase B) and other partials.
+ * _colors is imported directly (not forwarded) so Sass $-variables are
+ * available at this level for other partials that depend on them.
  */
 
-@import "colors";
+@use "colors";
 
-body.naruto-zen {
-  @import "fonts";
-  @import "global";
-  @import "global-appv2";
-  @import "ui";
-  @import "nav";
-  @import "compatibility-modules";
-  @import "v13-chrome";
-  @import "pf1-surfaces";
-
-  .naruto-zen-target {
-    @import "pf1-sheets";
-    @import "naruto-module";
-    @import "natures";
-    @import "disciplines";
-    @import "villages";
-  }
-}
+@forward "fonts";
+@forward "global";
+@forward "global-appv2";
+@forward "ui";
+@forward "nav";
+@forward "compatibility-modules";
+@forward "v13-chrome";
+@forward "pf1-surfaces";
+@forward "pf1-sheets";
+@forward "naruto-module";
+@forward "natures";
+@forward "disciplines";
+@forward "villages";

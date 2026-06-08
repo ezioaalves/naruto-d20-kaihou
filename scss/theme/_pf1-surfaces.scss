@@ -243,7 +243,7 @@ aside[role="tooltip"].pf1.source-breakdown {
     .message {
         color: var(--zen-ink);
         background-color: var(--zen-card-bg);
-        background-image: url("modules/naruto-d20-kaihou/assets/theme/ui/chat-texture.webp");
+        background-image: url("../../assets/theme/ui/chat-texture.webp");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -469,7 +469,7 @@ aside[role="tooltip"].pf1.source-breakdown {
 
         &.active {
             background-color: var(--zen-ink-accent) !important;
-            background-image: url("modules/naruto-d20-kaihou/assets/theme/textures/watercolor.webp") !important;
+            background-image: url("../../assets/theme/textures/watercolor.webp") !important;
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;

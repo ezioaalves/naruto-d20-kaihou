@@ -144,3 +144,11 @@ $nzen-gnj: $nzen-shuji; // Genjutsu → shuji (green-cyan)
 $nzen-ckc: $nzen-ninjitsu; // Chakra Control → ninjitsu (dark gray)
 $nzen-fui: $nzen-rituals; // Fuinjutsu → rituals (blue)
 $nzen-kin: $nzen-maho; // Kinjutsu (visual only) → maho (crimson)
+
+// -- Fonts
+// Used by _fonts.scss and other partials for typography.
+$font-primary: "PatrickHand", sans-serif;
+$font-secondary: "BrushtipTexe", sans-serif;
+$font-tertiary: "Caballar", sans-serif;
+$font-quaternary: "ArchitectsDaughter", sans-serif;
+$font-logoType: "LogotypeL5r", sans-serif;

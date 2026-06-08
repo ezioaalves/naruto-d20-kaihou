@@ -1,3 +1,5 @@
+@use "colors";
+
 /**
  * Hidden village color + crest hooks.
  *
@@ -7,17 +9,17 @@
  */
 
 $villages: (
-    "crab": $nzen-crab,
-    "crane": $nzen-crane,
-    "dragon": $nzen-dragon,
-    "lion": $nzen-lion,
-    "mantis": $nzen-mantis,
-    "phoenix": $nzen-phoenix,
-    "tortoise": $nzen-tortoise,
-    "scorpion": $nzen-scorpion,
-    "unicorn": $nzen-unicorn,
-    "imperial": $nzen-imperial,
-    "ronin": $nzen-ronin,
+    "crab": colors.$nzen-crab,
+    "crane": colors.$nzen-crane,
+    "dragon": colors.$nzen-dragon,
+    "lion": colors.$nzen-lion,
+    "mantis": colors.$nzen-mantis,
+    "phoenix": colors.$nzen-phoenix,
+    "tortoise": colors.$nzen-tortoise,
+    "scorpion": colors.$nzen-scorpion,
+    "unicorn": colors.$nzen-unicorn,
+    "imperial": colors.$nzen-imperial,
+    "ronin": colors.$nzen-ronin,
 );
 
 @each $name, $color in $villages {
@@ -27,7 +29,7 @@ $villages: (
     }
 
     [data-village-crest="#{$name}"] {
-        background: transparent url("modules/naruto-d20-kaihou/assets/theme/icons/villages/#{$name}.svg") no-repeat center / contain;
+        background: transparent url("../../assets/theme/icons/villages/#{$name}.svg") no-repeat center / contain;
         display: inline-block;
         width: 1.25rem;
         height: 1.25rem;

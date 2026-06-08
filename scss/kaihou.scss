@@ -10,6 +10,22 @@
  *   3. theme/* (body.naruto-zen-scoped chrome — light mode only)
  */
 
-@import "tokens";
-@import "components/index";
-@import "theme/index";
+@use "tokens";
+@use "components/index";
+
+// Import theme partials directly so they can be scoped under body.naruto-zen.
+// Variables from _colors are available to all these partials via @use.
+@use "theme/colors";
+@use "theme/fonts";
+@use "theme/global";
+@use "theme/global-appv2";
+@use "theme/ui";
+@use "theme/nav";
+@use "theme/compatibility-modules";
+@use "theme/v13-chrome";
+@use "theme/pf1-surfaces";
+@use "theme/pf1-sheets";
+@use "theme/naruto-module";
+@use "theme/natures";
+@use "theme/disciplines";
+@use "theme/villages";

@@ -1,40 +1,38 @@
 /** Fonts **/
 
+@use "colors";
+
 // Font Logotype L5R
 @font-face {
     font-family: "LogotypeL5r";
-    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/LogotypeL5r.ttf") format("truetype");
+    src: url("../../assets/theme/fonts/LogotypeL5r.ttf") format("truetype");
 }
 
 // Font BrushtipTexe
 @font-face {
     font-family: "BrushtipTexe";
-    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/BrushtipTexe.ttf") format("truetype");
+    src: url("../../assets/theme/fonts/BrushtipTexe.ttf") format("truetype");
 }
 
 // Font PatrickHand
 @font-face {
     font-family: "PatrickHand";
-    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/PatrickHand.ttf") format("truetype");
+    src: url("../../assets/theme/fonts/PatrickHand.ttf") format("truetype");
 }
 
 // Font Caballar
 @font-face {
     font-family: "Caballar";
-    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/Caballar.ttf") format("truetype");
+    src: url("../../assets/theme/fonts/Caballar.ttf") format("truetype");
 }
 
 // Font ArchitectsDaughter
 @font-face {
     font-family: "ArchitectsDaughter";
-    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/ArchitectsDaughter.ttf") format("truetype");
+    src: url("../../assets/theme/fonts/ArchitectsDaughter.ttf") format("truetype");
 }
 
-$font-primary: "PatrickHand", sans-serif;
-$font-secondary: "BrushtipTexe", sans-serif;
-$font-tertiary: "Caballar", sans-serif;
-$font-quaternary: "ArchitectsDaughter", sans-serif;
-$font-logoType: "LogotypeL5r", sans-serif;
+// Font variables are defined in _colors.scss (see there for documentation).
 
 // Rules below already run inside `body.naruto-zen { ... }`.
 //
@@ -145,197 +143,197 @@ i.i_courtier,
 i.i_shugenja,
 i.i_ring,
 i.i_skill {
-    font-family: $font-logoType;
+    font-family: colors.$font-logoType;
     line-height: 1rem;
     font-size: 1.25rem;
     font-style: normal;
     font-weight: normal;
     vertical-align: middle;
-    text-shadow: 0 0 0 $nzen-black;
+    text-shadow: 0 0 0 colors.$nzen-black;
 }
 
 // -- Dices
 // Strife
 i.i_strife:before {
     content: "\E91E";
-    color: $red-dice;
+    color: colors.$red-dice;
 }
 // Success
 i.i_success:before {
     content: "\E91F";
-    color: $red-dice;
+    color: colors.$red-dice;
 }
 // Explosive
 i.i_explosive:before {
     content: "\E920";
-    color: $red-dice;
+    color: colors.$red-dice;
 }
 // Opportunity
 i.i_opportunity:before {
     content: "\E91D";
-    color: $red-dice;
+    color: colors.$red-dice;
 }
 
 // -- Rings
 // Earth
 i.i_earth:before {
     content: "\E90E";
-    color: $nzen-earth;
+    color: colors.$nzen-earth;
 }
 // Air
 i.i_air:before {
     content: "\E90D";
-    color: $nzen-air;
+    color: colors.$nzen-air;
 }
 // Water
 i.i_water:before {
     content: "\E90C";
-    color: $nzen-water;
+    color: colors.$nzen-water;
 }
 // Fire
 i.i_fire:before {
     content: "\E90A";
-    color: $nzen-fire;
+    color: colors.$nzen-fire;
 }
 // Void
 i.i_void:before {
     content: "\E90B";
-    color: $nzen-void;
+    color: colors.$nzen-void;
 }
 
 // -- Techs
 // Invocations
 i.i_invocations:before {
     content: "\E906";
-    color: $nzen-invocations;
+    color: colors.$nzen-invocations;
 }
 // Kata
 i.i_kata:before {
     content: "\E907";
-    color: $nzen-kata;
+    color: colors.$nzen-kata;
 }
 // Kiho
 i.i_kiho:before {
     content: "\E900";
-    color: $nzen-kiho;
+    color: colors.$nzen-kiho;
 }
 // Maho
 i.i_maho:before {
     content: "\E901";
-    color: $nzen-maho;
+    color: colors.$nzen-maho;
 }
 // Ninjitsu
 i.i_ninjitsu:before {
     content: "\E902";
-    color: $nzen-ninjitsu;
+    color: colors.$nzen-ninjitsu;
 }
 // Prerequisite
 i.i_prerequisite_exemption:before {
     content: "\E903";
-    color: $nzen-prerequisite;
+    color: colors.$nzen-prerequisite;
 }
 // Rituals
 i.i_rituals:before {
     content: "\E904";
-    color: $nzen-rituals;
+    color: colors.$nzen-rituals;
 }
 // Shuji
 i.i_shuji:before {
     content: "\E905";
-    color: $nzen-shuji;
+    color: colors.$nzen-shuji;
 }
 // Inversion
 i.i_inversion:before {
     content: "\E908";
-    color: $nzen-inversion;
+    color: colors.$nzen-inversion;
 }
 // Mantra
 i.i_mantra:before {
     content: "\E909";
-    color: $nzen-mantra;
+    color: colors.$nzen-mantra;
 }
 
 // -- Clans
 // Crab
 i.i_crab:before {
     content: "\E916";
-    color: $nzen-crab;
+    color: colors.$nzen-crab;
 }
 // Crane
 i.i_crane:before {
     content: "\E917";
-    color: $nzen-crane;
+    color: colors.$nzen-crane;
 }
 // Dragon
 i.i_dragon:before {
     content: "\E918";
-    color: $nzen-dragon;
+    color: colors.$nzen-dragon;
 }
 // Lion
 i.i_lion:before {
     content: "\E910";
-    color: $nzen-lion;
+    color: colors.$nzen-lion;
 }
 // Mantis
 i.i_mantis:before {
     content: "\E911";
-    color: $nzen-mantis;
+    color: colors.$nzen-mantis;
 }
 // Phoenix
 i.i_phoenix:before {
     content: "\E912";
-    color: $nzen-phoenix;
+    color: colors.$nzen-phoenix;
 }
 // Scorpion
 i.i_scorpion:before {
     content: "\E913";
-    color: $nzen-scorpion;
+    color: colors.$nzen-scorpion;
 }
 // Tortoise
 i.i_tortoise:before {
     content: "\E914";
-    color: $nzen-tortoise;
+    color: colors.$nzen-tortoise;
 }
 // Unicorn
 i.i_unicorn:before {
     content: "\E915";
-    color: $nzen-unicorn;
+    color: colors.$nzen-unicorn;
 }
 // Imperial
 i.i_imperial:before {
     content: "\E90F";
-    color: $nzen-imperial;
+    color: colors.$nzen-imperial;
 }
 // Ronin
 i.i_ronin:before {
     content: "\E919";
-    color: $nzen-ronin;
+    color: colors.$nzen-ronin;
 }
 
 // -- Titles
 // Bushi
 i.i_bushi:before {
     content: "\E91A";
-    color: $nzen-bushi;
+    color: colors.$nzen-bushi;
 }
 // Courtier
 i.i_courtier:before {
     content: "\E91B";
-    color: $nzen-courtier;
+    color: colors.$nzen-courtier;
 }
 // Shugenja
 i.i_shugenja:before {
     content: "\E91C";
-    color: $nzen-shugenja;
+    color: colors.$nzen-shugenja;
 }
 
 // Compendium
 .compendium {
     .item {
         i {
-            font-family: $font-primary;
+            font-family: colors.$font-primary;
             &:before {
-                font-family: $font-logoType;
+                font-family: colors.$font-logoType;
             }
         }
     }

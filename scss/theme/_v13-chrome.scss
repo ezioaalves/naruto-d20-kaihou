@@ -13,7 +13,7 @@
 // rule that actually wins (direct `aside#sidebar { background }` ends up
 // behind the child's own bg). We point it at our parchment texture.
 & {
-    --sidebar-background: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp") no-repeat top center / cover,
+    --sidebar-background: url("../../assets/theme/ui/bgSidebar.webp") no-repeat top center / cover,
         rgb(245, 230, 200);
 }
 
@@ -21,7 +21,7 @@
 aside#sidebar {
     .sidebar-tab {
         background-color: rgb(245, 230, 200);
-        background-image: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp");
+        background-image: url("../../assets/theme/ui/bgSidebar.webp");
         background-repeat: no-repeat;
         background-size: cover;
         border: 1px solid var(--zen-border);
@@ -35,7 +35,7 @@ aside#sidebar {
     nav.tabs {
         opacity: 1;
         background-color: rgb(245, 230, 200);
-        background-image: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp");
+        background-image: url("../../assets/theme/ui/bgSidebar.webp");
         background-size: cover;
         background-repeat: no-repeat;
         border: 1px solid var(--zen-border);
@@ -80,7 +80,7 @@ aside#sidebar {
                 // with the wine accent so it reads as a brushed stamp.
                 &[aria-pressed="true"] {
                     background-color: var(--zen-ink-accent);
-                    background-image: url("modules/naruto-d20-kaihou/assets/theme/textures/watercolor.webp");
+                    background-image: url("../../assets/theme/textures/watercolor.webp");
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
@@ -133,8 +133,8 @@ aside#sidebar {
                     width: 1.4em;
                     height: 1.4em;
                     background-color: currentColor;
-                    mask: url("modules/naruto-d20-kaihou/assets/theme/ui/sidebar/#{$svg-name}.svg") no-repeat center / contain;
-                    -webkit-mask: url("modules/naruto-d20-kaihou/assets/theme/ui/sidebar/#{$svg-name}.svg") no-repeat center / contain;
+                    mask: url("../../assets/theme/ui/sidebar/#{$svg-name}.svg") no-repeat center / contain;
+                    -webkit-mask: url("../../assets/theme/ui/sidebar/#{$svg-name}.svg") no-repeat center / contain;
                     // Cancel the FA-glyph font so we don't get both rendered.
                     font-family: inherit;
                 }
