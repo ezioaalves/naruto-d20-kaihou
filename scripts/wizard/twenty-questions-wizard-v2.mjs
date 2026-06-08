@@ -258,4 +258,104 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     this.state = jumpTo(this.state, qid);
     await this.render();
   }
+
+  static async _onRadioSelect(_event, target) {
+    const qid = target?.dataset?.qid;
+    const value = target?.dataset?.value;
+    if (!qid || value === undefined) return;
+    const question = questions.find((q) => q.id === qid);
+    if (!question?.stateField) return;
+    this.state = { ...this.state, [question.stateField]: value };
+    await this.render();
+  }
+
+  static async _onSelectChange(event, target) {
+    const qid = target?.dataset?.qid;
+    const stateField = target?.dataset?.stateField;
+    const value = event?.target?.value ?? target?.value ?? "";
+    if (!qid || !stateField) return;
+    this.state = { ...this.state, [stateField]: value };
+    await this.render();
+  }
+
+  static async _onSubpickerChange(event, target) {
+    const qid = target?.dataset?.qid;
+    const stateField = target?.dataset?.stateField;
+    const value = event?.target?.value ?? target?.value ?? "";
+    if (!qid || !stateField) return;
+    this.state = { ...this.state, [stateField]: value };
+    await this.render();
+  }
+
+  static async _onNarrativeChange(event, target) {
+    const qid = target?.dataset?.qid;
+    const value = event?.target?.value ?? target?.value ?? "";
+    if (!qid) return;
+    // Narratives are stored under state.narratives[qid] — see V1 line 339.
+    const narratives = { ...(this.state.narratives ?? {}), [qid]: value };
+    this.state = { ...this.state, narratives };
+    // No render — narrative is a textarea, re-rendering would steal focus.
+  }
+
+  static async _onClearDrop(_event, target) {
+    const qid = target?.dataset?.qid;
+    const zoneIdx = target?.dataset?.zone;
+    if (!qid) return;
+    const question = questions.find((q) => q.id === qid);
+    if (!question) return;
+
+    if (question.pickType === "drag-drop-coupled" && zoneIdx !== undefined) {
+      const idx = parseInt(zoneIdx, 10);
+      const zoneStateField = question.zones?.[idx]?.stateField;
+      if (zoneStateField) this.state = { ...this.state, [zoneStateField]: null };
+    } else if (question.stateField) {
+      this.state = { ...this.state, [question.stateField]: null };
+    }
+    await this.render();
+  }
+
+  static async _onBrowse(_event, target) {
+    const qid = target?.dataset?.qid;
+    const zoneIdx = target?.dataset?.zone;
+    if (!qid) return;
+    const question = questions.find((q) => q.id === qid);
+    if (!question) return;
+
+    let browseCfg;
+    if (zoneIdx !== undefined) {
+      const idx = parseInt(zoneIdx, 10);
+      browseCfg = question.zones?.[idx]?.browse;
+    } else {
+      browseCfg = question.browse;
+    }
+    if (!browseCfg) return;
+    await openBrowse(browseCfg);
+  }
+
+  static async _onRoll(_event, target) {
+    const qid = target?.dataset?.qid;
+    if (!qid) return;
+    const question = questions.find((q) => q.id === qid);
+    if (question?.pickType !== "roll-table") return;
+
+    // Inline d10 roll — mirrors V1 _onRoll (line 601-626).
+    const formula = target?.dataset?.formula || question.rollFormula || "1d10";
+    try {
+      const roll = new Roll(formula);
+      await roll.evaluate({ async: true });
+      const result = roll.total;
+
+      // Q18 stateField is an array; the roll target is the first entry
+      // (q18_heritage_roll). Generalises to any future array-stateField roll.
+      const rollField = Array.isArray(question.stateField)
+        ? question.stateField[0]
+        : question.stateField;
+      if (!rollField) return;
+      this.state = { ...this.state, [rollField]: result };
+      await this.render();
+    } catch (error) {
+      console.error("[tqw-v2] Roll error:", error);
+      ui.notifications?.error(`Roll failed: ${error.message}`);
+    }
+  }
 }
