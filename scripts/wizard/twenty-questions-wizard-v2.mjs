@@ -72,4 +72,127 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   }
 
   // _prepareContext + handlers are wired in subsequent tasks (G2-G5).
+
+  async _prepareContext(_options) {
+    const currentId = this.state.currentId ?? "q1";
+    const currentIdx = questions.findIndex((q) => q.id === currentId);
+    const current = questions[currentIdx];
+
+    const enriched = await this._enrichCurrent(current);
+
+    const answeredCount = this._countAnswered();
+    const isLastStep = currentIdx === questions.length - 1;
+    const canBack = currentIdx > 0;
+
+    const validationResult = validate(this.state);
+    const validationError =
+      validationResult.errors?.find((e) => e.qid === currentId)?.message ?? null;
+
+    return {
+      currentId,
+      currentStep: currentIdx + 1,
+      current: enriched,
+      questions: this._questionsForStrip(),
+      answeredCount,
+      isLastStep,
+      canBack,
+      // Narratives are stored under state.narratives[qid] — see V1 line 96.
+      narrativeText: this.state.narratives?.[currentId] ?? "",
+      validationError,
+    };
+  }
+
+  _questionsForStrip() {
+    return questions.map((q) => ({
+      id: q.id,
+      sidebarLabel: q.sidebarLabel,
+      isAnswered: this._isQuestionAnswered(q),
+    }));
+  }
+
+  _countAnswered() {
+    return questions.filter((q) => this._isQuestionAnswered(q)).length;
+  }
+
+  // Mirrors V1's _isFilled (twenty-questions-wizard.mjs line 871-885):
+  //   - pickType "none" → narrative non-empty
+  //   - mechanical pick → stateField (or any of its array entries) non-null
+  _isQuestionAnswered(question) {
+    if (question.pickType === "none") {
+      return (this.state.narratives?.[question.id] ?? "").length > 0;
+    }
+    const fields = Array.isArray(question.stateField)
+      ? question.stateField
+      : [question.stateField];
+    return fields.some((f) => {
+      if (!f) return false;
+      const v = this.state[f];
+      return v !== null && v !== "" && v !== undefined;
+    });
+  }
+
+  async _enrichCurrent(question) {
+    // Copy and augment with runtime data (dropped items, rolled values, etc.).
+    const enriched = { ...question };
+
+    // Drag-drop single zone
+    if (question.pickType === "drag-drop" && typeof question.stateField === "string") {
+      const ref = this.state[question.stateField];
+      enriched.droppedItem = await this._resolveDroppedItem(ref);
+    }
+
+    // Drag-drop coupled (zones array)
+    if (question.pickType === "drag-drop-coupled" && Array.isArray(question.zones)) {
+      enriched.zones = await Promise.all(
+        question.zones.map(async (zone) => ({
+          ...zone,
+          droppedItem: await this._resolveDroppedItem(this.state[zone.stateField]),
+        })),
+      );
+    }
+
+    // Radio / select / nested primary value
+    if (typeof question.stateField === "string") {
+      enriched.value = this.state[question.stateField] ?? null;
+    }
+
+    // Sub-picker current value
+    if (question.subPicker?.stateField) {
+      enriched.subPickerValue = this.state[question.subPicker.stateField] ?? null;
+    }
+
+    // Roll-table current rolled value + outcome lookup.
+    // Q18 has rollFormula + outcomes:[{roll,name,modifier,otherEffects}].
+    // The roll result is stored at state.q18_heritage_roll (first element of
+    // the array stateField). The same pattern generalises to any future
+    // roll-table question.
+    if (question.pickType === "roll-table" && Array.isArray(question.outcomes)) {
+      const rollField = Array.isArray(question.stateField)
+        ? question.stateField[0]
+        : question.stateField;
+      const rolled = rollField ? this.state[rollField] ?? null : null;
+      enriched.rolledValue = rolled;
+      enriched.rolledOutcome = rolled
+        ? question.outcomes.find((o) => o.roll === rolled) ?? null
+        : null;
+    }
+
+    return enriched;
+  }
+
+  // Resolve a state-stored item reference to a Foundry document for display.
+  // State stores either a plain UUID string (Q1 village) or a {uuid, id, pack}
+  // object (drag-drop fields). See V1 _fetchItemData (line 841-852) for the
+  // original contract — we mirror it here for display purposes.
+  async _resolveDroppedItem(ref) {
+    if (!ref) return null;
+    if (typeof ref === "string") {
+      return (await fromUuid(ref).catch(() => null)) ?? null;
+    }
+    if (ref.uuid) return (await fromUuid(ref.uuid).catch(() => null)) ?? null;
+    if (ref.id && ref.pack) {
+      return (await fromUuid(`Compendium.${ref.pack}.Item.${ref.id}`).catch(() => null)) ?? null;
+    }
+    return null;
+  }
 }
