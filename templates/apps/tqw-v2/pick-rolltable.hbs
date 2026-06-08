@@ -1,0 +1,31 @@
+{{!-- Rolltable — Q18 heritage d10.
+      Question data shape (from question-definitions.mjs):
+        - rollFormula: "1d10"
+        - outcomes: [{roll, name, modifier, otherEffects}, ...]
+      Enrichment (from _enrichCurrent in G2) adds:
+        - rolledValue: number | null
+        - rolledOutcome: {roll, name, modifier, otherEffects} | null --}}
+<div class="zen-card zen-card--bold tqw-v2__pick tqw-v2__pick--rolltable">
+  <div class="zen-card__label">{{current.sidebarLabel}}</div>
+  <div class="zen-rolltable zen-rolltable--bold">
+    {{#each current.outcomes}}
+      <div class="zen-rolltable__row{{#if (eq roll ../current.rolledValue)}} zen-rolltable__row--rolled{{/if}}">
+        <span class="zen-rolltable__roll">{{roll}}</span>
+        <span class="zen-rolltable__outcome"><strong>{{name}}</strong> — {{modifier}}</span>
+      </div>
+    {{/each}}
+  </div>
+  {{#if current.rolledOutcome}}
+    <div class="zen-rolltable__result">
+      <span class="zen-rolltable__die">{{current.rolledValue}}</span>
+      <strong>{{current.rolledOutcome.name}}</strong> — {{current.rolledOutcome.modifier}}
+    </div>
+  {{/if}}
+  <button type="button"
+          class="zen-rolltable__roll-button"
+          data-action="tqw-roll"
+          data-qid="{{current.id}}"
+          data-formula="{{current.rollFormula}}">
+    🎲 {{#if current.rolledValue}}{{localize "NARUTO_D20_KAIHOU.WIZARD.REROLL"}}{{else}}{{localize "NARUTO_D20_KAIHOU.WIZARD.ROLL"}}{{/if}}
+  </button>
+</div>
