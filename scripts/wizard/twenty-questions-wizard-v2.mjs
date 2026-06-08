@@ -195,4 +195,67 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     }
     return null;
   }
+
+  static async _onBack(_event, _target) {
+    const currentIdx = questions.findIndex((q) => q.id === this.state.currentId);
+    if (currentIdx <= 0) return;
+    this.state = { ...this.state, currentId: questions[currentIdx - 1].id };
+    await this.render();
+  }
+
+  static async _onNext(_event, _target) {
+    const currentIdx = questions.findIndex((q) => q.id === this.state.currentId);
+    if (currentIdx >= questions.length - 1) return;
+
+    const validationResult = validate(this.state);
+    const blockingError = validationResult.errors?.find(
+      (e) => e.qid === this.state.currentId,
+    );
+    if (blockingError) {
+      ui.notifications?.warn(blockingError.message);
+      await this.render();
+      return;
+    }
+
+    this.state = { ...this.state, currentId: questions[currentIdx + 1].id };
+    await this.render();
+  }
+
+  static async _onCancel(_event, _target) {
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.CANCEL_CONFIRM_TITLE") },
+      content: `<p>${game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.CANCEL_CONFIRM_BODY")}</p>`,
+    });
+    if (confirmed) await this.close();
+  }
+
+  static async _onFinish(_event, _target) {
+    try {
+      await finishWizard(this.actor, this.state);
+      ui.notifications?.info(
+        game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.FINISH_OK"),
+      );
+      await this.close();
+    } catch (err) {
+      if (err instanceof FinishValidationError) {
+        ui.notifications?.warn(
+          game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.FINISH_BLOCKED"),
+        );
+        await this.render();
+        return;
+      }
+      console.error("[tqw-v2] Finish failed:", err);
+      ui.notifications?.error(
+        `${game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.FINISH_ERR")}: ${err.message}`,
+      );
+    }
+  }
+
+  static async _onProgressJump(_event, target) {
+    const qid = target?.dataset?.qid;
+    if (!qid) return;
+    if (!canJumpTo(this.state, qid)) return;
+    this.state = jumpTo(this.state, qid);
+    await this.render();
+  }
 }

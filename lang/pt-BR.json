@@ -38,7 +38,12 @@
       "CLEAR": "Clear",
       "NARRATIVE": "Narrative",
       "ROLL": "Roll",
-      "REROLL": "Reroll"
+      "REROLL": "Reroll",
+      "CANCEL_CONFIRM_TITLE": "Cancel 20 Questions?",
+      "CANCEL_CONFIRM_BODY": "Unsaved answers will be lost.",
+      "FINISH_OK": "20 Questions applied to the character.",
+      "FINISH_BLOCKED": "Some required questions are not yet answered.",
+      "FINISH_ERR": "Failed to apply 20 Questions"
     },
     "THEME": {
       "SETTING_NAME": "Zen Scroll Theme — Enabled",
