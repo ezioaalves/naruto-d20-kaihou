@@ -1,0 +1,14 @@
+{{!-- Progress strip — 20 segments, click-to-jump on done. --}}
+<div class="zen-progress-strip">
+  <div class="zen-progress-strip__bar">
+    {{#each questions}}
+      <span class="zen-progress-strip__step{{#if (eq id ../currentId)}} zen-progress-strip__step--active{{/if}}{{#if isAnswered}} zen-progress-strip__step--done{{/if}}"
+            data-action="tqw-progress-jump"
+            data-qid="{{id}}"></span>
+    {{/each}}
+  </div>
+  <div class="zen-progress-strip__meta">
+    <span>Q{{currentStep}} · {{current.sidebarLabel}}</span>
+    <span>{{answeredCount}} of 20 answered</span>
+  </div>
+</div>

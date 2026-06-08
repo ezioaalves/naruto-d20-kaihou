@@ -1,0 +1,19 @@
+{{!-- Footer — Back / Cancel / Next or Finish. --}}
+<footer class="tqw-v2__footer">
+  <button type="button" class="tqw-v2__btn" data-action="tqw-back" {{#unless canBack}}disabled{{/unless}}>
+    ← {{localize "NARUTO_D20_KAIHOU.WIZARD.BACK"}}
+  </button>
+  <button type="button" class="tqw-v2__btn" data-action="tqw-cancel">
+    {{localize "NARUTO_D20_KAIHOU.WIZARD.CANCEL"}}
+  </button>
+  <div class="tqw-v2__footer-spacer"></div>
+  {{#if isLastStep}}
+    <button type="button" class="tqw-v2__btn tqw-v2__btn--primary" data-action="tqw-finish">
+      {{localize "NARUTO_D20_KAIHOU.WIZARD.FINISH"}}
+    </button>
+  {{else}}
+    <button type="button" class="tqw-v2__btn tqw-v2__btn--primary" data-action="tqw-next">
+      {{localize "NARUTO_D20_KAIHOU.WIZARD.NEXT"}} →
+    </button>
+  {{/if}}
+</footer>
