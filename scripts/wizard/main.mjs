@@ -24,8 +24,11 @@ Hooks.on("renderActorSheet", (app, html, data) => {
   if (data.actor.type !== "character") return;
   if (!app.actor.items) return; // Not a full actor
 
-  const header = html.find(".actor-name");
-  if (header.length === 0) return;
+  // Find the header — try multiple selectors for compatibility with PF1e sheets
+  let header = html.find(".sheet-header");
+  if (header.length === 0) header = html.find(".window-header");
+  if (header.length === 0) header = html.find("header");
+  if (header.length === 0) return; // Abort if no header found
 
   const button = $(`<button type="button" class="tqw-sheet-button" title="Open 20 Questions Wizard">
     <i class="fas fa-scroll"></i> 20 Questions
@@ -36,5 +39,9 @@ Hooks.on("renderActorSheet", (app, html, data) => {
     wizard.render(true);
   });
 
-  header.after(button);
+  header.append(button);
 });
+
+// Expose wizard to game object for testing and direct access
+game[MODULE_ID] = game[MODULE_ID] || {};
+game[MODULE_ID].TwentyQuestionsWizard = TwentyQuestionsWizard;
