@@ -4,6 +4,111 @@
  * Compilation target: styles/apps/twenty-questions-wizard.css (loaded by
  * Foundry on world start; always effective regardless of theme toggle).
  *
- * Phase A: empty placeholder — filled in Phase F by converting the existing
- * styles/apps/twenty-questions-wizard.css to SCSS.
+ * Phase 1: pure CSS port — same rules, just compiled through sass so the
+ * wizard pipeline matches the theme pipeline. Tokens are imported but not
+ * yet consumed; Phase 2 will swap hard-coded values for var(--zen-*) calls.
  */
+
+@import "../tokens";
+@import "../components/index";
+
+// ─── Wizard rules (ported verbatim from former styles/apps/twenty-questions-wizard.css) ─
+
+.twenty-questions-wizard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: "Signika", sans-serif;
+}
+
+.tqw-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #888;
+}
+.tqw-header h1 { margin: 0; font-size: 1.1rem; }
+.tqw-progress { font-size: 0.9rem; color: #555; }
+
+.tqw-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.tqw-sidebar {
+  width: 180px;
+  border-right: 1px solid #888;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+.tqw-sidebar ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tqw-sidebar-item {
+  display: flex;
+  gap: 0.4em;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+.tqw-sidebar-item:hover { background: rgba(0, 0, 0, 0.05); }
+.tqw-sidebar-item.active { background: rgba(70, 130, 180, 0.15); border-left-color: steelblue; font-weight: bold; }
+.tqw-sidebar-item.answered { color: #2a7; }
+.tqw-sidebar-item.empty-required { color: #c33; }
+.tqw-sidebar-num { color: #888; font-size: 0.85em; min-width: 1.6em; text-align: right; }
+.tqw-required { color: #c33; }
+
+.tqw-pane {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+}
+.tqw-pane h2 { margin-top: 0; font-size: 1.05rem; }
+
+.tqw-pick-body { margin: 1rem 0; }
+.tqw-pick-body[data-pick-type="radio"] label { display: block; padding: 0.4rem; }
+.tqw-pick-body[data-pick-type="radio"] label img { width: 32px; vertical-align: middle; margin-right: 0.5em; }
+
+.tqw-drop-zone {
+  border: 2px dashed #888;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 4px;
+  min-height: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+.tqw-drop-zone.tqw-drop-active { border-color: steelblue; background: rgba(70, 130, 180, 0.08); }
+.tqw-drop-zone.tqw-drop-filled { border-style: solid; }
+
+.tqw-narrative { display: block; margin-top: 1rem; }
+.tqw-narrative-prompt { display: block; font-style: italic; color: #555; margin-bottom: 0.3em; }
+.tqw-narrative textarea { width: 100%; box-sizing: border-box; resize: vertical; }
+
+.tqw-error {
+  color: #c33;
+  background: rgba(204, 51, 51, 0.08);
+  padding: 0.5em;
+  border-radius: 3px;
+  margin-top: 0.5em;
+}
+
+.tqw-footer {
+  display: flex;
+  gap: 0.5em;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #888;
+}
+.tqw-spacer { flex: 1; }
+.tqw-footer button { padding: 0.4em 1em; }
+
+.tqw-heritage-table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 0.9rem; }
+.tqw-heritage-table th, .tqw-heritage-table td { border: 1px solid #aaa; padding: 0.4em; vertical-align: top; }
+.tqw-heritage-table tr.selected { background: rgba(70, 130, 180, 0.15); font-weight: bold; }
+.tqw-heritage-table tr { cursor: pointer; }
