@@ -29,10 +29,9 @@ describe("QUESTION_DEFINITIONS", () => {
     }
   });
 
-  it("every entry has narrativePrompt (non-empty string)", () => {
+  it("every entry has narrativePrompt as a string (may be empty if no longer shown)", () => {
     for (const d of QUESTION_DEFINITIONS) {
       expect(typeof d.narrativePrompt).toBe("string");
-      expect(d.narrativePrompt.length).toBeGreaterThan(0);
     }
   });
 
@@ -53,6 +52,15 @@ describe("QUESTION_DEFINITIONS", () => {
     expect(required.sort()).toEqual(["q1", "q4", "q7", "q8"]);
   });
 
+  it("Q2 is the drag-drop occupation picker backed by the occupations pack", () => {
+    const q2 = QUESTION_DEFINITIONS.find((d) => d.id === "q2");
+    expect(q2.pickType).toBe("drag-drop");
+    expect(q2.stateField).toBe("q2_occupation_uuid");
+    expect(q2.markerFlag).toBe("q2OccupationItem");
+    expect(q2.pack).toBe("naruto-d20-kaihou.occupations");
+    expect(q2.required).toBe(false);
+  });
+
   it("entries with pickType !== 'none' have a stateField (besides narratives)", () => {
     for (const d of QUESTION_DEFINITIONS) {
       if (d.pickType !== "none") {
@@ -68,6 +76,37 @@ describe("QUESTION_DEFINITIONS", () => {
       if (d.pickType === "nested") {
         expect(d.subPicker).toBeDefined();
         expect(typeof d.subPicker.stateField).toBe("string");
+      }
+    }
+  });
+});
+
+describe("browse config kind validation", () => {
+  const ALLOWED_KINDS = ["pack", "pf1Browser", "compendium"];
+  const questions = QUESTION_DEFINITIONS;
+
+  it("every browse config uses an allowed kind", () => {
+    const collectBrowses = (q) => {
+      const out = [];
+      if (q.browse) out.push(q.browse);
+      if (Array.isArray(q.zones)) for (const z of q.zones) if (z.browse) out.push(z.browse);
+      return out;
+    };
+    for (const q of questions) {
+      for (const b of collectBrowses(q)) {
+        expect(ALLOWED_KINDS).toContain(b.kind);
+      }
+    }
+  });
+
+  it("compendium-kind browse configs have a pack field", () => {
+    for (const q of questions) {
+      const browses = [q.browse, ...(q.zones?.map((z) => z.browse) ?? [])].filter(Boolean);
+      for (const b of browses) {
+        if (b.kind === "compendium") {
+          expect(typeof b.pack).toBe("string");
+          expect(b.pack.length).toBeGreaterThan(0);
+        }
       }
     }
   });

@@ -251,28 +251,33 @@ export const QUESTION_DEFINITIONS = [
     markerFlag: "q1Village",
   },
 
-  // Q2 — Clan (narrative only)
+  // Q2 — Clan / Starting Occupation (drag-drop from occupations pack)
   {
     id: "q2",
-    pickType: "none",
-    stateField: null,
+    pickType: "drag-drop",
+    stateField: "q2_occupation_uuid",
     required: false,
     questionText: "Which Clan does your character descend from? (If clanless, describe how they reached the academy.)",
     sidebarLabel: "Clan",
-    narrativePrompt: "Name the clan or describe a clanless child's path to the academy. Traditions, secret arts (Hiden), bloodlines (Kekkei Genkai) — or the absence of all three, and what filled the gap?",
+    narrativePrompt: "",
+    pack: "naruto-d20-kaihou.occupations",
+    markerFlag: "q2OccupationItem",
+    dropAccepts: {type: "feat"},
+    browse: {kind: "pack", id: "naruto-d20-kaihou.occupations", label: "Browse Occupations"},
   },
 
-  // Q3 — Human Bonus Feat (drag-drop)
+  // Q3 — Biggest Talent / Human Bonus Feat (drag-drop)
   {
     id: "q3",
     pickType: "drag-drop",
     stateField: "q3_human_bonus_feat_uuid",
     required: false,
-    questionText: "What is your Human Bonus Feat?",
-    sidebarLabel: "Bonus Feat",
-    narrativePrompt: "Every shinobi character starts with a Human bonus feat. What feat reflects how you trained — and the moment you realised this was your shape?",
+    questionText: "What is your biggest talent?",
+    sidebarLabel: "Talent",
+    narrativePrompt: "",
     markerFlag: "q3HumanBonusFeat",
     dropAccepts: {type: "feat"},
+    browse: {kind: "pf1Browser", browser: "feats", label: "Browse Feats"},
   },
 
   // Q4 — Nature Affinity (radio)
@@ -358,9 +363,10 @@ export const QUESTION_DEFINITIONS = [
     required: false,
     questionText: "What is your greatest achievement so far?",
     sidebarLabel: "Achievement",
-    narrativePrompt: "The moment that proved you are who you say you are. Your Level 1 Feat should grow out of this — drag the feat here, and tell the story.",
+    narrativePrompt: "",
     markerFlag: "q9Level1Feat",
     dropAccepts: {type: "feat"},
+    browse: {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse Feats"},
   },
 
   // Q10 — Resentment / Flaw + Bonus Feat (drag-drop-coupled)
@@ -373,7 +379,16 @@ export const QUESTION_DEFINITIONS = [
     sidebarLabel: "Flaw",
     narrativePrompt: "The weight that doesn't leave. Optional: pick a Character Flaw from the community compendium and the Bonus Feat it grants — drag both here. Then name the wound.",
     markerFlag: ["q10Flaw", "q10BonusFeat"],
-    dropAccepts: {type: "any"},
+    zones: [
+      {
+        stateField: "q10_flaw_uuid", label: "Flaw", dropAccepts: {type: "feat"},
+        browse: {kind: "compendium", pack: "naruto-d20.feats", folder: "Misc", label: "Browse Flaws"},
+      },
+      {
+        stateField: "q10_bonus_feat_uuid", label: "Bonus Feat", dropAccepts: {type: "feat"},
+        browse: {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse Feats"},
+      },
+    ],
   },
 
   // Q11 — Peace (narrative only)
@@ -398,17 +413,18 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "A phobia, a deep-seated worry — Fear of Thunder, Distrust of Doctors. It doesn't need to be rational; it needs to be true.",
   },
 
-  // Q13 — Mentor (nested: drag-drop + class skill)
+  // Q13 — Mentor (drag-drop technique + class-skill sub-picker)
   {
     id: "q13",
-    pickType: "nested",
+    pickType: "drag-drop",
     stateField: "q13_mentor_technique_uuid",
     required: false,
     questionText: "Who was your mentor?",
     sidebarLabel: "Mentor",
     narrativePrompt: "Name them. What they taught — drag the Rank 2 Technique here — and pick the related Class Skill.",
     markerFlag: "q13Mentor",
-    dropAccepts: {subType: "technique"},
+    dropAccepts: {type: "naruto-d20.technique"},
+    browse: {kind: "pack", id: "naruto-d20.techniques", label: "Browse Techniques"},
     subPicker: {
       stateField: "q13_class_skill",
       type: "select",
@@ -451,6 +467,7 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "Family, rivals, childhood friends. One of them gave you a Restricted Item (non-sealed) — name them, and drag the item here.",
     markerFlag: "q16RestrictedItem",
     dropAccepts: {typeIn: ["equipment", "weapon", "consumable", "loot"]},
+    browse: {kind: "pf1Browser", browser: "items", label: "Browse Items"},
   },
 
   // Q17 — Parents / 0-Rank Skill Bump (select, filtered)
