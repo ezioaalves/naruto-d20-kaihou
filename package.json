@@ -7,24 +7,26 @@
   "scripts": {
     "pack:villages": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package pack --id naruto-d20-kaihou --type Module --compendiumName villages --in packs/_source/villages --out packs",
     "pack:questions": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package pack --id naruto-d20-kaihou --type Module --compendiumName questions --in packs/_source/questions --out packs",
+    "pack:schools": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package pack --id naruto-d20-kaihou --type Module --compendiumName schools --in packs/_source/schools --out packs",
     "pack:all": "npm run pack:villages && npm run pack:questions && npm run pack:schools",
     "unpack:villages": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package unpack --id naruto-d20-kaihou --type Module --compendiumName villages --in packs --out packs/_source/villages",
     "unpack:questions": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package unpack --id naruto-d20-kaihou --type Module --compendiumName questions --in packs --out packs/_source/questions",
+    "unpack:schools": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package unpack --id naruto-d20-kaihou --type Module --compendiumName schools --in packs --out packs/_source/schools",
     "unpack:all": "npm run unpack:villages && npm run unpack:questions && npm run unpack:schools",
     "validate:compendia": "python3 scripts/validate-output.py",
     "validate:manifest": "node tools/validate-manifest.mjs",
-    "lint:js": "eslint --no-error-on-unmatched-pattern scripts tools eslint.config.mjs",
+    "lint:js": "eslint --no-error-on-unmatched-pattern scripts tools tests eslint.config.mjs vitest.config.mjs",
     "lint:css": "node node_modules/stylelint/bin/stylelint.mjs --allow-empty-input \"styles/**/*.css\"",
     "lint:format": "prettier --check \"eslint.config.mjs\" \"lang/**/*.json\"",
     "lint": "npm run lint:js && npm run lint:css && npm run lint:format",
     "lint:fix": "eslint --fix --no-error-on-unmatched-pattern scripts tools eslint.config.mjs && node node_modules/stylelint/bin/stylelint.mjs --fix \"styles/**/*.css\" && prettier --write \"eslint.config.mjs\" \"lang/**/*.json\"",
     "generate-villages": "python3 scripts/generate-villages.py",
     "generate-questions": "python3 scripts/generate-questions.py",
+    "generate-schools": "python3 scripts/generate-schools.py",
     "validate-output": "python3 scripts/validate-output.py",
-    "test": "python3 -m pytest tests/ -v",
-    "pack:schools": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package pack --id naruto-d20-kaihou --type Module --compendiumName schools --in packs/_source/schools --out packs",
-    "unpack:schools": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package unpack --id naruto-d20-kaihou --type Module --compendiumName schools --in packs --out packs/_source/schools",
-    "generate-schools": "python3 scripts/generate-schools.py"
+    "test": "python3 -m pytest tests/ -v && npm run test:js",
+    "test:js": "vitest run",
+    "test:js:watch": "vitest"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -34,6 +36,7 @@
     "globals": "^17.6.0",
     "prettier": "^3.8.3",
     "stylelint": "^17.12.0",
-    "stylelint-config-standard": "^40.0.0"
+    "stylelint-config-standard": "^40.0.0",
+    "vitest": "^1.6.1"
   }
 }

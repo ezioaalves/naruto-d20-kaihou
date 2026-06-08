@@ -46,6 +46,21 @@ const foundryGlobals = {
   RollPF: "readonly",
 };
 
+/**
+ * Vitest test globals. These are injected by Vitest and available in test files.
+ */
+const vitestGlobals = {
+  describe: "readonly",
+  it: "readonly",
+  test: "readonly",
+  expect: "readonly",
+  vi: "readonly",
+  beforeEach: "readonly",
+  beforeAll: "readonly",
+  afterEach: "readonly",
+  afterAll: "readonly",
+};
+
 export default [
   {
     ignores: ["node_modules/**", "packs/**", "dist/**", "public/**", "pf1/**", "pf1-source/**"],
@@ -78,6 +93,23 @@ export default [
       sourceType: "module",
       globals: {
         ...globals.node,
+      },
+    },
+    rules: {
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
+      "prefer-const": "warn",
+      "no-var": "error",
+    },
+  },
+  // Wizard tests and implementation — runs under Node with Vitest.
+  {
+    files: ["scripts/wizard/**/*.mjs", "tests/wizard/**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+        ...vitestGlobals,
       },
     },
     rules: {
