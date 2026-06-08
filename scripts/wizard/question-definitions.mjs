@@ -517,3 +517,6 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "A true shinobi accepts death. Envisioning it defines how they live. Where, when, for whom, against what?",
   },
 ];
+
+// Re-export as `questions` for Phase 2 wizard compatibility.
+export { QUESTION_DEFINITIONS as questions };
