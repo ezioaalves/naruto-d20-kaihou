@@ -8,7 +8,7 @@
  *   footer   — Back / Cancel / Next or Finish
  *
  * Actions are wired via DEFAULT_OPTIONS.actions; drag-drop is wired via
- * the form-root listeners. State is held on `this.state` (mutable) and
+ * the form-root listeners. State is held on `this.wizardState` (mutable) and
  * persisted to the actor only on `tqw-finish`.
  */
 
@@ -64,7 +64,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   constructor(actor, options = {}) {
     super(options);
     this.actor = actor;
-    this.state = loadFromActor(actor) ?? defaultState();
+    this.wizardState = loadFromActor(actor) ?? defaultState();
   }
 
   get title() {
@@ -74,7 +74,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   // _prepareContext + handlers are wired in subsequent tasks (G2-G5).
 
   async _prepareContext(_options) {
-    const currentId = this.state.currentId ?? "q1";
+    const currentId = this.wizardState.currentId ?? "q1";
     const currentIdx = questions.findIndex((q) => q.id === currentId);
     const current = questions[currentIdx];
 
@@ -84,7 +84,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     const isLastStep = currentIdx === questions.length - 1;
     const canBack = currentIdx > 0;
 
-    const validationResult = validate(this.state);
+    const validationResult = validate(this.wizardState);
     const validationError =
       validationResult.errors?.find((e) => e.qid === currentId)?.message ?? null;
 
@@ -97,7 +97,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
       isLastStep,
       canBack,
       // Narratives are stored under state.narratives[qid] — see V1 line 96.
-      narrativeText: this.state.narratives?.[currentId] ?? "",
+      narrativeText: this.wizardState.narratives?.[currentId] ?? "",
       validationError,
     };
   }
@@ -119,14 +119,14 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   //   - mechanical pick → stateField (or any of its array entries) non-null
   _isQuestionAnswered(question) {
     if (question.pickType === "none") {
-      return (this.state.narratives?.[question.id] ?? "").length > 0;
+      return (this.wizardState.narratives?.[question.id] ?? "").length > 0;
     }
     const fields = Array.isArray(question.stateField)
       ? question.stateField
       : [question.stateField];
     return fields.some((f) => {
       if (!f) return false;
-      const v = this.state[f];
+      const v = this.wizardState[f];
       return v !== null && v !== "" && v !== undefined;
     });
   }
@@ -137,7 +137,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
 
     // Drag-drop single zone
     if (question.pickType === "drag-drop" && typeof question.stateField === "string") {
-      const ref = this.state[question.stateField];
+      const ref = this.wizardState[question.stateField];
       enriched.droppedItem = await this._resolveDroppedItem(ref);
     }
 
@@ -146,19 +146,19 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
       enriched.zones = await Promise.all(
         question.zones.map(async (zone) => ({
           ...zone,
-          droppedItem: await this._resolveDroppedItem(this.state[zone.stateField]),
+          droppedItem: await this._resolveDroppedItem(this.wizardState[zone.stateField]),
         })),
       );
     }
 
     // Radio / select / nested primary value
     if (typeof question.stateField === "string") {
-      enriched.value = this.state[question.stateField] ?? null;
+      enriched.value = this.wizardState[question.stateField] ?? null;
     }
 
     // Sub-picker current value
     if (question.subPicker?.stateField) {
-      enriched.subPickerValue = this.state[question.subPicker.stateField] ?? null;
+      enriched.subPickerValue = this.wizardState[question.subPicker.stateField] ?? null;
     }
 
     // Roll-table current rolled value + outcome lookup.
@@ -170,7 +170,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
       const rollField = Array.isArray(question.stateField)
         ? question.stateField[0]
         : question.stateField;
-      const rolled = rollField ? this.state[rollField] ?? null : null;
+      const rolled = rollField ? this.wizardState[rollField] ?? null : null;
       enriched.rolledValue = rolled;
       enriched.rolledOutcome = rolled
         ? question.outcomes.find((o) => o.roll === rolled) ?? null
@@ -197,19 +197,19 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   }
 
   static async _onBack(_event, _target) {
-    const currentIdx = questions.findIndex((q) => q.id === this.state.currentId);
+    const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
     if (currentIdx <= 0) return;
-    this.state = { ...this.state, currentId: questions[currentIdx - 1].id };
+    this.wizardState = { ...this.wizardState, currentId: questions[currentIdx - 1].id };
     await this.render();
   }
 
   static async _onNext(_event, _target) {
-    const currentIdx = questions.findIndex((q) => q.id === this.state.currentId);
+    const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
     if (currentIdx >= questions.length - 1) return;
 
-    const validationResult = validate(this.state);
+    const validationResult = validate(this.wizardState);
     const blockingError = validationResult.errors?.find(
-      (e) => e.qid === this.state.currentId,
+      (e) => e.qid === this.wizardState.currentId,
     );
     if (blockingError) {
       ui.notifications?.warn(blockingError.message);
@@ -217,7 +217,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
       return;
     }
 
-    this.state = { ...this.state, currentId: questions[currentIdx + 1].id };
+    this.wizardState = { ...this.wizardState, currentId: questions[currentIdx + 1].id };
     await this.render();
   }
 
@@ -231,7 +231,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
 
   static async _onFinish(_event, _target) {
     try {
-      await finishWizard(this.actor, this.state);
+      await finishWizard(this.actor, this.wizardState);
       ui.notifications?.info(
         game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.FINISH_OK"),
       );
@@ -254,8 +254,8 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   static async _onProgressJump(_event, target) {
     const qid = target?.dataset?.qid;
     if (!qid) return;
-    if (!canJumpTo(this.state, qid)) return;
-    this.state = jumpTo(this.state, qid);
+    if (!canJumpTo(this.wizardState, qid)) return;
+    this.wizardState = jumpTo(this.wizardState, qid);
     await this.render();
   }
 
@@ -265,7 +265,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     if (!qid || value === undefined) return;
     const question = questions.find((q) => q.id === qid);
     if (!question?.stateField) return;
-    this.state = { ...this.state, [question.stateField]: value };
+    this.wizardState = { ...this.wizardState, [question.stateField]: value };
     await this.render();
   }
 
@@ -274,7 +274,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     const stateField = target?.dataset?.stateField;
     const value = event?.target?.value ?? target?.value ?? "";
     if (!qid || !stateField) return;
-    this.state = { ...this.state, [stateField]: value };
+    this.wizardState = { ...this.wizardState, [stateField]: value };
     await this.render();
   }
 
@@ -283,7 +283,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     const stateField = target?.dataset?.stateField;
     const value = event?.target?.value ?? target?.value ?? "";
     if (!qid || !stateField) return;
-    this.state = { ...this.state, [stateField]: value };
+    this.wizardState = { ...this.wizardState, [stateField]: value };
     await this.render();
   }
 
@@ -292,8 +292,8 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     const value = event?.target?.value ?? target?.value ?? "";
     if (!qid) return;
     // Narratives are stored under state.narratives[qid] — see V1 line 339.
-    const narratives = { ...(this.state.narratives ?? {}), [qid]: value };
-    this.state = { ...this.state, narratives };
+    const narratives = { ...(this.wizardState.narratives ?? {}), [qid]: value };
+    this.wizardState = { ...this.wizardState, narratives };
     // No render — narrative is a textarea, re-rendering would steal focus.
   }
 
@@ -307,9 +307,9 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     if (question.pickType === "drag-drop-coupled" && zoneIdx !== undefined) {
       const idx = parseInt(zoneIdx, 10);
       const zoneStateField = question.zones?.[idx]?.stateField;
-      if (zoneStateField) this.state = { ...this.state, [zoneStateField]: null };
+      if (zoneStateField) this.wizardState = { ...this.wizardState, [zoneStateField]: null };
     } else if (question.stateField) {
-      this.state = { ...this.state, [question.stateField]: null };
+      this.wizardState = { ...this.wizardState, [question.stateField]: null };
     }
     await this.render();
   }
@@ -351,7 +351,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
         ? question.stateField[0]
         : question.stateField;
       if (!rollField) return;
-      this.state = { ...this.state, [rollField]: result };
+      this.wizardState = { ...this.wizardState, [rollField]: result };
       await this.render();
     } catch (error) {
       console.error("[tqw-v2] Roll error:", error);
@@ -429,7 +429,7 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
       ? question.zones?.[parseInt(zoneIdx, 10)]?.stateField
       : question.stateField;
     if (!stateField) return;
-    this.state = { ...this.state, [stateField]: payload.uuid };
+    this.wizardState = { ...this.wizardState, [stateField]: payload.uuid };
     await this.render();
   }
 
