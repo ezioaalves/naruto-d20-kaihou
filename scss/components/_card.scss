@@ -1,7 +1,47 @@
 /**
  * .zen-card — sumi-e parchment card primitive.
  *
- * Phase 1: empty placeholder.
- * Phase 2: brush-edged container with parchment background, used by wizard
- * pane, occupation dialog, future Kaihou tools.
+ * Default variant (`.zen-card`) — soft parchment background, thin border,
+ * rounded corners. Used by future Kaihou surfaces (chakra tab, dialogs).
+ *
+ * Bold variant (`.zen-card--bold`) — heavy ink border, square corners,
+ * parchment-grain texture, deep shadow. Used only by the wizard (.tqw-v2).
  */
+
+.zen-card {
+  background: var(--zen-card-bg);
+  border: var(--zen-border-hair) solid var(--zen-border);
+  border-radius: var(--zen-radius-md);
+  padding: var(--zen-space-3);
+}
+
+.zen-card__label {
+  font-size: var(--zen-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--zen-ink-accent);
+  font-weight: 600;
+  margin-bottom: var(--zen-space-2);
+}
+
+.zen-card--bold {
+  background: var(--zen-bold-card-bg);
+  border: var(--zen-bold-border);
+  border-radius: 0;
+  padding: var(--zen-space-3);
+  box-shadow: var(--zen-bold-card-shadow);
+  position: relative;
+  margin-bottom: var(--zen-space-2);
+}
+
+.zen-card--bold::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid rgba(94, 67, 39, 0.2);
+  pointer-events: none;
+}
+
+.zen-card--bold > * {
+  position: relative;
+}
