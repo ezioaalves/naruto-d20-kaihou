@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2026-06-07
+
+### Added
+- **20 Questions Sheet Wizard (D2.3b)** — First JavaScript feature for naruto-d20-kaihou. Foundry Application V1 wizard that walks players through all 20 character-creation questions (Q1–Q20), applies mechanical effects for 11 questions, and writes all 20 narratives to actor biography.
+  - Mechanical applies: Q1 (village), Q3 (bonus feat), Q4 (affinity), Q7 (Loyalist/Outsider + class skill), Q8 (Adherent/Sceptic + subskill rank), Q9 (feat), Q10 (coupled flaw + bonus feat), Q13 (mentor technique + class skill), Q16 (restricted item), Q17 (0-rank skill +2 rank), Q18 (heritage Modifier with d10 roll).
+  - Narrative capture: all 20 questions written as HTML-delimited region in actor biography, preserving player hand-edits outside the wizard region.
+  - UI: one-pane-per-question with sidebar checklist, radio/select/nested/drag-drop/roll-table pick types, real-time validation (required, sub-required, coupled fields).
+  - Architecture: pure-logic modules (wizard-state, biography-renderer, mechanic-applier, heritage-table) fully TDD'd with 98 tests; UI verified manually in Foundry.
+  - Localization: en.json strings; pt-BR placeholder with English fallback.
+- JavaScript infrastructure: Vitest test runner, ESLint JS rules, esmodules + styles declarations in module.json.
+
+### Fixed
+- (none for patch release)
+
+### Known Limitations
+- Q18 "Other Effects" are not auto-applied; players apply manually via PF1e sheet (as designed).
+- Pre-wizard items lack marker flags; only wizard-added items are tracked for revert on re-open.
+
+---
+
 ## v1.1.2 - 2026-06-07
 
 ### Added
