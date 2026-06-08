@@ -358,4 +358,87 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
       ui.notifications?.error(`Roll failed: ${error.message}`);
     }
   }
+
+  _onRender(_context, _options) {
+    super._onRender?.(_context, _options);
+    this._wireDropZones();
+  }
+
+  _wireDropZones() {
+    const root = this.element;
+    if (!root) return;
+    const zones = root.querySelectorAll(".zen-drop-zone[data-qid]");
+    for (const zone of zones) {
+      zone.addEventListener("dragover", (e) => this._onDragOverZone(e, zone));
+      zone.addEventListener("dragleave", (e) => this._onDragLeaveZone(e, zone));
+      zone.addEventListener("drop", (e) => this._onDropZone(e, zone));
+    }
+  }
+
+  _onDragOverZone(event, zone) {
+    event.preventDefault();
+    zone.classList.add("zen-drop-zone--drag-over");
+  }
+
+  _onDragLeaveZone(_event, zone) {
+    zone.classList.remove("zen-drop-zone--drag-over");
+  }
+
+  async _onDropZone(event, zone) {
+    event.preventDefault();
+    zone.classList.remove("zen-drop-zone--drag-over");
+
+    let payload;
+    try {
+      payload = JSON.parse(event.dataTransfer.getData("text/plain"));
+    } catch (_e) {
+      return;
+    }
+
+    const qid = zone.dataset.qid;
+    const zoneIdx = zone.dataset.zone;
+    const question = questions.find((q) => q.id === qid);
+    if (!question) return;
+
+    if (payload?.type !== "Item" || !payload?.uuid) {
+      ui.notifications?.warn(
+        game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.DROP_TYPE_REJECTED"),
+      );
+      return;
+    }
+
+    const item = await fromUuid(payload.uuid).catch(() => null);
+    if (!item) return;
+
+    // Validate dropAccepts.type if specified.
+    const accepts = zoneIdx !== undefined
+      ? question.zones?.[parseInt(zoneIdx, 10)]?.dropAccepts
+      : question.dropAccepts;
+    if (accepts?.type && !this._matchesDropType(item, accepts.type)) {
+      ui.notifications?.warn(
+        game.i18n.format("NARUTO_D20_KAIHOU.WIZARD.DROP_WRONG_TYPE", {
+          expected: accepts.type,
+          got: item.type,
+        }),
+      );
+      return;
+    }
+
+    // Persist the drop into state.
+    const stateField = zoneIdx !== undefined
+      ? question.zones?.[parseInt(zoneIdx, 10)]?.stateField
+      : question.stateField;
+    if (!stateField) return;
+    this.state = { ...this.state, [stateField]: payload.uuid };
+    await this.render();
+  }
+
+  _matchesDropType(item, expected) {
+    // "feat" matches item.type === "feat".
+    // "naruto-d20.technique" matches item.system?.type === "naruto-d20.technique"
+    //   OR a system-tagged technique item.
+    if (expected === item.type) return true;
+    if (expected.includes(".") && item.system?.type === expected) return true;
+    return false;
+  }
 }

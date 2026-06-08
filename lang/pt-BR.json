@@ -43,7 +43,9 @@
       "CANCEL_CONFIRM_BODY": "Unsaved answers will be lost.",
       "FINISH_OK": "20 Questions applied to the character.",
       "FINISH_BLOCKED": "Some required questions are not yet answered.",
-      "FINISH_ERR": "Failed to apply 20 Questions"
+      "FINISH_ERR": "Failed to apply 20 Questions",
+      "DROP_TYPE_REJECTED": "Only items can be dropped here.",
+      "DROP_WRONG_TYPE": "Wrong item type — expected {expected}, got {got}."
     },
     "THEME": {
       "SETTING_NAME": "Zen Scroll Theme — Enabled",
