@@ -1,0 +1,35 @@
+{
+  "_id": "82bce645b806a7c4",
+  "_key": "!items!82bce645b806a7c4",
+  "name": "Tenro Battle Maiden School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Cavalry discipline and shock assault.</p><p>Tenro battle maidens are elite mounted warriors trained to defend allies and break enemy lines with disciplined charges.</p><p><b>Village:</b> Kiringakure</p><p><b>Clan:</b> Tenro</p><p><b>Bonus Feat:</b> Mobility</p><p><b>Starting Techniques:</b></p><ul><li>Stonewall Tactics</li><li>Taijutsu: Jiki-uchi</li><li>Shodan Jouryoku</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kiringakure",
+      "Tenro"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/unicorn.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "tenro-battle-maiden-school",
+        "village": "Kiringakure",
+        "clan": "Tenro",
+        "legacyName": "Utaku Battle Maiden School",
+        "bonusFeat": "Mobility",
+        "startingTechniques": [
+          "Stonewall Tactics",
+          "Taijutsu: Jiki-uchi",
+          "Shodan Jouryoku"
+        ]
+      }
+    }
+  }
+}

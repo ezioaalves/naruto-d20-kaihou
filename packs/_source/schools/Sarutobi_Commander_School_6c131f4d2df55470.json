@@ -1,0 +1,35 @@
+{
+  "_id": "6c131f4d2df55470",
+  "_key": "!items!6c131f4d2df55470",
+  "name": "Sarutobi Commander School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Battlefield command and direct assault.</p><p>Sarutobi commanders lead from the front, turning tactical discipline and martial presence into victory for the pride.</p><p><b>Village:</b> Shishigakure</p><p><b>Clan:</b> Sarutobi</p><p><b>Bonus Feat:</b> Weapon Focus</p><p><b>Starting Techniques:</b></p><ul><li>Ikaku no Jutsu</li><li>Dazzling Performance</li><li>Taijutsu: Gouken</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Shishigakure",
+      "Sarutobi"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/lion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "sarutobi-commander-school",
+        "village": "Shishigakure",
+        "clan": "Sarutobi",
+        "legacyName": "Akodo Commander School",
+        "bonusFeat": "Weapon Focus",
+        "startingTechniques": [
+          "Ikaku no Jutsu",
+          "Dazzling Performance",
+          "Taijutsu: Gouken"
+        ]
+      }
+    }
+  }
+}

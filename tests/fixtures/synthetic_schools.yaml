@@ -1,0 +1,42 @@
+spec_version: 1
+schools:
+  - name: Test School
+    slug: test-school
+    status: active
+    village: Testgakure
+    clan: Test Clan
+    legacy_name: Old Test School
+    source_md: Mechanics/Character_Options/Schools/Test/Test School.md
+    focus: Testing static school packages.
+    description: A test school used by the generator suite.
+    bonus_feat: {name: Test Feat, source_uuid: null}
+    starting_techniques:
+      - {name: Test Technique One, source_uuid: null}
+      - {name: Test Technique Two, source_uuid: null}
+      - {name: Test Technique Three, source_uuid: null}
+    starting_outfit: Test outfit.
+    tags: [School, Testgakure, Test Clan]
+    foundry_source: null
+    house_rules_applied: [kaihou-static-school-package]
+    created: 2026-06-07
+    updated: 2026-06-07
+  - name: Draft School
+    slug: draft-school
+    status: draft
+    village: Testgakure
+    clan: Draft Clan
+    legacy_name: null
+    source_md: Mechanics/Character_Options/Schools/Test/Draft School.md
+    focus: Draft content.
+    description: This should not export.
+    bonus_feat: {name: Draft Feat, source_uuid: null}
+    starting_techniques:
+      - {name: Draft One, source_uuid: null}
+      - {name: Draft Two, source_uuid: null}
+      - {name: Draft Three, source_uuid: null}
+    starting_outfit: Draft outfit.
+    tags: [School, Draft]
+    foundry_source: null
+    house_rules_applied: [kaihou-static-school-package]
+    created: 2026-06-07
+    updated: 2026-06-07

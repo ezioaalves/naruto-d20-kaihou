@@ -1,0 +1,35 @@
+{
+  "_id": "c622fcbefd57f0e5",
+  "_key": "!items!c622fcbefd57f0e5",
+  "name": "Tsuchigumo Meishodo Master School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Talismans, medical ninjutsu, and foreign alchemy.</p><p>Tsuchigumo meishodo masters bind practical chakra into talismans, remedies, and field techniques for long journeys.</p><p><b>Village:</b> Kiringakure</p><p><b>Clan:</b> Tsuchigumo</p><p><b>Bonus Feat:</b> Craft Shinobi Drugs</p><p><b>Starting Techniques:</b></p><ul><li>Inari&#x27;s Blessing</li><li>Mizudama no Jutsu</li><li>Sarutobi no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kiringakure",
+      "Tsuchigumo"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/unicorn.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "tsuchigumo-meishodo-master-school",
+        "village": "Kiringakure",
+        "clan": "Tsuchigumo",
+        "legacyName": "Iuchi Meishodo Master School",
+        "bonusFeat": "Craft Shinobi Drugs",
+        "startingTechniques": [
+          "Inari's Blessing",
+          "Mizudama no Jutsu",
+          "Sarutobi no Jutsu"
+        ]
+      }
+    }
+  }
+}

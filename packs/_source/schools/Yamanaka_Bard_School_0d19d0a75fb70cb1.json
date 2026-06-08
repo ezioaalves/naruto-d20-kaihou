@@ -1,0 +1,35 @@
+{
+  "_id": "0d19d0a75fb70cb1",
+  "_key": "!items!0d19d0a75fb70cb1",
+  "name": "Yamanaka Bard School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Propaganda, morale, and psychological warfare.</p><p>Yamanaka bards know that memory, story, and voice can turn a battlefield before the first weapon is drawn.</p><p><b>Village:</b> Shishigakure</p><p><b>Clan:</b> Yamanaka</p><p><b>Bonus Feat:</b> Creative</p><p><b>Starting Techniques:</b></p><ul><li>Esagashi no Jutsu</li><li>Shougenzou no Jutsu</li><li>Lightning Raid</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Shishigakure",
+      "Yamanaka"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/lion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "yamanaka-bard-school",
+        "village": "Shishigakure",
+        "clan": "Yamanaka",
+        "legacyName": "Ikoma Bard School",
+        "bonusFeat": "Creative",
+        "startingTechniques": [
+          "Esagashi no Jutsu",
+          "Shougenzou no Jutsu",
+          "Lightning Raid"
+        ]
+      }
+    }
+  }
+}

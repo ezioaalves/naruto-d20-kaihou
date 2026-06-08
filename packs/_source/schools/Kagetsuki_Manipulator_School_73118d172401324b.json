@@ -1,0 +1,35 @@
+{
+  "_id": "73118d172401324b",
+  "_key": "!items!73118d172401324b",
+  "name": "Kagetsuki Manipulator School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Deception, social pressure, and mental manipulation.</p><p>Kagetsuki manipulators protect Sasorigakure with lies, masks, and perfectly placed pressure instead of open force.</p><p><b>Village:</b> Sasorigakure</p><p><b>Clan:</b> Kagetsuki</p><p><b>Bonus Feat:</b> Force of Personality</p><p><b>Starting Techniques:</b></p><ul><li>Onwaku no Jutsu</li><li>Henge no Jutsu</li><li>Well of Desire</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Sasorigakure",
+      "Kagetsuki"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/scorpion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "kagetsuki-manipulator-school",
+        "village": "Sasorigakure",
+        "clan": "Kagetsuki",
+        "legacyName": "Bayushi Manipulator School",
+        "bonusFeat": "Force of Personality",
+        "startingTechniques": [
+          "Onwaku no Jutsu",
+          "Henge no Jutsu",
+          "Well of Desire"
+        ]
+      }
+    }
+  }
+}

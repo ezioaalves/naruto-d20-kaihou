@@ -1,0 +1,35 @@
+{
+  "_id": "05930e62f25b04ca",
+  "_key": "!items!05930e62f25b04ca",
+  "name": "Worldly Ronin Path",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Masterless survival and adaptable field training.</p><p>Ronin are masterless shinobi, survivors, mercenaries, and wanderers whose training is assembled from what kept them alive on the road.</p><p><b>Village:</b> Generic</p><p><b>Clan:</b> None</p><p><b>Bonus Feat:</b> Skilled</p><p><b>Starting Techniques:</b></p><ul><li>Taijutsu: Keikai-uchi</li><li>Doku Hakken no Jutsu</li><li>Bunshin no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Generic",
+      "Ronin"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/ronin.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "worldly-ronin-path",
+        "village": null,
+        "clan": null,
+        "legacyName": "Wordly Ronin Path",
+        "bonusFeat": "Skilled",
+        "startingTechniques": [
+          "Taijutsu: Keikai-uchi",
+          "Doku Hakken no Jutsu",
+          "Bunshin no Jutsu"
+        ]
+      }
+    }
+  }
+}

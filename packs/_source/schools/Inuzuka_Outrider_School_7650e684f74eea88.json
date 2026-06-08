@@ -1,0 +1,35 @@
+{
+  "_id": "7650e684f74eea88",
+  "_key": "!items!7650e684f74eea88",
+  "name": "Inuzuka Outrider School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Reconnaissance, mounted movement, and animal bonds.</p><p>Inuzuka outriders are scouts and vanguards who move with trained animals as a single hunting unit.</p><p><b>Village:</b> Kiringakure</p><p><b>Clan:</b> Inuzuka</p><p><b>Bonus Feat:</b> Animal Affinity</p><p><b>Starting Techniques:</b></p><ul><li>Juuki no Jutsu</li><li>Kenjutsu: Agari-uchi</li><li>Kuuryuuken no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kiringakure",
+      "Inuzuka"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/unicorn.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "inuzuka-outrider-school",
+        "village": "Kiringakure",
+        "clan": "Inuzuka",
+        "legacyName": "Shinjo Outrider School",
+        "bonusFeat": "Animal Affinity",
+        "startingTechniques": [
+          "Juuki no Jutsu",
+          "Kenjutsu: Agari-uchi",
+          "Kuuryuuken no Jutsu"
+        ]
+      }
+    }
+  }
+}

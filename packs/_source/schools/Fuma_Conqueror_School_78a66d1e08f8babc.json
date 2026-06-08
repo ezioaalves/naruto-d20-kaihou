@@ -1,0 +1,35 @@
+{
+  "_id": "78a66d1e08f8babc",
+  "_key": "!items!78a66d1e08f8babc",
+  "name": "Fuma Conqueror School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Mounted assault and intimidation.</p><p>Fuma conquerors embrace speed and terror, breaking enemy lines with relentless charges and killing intent.</p><p><b>Village:</b> Kiringakure</p><p><b>Clan:</b> Fuma</p><p><b>Bonus Feat:</b> Training</p><p><b>Starting Techniques:</b></p><ul><li>Taijutsu: Gouken - Konoha Reppuu</li><li>Kyougaku no Jutsu</li><li>Chihou no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kiringakure",
+      "Fuma"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/unicorn.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "fuma-conqueror-school",
+        "village": "Kiringakure",
+        "clan": "Fuma",
+        "legacyName": "Moto Conqueror School",
+        "bonusFeat": "Training",
+        "startingTechniques": [
+          "Taijutsu: Gouken - Konoha Reppuu",
+          "Kyougaku no Jutsu",
+          "Chihou no Jutsu"
+        ]
+      }
+    }
+  }
+}

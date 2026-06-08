@@ -7,10 +7,10 @@
   "scripts": {
     "pack:villages": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package pack --id naruto-d20-kaihou --type Module --compendiumName villages --in packs/_source/villages --out packs",
     "pack:questions": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package pack --id naruto-d20-kaihou --type Module --compendiumName questions --in packs/_source/questions --out packs",
-    "pack:all": "npm run pack:villages && npm run pack:questions",
+    "pack:all": "npm run pack:villages && npm run pack:questions && npm run pack:schools",
     "unpack:villages": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package unpack --id naruto-d20-kaihou --type Module --compendiumName villages --in packs --out packs/_source/villages",
     "unpack:questions": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package unpack --id naruto-d20-kaihou --type Module --compendiumName questions --in packs --out packs/_source/questions",
-    "unpack:all": "npm run unpack:villages && npm run unpack:questions",
+    "unpack:all": "npm run unpack:villages && npm run unpack:questions && npm run unpack:schools",
     "validate:compendia": "python3 scripts/validate-output.py",
     "validate:manifest": "node tools/validate-manifest.mjs",
     "lint:js": "eslint --no-error-on-unmatched-pattern scripts tools eslint.config.mjs",
@@ -21,7 +21,10 @@
     "generate-villages": "python3 scripts/generate-villages.py",
     "generate-questions": "python3 scripts/generate-questions.py",
     "validate-output": "python3 scripts/validate-output.py",
-    "test": "python3 -m pytest tests/ -v"
+    "test": "python3 -m pytest tests/ -v",
+    "pack:schools": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package pack --id naruto-d20-kaihou --type Module --compendiumName schools --in packs/_source/schools --out packs",
+    "unpack:schools": "node node_modules/@foundryvtt/foundryvtt-cli/fvtt.mjs package unpack --id naruto-d20-kaihou --type Module --compendiumName schools --in packs --out packs/_source/schools",
+    "generate-schools": "python3 scripts/generate-schools.py"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

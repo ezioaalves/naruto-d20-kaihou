@@ -1,0 +1,35 @@
+{
+  "_id": "fe3b6e1ef1a23204",
+  "_key": "!items!fe3b6e1ef1a23204",
+  "name": "Sendo Fuinjutsu School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Defensive fortifications, crafting, and siege warfare.</p><p>Sendo engineers read battlefields as structures to raise, break, seal, or redirect, making craft and fuinjutsu part of the same doctrine.</p><p><b>Village:</b> Kanigakure</p><p><b>Clan:</b> Sendo</p><p><b>Bonus Feat:</b> Siege Engineer</p><p><b>Starting Techniques:</b></p><ul><li>Kenjutsu: Urashamen-uchi</li><li>Shinheki no Jutsu</li><li>Chakra no Hikari</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kanigakure",
+      "Sendo"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/crab.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "sendo-fuinjutsu-school",
+        "village": "Kanigakure",
+        "clan": "Sendo",
+        "legacyName": "Kaiu Fuinjutsu School",
+        "bonusFeat": "Siege Engineer",
+        "startingTechniques": [
+          "Kenjutsu: Urashamen-uchi",
+          "Shinheki no Jutsu",
+          "Chakra no Hikari"
+        ]
+      }
+    }
+  }
+}

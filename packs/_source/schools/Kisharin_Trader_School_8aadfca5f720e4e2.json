@@ -1,0 +1,35 @@
+{
+  "_id": "8aadfca5f720e4e2",
+  "_key": "!items!8aadfca5f720e4e2",
+  "name": "Kisharin Trader School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Diplomacy, logistics, and tradecraft.</p><p>Kisharin traders are Kiringakure&#x27;s negotiators and route-makers, using wealth and movement to solve problems before they become wars.</p><p><b>Village:</b> Kiringakure</p><p><b>Clan:</b> Kisharin</p><p><b>Bonus Feat:</b> Windfall</p><p><b>Starting Techniques:</b></p><ul><li>Well of Desire</li><li>Artisan Appraisal</li><li>Kaisoku no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kiringakure",
+      "Kisharin"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/unicorn.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "kisharin-trader-school",
+        "village": "Kiringakure",
+        "clan": "Kisharin",
+        "legacyName": "Ide Trader School",
+        "bonusFeat": "Windfall",
+        "startingTechniques": [
+          "Well of Desire",
+          "Artisan Appraisal",
+          "Kaisoku no Jutsu"
+        ]
+      }
+    }
+  }
+}

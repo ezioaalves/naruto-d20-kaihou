@@ -1,0 +1,35 @@
+{
+  "_id": "aa1471a133109f85",
+  "_key": "!items!aa1471a133109f85",
+  "name": "Uchiha Duelist School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Iaijutsu, quick draw, and precision striking.</p><p>Uchiha duelists train for the single perfect moment, blending speed, perception, and blade discipline into decisive strikes.</p><p><b>Village:</b> Tsurugakure</p><p><b>Clan:</b> Uchiha</p><p><b>Bonus Feat:</b> Quick Draw</p><p><b>Starting Techniques:</b></p><ul><li>Kenjutsu: Iaido</li><li>Reppushou</li><li>Akari Henko no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Tsurugakure",
+      "Uchiha"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/crane.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "uchiha-duelist-school",
+        "village": "Tsurugakure",
+        "clan": "Uchiha",
+        "legacyName": "Kakita Duelist School",
+        "bonusFeat": "Quick Draw",
+        "startingTechniques": [
+          "Kenjutsu: Iaido",
+          "Reppushou",
+          "Akari Henko no Jutsu"
+        ]
+      }
+    }
+  }
+}

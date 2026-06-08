@@ -1,0 +1,35 @@
+{
+  "_id": "ac3b36b6782ec82a",
+  "_key": "!items!ac3b36b6782ec82a",
+  "name": "Iburi Infiltrator School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Disguise, infiltration, and assassination.</p><p>Iburi infiltrators become smoke, rumor, and borrowed faces, reaching targets without leaving a trace.</p><p><b>Village:</b> Sasorigakure</p><p><b>Clan:</b> Iburi</p><p><b>Bonus Feat:</b> Death Blow (3.5)</p><p><b>Starting Techniques:</b></p><ul><li>Kakureimino no Jutsu</li><li>Sensational Distraction</li><li>Fukumihari</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Sasorigakure",
+      "Iburi"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/scorpion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "iburi-infiltrator-school",
+        "village": "Sasorigakure",
+        "clan": "Iburi",
+        "legacyName": "Shosuro Infiltrator School",
+        "bonusFeat": "Death Blow (3.5)",
+        "startingTechniques": [
+          "Kakureimino no Jutsu",
+          "Sensational Distraction",
+          "Fukumihari"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "_id": "b63bffac72abf2f8",
+  "_key": "!items!b63bffac72abf2f8",
+  "name": "Amagiri Mystic School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Elemental mysticism, alchemy, and ritual purity.</p><p>Amagiri mystics commune with the land and its spirits, blending elemental ninjutsu with careful ritual practice.</p><p><b>Village:</b> Ryuugakure</p><p><b>Clan:</b> Amagiri</p><p><b>Bonus Feat:</b> Widen Technique</p><p><b>Starting Techniques:</b></p><ul><li>Hiakahou</li><li>Doku Hakken no Jutsu</li><li>Cleansing Rite</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Ryuugakure",
+      "Amagiri"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/dragon.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "amagiri-mystic-school",
+        "village": "Ryuugakure",
+        "clan": "Amagiri",
+        "legacyName": "Agasha Mystic School",
+        "bonusFeat": "Widen Technique",
+        "startingTechniques": [
+          "Hiakahou",
+          "Doku Hakken no Jutsu",
+          "Cleansing Rite"
+        ]
+      }
+    }
+  }
+}

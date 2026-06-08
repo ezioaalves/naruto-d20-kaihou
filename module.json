@@ -47,6 +47,13 @@
       "path": "packs/questions",
       "type": "Item",
       "system": "pf1"
+    },
+    {
+      "name": "schools",
+      "label": "Naruto D20 — Shinobi Schools",
+      "path": "packs/schools",
+      "type": "Item",
+      "system": "pf1"
     }
   ],
   "packFolders": [
@@ -54,7 +61,11 @@
       "name": "Naruto D20 — Kaihou",
       "color": "#1f6f8b",
       "sorting": "m",
-      "packs": ["villages", "questions"]
+      "packs": [
+        "villages",
+        "questions",
+        "schools"
+      ]
     }
   ],
   "languages": [
@@ -70,5 +81,8 @@
     }
   ],
   "manifest": "https://github.com/ezioaalves/naruto-d20-kaihou/releases/latest/download/module.json",
-  "download": "https://github.com/ezioaalves/naruto-d20-kaihou/releases/latest/download/module.zip"
+  "download": "https://github.com/ezioaalves/naruto-d20-kaihou/releases/latest/download/module.zip",
+  "esmodules": [
+    "scripts/main.mjs"
+  ]
 }

@@ -1,0 +1,35 @@
+{
+  "_id": "eeb3d9fb3790d1db",
+  "_key": "!items!eeb3d9fb3790d1db",
+  "name": "Uzumaki Loremaster School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Scholarship, diplomacy, and mystic insight.</p><p>Uzumaki loremasters preserve Houohgakure&#x27;s spiritual and historical memory, solving problems with knowledge before blades leave their sheaths.</p><p><b>Village:</b> Houohgakure</p><p><b>Clan:</b> Uzumaki</p><p><b>Bonus Feat:</b> Educated</p><p><b>Starting Techniques:</b></p><ul><li>Weight of Duty</li><li>Shitsukentou no Jutsu</li><li>Artisan Appraisal</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Houohgakure",
+      "Uzumaki"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/phoenix.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "uzumaki-loremaster-school",
+        "village": "Houohgakure",
+        "clan": "Uzumaki",
+        "legacyName": "Asako Loremaster School",
+        "bonusFeat": "Educated",
+        "startingTechniques": [
+          "Weight of Duty",
+          "Shitsukentou no Jutsu",
+          "Artisan Appraisal"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "_id": "9af72efbca77165b",
+  "_key": "!items!9af72efbca77165b",
+  "name": "Chinoike Illusionist School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Genjutsu, terror, and mental collapse.</p><p>Chinoike illusionists specialize in fear and pain, breaking minds with sensory lies before bodies need to fall.</p><p><b>Village:</b> Sasorigakure</p><p><b>Clan:</b> Chinoike</p><p><b>Bonus Feat:</b> Genjutsu Adept</p><p><b>Starting Techniques:</b></p><ul><li>Magen: Jigoku Tenshi no Jutsu</li><li>Shougenzou no Jutsu</li><li>Shinheki no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Sasorigakure",
+      "Chinoike"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/scorpion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "chinoike-illusionist-school",
+        "village": "Sasorigakure",
+        "clan": "Chinoike",
+        "legacyName": "Soshi Illusionist School",
+        "bonusFeat": "Genjutsu Adept",
+        "startingTechniques": [
+          "Magen: Jigoku Tenshi no Jutsu",
+          "Shougenzou no Jutsu",
+          "Shinheki no Jutsu"
+        ]
+      }
+    }
+  }
+}

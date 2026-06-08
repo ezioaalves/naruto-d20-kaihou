@@ -1,0 +1,35 @@
+{
+  "_id": "cadf3985ca2c85f5",
+  "_key": "!items!cadf3985ca2c85f5",
+  "name": "Ryu Two-Heavens Adept School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Two-weapon kenjutsu and adaptable assault.</p><p>Ryu adepts train in paired blades and fluid pressure, overwhelming enemies with continuous attacks from changing angles.</p><p><b>Village:</b> Ryuugakure</p><p><b>Clan:</b> Ryu</p><p><b>Bonus Feat:</b> Two-Weapon Fighting</p><p><b>Starting Techniques:</b></p><ul><li>Kenjutsu: Agari-uchi</li><li>Kenjutsu: Kudari-uchi</li><li>Ikaku no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Ryuugakure",
+      "Ryu"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/dragon.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "ryu-two-heavens-adept-school",
+        "village": "Ryuugakure",
+        "clan": "Ryu",
+        "legacyName": "Mirumoto Two-Heavens Adept School",
+        "bonusFeat": "Two-Weapon Fighting",
+        "startingTechniques": [
+          "Kenjutsu: Agari-uchi",
+          "Kenjutsu: Kudari-uchi",
+          "Ikaku no Jutsu"
+        ]
+      }
+    }
+  }
+}

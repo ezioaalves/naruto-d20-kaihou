@@ -1,0 +1,35 @@
+{
+  "_id": "08044953008f88ba",
+  "_key": "!items!08044953008f88ba",
+  "name": "Hyuuga Medium School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Ancestor communion and spiritual perception.</p><p>Hyuuga mediums combine perception, discipline, and ritual practice to consult the dead and keep spiritual corruption at bay.</p><p><b>Village:</b> Shishigakure</p><p><b>Clan:</b> Hyuuga</p><p><b>Bonus Feat:</b> Keen Sight</p><p><b>Starting Techniques:</b></p><ul><li>Ancestry Unearthed</li><li>Youso Fuuin no Jutsu</li><li>Cleansing Rite</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Shishigakure",
+      "Hyuuga"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/lion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "hyuuga-medium-school",
+        "village": "Shishigakure",
+        "clan": "Hyuuga",
+        "legacyName": "Kitsu Medium School",
+        "bonusFeat": "Keen Sight",
+        "startingTechniques": [
+          "Ancestry Unearthed",
+          "Youso Fuuin no Jutsu",
+          "Cleansing Rite"
+        ]
+      }
+    }
+  }
+}

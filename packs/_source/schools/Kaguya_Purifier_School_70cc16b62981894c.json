@@ -1,0 +1,35 @@
+{
+  "_id": "70cc16b62981894c",
+  "_key": "!items!70cc16b62981894c",
+  "name": "Kaguya Purifier School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Anti-supernatural combat, fuinjutsu, and survival.</p><p>Kaguya purifiers train against corrupted spirits and monstrous threats, combining grim study with direct combat and cleansing rites.</p><p><b>Village:</b> Kanigakure</p><p><b>Clan:</b> Kaguya</p><p><b>Bonus Feat:</b> Resist Taint</p><p><b>Starting Techniques:</b></p><ul><li>Taijutsu: Gouken</li><li>Toujun no Jutsu</li><li>Cleansing Rite</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kanigakure",
+      "Kaguya"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/crab.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "kaguya-purifier-school",
+        "village": "Kanigakure",
+        "clan": "Kaguya",
+        "legacyName": "Kuni Purifier School",
+        "bonusFeat": "Resist Taint",
+        "startingTechniques": [
+          "Taijutsu: Gouken",
+          "Toujun no Jutsu",
+          "Cleansing Rite"
+        ]
+      }
+    }
+  }
+}

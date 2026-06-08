@@ -1,0 +1,35 @@
+{
+  "_id": "9609f05c9e27ae1e",
+  "_key": "!items!9609f05c9e27ae1e",
+  "name": "Dattoumaru Ninpou School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Ranged combat, stealth, and survival.</p><p>Dattoumaru scouts are Kanigakure&#x27;s forward eyes, trained to survive alone, move unseen, and report before a threat reaches the village.</p><p><b>Village:</b> Kanigakure</p><p><b>Clan:</b> Dattoumaru</p><p><b>Bonus Feat:</b> Improved Initiative</p><p><b>Starting Techniques:</b></p><ul><li>Ninpou: Shurikenjutsu - Renken</li><li>Kenjutsu: Kudari-uchi</li><li>Kakureimino no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kanigakure",
+      "Dattoumaru"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/crab.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "dattoumaru-ninpou-school",
+        "village": "Kanigakure",
+        "clan": "Dattoumaru",
+        "legacyName": "Hiruma Ninpou School",
+        "bonusFeat": "Improved Initiative",
+        "startingTechniques": [
+          "Ninpou: Shurikenjutsu - Renken",
+          "Kenjutsu: Kudari-uchi",
+          "Kakureimino no Jutsu"
+        ]
+      }
+    }
+  }
+}

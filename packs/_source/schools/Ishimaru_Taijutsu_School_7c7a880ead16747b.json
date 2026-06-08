@@ -1,0 +1,35 @@
+{
+  "_id": "7c7a880ead16747b",
+  "_key": "!items!7c7a880ead16747b",
+  "name": "Ishimaru Taijutsu School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Defensive taijutsu and heavy armor.</p><p>Ishimaru defenders endure first and strike second, turning armor, courage, and practical taijutsu into a survival doctrine.</p><p><b>Village:</b> Kanigakure</p><p><b>Clan:</b> Ishimaru</p><p><b>Bonus Feat:</b> Armor Focus</p><p><b>Starting Techniques:</b></p><ul><li>Ishimaru Ryu: Shodan Dachi</li><li>Taijutsu: Gouken</li><li>Toujun no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Kanigakure",
+      "Ishimaru"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/crab.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "ishimaru-taijutsu-school",
+        "village": "Kanigakure",
+        "clan": "Ishimaru",
+        "legacyName": "Hida Taijutsu School",
+        "bonusFeat": "Armor Focus",
+        "startingTechniques": [
+          "Ishimaru Ryu: Shodan Dachi",
+          "Taijutsu: Gouken",
+          "Toujun no Jutsu"
+        ]
+      }
+    }
+  }
+}

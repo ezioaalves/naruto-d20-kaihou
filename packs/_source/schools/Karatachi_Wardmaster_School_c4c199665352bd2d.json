@@ -1,0 +1,35 @@
+{
+  "_id": "c4c199665352bd2d",
+  "_key": "!items!c4c199665352bd2d",
+  "name": "Karatachi Wardmaster School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Fuinjutsu wards, traps, and spirit binding.</p><p>Karatachi wardmasters guard Sasorigakure&#x27;s secrets with layered seals, hidden alarms, and binding techniques.</p><p><b>Village:</b> Sasorigakure</p><p><b>Clan:</b> Karatachi</p><p><b>Bonus Feat:</b> Sealwaver</p><p><b>Starting Techniques:</b></p><ul><li>Cleansing Rite</li><li>Seal of Alertness</li><li>Youso Fuuin no Jutsu</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Sasorigakure",
+      "Karatachi"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/scorpion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "karatachi-wardmaster-school",
+        "village": "Sasorigakure",
+        "clan": "Karatachi",
+        "legacyName": "Yogo Wardmaster School",
+        "bonusFeat": "Sealwaver",
+        "startingTechniques": [
+          "Cleansing Rite",
+          "Seal of Alertness",
+          "Youso Fuuin no Jutsu"
+        ]
+      }
+    }
+  }
+}

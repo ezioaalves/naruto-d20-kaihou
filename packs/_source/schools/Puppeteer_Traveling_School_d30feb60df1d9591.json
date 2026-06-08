@@ -1,0 +1,35 @@
+{
+  "_id": "d30feb60df1d9591",
+  "_key": "!items!d30feb60df1d9591",
+  "name": "Puppeteer Traveling School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Puppet-based ninjutsu and utility.</p><p>A nomadic school that teaches puppetry for performance and combat, turning crafted puppets into extensions of the shinobi&#x27;s will.</p><p><b>Village:</b> Generic</p><p><b>Clan:</b> None</p><p><b>Bonus Feat:</b> Craft Puppets</p><p><b>Starting Techniques:</b></p><ul><li>Ninpou: Chakra no Ito</li><li>Saihou no Jutsu</li><li>Ninpou: Shurikenjutsu - Nageriki</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Generic",
+      "Puppeteer"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/technique.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "puppeteer-traveling-school",
+        "village": null,
+        "clan": null,
+        "legacyName": "Puppeteer Traveling School",
+        "bonusFeat": "Craft Puppets",
+        "startingTechniques": [
+          "Ninpou: Chakra no Ito",
+          "Saihou no Jutsu",
+          "Ninpou: Shurikenjutsu - Nageriki"
+        ]
+      }
+    }
+  }
+}

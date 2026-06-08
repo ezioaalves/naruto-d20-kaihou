@@ -1,0 +1,35 @@
+{
+  "_id": "32b699594facde93",
+  "_key": "!items!32b699594facde93",
+  "name": "Seijina Tattooed Order",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Ascetic body conditioning and chakra tattoos.</p><p>Seijina tattooed shinobi treat the body as a seal-script canvas, seeking enlightenment through physical trial and internal discipline.</p><p><b>Village:</b> Ryuugakure</p><p><b>Clan:</b> Seijina</p><p><b>Bonus Feat:</b> Craft Sealed Item</p><p><b>Starting Techniques:</b></p><ul><li>Ishi no Teashi</li><li>Gyoukou</li><li>Kawa no Yoroi</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Ryuugakure",
+      "Seijina"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/dragon.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "seijina-tattooed-order",
+        "village": "Ryuugakure",
+        "clan": "Seijina",
+        "legacyName": "Togashi Tattooed Order",
+        "bonusFeat": "Craft Sealed Item",
+        "startingTechniques": [
+          "Ishi no Teashi",
+          "Gyoukou",
+          "Kawa no Yoroi"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "_id": "8a6935ad61622acc",
+  "_key": "!items!8a6935ad61622acc",
+  "name": "Lee Berserker School",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p><b>Focus:</b> Aggressive taijutsu and fearless assault.</p><p>Lee berserkers value courage, momentum, and physical excellence, overwhelming foes through relentless forward pressure.</p><p><b>Village:</b> Shishigakure</p><p><b>Clan:</b> Lee</p><p><b>Bonus Feat:</b> Cleave</p><p><b>Starting Techniques:</b></p><ul><li>Taijutsu: Gouken - Konoha Reppuu</li><li>Chouyaku no Jutsu</li><li>Iryou Ninjutsu: Ryoji - Kekki</li></ul>"
+    },
+    "tags": [
+      "School",
+      "Shishigakure",
+      "Lee"
+    ],
+    "changes": []
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/clans/lion.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "school": {
+        "slug": "lee-berserker-school",
+        "village": "Shishigakure",
+        "clan": "Lee",
+        "legacyName": "Matsu Berserker School",
+        "bonusFeat": "Cleave",
+        "startingTechniques": [
+          "Taijutsu: Gouken - Konoha Reppuu",
+          "Chouyaku no Jutsu",
+          "Iryou Ninjutsu: Ryoji - Kekki"
+        ]
+      }
+    }
+  }
+}
