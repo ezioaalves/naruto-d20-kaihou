@@ -1,0 +1,60 @@
+/**
+ * Nature glyphs and color hooks.
+ *
+ * Replaces the L5R "rings" partial. Five canonical Naruto natures:
+ * Earth / Water / Fire / Wind / Lightning. SVGs ship in assets/icons/natures/.
+ *
+ * Selectors are intentionally broad: any element with `data-nature="<key>"` or
+ * a class like `.nature-fire` will pick up its color and glyph.
+ */
+
+@mixin nature-icon($name, $ext: "svg") {
+    background: transparent url("modules/naruto-d20-kaihou/assets/theme/icons/natures/#{$name}.#{$ext}") no-repeat center / contain;
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: text-bottom;
+}
+
+// Most nature icons are SVG; lightning is a PNG (user-supplied raster art).
+$natures: (
+    "earth":     ("color": $nzen-earth,     "ext": "svg"),
+    "water":     ("color": $nzen-water,     "ext": "svg"),
+    "fire":      ("color": $nzen-fire,      "ext": "svg"),
+    "wind":      ("color": $nzen-wind,      "ext": "svg"),
+    "lightning": ("color": $nzen-lightning, "ext": "png"),
+);
+
+@each $name, $cfg in $natures {
+    $color: map-get($cfg, "color");
+    $ext: map-get($cfg, "ext");
+
+    [data-nature="#{$name}"],
+    .nature-#{$name} {
+        color: $color;
+    }
+
+    i.i_#{$name},
+    [data-nature-icon="#{$name}"] {
+        @include nature-icon($name, $ext);
+    }
+
+    .nature-dot[data-nature="#{$name}"] {
+        background-color: $color;
+    }
+}
+
+// Chakra-affinity row used on the chakra tab and technique sheet.
+.naruto-affinity {
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+
+    .nature-dot {
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.35);
+    }
+}

@@ -1,0 +1,71 @@
+// -- Nav
+nav {
+    &.sheet-tabs {
+        height: 3rem;
+        line-height: 2rem;
+        font-family: $font-tertiary;
+        letter-spacing: -0.05rem;
+        font-size: 1rem;
+        border: 0 none;
+        border-bottom: 1px solid var(--zen-border-soft);
+        margin-bottom: 0;
+        background: var(--zen-ink);
+        color: var(--zen-ink);
+        display: flex;
+        flex-direction: row;
+        --notchSize: 0.5rem;
+        clip-path: polygon(
+            0% var(--notchSize),
+            var(--notchSize) 0%,
+            calc(100% - var(--notchSize)) 0%,
+            100% var(--notchSize),
+            100% calc(100% - var(--notchSize)),
+            calc(100%) 100%,
+            var(--notchSize) 100%,
+            0% calc(100%)
+        );
+    }
+    .item {
+        flex: 1;
+        &:hover {
+            background-color: var(--zen-ink-mute);
+            color: $white-light;
+            text-shadow: none;
+            clip-path: polygon(
+                0% var(--notchSize),
+                var(--notchSize) 0%,
+                calc(100% - var(--notchSize)) 0%,
+                100% var(--notchSize),
+                100% 100%,
+                0 100%,
+                0% 0%,
+                0% 100%
+            );
+        }
+    }
+    .item.active {
+        // Wine-stamp tab: filled accent bg + hardcoded near-cream text.
+        // We can't use `var(--zen-surface)` because in dark mode that flips
+        // to dark stone → dark-on-wine = invisible. Cream-on-wine works in
+        // both modes (it's the high-contrast complement of the accent).
+        background-color: var(--zen-ink-accent);
+        color: rgb(252, 245, 225);
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+        clip-path: polygon(
+            0% var(--notchSize),
+            var(--notchSize) 0%,
+            calc(100% - var(--notchSize)) 0%,
+            100% var(--notchSize),
+            100% 100%,
+            0 100%,
+            0% 0%,
+            0% 100%
+        );
+
+        &:hover {
+            background-color: var(--zen-ink-accent);
+            color: rgb(252, 245, 225);
+            cursor: default;
+        }
+    }
+}

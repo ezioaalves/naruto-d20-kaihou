@@ -1,0 +1,342 @@
+/** Fonts **/
+
+// Font Logotype L5R
+@font-face {
+    font-family: "LogotypeL5r";
+    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/LogotypeL5r.ttf") format("truetype");
+}
+
+// Font BrushtipTexe
+@font-face {
+    font-family: "BrushtipTexe";
+    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/BrushtipTexe.ttf") format("truetype");
+}
+
+// Font PatrickHand
+@font-face {
+    font-family: "PatrickHand";
+    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/PatrickHand.ttf") format("truetype");
+}
+
+// Font Caballar
+@font-face {
+    font-family: "Caballar";
+    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/Caballar.ttf") format("truetype");
+}
+
+// Font ArchitectsDaughter
+@font-face {
+    font-family: "ArchitectsDaughter";
+    src: url("modules/naruto-d20-kaihou/assets/theme/fonts/ArchitectsDaughter.ttf") format("truetype");
+}
+
+$font-primary: "PatrickHand", sans-serif;
+$font-secondary: "BrushtipTexe", sans-serif;
+$font-tertiary: "Caballar", sans-serif;
+$font-quaternary: "ArchitectsDaughter", sans-serif;
+$font-logoType: "LogotypeL5r", sans-serif;
+
+// Rules below already run inside `body.naruto-zen { ... }`.
+//
+// Two problems to solve here:
+//   1. Browsers don't inherit `font-family` into form controls (input, select,
+//      textarea, button), so they stay on system fonts unless we name them.
+//   2. PF1e + naruto-d20 set their own `font-family` on container classes
+//      (`.pf1 { font-family: ... }`), which beats our generic `body` rule.
+//
+// Fix: force `var(--zen-font-body)` on every text-bearing element inside our
+// scope. FA icons, code blocks, and prose-mirror editors stay on their own
+// fonts (excluded via `:not(...)`).
+& {
+    font: 16px var(--zen-font-body);
+    letter-spacing: 0.05rem;
+    color: var(--zen-ink);
+}
+
+// Default font on form controls + text containers.
+//
+// IMPORTANT — what NOT to include here: `.ui-control`, `.window-app`,
+// `.window-content`, `.application`, `.pf1`, `button`, `<i>`. Those classes
+// wrap or *are* Font Awesome icon elements, and FA's font-family rule
+// (`.fa-solid { font-family: var(--fa-style-family, "Font Awesome 6 Pro") }`)
+// has specificity 0,1,0. Putting our `body.naruto-zen .pf1` rule (0,2,1)
+// here beats FA and breaks every icon glyph. Trying to revert with
+// `font-family: revert` doesn't help — `revert` rolls back to the UA
+// origin (browser default serif), not to FA's author rule.
+//
+// Form controls (`input`, `select`, `textarea`) ARE included because
+// browsers don't reliably inherit `font-family` into them from `body`.
+&,
+input,
+select,
+textarea,
+label,
+optgroup,
+option,
+fieldset,
+legend {
+    font-family: var(--zen-font-body);
+}
+
+// Headings — display brush, except h5 which we use as a small-caps label.
+:is(h1, h2, h3) {
+    font-family: var(--zen-font-display);
+    color: var(--zen-ink);
+    letter-spacing: 0.03rem;
+}
+h1 {
+    font-size: 1.85rem;
+    line-height: 1.1;
+}
+h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+}
+h3 {
+    font-size: 1.2rem;
+}
+h4 {
+    font-family: var(--zen-font-body);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    color: var(--zen-ink);
+}
+h5 {
+    font-family: var(--zen-font-body);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06rem;
+    color: var(--zen-ink-mute);
+}
+
+i.i_strife,
+i.i_success,
+i.i_explosive,
+i.i_opportunity,
+i.i_earth,
+i.i_water,
+i.i_fire,
+i.i_air,
+i.i_void,
+i.i_kiho,
+i.i_maho,
+i.i_ninjitsu,
+i.i_prerequisite_exemption,
+i.i_rituals,
+i.i_shuji,
+i.i_invocations,
+i.i_kata,
+i.i_inversion,
+i.i_mantra,
+i.i_imperial,
+i.i_ronin,
+i.i_crab,
+i.i_crane,
+i.i_dragon,
+i.i_lion,
+i.i_mantis,
+i.i_phoenix,
+i.i_scorpion,
+i.i_tortoise,
+i.i_unicorn,
+i.i_bushi,
+i.i_courtier,
+i.i_shugenja,
+i.i_ring,
+i.i_skill {
+    font-family: $font-logoType;
+    line-height: 1rem;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: normal;
+    vertical-align: middle;
+    text-shadow: 0 0 0 $nzen-black;
+}
+
+// -- Dices
+// Strife
+i.i_strife:before {
+    content: "\E91E";
+    color: $red-dice;
+}
+// Success
+i.i_success:before {
+    content: "\E91F";
+    color: $red-dice;
+}
+// Explosive
+i.i_explosive:before {
+    content: "\E920";
+    color: $red-dice;
+}
+// Opportunity
+i.i_opportunity:before {
+    content: "\E91D";
+    color: $red-dice;
+}
+
+// -- Rings
+// Earth
+i.i_earth:before {
+    content: "\E90E";
+    color: $nzen-earth;
+}
+// Air
+i.i_air:before {
+    content: "\E90D";
+    color: $nzen-air;
+}
+// Water
+i.i_water:before {
+    content: "\E90C";
+    color: $nzen-water;
+}
+// Fire
+i.i_fire:before {
+    content: "\E90A";
+    color: $nzen-fire;
+}
+// Void
+i.i_void:before {
+    content: "\E90B";
+    color: $nzen-void;
+}
+
+// -- Techs
+// Invocations
+i.i_invocations:before {
+    content: "\E906";
+    color: $nzen-invocations;
+}
+// Kata
+i.i_kata:before {
+    content: "\E907";
+    color: $nzen-kata;
+}
+// Kiho
+i.i_kiho:before {
+    content: "\E900";
+    color: $nzen-kiho;
+}
+// Maho
+i.i_maho:before {
+    content: "\E901";
+    color: $nzen-maho;
+}
+// Ninjitsu
+i.i_ninjitsu:before {
+    content: "\E902";
+    color: $nzen-ninjitsu;
+}
+// Prerequisite
+i.i_prerequisite_exemption:before {
+    content: "\E903";
+    color: $nzen-prerequisite;
+}
+// Rituals
+i.i_rituals:before {
+    content: "\E904";
+    color: $nzen-rituals;
+}
+// Shuji
+i.i_shuji:before {
+    content: "\E905";
+    color: $nzen-shuji;
+}
+// Inversion
+i.i_inversion:before {
+    content: "\E908";
+    color: $nzen-inversion;
+}
+// Mantra
+i.i_mantra:before {
+    content: "\E909";
+    color: $nzen-mantra;
+}
+
+// -- Clans
+// Crab
+i.i_crab:before {
+    content: "\E916";
+    color: $nzen-crab;
+}
+// Crane
+i.i_crane:before {
+    content: "\E917";
+    color: $nzen-crane;
+}
+// Dragon
+i.i_dragon:before {
+    content: "\E918";
+    color: $nzen-dragon;
+}
+// Lion
+i.i_lion:before {
+    content: "\E910";
+    color: $nzen-lion;
+}
+// Mantis
+i.i_mantis:before {
+    content: "\E911";
+    color: $nzen-mantis;
+}
+// Phoenix
+i.i_phoenix:before {
+    content: "\E912";
+    color: $nzen-phoenix;
+}
+// Scorpion
+i.i_scorpion:before {
+    content: "\E913";
+    color: $nzen-scorpion;
+}
+// Tortoise
+i.i_tortoise:before {
+    content: "\E914";
+    color: $nzen-tortoise;
+}
+// Unicorn
+i.i_unicorn:before {
+    content: "\E915";
+    color: $nzen-unicorn;
+}
+// Imperial
+i.i_imperial:before {
+    content: "\E90F";
+    color: $nzen-imperial;
+}
+// Ronin
+i.i_ronin:before {
+    content: "\E919";
+    color: $nzen-ronin;
+}
+
+// -- Titles
+// Bushi
+i.i_bushi:before {
+    content: "\E91A";
+    color: $nzen-bushi;
+}
+// Courtier
+i.i_courtier:before {
+    content: "\E91B";
+    color: $nzen-courtier;
+}
+// Shugenja
+i.i_shugenja:before {
+    content: "\E91C";
+    color: $nzen-shugenja;
+}
+
+// Compendium
+.compendium {
+    .item {
+        i {
+            font-family: $font-primary;
+            &:before {
+                font-family: $font-logoType;
+            }
+        }
+    }
+}

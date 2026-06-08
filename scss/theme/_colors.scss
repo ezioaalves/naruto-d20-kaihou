@@ -1,0 +1,146 @@
+/** Colors **/
+
+// -- Global
+$white: rgba(255, 255, 255, 1);
+$white-light: rgba(255, 255, 255, 0.65);
+$black: rgba(0, 0, 0, 1);
+$black-light: rgb(0, 0, 0);
+$dark-red: rgba(25, 0, 0, 0.75);
+$red: rgba(255, 0, 0, 1);
+$red-light: rgba(255, 0, 0, 0.75);
+$red-dice: rgb(205, 0, 0);
+$orange: rgba(255, 100, 0, 0.75);
+$blue: rgba(0, 0, 255, 0.75);
+$green: rgba(0, 255, 0, 0.75);
+
+// color title
+$nzen-title: rgba(186, 187, 177, 0.5);
+// color bold
+$nzen-bold: rgb(118, 79, 64);
+// color label
+$nzen-label: rgb(90, 110, 90);
+// color label
+$nzen-label-light: rgba(90, 110, 90, 0.25);
+// color red
+$nzen-red: rgb(150, 60, 65);
+// color white 0.5
+$nzen-white: rgba(255, 255, 255, 0.5);
+// color white 0.2
+$nzen-white-light: rgba(255, 255, 255, 0.25);
+// color black 0.5
+$nzen-black: rgba(0, 0, 0, 0.5);
+// color black 0.25
+$nzen-black-light: rgba(0, 0, 0, 0.25);
+// color border sidebar
+$nzen-border-sidebar: rgb(195, 165, 130);
+
+// color list odd
+$nzen-odd: rgba(186, 187, 177, 0.2);
+// color list even
+$nzen-even: rgba(186, 187, 177, 0.1);
+
+// gradient
+$nzen-linear-gradient-first: rgba(65, 20, 15, 0.75);
+$nzen-linear-gradient-first-dark: rgba(35, 10, 5, 0.75);
+$nzen-linear-gradient-second: rgba(10, 0, 20, 0.75);
+$nzen-linear-gradient-second-dark: rgba(0, 0, 10, 0.75);
+$nzen-linear-gradient-third: rgba(95, 40, 65, 1);
+$nzen-linear-gradient-third-dark: rgba(65, 25, 40, 1);
+
+// Chat color
+$nzen-chat-color: rgba(225, 215, 200, 0.25);
+$nzen-chat-color-roll: rgba(225, 215, 200, 0.75);
+$nzen-chat-color-blind: transparent;
+$nzen-chat-color-whisper: rgba(225, 200, 225, 0.75);
+
+// Misc
+$nzen-selection-circle-color: #8a1a00;
+
+// -- Rings
+
+// Earth
+$nzen-earth: rgb(105, 150, 120);
+// Air
+$nzen-air: rgb(145, 120, 150);
+// Water
+$nzen-water: rgb(95, 145, 155);
+// Fire
+$nzen-fire: rgb(155, 115, 80);
+// Void
+$nzen-void: rgb(75, 70, 65);
+$nzen-void-light: rgba(207,207,207,.8);
+
+// -- Clans
+
+// Crab
+$nzen-crab: rgb(130, 130, 140);
+// Crane
+$nzen-crane: rgb(120, 145, 145);
+// Dragon
+$nzen-dragon: rgb(85, 130, 110);
+// Lion
+$nzen-lion: rgb(160, 140, 80);
+// Mantis
+$nzen-mantis: rgb(45, 85, 30);
+// Phoenix
+$nzen-phoenix: rgb(145, 120, 75);
+// Tortoise
+$nzen-tortoise: rgb(180, 200, 45);
+// Scorpion
+$nzen-scorpion: rgb(155, 70, 60);
+// Unicorn
+$nzen-unicorn: rgb(120, 90, 135);
+// Imperial
+$nzen-imperial: rgb(120, 255, 180);
+// Ronin
+$nzen-ronin: rgb(97, 32, 1);
+
+// Bushi
+$nzen-bushi: rgb(165, 90, 90);
+// Courtier
+$nzen-courtier: rgb(105, 130, 165);
+// Shugenja
+$nzen-shugenja: rgb(90, 165, 130);
+
+// -- Techs
+// Invocations
+$nzen-invocations: rgb(255, 100, 0);
+// Kata
+$nzen-kata: rgb(255, 0, 0);
+// Kiho
+$nzen-kiho: rgb(0, 150, 50);
+// Maho
+$nzen-maho: rgb(200, 50, 0);
+// Ninjitsu
+$nzen-ninjitsu: rgb(52, 52, 52);
+// Prerequisite
+$nzen-prerequisite: rgb(52, 52, 52);
+// Rituals
+$nzen-rituals: rgb(0, 150, 255);
+// Shuji
+$nzen-shuji: rgb(0, 255, 150);
+// Inversion
+$nzen-inversion: rgb(75, 70, 65);
+//Mantra
+$nzen-mantra: rgb(255, 170, 0);
+
+// -- Naruto natures (overrides the L5R ring palette above)
+// Per PLAN.md §"Nature palette". $nzen-earth / water / fire stay assigned to natures of the
+// same name. $nzen-wind takes over the slot L5R called "air". Lightning is NEW (do not
+// reuse void) and uses a gold-yellow accent.
+$nzen-earth: rgb(120, 90, 55); // clay brown
+$nzen-water: rgb(95, 145, 155); // kept from L5R
+$nzen-fire: rgb(175, 70, 50); // warmer red
+$nzen-wind: rgb(180, 195, 175); // pale jade (alias for the visual slot L5R called air)
+$nzen-air: $nzen-wind;
+$nzen-lightning: rgb(220, 195, 80); // gold-yellow, no L5R analogue
+
+// -- Naruto disciplines (visual aliases over L5R tech colors per PLAN.md §"Discipline mapping")
+// We keep the $nzen-kata/$nzen-invocations/etc variables (existing partials reference them)
+// and add discipline-named aliases so naruto-facing partials can read in domain language.
+$nzen-tai: $nzen-kata; // Taijutsu → kata (red)
+$nzen-nin: $nzen-invocations; // Ninjutsu → invocations (orange)
+$nzen-gnj: $nzen-shuji; // Genjutsu → shuji (green-cyan)
+$nzen-ckc: $nzen-ninjitsu; // Chakra Control → ninjitsu (dark gray)
+$nzen-fui: $nzen-rituals; // Fuinjutsu → rituals (blue)
+$nzen-kin: $nzen-maho; // Kinjutsu (visual only) → maho (crimson)

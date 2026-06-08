@@ -1,0 +1,740 @@
+/**
+ * PF1e-system surfaces beyond actor/item sheets.
+ *
+ * Covers screens the per-sheet partials don't reach:
+ *   - Compendium directories (`#sidebar-content .compendium-directory`)
+ *   - Dialog buttons (confirm/cancel)
+ *   - Roll context menus
+ *   - Tooltips
+ *   - Settings dialogs
+ *
+ * All rules are token-driven so light / dark flip automatically.
+ * Scope: `body.naruto-zen { ... }` (chrome-level, not per-app).
+ */
+
+// ─── PF1e `.window-content` surface (every PF1e sheet) ──────────────────────
+// PF1e ships `.pf1 .window-content { background: var(--pf1-sheet-background) }`
+// where the var resolves to `url("../../ui/parchment.jpg") repeat` — that's
+// the parchment we kept seeing leak through in dark mode. Our per-sheet rules
+// in `_pf1-sheets.scss` are scoped under `.naruto-zen-target` (added by the JS
+// render hook), but if that hook misses a render path the PF1e default wins.
+//
+// Override at the chrome level — chrome rules don't need `.naruto-zen-target`,
+// they only need `body.naruto-zen .pf1 .window-content` which always matches
+// any PF1e sheet inside our scope. This is the safety net.
+.pf1 .window-content,
+.pf1.sheet .window-content {
+    background-color: var(--zen-surface);
+    background-image: var(--zen-surface-image);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: var(--zen-ink);
+}
+
+// Also redirect PF1e's own variable so every other consumer of
+// `--pf1-sheet-background` (attack dialogs, etc., per pf1.css lines 634/764/1744)
+// uses our image instead of parchment.jpg.
+& {
+    --pf1-sheet-background: var(--zen-surface-image);
+}
+
+// ─── Compendium directory entries ────────────────────────────────────────────
+.compendium-directory,
+.compendium .directory-list {
+    color: var(--zen-ink);
+
+    .directory-header {
+        font-family: var(--zen-font-display);
+        color: var(--zen-ink);
+        border-bottom: 1px solid var(--zen-border);
+    }
+
+    .directory-item,
+    .directory-list li {
+        color: var(--zen-ink);
+        background: transparent;
+        border-bottom: 1px solid var(--zen-border-soft);
+
+        &:hover {
+            background: var(--zen-row-hover);
+        }
+    }
+}
+
+// ─── Dialogs ─────────────────────────────────────────────────────────────────
+.window-app.dialog,
+.application.dialog {
+    .window-content,
+    .dialog-content {
+        color: var(--zen-ink);
+        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
+        background-size: cover;
+    }
+
+    .dialog-buttons,
+    .form-footer {
+        button {
+            font-family: var(--zen-font-body);
+            color: var(--zen-ink);
+            background: var(--zen-card-bg);
+            border: 1px solid var(--zen-border);
+            border-radius: 3px;
+
+            &:hover {
+                background: var(--zen-row-hover);
+                color: var(--zen-ink-accent);
+                border-color: var(--zen-ink-accent);
+                text-shadow: var(--zen-ink-glow);
+            }
+        }
+    }
+
+    label,
+    .form-group label {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+    }
+}
+
+// ─── Context menus (right-click roll menu, etc.) ─────────────────────────────
+#context-menu,
+.context-menu {
+    background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+    background-size: cover;
+    color: var(--zen-ink);
+    border: 1px solid var(--zen-border);
+
+    .context-item,
+    .context-items li {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+
+        &:hover {
+            background: var(--zen-row-hover);
+            color: var(--zen-ink-accent);
+        }
+    }
+}
+
+// ─── Tooltips ────────────────────────────────────────────────────────────────
+#tooltip,
+.locked-tooltip {
+    background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+    background-size: cover;
+    color: var(--zen-ink);
+    border: 1px solid var(--zen-border);
+    font-family: var(--zen-font-body);
+}
+
+// PF1e extended / source-breakdown tooltips (the "@attributes.ac.normal.total
+// = 22" breakdown that pops up on hover) hardcode `gold` / `goldenrod` /
+// `silver` on `.value` / `.unit` / `.type`. Those colors only work against
+// PF1e's default `rgba(0,0,0,0.8)` tooltip bg; on our parchment scroll they
+// vanish. Override per-mode.
+//
+// Installed PF1e v11.11 uses `#tooltip.pf1.extended` for the breakdown.
+// Upstream (dev) renamed to `aside[role="tooltip"].pf1.source-breakdown`.
+// We cover both so the theme survives an upstream system update.
+#tooltip.pf1,
+aside[role="tooltip"].pf1 {
+    background: var(--zen-surface) var(--zen-surface-image) no-repeat center / cover;
+    color: var(--zen-ink);
+    border: 1px solid var(--zen-border);
+    outline-color: var(--zen-border-soft);
+
+    &.locked-tooltip {
+        outline-color: transparent;
+        border-color: var(--zen-border);
+    }
+
+    :is(h1, h2, h3, h4, h5, h6) {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-display);
+    }
+
+    code {
+        color: var(--zen-ink);
+        background: var(--zen-card-bg);
+    }
+}
+
+// !important wins regardless of layer/popover top-layer cascade quirks.
+#tooltip.pf1.extended,
+#tooltip.pf1.source-breakdown,
+aside[role="tooltip"].pf1.extended,
+aside[role="tooltip"].pf1.source-breakdown {
+    > .value,
+    > .value.untyped,
+    > .value.has-unit,
+    > .value.left {
+        color: var(--zen-ink-accent) !important;
+    }
+
+    > .unit {
+        color: var(--zen-ink-accent) !important;
+    }
+
+    > .type {
+        color: var(--zen-ink-mute) !important;
+    }
+
+    .item-type {
+        color: var(--zen-ink-mute) !important;
+    }
+
+    .notes .content-link,
+    .notes .inline-preroll.inline-formula {
+        background-color: var(--zen-card-bg);
+        border-color: var(--zen-border-soft);
+        color: var(--zen-ink);
+
+        i.fa-dice-d20 {
+            color: var(--zen-ink-accent);
+        }
+    }
+}
+
+
+// ─── Settings forms ──────────────────────────────────────────────────────────
+.window-app.module-management,
+.window-app.permission-config,
+.window-app.client-settings,
+.window-app.settings {
+    .window-content {
+        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-size: cover;
+        color: var(--zen-ink);
+    }
+
+    .form-group label,
+    .notes {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+    }
+
+    input,
+    select,
+    textarea {
+        background: var(--zen-input-bg);
+        color: var(--zen-ink);
+        border-color: var(--zen-border);
+    }
+
+    button {
+        font-family: var(--zen-font-body);
+        background: var(--zen-card-bg);
+        color: var(--zen-ink);
+        border: 1px solid var(--zen-border);
+
+        &:hover {
+            background: var(--zen-row-hover);
+            color: var(--zen-ink-accent);
+        }
+    }
+}
+
+// ─── Chat log ────────────────────────────────────────────────────────────────
+// Chat cards get the same parchment treatment as the rest of the UI. The
+// chat-texture.webp is a subtle rice-paper grain; we composite it over the
+// card-bg token so light/dark mode both pick up tinting automatically.
+#chat-log {
+    color: var(--zen-ink);
+
+    .message {
+        color: var(--zen-ink);
+        background-color: var(--zen-card-bg);
+        background-image: url("modules/naruto-d20-kaihou/assets/theme/ui/chat-texture.webp");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-blend-mode: multiply;
+        border: 1px solid var(--zen-border-soft);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+        .message-header,
+        .message-sender,
+        .message-metadata {
+            color: var(--zen-ink-mute);
+            font-family: var(--zen-font-body);
+        }
+    }
+}
+
+
+// Chat card titles keep the global `:is(h1, h2, h3) → --zen-font-display`
+// (BrushtipTexe) rule — user preference, matches the auto-perform technique
+// message style. Only bump weight so the brushwork strokes thicken up and
+// stay legible at small sizes.
+#chat-log .message,
+#chat .chat-message,
+.chat-message {
+    .card-header h3,
+    h3.item-name,
+    h3.action-name,
+    .action-description h3,
+    .card-content h2,
+    .card-content h3 {
+        font-weight: bold;
+    }
+}
+
+// ─── PF1e inventory / feature / spellbook section labels ────────────────────
+// `.item-list-header h3` is the per-section banner ("Weapons", "Armor/Shield",
+// "Class Abilities", etc.). PF1e renders these in an opacity-reduced inherit
+// color that vanishes on dark mode. Force the token.
+.pf1.sheet .item-list-header,
+.pf1.sheet .item-list-header h3,
+.pf1.sheet .item-list-header h4 {
+    color: var(--zen-ink);
+    font-family: var(--zen-font-display);
+    border-bottom: 1px solid var(--zen-border-soft);
+}
+
+// Column header icons + labels inside item-list-headers ("Attacks", "Damage",
+// "Range" etc.). They come through with low contrast in dark mode.
+.pf1.sheet .item-list-header .item-detail,
+.pf1.sheet .item-list-header .item-detail i,
+.pf1.sheet .item-list-header .item-name {
+    color: var(--zen-ink-mute);
+}
+
+// ─── Inventory / feature filter chips ───────────────────────────────────────
+// `.filter-rule` is the "Weapons | Armor/Shield | Equipment | …" chip row at
+// the top of inventory/features/spells. PF1e defines border + hover only,
+// text color is inherited (often invisible on dark).
+.pf1.sheet .filter-list .filter-rule {
+    color: var(--zen-ink);
+    font-family: var(--zen-font-body);
+
+    &:hover {
+        color: var(--zen-ink-accent);
+    }
+
+    &.active {
+        color: var(--zen-ink-accent);
+        border-bottom-color: var(--zen-ink-accent);
+    }
+}
+
+// ─── Currency / form-row labels ─────────────────────────────────────────────
+.pf1.sheet .currencies h3,
+.pf1.sheet .currencies label,
+.pf1.sheet .summary-header .character-summary label,
+.pf1.sheet .character-classes h2,
+.pf1.sheet .character-classes h3 {
+    color: var(--zen-ink);
+    font-family: var(--zen-font-display);
+}
+
+// ─── Class-list entries on Summary tab ──────────────────────────────────────
+// "SMART NINJA / FAST NINJA / LIVEWIRE" rows below Classes header.
+.pf1.sheet .character-classes .classes-summary,
+.pf1.sheet .character-classes .classes-summary .class-row,
+.pf1.sheet .classes-summary .class-row,
+.pf1.sheet .summary-header .classes,
+.pf1.sheet .summary-header .classes .class {
+    color: var(--zen-ink);
+
+    .class-name,
+    h4 {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+    }
+
+    .class-type,
+    .class-level,
+    .class-action,
+    td {
+        color: var(--zen-ink-mute);
+    }
+}
+
+// ─── Hero Statistics / Quick Actions / Classes section headers ──────────────
+// These are `h2` / `h3` elements in the Summary tab body.
+.pf1.sheet .tab.summary h2,
+.pf1.sheet .tab.summary h3,
+.pf1.sheet .tab.summary .section-header,
+.pf1.sheet .ability-name,
+.pf1.sheet .save-name,
+.pf1.sheet .summary-header h2,
+.pf1.sheet .summary-header h3 {
+    color: var(--zen-ink);
+    font-family: var(--zen-font-display);
+}
+
+// ─── PF1e .sheet-navigation tab nav (primary + every sub-nav) ──────────────
+// PF1e uses `<nav class="sheet-navigation tabs" data-group="X">` for ALL tab
+// strips — main sheet nav, Links sub-tabs, skill Adventure/Background, etc.
+// Apply the wine-stamp active style + cream text uniformly. !important so we
+// don't lose the PF1e rule that sets `.item.active { background: rgba(155,
+// 155, 155, 0.5) }` with higher specificity.
+// ─── Ability score table values (Attributes tab) ────────────────────────────
+// PF1e markup: `<ul class="ability-table"><li class="ability">`, with `.total
+// span`, `.modifier`, `.damage span`, `.drain span`, `.penalty span` carrying
+// the numbers. PF1e ships them small + thin + low-contrast inheriting body
+// color — basically invisible on parchment. Pin them to display font, bigger,
+// bold, full ink color.
+.pf1.sheet ul.ability-table li.ability {
+    .total,
+    .total span,
+    .modifier,
+    .damage span,
+    .drain span,
+    .penalty span {
+        font-family: var(--zen-font-display);
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--zen-ink);
+        text-align: center;
+    }
+
+    // Modifier in accent so the sign+number reads as the actionable number.
+    .modifier {
+        color: var(--zen-ink-accent);
+    }
+
+    // Damage / drain / penalty are negative impact — accent for emphasis.
+    .damage span,
+    .drain span,
+    .penalty span {
+        color: var(--zen-ink-accent);
+    }
+}
+
+// ─── Spellbook header info boxes (Concentration / CL / ASF / Close / Med / Long)
+// PF1e renders `header.inventory-filters.spellbook-configuration` with dark
+// wine cards (`.info-box`) and dark text — low contrast on our parchment.
+// Lighten the cards to a warm middle ground: more visible than parchment but
+// well below wine. Re-paint labels + values to our ink tokens so they read.
+.pf1.sheet .inventory-filters .info-box,
+.pf1.sheet .inventory-filters .info-box-joined,
+.pf1.sheet .inventory-filters .info-box-joined .info-box {
+    background: rgba(155, 130, 90, 0.22);
+    border: 1px solid var(--zen-border-soft);
+    border-radius: 3px;
+    color: var(--zen-ink);
+
+    h5,
+    h5 a,
+    h5.rollable,
+    h5 a.rollable {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+        text-transform: uppercase;
+        letter-spacing: 0.04rem;
+    }
+
+    .value {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-display);
+    }
+
+    .unit {
+        color: var(--zen-ink-mute);
+    }
+
+    &:hover {
+        background: rgba(155, 130, 90, 0.32);
+    }
+}
+
+
+.pf1.sheet .sheet-navigation,
+.pf1.sheet nav.sheet-navigation {
+    background: transparent;
+    border-bottom: 1px solid var(--zen-border);
+
+    .item {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+        background: transparent;
+        padding: 0 0.3rem;
+        transition: color 120ms ease, background-color 120ms ease;
+
+        // Thin ink divider between consecutive tabs. Brushy sumi-e look
+        // (slight fade at top/bottom) so it reads like a hand-drawn line
+        // rather than a hard CSS rule.
+        & + .item {
+            border-left: 1px solid var(--zen-border-soft);
+        }
+
+        &:hover {
+            background-color: var(--zen-row-hover) !important;
+            color: var(--zen-ink-accent);
+            text-shadow: var(--zen-ink-glow);
+        }
+
+        &.active {
+            background-color: var(--zen-ink-accent) !important;
+            background-image: url("modules/naruto-d20-kaihou/assets/theme/textures/watercolor.webp") !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-blend-mode: multiply !important;
+            color: rgb(252, 245, 225) !important;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+
+            &:hover {
+                background-color: var(--zen-ink-accent) !important;
+                color: rgb(252, 245, 225) !important;
+            }
+        }
+    }
+}
+
+// ─── PF1e nav sub-tabs (Weapon Attacks / Natural Attacks / etc.) ────────────
+// Combat tab and others render secondary `nav.tabs` strips. They need the
+// same treatment as the primary sheet-navigation strip.
+.pf1.sheet nav.tabs:not(.sheet-navigation),
+.pf1.sheet .tabs[data-group]:not([data-group="primary"]) {
+    .item {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+        text-transform: uppercase;
+        letter-spacing: 0.04rem;
+
+        &:hover {
+            color: var(--zen-ink-accent);
+        }
+
+        &.active {
+            color: var(--zen-ink-accent);
+            text-shadow: var(--zen-ink-glow);
+        }
+    }
+}
+
+// ─── PF1e skill list — override hardcoded dark text ─────────────────────────
+// PF1e ships `.skill.untrained .skill-name { color: rgba(0,0,0,0.6) }` which is
+// invisible on the dark theme. The naruto-d20 module registers its discipline
+// skills (ckc / gnj / nin / tai / fui) at runtime — PF1e flags them as
+// `custom`, which only adds italic style, but the untrained color rule still
+// hits whichever rows have rank 0. Force token-based colors instead.
+// PF1e reserves a 16px-wide invisible slot for the journal icon on every
+// `.skill.compendium` row (`.skill-name .compendium-icon { visibility: hidden;
+// flex: 0 0 16px }`). Naruto skills (which don't have a compendium journal
+// reference) lack that slot, so their `.skill-name` lays out 16px wider.
+// That structural diff is what reads as "the compendium rows look different."
+// Collapse the slot entirely so both row types lay out identically; the icon
+// pops back in on hover, which is when the journal-link affordance matters.
+.pf1.sheet ul.skills-list li.skill .skill-name .compendium-icon {
+    display: none;
+    flex: 0 0 0;
+}
+.pf1.sheet ul.skills-list li.skill.compendium:hover .skill-name .compendium-icon {
+    display: inline-flex;
+    flex: 0 0 16px;
+    visibility: visible;
+}
+
+// Force-equalize every .skill row regardless of `.compendium` / `.sub-skill` /
+// `.untrained` / `:nth-child(*)` — we want a single flat parchment background
+// on every row. Whatever in PF1e is painting `.skill.compendium` darker (the
+// computed-style check earlier showed identical bg, but the user clearly sees
+// a diff that correlates with `.compendium`) — kill it with `!important`.
+.pf1.sheet ul.skills-list li.skill,
+.pf1.sheet ul.skills-list li.skill.compendium,
+.pf1.sheet ul.skills-list li.skill.sub-skill,
+.pf1.sheet ul.skills-list li.skill.untrained,
+.pf1.sheet ul.skills-list li.skill.arbitrary,
+.pf1.sheet ul.skills-list li.skill:nth-child(odd),
+.pf1.sheet ul.skills-list li.skill:nth-child(even) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+.pf1.sheet ul.skills-list li.skill {
+    color: var(--zen-ink);
+
+    &:hover {
+        background-color: var(--zen-row-hover) !important;
+    }
+
+    .skill-name,
+    .skill-name h4 {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+    }
+
+    &.untrained .skill-name,
+    &.untrained .skill-name h4 {
+        color: var(--zen-ink-mute);
+    }
+
+    &.untrained .action.roll > i {
+        opacity: 0.75;
+    }
+
+    // Hover state — was forcing dark text via --pf1-item-list-hover-text.
+    // Now token-driven, but pin the readout text too so all-row text stays legible.
+    &:hover {
+        .skill-name,
+        .skill-name h4 {
+            color: var(--zen-ink-accent);
+        }
+    }
+
+    // Mod / rank readouts — make them bright cream on dark.
+    .skill-mod,
+    .skill-rank {
+        color: var(--zen-ink);
+    }
+
+    // Custom skills (Naruto disciplines + user-added) — `.custom` only adds
+    // italic styling in PF1e. We accept the italic but keep the text bright.
+    &.custom .skill-name {
+        color: var(--zen-ink);
+        font-style: italic;
+    }
+}
+
+// ─── PF1e item list rows everywhere (inventory, buffs, features…) ────────────
+.pf1.sheet .item-list .item {
+    color: var(--zen-ink);
+
+    .item-name,
+    .item-name h4 {
+        color: var(--zen-ink);
+    }
+}
+
+// ─── Generic <input>/<select>/<textarea> readability in our scope ────────────
+// Browsers don't inherit `color` into form controls reliably across all UAs;
+// pinning it here means form fields never get invisible-on-dark text.
+input,
+select,
+textarea {
+    color: var(--zen-ink);
+
+    &::placeholder {
+        color: var(--zen-ink-soft);
+    }
+}
+
+// ─── Dark-mode legibility patch ─────────────────────────────────────────────
+// Across dark mode, PF1e renders dozens of labels (biography fields, buff
+// names, form labels, section captions, dropdown options, search filters)
+// inheriting `var(--color-text-dark-secondary)` which we redirect to
+// `var(--zen-ink-mute)`. Even with the bumped 0.88 alpha, the parade of
+// muted text reads as low-contrast at a glance. Pin the high-value classes
+// to full `--zen-ink` so the eye lands on labels first.
+.pf1.sheet,
+.pf1.sheet form {
+    // Form field labels — biography "Senses, Auras, Regeneration…", spell
+    // settings "Bonus Feat Formula", spellbook settings "Bonus, Spellbook
+    // Name, Domain/School Slots…", actor settings "Hit Points, Initiative…".
+    .form-group > label,
+    .form-group .label,
+    .form-group .form-field > label,
+    label.label,
+    .field-label,
+    .summary-header label,
+    .summary-header .character-summary label,
+    .form-fields > label {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+    }
+
+    // Filter chips / section heads on Combat tab ("Weapon Attacks, Natural
+    // Attacks, Class Abilities, Racial Abilities, Items, Miscellaneous"),
+    // Features tab ("FEATS, BY LEVEL, BY BONUS, TOTAL"), inventory headers,
+    // and the "Type / Level / Action" column headers on the class list.
+    .filter-list .filter,
+    .filter-list .filter-rule,
+    .item-list-header,
+    .item-list-header h3,
+    .item-list-header h4,
+    .item-list-header .item-detail,
+    .item-list-header .item-detail span,
+    .table-header,
+    .table-header h3,
+    .table-header h4 {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+    }
+
+    // Item list row text — class names, buff names, condition names,
+    // feature names, spell names, attack names. PF1e pegs `.item-name h4`
+    // to a muted gray; we already pin .item-name elsewhere, but the class
+    // list ("SMART NINJA / FAST NINJA / LIVEWIRE") and buff list use
+    // additional inner classes that escape the previous rule.
+    .item-list .item,
+    .item-list .item .item-name,
+    .item-list .item .item-name h4,
+    .item-list .item .item-name span,
+    .item-list .item .class-name,
+    .item-list .item .class-type,
+    .item-list .item .class-level,
+    .item-list .item .class-action,
+    .condition-name,
+    .buff-name,
+    .buffs .item-name,
+    .conditions .item-name {
+        color: var(--zen-ink);
+    }
+
+    // Right-side readouts ("None" values on the biography tab, raw numbers
+    // in trait cells). PF1e uses a muted color; we want them visible.
+    .biography .traits .form-group .form-fields,
+    .biography .traits .form-fields span,
+    .traits .item,
+    .traits .trait-selector,
+    .item-info,
+    .info-value,
+    .feature-count {
+        color: var(--zen-ink);
+    }
+
+    // Spellbook level dividers ("Cantrip/Orison, 1st Level, 2nd Level…")
+    // and per-section spellbook headers. The brushy display font is fine,
+    // just pin the color so it pops.
+    .spell-level,
+    .spellbook-header,
+    .spellbook-header h3,
+    .spellbook-header h4 {
+        color: var(--zen-ink);
+    }
+
+    // Empty "no items here" placeholders and italic hints.
+    .item-list .empty,
+    .empty,
+    .hint,
+    .notes {
+        color: var(--zen-ink-mute);
+    }
+}
+
+// ─── Search filter input ───────────────────────────────────────────────────
+// Foundry / PF1e search boxes use `input[type="search"]` or
+// `input.search-filter`. Placeholder text needs a softer-than-ink-soft alpha
+// in dark mode (0.55) to feel like a placeholder without being invisible.
+.pf1.sheet input[type="search"],
+.pf1.sheet input.search-filter,
+.pf1.sheet .filter-list input {
+    color: var(--zen-ink);
+    background: var(--zen-input-bg-strong);
+    border: 1px solid var(--zen-border-soft);
+
+    &::placeholder {
+        color: var(--zen-ink-mute);
+        font-style: italic;
+    }
+}
+
+// ─── <select> dropdowns and their <option> menus ───────────────────────────
+// In dark mode the dropdown menu (rendered by the browser at the OS level)
+// inherits page colors poorly — Foundry's selects can render with dark text
+// on dark popup bg, making the open dropdown options invisible (chakra tab
+// elemental affinity, settings ability links).
+.pf1.sheet select,
+.pf1.sheet option,
+select.chakra-nature-select {
+    color: var(--zen-ink);
+    background-color: var(--zen-surface);
+}
+
+

@@ -1,0 +1,153 @@
+/**
+ * Foundry v13-specific chrome overrides.
+ *
+ * The L5R partials we ported target v11/v12 sidebar DOM
+ * (`#sidebar-tabs > a[data-tab]`, `#sidebar-content.expanded`).
+ * v13 rebuilt the sidebar as an ApplicationV2 `<aside id="sidebar">` with
+ * Font Awesome-classed tab buttons under `nav.tabs.faded-ui menu li button`.
+ * This partial re-applies the parchment look to the actual v13 markup.
+ */
+
+// v13 paints the sidebar background on `.sidebar-tab` via the
+// `--sidebar-background` CSS variable. Overriding the variable is the only
+// rule that actually wins (direct `aside#sidebar { background }` ends up
+// behind the child's own bg). We point it at our parchment texture.
+& {
+    --sidebar-background: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp") no-repeat top center / cover,
+        rgb(245, 230, 200);
+}
+
+// Make sure the sidebar itself has the parchment border the L5R look needs.
+aside#sidebar {
+    .sidebar-tab {
+        background-color: rgb(245, 230, 200);
+        background-image: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp");
+        background-repeat: no-repeat;
+        background-size: cover;
+        border: 1px solid var(--zen-border);
+    }
+
+    // Tab strip on the right edge.
+    // v13 emits `<nav class="tabs faded-ui">` — `.faded-ui` drops opacity to
+    // ~0.5 until hover, which is why the icons read as ghostly. Pin opacity
+    // up and give the strip its own parchment column so the icons read as
+    // buttons on paper, not glyphs floating on Foundry's gray app bg.
+    nav.tabs {
+        opacity: 1;
+        background-color: rgb(245, 230, 200);
+        background-image: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp");
+        background-size: cover;
+        background-repeat: no-repeat;
+        border: 1px solid var(--zen-border);
+        border-radius: 4px;
+        padding: 0.25rem;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+
+        menu {
+            gap: 0.2rem;
+        }
+
+        menu li {
+            // Paper-card affordance for each icon. Subtle border + warm bg so
+            // the icon reads as a distinct, clickable button while keeping the
+            // overall L5R "ink on parchment" look.
+            button.ui-control {
+                background: var(--zen-card-bg);
+                border: 1px solid var(--zen-border-soft);
+                border-radius: 4px;
+                color: var(--zen-ink);
+                font-size: 1.1rem;
+                width: var(--control-size);
+                height: var(--control-size);
+                box-shadow: inset 0 0 0 1px rgba(255, 250, 230, 0.25);
+                transition: color 120ms ease,
+                    background-color 120ms ease,
+                    border-color 120ms ease,
+                    transform 120ms ease,
+                    box-shadow 120ms ease;
+
+                &:hover {
+                    background: var(--zen-row-hover);
+                    border-color: var(--zen-border);
+                    color: var(--zen-ink-accent);
+                    text-shadow: var(--zen-ink-glow);
+                    transform: scale(1.05);
+                    box-shadow: 0 0 6px rgba(155, 60, 50, 0.25);
+                }
+
+                // Active tab — watercolor wine stamp, matching the primary
+                // sheet tabs. Multiply blend tints the ink-splash texture
+                // with the wine accent so it reads as a brushed stamp.
+                &[aria-pressed="true"] {
+                    background-color: var(--zen-ink-accent);
+                    background-image: url("modules/naruto-d20-kaihou/assets/theme/textures/watercolor.webp");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-blend-mode: multiply;
+                    border-color: var(--zen-ink-accent);
+                    color: rgb(252, 245, 225);
+                    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+                    box-shadow: 0 0 8px rgba(155, 60, 50, 0.4);
+
+                    &:hover {
+                        background-color: var(--zen-ink-accent);
+                        color: rgb(252, 245, 225);
+                    }
+                }
+            }
+
+            // Swap FA glyphs for our L5R-style SVG icons. We zero out FA's
+            // `::before { content: "\fXXX"; font-family: ... }` and re-render
+            // the same `::before` as a colored mask of our SVG. `currentColor`
+            // means the hover/active color rules above still work.
+            //
+            // FA class → tab mapping (v13 CONFIG[doc].sidebarIcon):
+            //   .fa-comments    chat
+            //   .fa-swords      combat
+            //   .fa-map         scenes
+            //   .fa-user        actors
+            //   .fa-suitcase    items
+            //   .fa-book-open   journal
+            //   .fa-table-list  tables
+            //   .fa-music       playlists
+            //   .fa-book-atlas  compendium
+            //   .fa-gears       settings
+            $sidebar-icon-map: (
+                "fa-comments":   "chat",
+                "fa-swords":     "combat-tracker",
+                "fa-map":        "scenes",
+                "fa-user":       "actors",
+                "fa-suitcase":   "object",
+                "fa-book-open":  "journal",
+                "fa-table-list": "rolltable",
+                "fa-music":      "playlist",
+                "fa-book-atlas": "compendium",
+                "fa-gears":      "settings",
+            );
+
+            @each $fa-class, $svg-name in $sidebar-icon-map {
+                button.ui-control.#{$fa-class}::before {
+                    content: "";
+                    display: inline-block;
+                    width: 1.4em;
+                    height: 1.4em;
+                    background-color: currentColor;
+                    mask: url("modules/naruto-d20-kaihou/assets/theme/ui/sidebar/#{$svg-name}.svg") no-repeat center / contain;
+                    -webkit-mask: url("modules/naruto-d20-kaihou/assets/theme/ui/sidebar/#{$svg-name}.svg") no-repeat center / contain;
+                    // Cancel the FA-glyph font so we don't get both rendered.
+                    font-family: inherit;
+                }
+            }
+        }
+    }
+}
+
+// v13 application windows (Application V2 chrome) use `.application` instead
+// of `.window-app`. Mirror the parchment look onto the new wrapper too.
+.application {
+    &.themed {
+        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-size: cover;
+    }
+}

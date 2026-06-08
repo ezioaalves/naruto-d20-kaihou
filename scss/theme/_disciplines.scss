@@ -1,0 +1,52 @@
+/**
+ * Discipline color + icon hooks.
+ *
+ * naruto-d20 emits discipline keys (ckc / gnj / nin / tai / fui) on technique
+ * markup. We map each one to its L5R tech analogue's color and reuse its SVG.
+ * See PLAN.md §"Discipline mapping" for the rationale (visual-only aliasing).
+ */
+
+$disciplines: (
+    "tai": ("color": $nzen-tai, "icon": "taijutsu"),
+    "nin": ("color": $nzen-nin, "icon": "ninjutsu"),
+    "gnj": ("color": $nzen-gnj, "icon": "genjutsu"),
+    "ckc": ("color": $nzen-ckc, "icon": "chakra-control"),
+    "fui": ("color": $nzen-fui, "icon": "fuinjutsu"),
+    "kin": ("color": $nzen-kin, "icon": "kinjutsu"),
+);
+
+@each $key, $cfg in $disciplines {
+    $color: map-get($cfg, "color");
+    $icon: map-get($cfg, "icon");
+
+    [data-discipline="#{$key}"],
+    .discipline-#{$key} {
+        color: $color;
+    }
+
+    [data-discipline-icon="#{$key}"],
+    i.i_discipline-#{$key} {
+        background: transparent url("modules/naruto-d20-kaihou/assets/theme/icons/disciplines/#{$icon}.svg") no-repeat center / contain;
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        vertical-align: text-bottom;
+    }
+
+    .technique-card[data-discipline="#{$key}"] {
+        border-left: 3px solid $color;
+    }
+}
+
+// Hook for the chakra tab's filter chips (the active chip gets a sumi-e underline).
+.chakra-tab .discipline-filter .filter-chip {
+    border-bottom: 2px solid transparent;
+
+    @each $key, $cfg in $disciplines {
+        $color: map-get($cfg, "color");
+        &[data-discipline="#{$key}"].active {
+            border-bottom-color: $color;
+            color: $color;
+        }
+    }
+}

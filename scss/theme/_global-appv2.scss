@@ -1,0 +1,160 @@
+.application {
+    color: var(--color-text-primary);
+
+    .scrollable {
+        --scroll-margin: 0;
+    }
+
+    .window-header {
+        background: linear-gradient(
+            $nzen-linear-gradient-second,
+            $nzen-linear-gradient-second-dark,
+            $nzen-linear-gradient-second
+        );
+        .window-title {
+            font-family: $font-secondary;
+            font-size: 1.25rem;
+        }
+    }
+
+    .window-content {
+        padding: 0.25rem;
+    }
+}
+
+// More specified stuff down here as to not make it too hard to read the overridden defaults
+.application {
+    .window-content {
+        table {
+            background: transparent;
+            border: 1px solid var(--zen-border-soft);
+            thead {
+                background: var(--zen-border-soft);
+                color: var(--zen-ink-mute);
+                text-shadow: none;
+                border-bottom: var(--zen-border-soft);
+            }
+            tbody {
+            }
+            tr {
+                background: transparent;
+                &:hover {
+                    background: var(--zen-row-hover);
+                }
+            }
+        }
+    }
+}
+
+// Handle Sidebar here. Starting with custom icons
+$nzen-custom-icons: (
+  chatIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/chat.svg",
+  combatIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/combat-tracker.svg",
+  sceneIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/scenes.svg",
+  actorIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/actors.svg",
+  itemIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/object.svg",
+  journalIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/journal.svg",
+  rolltableIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/rolltable.svg",
+  playlistIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/playlist.svg",
+  compendiumIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/compendium.svg",
+  settingsIcon: "modules/naruto-d20-kaihou/assets/theme/ui/sidebar/settings.svg"
+);
+
+$selectors: (
+  "#sidebar-tabs button.l5r5e",
+  "#sidebar-content .create-button.l5r5e",
+  "#sidebar-content i.l5r5e",
+  "#context-menu i.l5r5e"
+);
+
+@each $selector in $selectors {
+  #{$selector} {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    @if str-index($selector, "i.") {
+      width: 2em;
+      height: 2em;
+      color: currentColor;
+    }
+    
+    @if str-index($selector, "create-button") {
+      filter: drop-shadow(0 0 3px var(--color-dark-1));
+    }
+    
+    // Apply masks for each icon
+    @each $name, $url in $nzen-custom-icons {
+      &.#{$name}::before {
+        content: "";
+        position: absolute;
+        width: 85%;
+        height: 85%;
+        background-color: currentColor;
+        mask: url($url) no-repeat center / contain;
+        -webkit-mask: url($url) no-repeat center / contain;
+        z-index: 0;
+      }
+    }
+    
+    // Generic plus icon badge
+    &.icon-plus::after {
+      z-index: 2;
+    }
+  }
+}
+
+#sidebar-tabs > menu {
+    gap: 4px; // halve the distance between menu icons
+}
+
+
+#sidebar-content.expanded {
+    background: url("modules/naruto-d20-kaihou/assets/theme/ui/bgSidebar.webp") no-repeat;
+    border-image: url("modules/naruto-d20-kaihou/assets/theme/ui/macro-button.webp") 10 repeat;
+    border-style: solid;
+    border-image-width: 0.5rem;
+    border-image-outset: 0px;
+    margin-top: 2px;
+    margin-right: 2px;
+    height: calc(100% - 10px); // use height calculation to add margin at bottom
+
+    .sidebar-tab,.tab {
+        margin: 3px; // center content in sidebar
+        border-radius: 5px; // round of the inside content
+    }
+
+    #chat {
+        margin: unset;
+        padding-right: 4px; // scrollbar should be inside the container
+        .chat-scroll {
+          direction: unset;     // Scrollbar on right
+          scrollbar-color:  var(--color-light-4) var(--color-dark-3);
+          scrollbar-width: thin;
+        }
+    }
+}
+
+// hotbar
+#hotbar {
+    //margin: 0;
+    #action-bar {
+        //flex: 0 0 100%;
+        .slot {
+            border-image: url("modules/naruto-d20-kaihou/assets/theme/ui/macro-button.webp");
+            border-image-slice: 8 fill;
+            border-image-width: 0.25rem;
+        }
+    }
+}
+
+#menu.active {
+    transition: max-height 150ms ease-in;
+}
+
+#menu {
+    // Foundry listens to transitionend and then close the menu so need something here.
+    // otherwise using ESC will result in a long wait and missed trigger events
+    transition: max-height 10ms ease-out;
+}

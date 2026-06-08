@@ -1,0 +1,448 @@
+/**
+ * naruto-d20 module-owned UI.
+ *
+ * The base module already exposes discipline keys on its markup via
+ *   - `.technique-filter[data-disc="<key>"]`         (filter chips)
+ *   - `.learn-check-box[data-naruto-tooltip="learn.<key>"]`
+ *   - `.learn-check-header[data-key="<key>"]`
+ *   - `.spellbook-header[data-level="<rank>"]`
+ *
+ * So we can colorize per-discipline without any JS stamping for the chakra tab.
+ * Scope: imported under `body.naruto-zen .naruto-zen-target { ... }`.
+ */
+
+$discipline-color: (
+    "tai": $nzen-tai,
+    "nin": $nzen-nin,
+    "gnj": $nzen-gnj,
+    "ckc": $nzen-ckc,
+    "fui": $nzen-fui,
+);
+
+// ----- Chakra tab ------------------------------------------------------------
+.tab.chakra {
+    background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
+    background-size: cover;
+    padding: 0.5rem;
+
+    h3 {
+        font-family: var(--zen-font-display);
+        color: var(--zen-ink);
+        border-bottom: 1px solid var(--zen-border);
+        margin: 0.25rem 0 0.5rem;
+        padding-bottom: 0.15rem;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px dashed var(--zen-border);
+        margin: 0.5rem 0;
+    }
+
+    // Pool / Reserve / EPS / Affinities row
+    > .attributes {
+        gap: 0.5rem;
+
+        .info-box-header {
+            background: var(--zen-card-bg);
+            border: 1px solid var(--zen-border-soft);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+
+            h3 {
+                border-bottom: none;
+                margin-bottom: 0.25rem;
+                font-size: 0.95rem;
+            }
+
+            .info-box-joined {
+                background: transparent;
+                border-top: 1px solid var(--zen-border-soft);
+                padding-top: 0.25rem;
+            }
+
+            .info-box {
+                h5 {
+                    font-family: var(--zen-font-body);
+                    text-transform: uppercase;
+                    letter-spacing: 0.05rem;
+                    color: var(--zen-ink-mute);
+                    font-size: 0.7rem;
+                }
+
+                .value,
+                input.value {
+                    font-family: var(--zen-font-display);
+                    font-size: 1.4rem;
+                    color: var(--zen-ink);
+                    background: transparent;
+                    border: none;
+                    text-align: center;
+                }
+
+                &.maximum .value {
+                    color: var(--zen-ink-accent);
+                }
+            }
+
+            select.chakra-nature-select {
+                background: transparent;
+                border: none;
+                border-bottom: 1px dotted var(--zen-border-soft);
+                font-family: var(--zen-font-body);
+                color: var(--zen-ink);
+            }
+        }
+
+        // Elemental-affinity card: stamped `data-nature` (see main.mjs).
+        // Color the left rule and the primary readout in the chosen nature.
+        $natures-list: (
+            "earth": $nzen-earth,
+            "water": $nzen-water,
+            "fire": $nzen-fire,
+            "wind": $nzen-wind,
+            "lightning": $nzen-lightning,
+        );
+
+        .info-box-header.speed-details {
+            border-left-width: 3px;
+            border-left-style: solid;
+            border-left-color: var(--zen-ink-mute);
+
+            @each $nature, $color in $natures-list {
+                &[data-nature="#{$nature}"] {
+                    border-left-color: $color;
+
+                    h3 {
+                        color: $color;
+                    }
+                    select.chakra-nature-select {
+                        color: $color;
+                    }
+                }
+            }
+        }
+    }
+
+    // Learn-check cards — one per discipline.
+    .defenses .combat-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .learn-check-box {
+        background: var(--zen-card-bg);
+        border: 1px solid var(--zen-border-soft);
+        border-left: 3px solid var(--zen-ink-mute);
+        border-radius: 4px;
+        padding: 0.4rem 0.5rem;
+
+        .learn-check-header {
+            font-family: var(--zen-font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            color: var(--zen-ink);
+            font-size: 0.95rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+
+            &:hover {
+                color: var(--zen-ink-accent);
+                text-shadow: var(--zen-ink-glow);
+            }
+        }
+
+        .learn-check-total {
+            font-family: var(--zen-font-display);
+            font-size: 1.4rem;
+            color: var(--zen-ink-accent);
+        }
+
+        .learn-check-misc input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px dotted var(--zen-border-soft);
+            color: var(--zen-ink);
+            text-align: center;
+        }
+
+        .learn-check-conditional {
+            display: block;
+            font-style: italic;
+            font-size: 0.8rem;
+            color: var(--zen-ink-mute);
+        }
+    }
+
+    // Per-discipline color accents on each learn-check card.
+    @each $key, $color in $discipline-color {
+        .learn-check-box[data-naruto-tooltip="learn.#{$key}"] {
+            border-left-color: $color;
+
+            .learn-check-header {
+                color: $color;
+            }
+            .learn-check-total {
+                color: $color;
+            }
+        }
+    }
+
+    // Technique discipline filter chips — sumi-e underline on active.
+    .technique-disc-tabs {
+        gap: 0.25rem;
+        padding: 0.25rem 0;
+        border-bottom: 1px solid var(--zen-border);
+
+        .technique-filter {
+            font-family: var(--zen-font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            font-size: 0.85rem;
+            padding: 0.15rem 0.5rem;
+            color: var(--zen-ink);
+            border: none;
+            border-bottom: 2px solid transparent;
+            background: transparent;
+            cursor: pointer;
+
+            &:hover {
+                color: var(--zen-ink-accent);
+            }
+
+            &.active {
+                color: var(--zen-ink-accent);
+                border-bottom-color: var(--zen-ink-accent);
+            }
+
+            @each $key, $color in $discipline-color {
+                &[data-disc="#{$key}"] {
+                    &:hover,
+                    &.active {
+                        color: $color;
+                        border-bottom-color: $color;
+                    }
+                }
+            }
+        }
+    }
+
+    // Technique list rows — striped parchment, brush-ink rank header.
+    .item-list-header.spellbook-header {
+        font-family: var(--zen-font-body);
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        color: var(--zen-ink);
+        background: transparent url("modules/naruto-d20-kaihou/assets/theme/imgs/brush.webp") no-repeat left center;
+        background-size: 35% auto;
+        border-bottom: 1px solid var(--zen-border);
+
+        h3 {
+            border: none;
+            margin: 0;
+            font-size: 1rem;
+            color: var(--zen-ink-accent);
+        }
+    }
+
+    .technique-list .technique-row {
+        font-family: var(--zen-font-body);
+        color: var(--zen-ink);
+        background: transparent;
+        border-bottom: 1px dashed var(--zen-border-soft);
+        border-left: 3px solid transparent;
+
+        &:hover {
+            background: var(--zen-row-hover);
+        }
+
+        .item-name h4 {
+            font-family: var(--zen-font-body);
+            color: var(--zen-ink);
+        }
+
+        .technique-cost {
+            color: $nzen-fire;
+            font-weight: bold;
+        }
+
+        // Per-discipline left-border accent (data-discipline stamped by main.mjs).
+        @each $key, $color in $discipline-color {
+            &[data-discipline="#{$key}"] {
+                border-left-color: $color;
+
+                .spell-school span {
+                    color: $color;
+                }
+            }
+        }
+    }
+}
+
+// ----- Technique item sheet --------------------------------------------------
+&.window-app.technique {
+    .window-content {
+        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    form {
+        background: transparent;
+    }
+
+    .sheet-header {
+        background: transparent url("modules/naruto-d20-kaihou/assets/theme/imgs/brush.webp") no-repeat left center;
+        background-size: 55% auto;
+        padding: 0.5rem;
+        border-bottom: 2px solid var(--zen-border);
+
+        img.profile {
+            border: 2px solid var(--zen-border);
+            border-radius: 4px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+        }
+
+        h1.item-name input {
+            font-family: var(--zen-font-display);
+            font-size: 1.6rem;
+            color: var(--zen-ink);
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed var(--zen-border);
+
+            &:focus {
+                outline: none;
+                border-bottom-color: var(--zen-ink-accent);
+                box-shadow: none;
+            }
+        }
+
+        ul.summary {
+            list-style: none;
+            padding: 0;
+            margin: 0.25rem 0 0;
+            gap: 0.5rem;
+
+            select,
+            input {
+                background: transparent;
+                border: none;
+                border-bottom: 1px dotted var(--zen-border-soft);
+                font-family: var(--zen-font-body);
+                color: var(--zen-ink);
+            }
+        }
+    }
+
+    section.sidebar {
+        background: var(--zen-card-bg);
+        border: 1px solid var(--zen-border-soft);
+        border-radius: 4px;
+        padding: 0.5rem;
+
+        h3.item-type,
+        h4.discipline,
+        h4.rank-line {
+            font-family: var(--zen-font-body);
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            color: var(--zen-ink);
+            margin: 0.1rem 0;
+        }
+
+        h4.discipline {
+            color: var(--zen-ink-accent);
+            font-size: 0.95rem;
+        }
+
+        ul.property-list {
+            list-style: none;
+            padding: 0;
+
+            h5 {
+                font-family: var(--zen-font-body);
+                text-transform: uppercase;
+                letter-spacing: 0.05rem;
+                color: var(--zen-ink-mute);
+                font-size: 0.7rem;
+                margin: 0.5rem 0 0.25rem;
+            }
+
+            li.generic-tag {
+                display: inline-block;
+                padding: 0.1rem 0.4rem;
+                margin: 0.1rem;
+                background: var(--zen-input-bg-strong);
+                border: 1px solid var(--zen-border);
+                border-radius: 2px;
+                font-size: 0.8rem;
+                color: var(--zen-ink);
+            }
+        }
+
+        label.descriptor.number {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--zen-font-body);
+            color: var(--zen-ink);
+            margin-top: 0.5rem;
+
+            input {
+                width: 3rem;
+                background: transparent;
+                border: none;
+                border-bottom: 1px dotted var(--zen-border-soft);
+                text-align: center;
+                color: var(--zen-ink-accent);
+                font-family: var(--zen-font-display);
+                font-size: 1.2rem;
+            }
+        }
+    }
+}
+
+// ----- Hero statistics block (Summary tab injection) ------------------------
+#naruto-hero-statistics {
+    background: var(--zen-card-bg);
+    border: 1px solid var(--zen-border-soft);
+    border-top: 2px solid var(--zen-border);
+    border-bottom: 2px solid var(--zen-border);
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-family: var(--zen-font-body);
+    color: var(--zen-ink);
+
+    .naruto-summary-stats {
+        font-family: var(--zen-font-body);
+
+        .stat-label {
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            color: var(--zen-ink-mute);
+            font-size: 0.75rem;
+        }
+
+        .stat-value {
+            font-family: var(--zen-font-display);
+            color: var(--zen-ink-accent);
+            font-size: 1.2rem;
+        }
+    }
+}
+
+// ----- Technique compendium browser -----------------------------------------
+.technique-browser,
+&.window-app.compendium-browser {
+    .window-content {
+        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    h1, h2, h3 {
+        font-family: var(--zen-font-display);
+        color: var(--zen-ink);
+    }
+}

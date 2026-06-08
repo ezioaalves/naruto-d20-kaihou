@@ -1,0 +1,33 @@
+/**
+ * Theme partials forward — wrapped in body.naruto-zen scoping.
+ *
+ * Mirrors the zen-theme zen.scss structure: outer wrapper enables global
+ * chrome (background, sidebar, nav, fonts, ui); inner .naruto-zen-target
+ * wrapper enables per-app styling that only applies to sheets/dialogs
+ * Foundry has tagged.
+ *
+ * _colors must be imported at top level (not inside any selector) because
+ * it declares Sass $-variables consumed by _tokens.scss (already resolved
+ * in Phase B) and other partials.
+ */
+
+@import "colors";
+
+body.naruto-zen {
+  @import "fonts";
+  @import "global";
+  @import "global-appv2";
+  @import "ui";
+  @import "nav";
+  @import "compatibility-modules";
+  @import "v13-chrome";
+  @import "pf1-surfaces";
+
+  .naruto-zen-target {
+    @import "pf1-sheets";
+    @import "naruto-module";
+    @import "natures";
+    @import "disciplines";
+    @import "villages";
+  }
+}

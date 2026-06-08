@@ -1,0 +1,249 @@
+/**
+ * PF1e sheet overrides — actor (character/NPC) and items.
+ *
+ * Scope: applied inside `body.naruto-zen .naruto-zen-target { ... }`.
+ * `&` resolves to `.naruto-zen-target`. We further qualify with PF1e's
+ * own classes (`.pf1.actor.sheet`, `.window-app.sheet.item`) so unrelated
+ * apps that happen to get tagged don't pick up sheet-shaped rules.
+ *
+ * PF1e (v11.11) sheets are Application V1, so the outer wrapper is
+ * `.window-app.sheet`. Inside, the form carries `.pf1.actor.sheet` etc.
+ */
+
+// ----- Actor sheet (character + NPC) -----------------------------------------
+&.window-app.sheet.actor {
+    .window-content {
+        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-size: cover;
+        padding: 0.25rem;
+    }
+
+    form.pf1.actor.sheet,
+    form.actor.character,
+    form.actor.npc {
+        background: transparent;
+        color: var(--zen-ink);
+    }
+
+    // Primary tab strip — notch the L5R way.
+    .sheet-navigation.tabs {
+        background: transparent;
+        border-bottom: 2px solid var(--zen-border);
+        padding-bottom: 0.25rem;
+        gap: 0.25rem;
+
+        .item {
+            font-family: var(--zen-font-body);
+            font-size: 0.95rem;
+            color: var(--zen-ink);
+            text-transform: uppercase;
+            letter-spacing: 0.02rem;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 0.25rem 0.3rem;
+            background: transparent;
+            transition: color 120ms ease, border-color 120ms ease;
+
+            &:hover {
+                color: var(--zen-ink-accent);
+                text-shadow: var(--zen-ink-glow);
+            }
+
+            // Active tab gets the wine "stamp" treatment in `_nav.scss`
+            // (filled accent bg + cream text). Only set border + glow here so
+            // we don't override the bg/text the stamp rule needs.
+            &.active {
+                border-bottom-color: var(--zen-ink-accent);
+                text-shadow: var(--zen-ink-glow);
+            }
+        }
+    }
+
+    // Section behind tab panels — parchment.
+    .primary-body {
+        background: transparent;
+
+        > .tab {
+            background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
+            background-size: cover;
+            padding: 0.5rem;
+            border: 1px solid var(--zen-border-soft);
+            border-top: none;
+        }
+    }
+
+    // Summary tab header — brush behind portrait + name.
+    .tab.summary .summary-header {
+        background: transparent url("modules/naruto-d20-kaihou/assets/theme/imgs/brush.webp") no-repeat left center;
+        background-size: 60% auto;
+        padding: 0.5rem 0;
+
+        img.profile {
+            border: 2px solid var(--zen-border);
+            border-radius: 4px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+        }
+
+        h1.char-name input {
+            font-family: var(--zen-font-display);
+            font-size: 1.6rem;
+            color: var(--zen-ink);
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed var(--zen-border);
+
+            &:focus {
+                outline: none;
+                border-bottom-color: var(--zen-ink-accent);
+                box-shadow: none;
+            }
+        }
+
+        .character-summary input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px dotted var(--zen-border-soft);
+            color: var(--zen-ink);
+            font-family: var(--zen-font-body);
+
+            &:focus {
+                outline: none;
+                border-bottom-color: var(--zen-ink-accent);
+                box-shadow: none;
+            }
+        }
+
+        // Race / class / level item rows — paper card.
+        .race.item,
+        .class.item {
+            background: var(--zen-card-bg);
+            border: 1px solid var(--zen-border-soft);
+            border-radius: 4px;
+        }
+    }
+
+    // Attribute / save / AC blocks across tabs — give them a parchment-card look.
+    .tab.attributes .attributes,
+    .tab.attributes .saving-throws,
+    .tab.combat .combat-defenses,
+    .tab.combat .ac-table {
+        background: var(--zen-card-bg);
+        border: 1px solid var(--zen-border-soft);
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+    }
+
+    // Section labels: small caps in the L5R serif.
+    .form-header,
+    .skills-list .skill-name,
+    .ability-name,
+    .save-name {
+        font-family: var(--zen-font-body);
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        color: var(--zen-ink);
+    }
+
+    // No striping on skill / item lists — user prefers flat parchment rows.
+    // (Stripe rules previously here painted with `background:` shorthand which
+    // beat the `background-color: transparent` override in `_pf1-surfaces.scss`
+    // due to higher specificity from the `.naruto-zen-target.window-app.sheet.actor`
+    // chain. Saved as memory: `feedback_zen_theme_lists.md`.)
+}
+
+// ----- Item sheets -----------------------------------------------------------
+&.window-app.sheet.item {
+    .window-content {
+        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    // Force the form's own bg to transparent so window-content bg shows through.
+    // PF1e paints `form.pf1.sheet.item` with its own background that otherwise
+    // covers our parchment / dark-stone surface.
+    form.pf1.sheet.item,
+    form.pf1.sheet {
+        background: transparent;
+        color: var(--zen-ink);
+    }
+
+    .sheet-header {
+        background: transparent url("modules/naruto-d20-kaihou/assets/theme/imgs/brush.webp") no-repeat left center;
+        background-size: 50% auto;
+        padding: 0.5rem 0;
+
+        // PF1e wraps the title input in `.item-name` for items. Both shapes appear.
+        h1 input,
+        h2 input,
+        h3 input,
+        .item-name input,
+        .item-name h1,
+        .item-name h2,
+        .item-name h3 {
+            font-family: var(--zen-font-display);
+            color: var(--zen-ink);
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed var(--zen-border);
+        }
+    }
+
+    // Body sections + descriptive prose inside item sheets — pin to ink token
+    // so dark mode doesn't leave default-dark PF1e text invisible.
+    form .form-group,
+    form fieldset,
+    form .biography,
+    .item-description,
+    .editor-content,
+    p {
+        color: var(--zen-ink);
+    }
+
+    // PF1e renders inline section labels like "BASE CLASS", "Example of...",
+    // "Class Description" — these go invisible on dark mode otherwise.
+    .form-header,
+    h2.form-header,
+    h3.form-header,
+    .table-name,
+    legend {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-body);
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        border-bottom: 1px solid var(--zen-border-soft);
+    }
+
+    nav.sheet-tabs.tabs,
+    .tabs[data-group="primary"] {
+        background: transparent;
+        border-bottom: 1px solid var(--zen-border);
+
+        .item {
+            color: var(--zen-ink);
+            font-family: var(--zen-font-body);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+
+            &.active {
+                color: var(--zen-ink-accent);
+                text-shadow: var(--zen-ink-glow);
+            }
+        }
+    }
+
+    .tab {
+        background: transparent;
+        color: var(--zen-ink);
+    }
+}
+
+// ----- Window header chrome (title bar) ─────────────────────────────────────
+// Foundry's window title bar — "CHARISMATIC NINJA" etc. Force the token so it
+// reads in both modes (Foundry's default is dark text on dark chrome in dark mode).
+&.window-app .window-header,
+&.application .window-header {
+    .window-title {
+        color: var(--zen-ink);
+        font-family: var(--zen-font-display);
+    }
+}
