@@ -121,3 +121,19 @@ body.naruto-zen {
   --color-text-dark-primary: var(--zen-ink);
   --color-text-dark-secondary: var(--zen-ink-mute);
 }
+
+// ─── Bold sumi-e tokens — consumed only by the wizard (.tqw-v2 root). ──
+// Other Kaihou surfaces stick to the soft defaults declared above.
+:root {
+  --zen-bold-border: 2px solid var(--zen-ink);
+  --zen-bold-border-heavy: 3px solid var(--zen-ink);
+  --zen-bold-header-bg: linear-gradient(180deg, var(--zen-ink) 0%, #3A2E1B 100%);
+  --zen-bold-header-text: var(--zen-surface);
+  --zen-bold-card-bg: rgba(255, 251, 237, 0.85);
+  --zen-bold-card-shadow: 0 4px 12px rgba(94, 67, 39, 0.3),
+                          inset 0 0 12px rgba(195, 165, 130, 0.2);
+  --zen-bold-divider: 2px solid var(--zen-border);
+  --zen-bold-accent-rule: 2px solid var(--zen-ink-accent);
+  --zen-bold-grain: radial-gradient(circle at 20% 30%, rgba(195, 165, 130, 0.15) 0%, transparent 40%),
+                    radial-gradient(circle at 80% 70%, rgba(94, 67, 39, 0.08) 0%, transparent 40%);
+}
