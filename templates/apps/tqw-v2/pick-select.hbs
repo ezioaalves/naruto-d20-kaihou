@@ -1,0 +1,15 @@
+{{!-- Single-select dropdown — Q1 village, etc. --}}
+<div class="zen-card zen-card--bold tqw-v2__pick tqw-v2__pick--select">
+  <div class="zen-card__label">{{current.sidebarLabel}}</div>
+  <select class="tqw-v2__select"
+          data-action="tqw-select-change"
+          data-qid="{{current.id}}"
+          data-state-field="{{current.stateField}}">
+    <option value="">— {{localize "NARUTO_D20_KAIHOU.WIZARD.CHOOSE"}} —</option>
+    {{#each current.options}}
+      <option value="{{value}}" {{#if (eq value ../current.value)}}selected{{/if}}>
+        {{label}}
+      </option>
+    {{/each}}
+  </select>
+</div>
