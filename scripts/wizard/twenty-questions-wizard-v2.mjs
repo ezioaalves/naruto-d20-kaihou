@@ -410,6 +410,25 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   }
 
   /**
+   * Force-centre the wizard on first open. ApplicationV2 remembers
+   * the last drag position per app id, which leaves the window stuck
+   * against the sidebar after one offset drag — even reload doesn't
+   * recentre. Override here so every fresh open lands in the viewport
+   * centre, then user drags from there if they want.
+   */
+  _onFirstRender(context, options) {
+    super._onFirstRender?.(context, options);
+    const w = this.position?.width ?? 640;
+    const h = this.position?.height ?? 720;
+    this.setPosition({
+      left: Math.max(0, Math.round((window.innerWidth  - w) / 2)),
+      top:  Math.max(0, Math.round((window.innerHeight - h) / 2)),
+      width: w,
+      height: h,
+    });
+  }
+
+  /**
    * ApplicationV2's `actions` map only delegates click events. Selects,
    * textareas, and most inputs fire `change` / `input` instead, so the
    * `data-action="tqw-*-change"` attributes get ignored unless we wire
