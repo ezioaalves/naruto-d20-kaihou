@@ -26,6 +26,14 @@
       "q07_relationship_outsider": "Distante da Vila",
       "q08_code_adherent": "Adepto do Código",
       "q08_code_sceptic": "Cético do Código"
+    },
+    "WIZARD": {
+      "TITLE": "20 Questions Sheet Wizard",
+      "BACK": "Back",
+      "NEXT": "Next",
+      "FINISH": "Finish",
+      "CANCEL": "Cancel",
+      "ROLL": "Roll"
     }
   }
 }

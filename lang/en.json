@@ -26,6 +26,14 @@
       "q07_relationship_outsider": "Village Outsider",
       "q08_code_adherent": "Code Adherent",
       "q08_code_sceptic": "Code Sceptic"
+    },
+    "WIZARD": {
+      "TITLE": "20 Questions Sheet Wizard",
+      "BACK": "Back",
+      "NEXT": "Next",
+      "FINISH": "Finish",
+      "CANCEL": "Cancel",
+      "ROLL": "Roll"
     }
   }
 }
