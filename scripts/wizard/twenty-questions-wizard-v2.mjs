@@ -495,12 +495,19 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
       return;
     }
 
-    // Persist the drop into state.
+    // Persist the drop into state. Mirror V1's stored shape — the
+    // finish-orchestrator's planForField does `typeof newValue === "object"`
+    // gating and looks up via {uuid, id, pack} / {_id} fallbacks.
     const stateField = zoneIdx !== undefined
       ? question.zones?.[parseInt(zoneIdx, 10)]?.stateField
       : question.stateField;
     if (!stateField) return;
-    this.wizardState = { ...this.wizardState, [stateField]: payload.uuid };
+    const stored = {
+      uuid: item.uuid,
+      _id: item.id ?? item._id,
+      name: item.name,
+    };
+    this.wizardState = { ...this.wizardState, [stateField]: stored };
     await this.render();
   }
 
