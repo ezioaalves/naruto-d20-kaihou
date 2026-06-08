@@ -1,0 +1,11 @@
+{{!-- Select dropdown for single-choice picks (e.g., Q1 village, Q17 skill) --}}
+<div class="tqw-select-group" data-state-field="{{current.stateField}}">
+  <select name="pick-{{current.id}}" data-qid="{{current.id}}">
+    <option value="">-- Choose {{current.sidebarLabel}} --</option>
+    {{#each current.options}}
+      <option value="{{value}}" {{#if (eq value ../current.stateValue)}}selected{{/if}}>
+        {{label}}
+      </option>
+    {{/each}}
+  </select>
+</div>

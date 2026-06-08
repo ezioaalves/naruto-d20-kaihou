@@ -1,0 +1,32 @@
+{{!-- Roll table with d10 outcomes (Q18 heritage) --}}
+<div class="tqw-rolltable" data-state-field="{{current.stateField}}">
+  <div class="tqw-roll-controls">
+    <button type="button" class="tqw-roll-button" data-qid="{{current.id}}" data-formula="{{current.rollFormula}}">
+      {{localize "NARUTO_D20_KAIHOU.WIZARD.ROLL"}} {{current.rollFormula}}
+    </button>
+    {{#if current.selectedRoll}}
+      <span class="tqw-roll-result">Result: {{current.selectedRoll}}</span>
+    {{/if}}
+  </div>
+
+  {{#if current.outcomes}}
+    <table class="tqw-heritage-table">
+      <thead>
+        <tr>
+          <th>Roll</th>
+          <th>Outcome</th>
+          <th>Modifier</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each current.outcomes}}
+          <tr class="tqw-outcome-row" data-roll="{{roll}}" {{#if (eq roll ../current.selectedRoll)}}class="selected"{{/if}}>
+            <td class="tqw-roll-num">{{roll}}</td>
+            <td class="tqw-outcome-name">{{name}}</td>
+            <td class="tqw-outcome-modifier">{{modifier}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/if}}
+</div>

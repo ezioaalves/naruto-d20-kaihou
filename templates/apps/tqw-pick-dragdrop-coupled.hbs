@@ -1,0 +1,19 @@
+{{!-- Two coupled drop zones (Q10: flaw + bonus feat) --}}
+<div class="tqw-dragdrop-coupled" data-state-field="{{current.stateField}}">
+  {{#each current.zones}}
+    <div class="tqw-dragdrop-zone">
+      <label>{{label}}</label>
+      <div class="tqw-drop-zone" data-qid="{{../current.id}}" data-zone="{{@index}}"
+           data-state-field="{{stateField}}" data-accepts="{{json dropAccepts}}">
+        {{#if droppedItem}}
+          <div class="tqw-dropped-item">
+            <span class="tqw-item-name">{{droppedItem.name}}</span>
+            <button type="button" class="tqw-clear-drop" data-qid="{{../current.id}}" data-zone="{{@index}}" title="Clear">✕</button>
+          </div>
+        {{else}}
+          <em>{{label}}</em>
+        {{/if}}
+      </div>
+    </div>
+  {{/each}}
+</div>

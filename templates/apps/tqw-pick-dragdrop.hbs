@@ -1,0 +1,13 @@
+{{!-- Drag-drop zone for single item (Q3, Q9, Q16) --}}
+<div class="tqw-dragdrop-single" data-state-field="{{current.stateField}}">
+  <div class="tqw-drop-zone" data-qid="{{current.id}}" data-accepts="{{json current.dropAccepts}}">
+    {{#if current.droppedItem}}
+      <div class="tqw-dropped-item">
+        <span class="tqw-item-name">{{current.droppedItem.name}}</span>
+        <button type="button" class="tqw-clear-drop" data-qid="{{current.id}}" title="Clear">✕</button>
+      </div>
+    {{else}}
+      <em>Drag {{current.sidebarLabel}} here</em>
+    {{/if}}
+  </div>
+</div>
