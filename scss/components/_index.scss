@@ -1,0 +1,13 @@
+/**
+ * Component primitives forward.
+ *
+ * Phase 2 fills these in. Phase 1 imports them so the SCSS graph is final
+ * from day one — Phase 2 swaps content without restructuring imports.
+ */
+
+@use "card";
+@use "chip";
+@use "drop-zone";
+@use "pick-grid";
+@use "stepper-sidebar";
+@use "rolltable";

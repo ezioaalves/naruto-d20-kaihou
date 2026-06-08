@@ -4,10 +4,10 @@
  * Compilation target: styles/theme/zen.css (loaded by Foundry on world start).
  *
  * Import order matters:
- *   1. _tokens (declares :root custom properties — must come first so
- *      everything below can consume var(--zen-*) values)
+ *   1. _tokens (declares :root custom properties)
  *   2. components/* (theme-agnostic primitives — empty in Phase 1)
- *   3. theme/* (body.naruto-zen-scoped chrome — fills the visible UI)
+ *   3. theme/* (body.naruto-zen-scoped chrome — fills in Phase E)
  */
 
 @use "tokens";
+@use "components/index";
