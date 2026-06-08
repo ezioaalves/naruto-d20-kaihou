@@ -38,6 +38,22 @@ https://<GITHUB_PAT>@github.com/ezioaalves/naruto-d20-kaihou/releases/latest/dow
 
 Alternative: download the release ZIP manually and install via "Install Module from File".
 
+## Bundled Zen Scroll Theme
+
+Starting with v2.0.0, this module bundles the **Zen Scroll** sumi-e/parchment theme that was previously distributed as the standalone `naruto-d20-zen-theme` module. The theme restyles Foundry's chrome, PF1e sheets, and the naruto-d20 module's UI surfaces.
+
+The theme is toggleable via a world setting (**Game Settings → Module Settings → Naruto D20 — Kaihou → Zen Scroll Theme — Enabled**). It defaults to ON. Disabling instantly reverts to vanilla Foundry chrome with no world reload.
+
+### Migrating from `naruto-d20-zen-theme`
+
+If you had the standalone `naruto-d20-zen-theme` module installed alongside Kaihou:
+
+1. Update `naruto-d20-kaihou` to v2.0.0+.
+2. **Disable** the `naruto-d20-zen-theme` module in **Game Settings → Manage Modules**.
+3. (Optional) Uninstall `naruto-d20-zen-theme` entirely.
+
+If you leave both modules enabled, Kaihou v2.0.0 fires a persistent warning notification on world load nudging you to disable the standalone theme. Duplicate styling is otherwise harmless (CSS just applies twice with identical effect).
+
 ### Development
 
 ```bash
@@ -54,3 +70,14 @@ npm run pack               # build LevelDB at packs/classes-basic/
 The generator reads vault YAML from `$KAIHOU_VAULT_PATH` (defaults to `../Kaihou (Naruto D20)` relative to the script).
 
 See RELEASE.md (Task 18) for the release procedure.
+
+## Building from source
+
+```sh
+npm install                     # install dev dependencies (sass, vitest, eslint, etc.)
+npm run build:css               # compile scss/ → styles/
+npm run watch:css               # watch + recompile on save
+npm test                        # full test suite (pytest + vitest + CSS staleness check)
+```
+
+The compiled CSS in `styles/` is committed to git so end users don't need a build step.
