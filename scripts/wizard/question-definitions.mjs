@@ -20,7 +20,7 @@
 const Q1_VILLAGE_OPTIONS = [
   {value: "bc053d4ef2995ea0", label: "Hisuigakure (Jade)"},
   {value: "033fcee4e14089b8", label: "Houohgakure (Phoenix)"},
-  {value: "ffac9cdf75b27810", label: "Kanigakure (Iron Shell)"},
+  {value: "ffac9cdf75b27810", label: "Kanigakure (Crab)"},
   {value: "021058ee37acb649", label: "Kiringakure (Kirin)"},
   {value: "d93ae7cd1e0ba7e2", label: "Ryuugakure (Dragon)"},
   {value: "a18ed55e5e90130b", label: "Sasorigakure (Scorpion)"},
@@ -467,7 +467,7 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "Family, rivals, childhood friends. One of them gave you a Restricted Item (non-sealed) — name them, and drag the item here.",
     markerFlag: "q16RestrictedItem",
     dropAccepts: {typeIn: ["equipment", "weapon", "consumable", "loot"]},
-    browse: {kind: "pf1Browser", browser: "items", label: "Browse Items"},
+    browse: {kind: "compendium", pack: "pf1.items", label: "Browse Items"},
   },
 
   // Q17 — Parents / 0-Rank Skill Bump (select, filtered)

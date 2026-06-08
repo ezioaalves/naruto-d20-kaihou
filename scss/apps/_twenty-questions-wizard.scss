@@ -21,6 +21,13 @@
   position: relative;
   font-family: var(--zen-font-body);
   color: var(--zen-ink);
+  // Stack header / progress / content / footer; let content take the
+  // remaining space and scroll on overflow (Q18 rolltable + narrative
+  // are taller than the fixed-height window).
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
 }
 
 .tqw-v2::before {
@@ -64,6 +71,9 @@
 
 .tqw-v2__content {
   padding: var(--zen-space-3);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .tqw-v2__question {

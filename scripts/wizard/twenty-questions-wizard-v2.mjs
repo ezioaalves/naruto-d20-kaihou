@@ -12,7 +12,7 @@
  * persisted to the actor only on `tqw-finish`.
  */
 
-import { questions } from "./question-definitions.mjs";
+import { questions, ALL_SKILL_OPTIONS } from "./question-definitions.mjs";
 import {
   defaultState,
   loadFromActor,
@@ -22,6 +22,7 @@ import {
 } from "./wizard-state.mjs";
 import { openBrowse } from "./browse.mjs";
 import { finishWizard, FinishValidationError } from "./finish-orchestrator.mjs";
+import { listZeroRankSkills } from "./mechanic-applier.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
 
@@ -159,6 +160,29 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     // Sub-picker current value
     if (question.subPicker?.stateField) {
       enriched.subPickerValue = this.wizardState[question.subPicker.stateField] ?? null;
+    }
+
+    // Dynamic options sourced from the actor (Q17 0-rank skills).
+    if (question.optionsFromActor === "zeroRankSkills") {
+      const friendlyLabels = new Map(ALL_SKILL_OPTIONS.map((o) => [o.value, o.label]));
+      const pf1Labels = (typeof pf1 !== "undefined" && pf1?.config?.skills) || {};
+      const actorSkills = this.actor.system?.skills ?? {};
+      const prettify = (key) => {
+        if (friendlyLabels.has(key)) return friendlyLabels.get(key);
+        const m = key.match(/^([^.]+)\.subSkills\.(.+)$/);
+        if (m) {
+          const [, parentKey, subKey] = m;
+          const parentLabel = friendlyLabels.get(parentKey) ?? pf1Labels[parentKey] ?? parentKey;
+          const subData = actorSkills?.[parentKey]?.subSkills?.[subKey];
+          const subName = subData?.name ?? subKey.replace(/[<>]/g, "").replace(/_/g, " ");
+          return `${parentLabel} (${subName})`;
+        }
+        return pf1Labels[key] ?? key;
+      };
+      enriched.options = listZeroRankSkills(this.actor).map((s) => ({
+        value: s.key,
+        label: prettify(s.key),
+      }));
     }
 
     // Roll-table current rolled value + outcome lookup.
