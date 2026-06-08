@@ -316,10 +316,7 @@ export function validate(state) {
   if (state.q7_relationship === "outsider" && state.q7_outsider_class_skill == null) {
     errors.push({ field: "q7_outsider_class_skill", code: "SUB_REQUIRED" });
   }
-  if (state.q8_code === "sceptic" && state.q8_sceptic_subskill == null) {
-    errors.push({ field: "q8_sceptic_subskill", code: "SUB_REQUIRED" });
-  }
-  if (state.q13_mentor_technique_uuid != null && state.q13_class_skill == null) {
+if (state.q13_mentor_technique_uuid != null && state.q13_class_skill == null) {
     errors.push({ field: "q13_class_skill", code: "SUB_REQUIRED" });
   }
 

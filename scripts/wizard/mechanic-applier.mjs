@@ -54,11 +54,22 @@ export function revertQ4Affinity(_actor) {
 }
 
 // ─── Q7 Loyalist ──────────────────────────────────────────────────────────────
-export function applyQ7Loyalist(actor, markerItemData) {
+export function applyQ7Loyalist(actor, _markerItemData) {
   const p = emptyPlan();
   const current = actor.flags?.["naruto-d20"]?.reputation ?? 0;
   p.updates["flags.naruto-d20.reputation"] = current + 1;
-  p.creates.push(withWizardMarker(markerItemData ?? {}, "q7Loyalist"));
+  const markerItem = {
+    name: "Village Loyalist",
+    type: "feat",
+    img: "icons/svg/upgrade.svg",
+    system: {
+      subType: "trait",
+      description: {
+        value: "<p>Wizard-applied (20 Questions Q7): +1 Reputation from village loyalist stance.</p>",
+      },
+    },
+  };
+  p.creates.push(withWizardMarker(markerItem, "q7Loyalist"));
   return p;
 }
 
@@ -72,11 +83,22 @@ export function revertQ7Loyalist(actor) {
 }
 
 // ─── Q8 Adherent ──────────────────────────────────────────────────────────────
-export function applyQ8Adherent(actor, markerItemData) {
+export function applyQ8Adherent(actor, _markerItemData) {
   const p = emptyPlan();
   const current = actor.flags?.["naruto-d20"]?.actionPoints ?? 0;
   p.updates["flags.naruto-d20.actionPoints"] = current + 2;
-  p.creates.push(withWizardMarker(markerItemData ?? {}, "q8Adherent"));
+  const markerItem = {
+    name: "Code Adherent",
+    type: "feat",
+    img: "icons/svg/holy-shield.svg",
+    system: {
+      subType: "trait",
+      description: {
+        value: "<p>Wizard-applied (20 Questions Q8): +2 Action Points from code conviction.</p>",
+      },
+    },
+  };
+  p.creates.push(withWizardMarker(markerItem, "q8Adherent"));
   return p;
 }
 
@@ -103,12 +125,32 @@ export function revertQ1Village(actor) {
   return p;
 }
 
+// Q2 Occupation is handled via the drag-drop pattern (applyDragDropFeat
+// with marker "q2OccupationItem"). All occupation grants (class skills,
+// feat, wealth, reputation) are applied by scripts/occupation-application.mjs
+// on the createItem hook, so the wizard only needs to add/remove the item.
+
 // ─── Q7 Outsider ──────────────────────────────────────────────────────────────
-export function applyQ7Outsider(_actor, markerItemData, classSkillKey) {
+// classSkills are set on the marker item itself; PF1e aggregates class skills
+// from feat/class/race items, NOT from actor.system.classSkills directly.
+export function applyQ7Outsider(_actor, _markerItemData, classSkillKey) {
   const p = emptyPlan();
-  p.creates.push(withWizardMarker(markerItemData ?? {}, "q7Outsider"));
+  const markerItem = {
+    name: "Village Outsider",
+    type: "feat",
+    img: "icons/svg/downgrade.svg",
+    system: {
+      subType: "trait",
+      description: {
+        value: classSkillKey
+          ? `<p>Wizard-applied (20 Questions Q7): self-reliance grants <strong>${classSkillKey}</strong> as a class skill.</p>`
+          : "<p>Wizard-applied (20 Questions Q7): village outsider stance.</p>",
+      },
+      classSkills: classSkillKey ? { [classSkillKey]: true } : {},
+    },
+  };
+  p.creates.push(withWizardMarker(markerItem, "q7Outsider"));
   if (classSkillKey) {
-    p.updates[`system.classSkills.${classSkillKey}`] = true;
     p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"] = classSkillKey;
   }
   return p;
@@ -118,23 +160,32 @@ export function revertQ7Outsider(actor) {
   const p = emptyPlan();
   const id = findItemIdByMarker(actor, "q7Outsider");
   if (id) p.deletes.push(id);
-  const snapshot = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q7OutsiderClassSkill;
-  if (snapshot) {
-    p.updates[`system.classSkills.${snapshot}`] = false;
-    p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"] = null;
-  }
+  // Class skill auto-reverts when the marker item is removed (PF1e re-aggregates)
+  p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"] = null;
   return p;
 }
 
 // ─── Q8 Sceptic ───────────────────────────────────────────────────────────────
-export function applyQ8Sceptic(actor, markerItemData, subskillPath) {
+// Pragmatist stance grants 1 unallocated bonus skill point. The marker feat's
+// description documents it; the player (with GM oversight) places the rank in
+// any skill of their choice later. We bump a counter flag so the spend can be
+// audited.
+export function applyQ8Sceptic(actor, _markerItemData) {
   const p = emptyPlan();
-  p.creates.push(withWizardMarker(markerItemData ?? {}, "q8Sceptic"));
-  if (subskillPath) {
-    const currentRank = getDeepPath(actor.system?.skills, subskillPath + ".rank") ?? 0;
-    p.updates[`system.skills.${subskillPath}.rank`] = currentRank + 1;
-    p.updates["flags.naruto-d20-kaihou.wizard.q8ScepticSubskill"] = subskillPath;
-  }
+  const markerItem = {
+    name: "Code Sceptic",
+    type: "feat",
+    img: "icons/svg/book.svg",
+    system: {
+      subType: "trait",
+      description: {
+        value: "<p>Wizard-applied (20 Questions Q8): pragmatist's stance grants <strong>+1 bonus skill point</strong> to allocate freely (GM's discretion).</p>",
+      },
+    },
+  };
+  p.creates.push(withWizardMarker(markerItem, "q8Sceptic"));
+  const current = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q8BonusSkillPoints ?? 0;
+  p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"] = current + 1;
   return p;
 }
 
@@ -142,12 +193,8 @@ export function revertQ8Sceptic(actor) {
   const p = emptyPlan();
   const id = findItemIdByMarker(actor, "q8Sceptic");
   if (id) p.deletes.push(id);
-  const subskillPath = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q8ScepticSubskill;
-  if (subskillPath) {
-    const currentRank = getDeepPath(actor.system?.skills, subskillPath + ".rank") ?? 0;
-    p.updates[`system.skills.${subskillPath}.rank`] = Math.max(0, currentRank - 1);
-    p.updates["flags.naruto-d20-kaihou.wizard.q8ScepticSubskill"] = null;
-  }
+  const current = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q8BonusSkillPoints ?? 0;
+  p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"] = Math.max(0, current - 1);
   return p;
 }
 
@@ -183,11 +230,37 @@ export function revertQ10Coupled(actor) {
 }
 
 // ─── Q13 Mentor (technique + classSkill) ──────────────────────────────────────
+// Technique items are type "naruto-d20.technique" — PF1e aggregates classSkills
+// only from class/feat/race items, so the class skill grant rides on a separate
+// "Mentor's Lesson" marker feat created alongside the technique. Per the
+// naruto-d20 module, a technique is "learned" iff system.learning.learned is
+// true; the wizard sets it directly so the player skips the empathy / training
+// flow for a mentor-taught Rank-2 technique.
 export function applyQ13Mentor(_actor, techniqueItemData, classSkillKey) {
   const p = emptyPlan();
-  p.creates.push(withWizardMarker(techniqueItemData ?? {}, "q13Mentor"));
+  const technique = { ...(techniqueItemData ?? {}) };
+  technique.system = {
+    ...(technique.system ?? {}),
+    learning: {
+      ...(technique.system?.learning ?? {}),
+      learned: true,
+    },
+  };
+  p.creates.push(withWizardMarker(technique, "q13Mentor"));
   if (classSkillKey) {
-    p.updates[`system.classSkills.${classSkillKey}`] = true;
+    const skillMarker = {
+      name: "Mentor's Lesson",
+      type: "feat",
+      img: "icons/svg/book.svg",
+      system: {
+        subType: "trait",
+        description: {
+          value: `<p>Wizard-applied (20 Questions Q13): mentor taught <strong>${classSkillKey}</strong> as a class skill.</p>`,
+        },
+        classSkills: { [classSkillKey]: true },
+      },
+    };
+    p.creates.push(withWizardMarker(skillMarker, "q13MentorSkill"));
     p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"] = classSkillKey;
   }
   return p;
@@ -195,13 +268,12 @@ export function applyQ13Mentor(_actor, techniqueItemData, classSkillKey) {
 
 export function revertQ13Mentor(actor) {
   const p = emptyPlan();
-  const id = findItemIdByMarker(actor, "q13Mentor");
-  if (id) p.deletes.push(id);
-  const snapshot = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q13ClassSkill;
-  if (snapshot) {
-    p.updates[`system.classSkills.${snapshot}`] = false;
-    p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"] = null;
-  }
+  const techId = findItemIdByMarker(actor, "q13Mentor");
+  const skillId = findItemIdByMarker(actor, "q13MentorSkill");
+  if (techId) p.deletes.push(techId);
+  if (skillId) p.deletes.push(skillId);
+  // Class skill auto-reverts when the marker item is removed
+  p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"] = null;
   return p;
 }
 

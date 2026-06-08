@@ -334,10 +334,12 @@ export const QUESTION_DEFINITIONS = [
     },
   },
 
-  // Q8 — Shinobi Code Stance (nested: adherent/sceptic + craft/profession)
+  // Q8 — Shinobi Code Stance (radio: adherent / sceptic)
+  // Sceptic grants 1 bonus skill point (unallocated) rather than a chosen
+  // subskill — the player spends it later at the GM's discretion.
   {
     id: "q8",
-    pickType: "nested",
+    pickType: "radio",
     stateField: "q8_code",
     required: true,
     questionText: "What does your character think of the Shinobi Code (Shinobido)?",
@@ -345,14 +347,6 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "Is the Shinobido the path your character walks — or a weight they carry? Conviction or pragmatism, and what shaped that view?",
     options: Q8_CODE_OPTIONS,
     markerFlag: ["q8Adherent", "q8Sceptic"],
-    subPicker: {
-      stateField: "q8_sceptic_subskill",
-      type: "select",
-      label: "Which Craft or Profession subskill do you invest the rank in?",
-      options: SCEPTIC_SUBSKILL_OPTIONS,
-      revealWhen: {field: "q8_code", value: "sceptic"},
-      allowCustom: true,
-    },
   },
 
   // Q9 — Greatest Achievement / Level 1 Feat (drag-drop)

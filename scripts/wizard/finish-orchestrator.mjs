@@ -118,7 +118,7 @@ async function planForField(actor, field, originalState, newState) {
     const newCode = newValue;
     if (newCode === "adherent" && oldCode !== "adherent") return applyQ8Adherent(actor, {});
     if (newCode === "sceptic" && oldCode !== "sceptic") {
-      return applyQ8Sceptic(actor, {}, newState.q8_sceptic_subskill);
+      return applyQ8Sceptic(actor, {});
     }
     return null;
   }

@@ -206,10 +206,9 @@ describe("validate", () => {
     expect(validate(s).ok).toBe(true);
   });
 
-  it("requires q8_sceptic_subskill when q8_code === 'sceptic'", () => {
+  it("does NOT require q8_sceptic_subskill — sceptic now grants 1 unallocated bonus skill point", () => {
     const s = withRequiredFilled({ q8_code: "sceptic", q8_sceptic_subskill: null });
-    const r = validate(s);
-    expect(r.errors).toContainEqual({ field: "q8_sceptic_subskill", code: "SUB_REQUIRED" });
+    expect(validate(s).ok).toBe(true);
   });
 
   it("requires q13_class_skill when q13_mentor_technique_uuid is set", () => {
