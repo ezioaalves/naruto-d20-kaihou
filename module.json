@@ -8,6 +8,7 @@
     "scripts/main.mjs"
   ],
   "styles": [
+    "styles/theme/zen.css",
     "styles/apps/twenty-questions-wizard.css"
   ],
   "compatibility": {
@@ -61,6 +62,13 @@
       "path": "packs/schools",
       "type": "Item",
       "system": "pf1"
+    },
+    {
+      "name": "occupations",
+      "label": "Naruto D20 — Starting Occupations",
+      "path": "packs/occupations",
+      "type": "Item",
+      "system": "pf1"
     }
   ],
   "packFolders": [
@@ -71,7 +79,8 @@
       "packs": [
         "villages",
         "questions",
-        "schools"
+        "schools",
+        "occupations"
       ]
     }
   ],
