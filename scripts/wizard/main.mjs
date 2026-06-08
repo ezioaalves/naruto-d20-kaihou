@@ -27,9 +27,9 @@ Hooks.once("ready", () => {
   game[MODULE_ID].TwentyQuestionsWizardV2 = TwentyQuestionsWizardV2;
 });
 
-// Inject "20 Questions" button into PF1e actor sheet header (character only).
+// Inject "20 Questions" button into PF1e actor sheet header (character and NPC).
 Hooks.on("renderActorSheet", (app, html, data) => {
-  if (data.actor.type !== "character") return;
+  if (!["character", "npc"].includes(data.actor.type)) return;
   if (!app.actor.items) return;
 
   let header = html.find(".sheet-header");
