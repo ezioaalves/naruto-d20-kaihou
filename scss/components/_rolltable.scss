@@ -1,7 +1,80 @@
 /**
  * .zen-rolltable — outcome table with row highlight.
  *
- * Phase 1: empty placeholder.
- * Phase 2: parchment-textured table with selected-row highlight, used by
- * wizard Q18 heritage roll and future random-outcome UIs.
+ * Default — flat parchment rows with hair-line dividers.
+ * `--bold` — heavier outer border, larger row spacing.
+ * `.zen-rolltable__row--rolled` — ink-accent left border + tint on the
+ *   row that matches the rolled number.
  */
+
+.zen-rolltable {
+  background: var(--zen-stripe-even);
+  border: var(--zen-border-hair) solid var(--zen-border);
+  margin-bottom: var(--zen-space-2);
+}
+
+.zen-rolltable--bold {
+  border: var(--zen-bold-border);
+}
+
+.zen-rolltable__row {
+  display: flex;
+  padding: var(--zen-space-1) var(--zen-space-2);
+  border-bottom: var(--zen-border-hair) solid var(--zen-border-soft);
+  font-size: var(--zen-text-sm);
+}
+
+.zen-rolltable__row:last-child {
+  border-bottom: none;
+}
+
+.zen-rolltable__row--rolled {
+  background: rgba(150, 60, 65, 0.15);
+  border-left: var(--zen-border-thick) solid var(--zen-ink-accent);
+  font-weight: 600;
+}
+
+.zen-rolltable__roll {
+  width: 32px;
+  font-weight: 700;
+  color: var(--zen-ink-accent);
+}
+
+.zen-rolltable__outcome {
+  flex: 1;
+  color: var(--zen-ink);
+}
+
+.zen-rolltable__result {
+  background: rgba(150, 60, 65, 0.1);
+  border: var(--zen-bold-border);
+  padding: var(--zen-space-2);
+  margin-top: var(--zen-space-2);
+  text-align: center;
+  font-size: var(--zen-text-base);
+}
+
+.zen-rolltable__die {
+  display: inline-block;
+  background: var(--zen-ink-accent);
+  color: var(--zen-surface);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--zen-radius-md);
+  line-height: 28px;
+  font-weight: 700;
+  margin-right: var(--zen-space-2);
+}
+
+.zen-rolltable__roll-button {
+  background: var(--zen-ink);
+  color: var(--zen-surface);
+  border: var(--zen-bold-border);
+  padding: var(--zen-space-2) var(--zen-space-4);
+  font-family: var(--zen-font-display);
+  font-size: var(--zen-text-lg);
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-top: var(--zen-space-2);
+  border-radius: 0;
+}
