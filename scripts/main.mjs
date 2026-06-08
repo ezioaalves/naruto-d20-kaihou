@@ -1,13 +1,30 @@
-const MODULE_ID = "naruto-d20-kaihou";
+import {
+  FEAT_PACK_IDS,
+  MODULE_ID,
+  TECHNIQUE_PACK_IDS,
+  buildEmbeddedGrantData,
+  findCompendiumItemByName,
+  linkRowFromDocument,
+  normalizeItemName,
+} from "./item-grants.mjs";
+import {
+  registerOccupationAutoApply,
+  registerOccupationAutoRevert,
+} from "./occupation-application.mjs";
+
+// Theme layer — registers its own Hooks.once("init", ...) so must be loaded
+// at module-import time, before any Hooks.once events fire. Pure side-effect
+// import (no exports consumed here).
+import "./theme/main.mjs";
+
 const SCHOOL_FLAG = "school";
 const SCHOOL_GRANT_FLAG = "schoolGrant";
 
-const FEAT_PACK_IDS = ["naruto-d20.feats", "pf1.feats"];
-const TECHNIQUE_PACK_IDS = ["naruto-d20.techniques"];
-
 Hooks.once("ready", () => {
   registerSchoolAutoApply();
-  console.log(`${MODULE_ID} | school auto-apply ready`);
+  registerOccupationAutoApply();
+  registerOccupationAutoRevert();
+  console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 });
 
 export function registerSchoolAutoApply() {
@@ -37,6 +54,7 @@ export async function applySchoolPackage(actor, schoolItem, school) {
 
   const created = [];
   const missing = [];
+  const linkRows = [];
 
   for (const grant of grants) {
     if (actorHasGrant(actor, school.slug, grant.name)) continue;
@@ -47,21 +65,23 @@ export async function applySchoolPackage(actor, schoolItem, school) {
       continue;
     }
 
-    const itemData = doc.toObject();
-    delete itemData._id;
-    foundry.utils.setProperty(itemData, "flags.core.sourceId", doc.uuid);
-    foundry.utils.setProperty(itemData, `flags.${MODULE_ID}.${SCHOOL_GRANT_FLAG}`, {
-      sourceSchoolSlug: school.slug,
-      sourceSchoolItemId: schoolItem.id,
-      grantKind: grant.kind,
-      grantName: grant.name,
-      sourceUuid: doc.uuid,
-    });
+    const itemData = buildEmbeddedGrantData(
+      doc,
+      `flags.${MODULE_ID}.${SCHOOL_GRANT_FLAG}`,
+      {
+        sourceSchoolSlug: school.slug,
+        sourceSchoolItemId: schoolItem.id,
+        grantKind: grant.kind,
+        grantName: grant.name,
+      },
+    );
     created.push(itemData);
+    linkRows.push(linkRowFromDocument(doc));
   }
 
   if (created.length) {
     await actor.createEmbeddedDocuments("Item", created);
+    await schoolItem.update({ "system.links.supplements": linkRows });
   }
 
   if (missing.length) {
@@ -77,7 +97,7 @@ export async function applySchoolPackage(actor, schoolItem, school) {
 
 function actorHasGrant(actor, schoolSlug, grantName) {
   const grantKey = normalizeItemName(grantName);
-  return actor.items.some((item) => {
+  return Array.from(actor.items ?? []).some((item) => {
     const existingGrant = item.getFlag?.(MODULE_ID, SCHOOL_GRANT_FLAG);
     if (
       existingGrant?.sourceSchoolSlug === schoolSlug &&
@@ -88,43 +108,4 @@ function actorHasGrant(actor, schoolSlug, grantName) {
 
     return normalizeItemName(item.name) === grantKey;
   });
-}
-
-async function findCompendiumItemByName(name, packIds, type) {
-  for (const packId of packIds) {
-    const pack = game.packs.get(packId);
-    if (!pack) continue;
-
-    const index = await pack.getIndex({ fields: ["name", "type"] });
-    const entry = findBestIndexMatch(index, name, type);
-    if (!entry) continue;
-
-    return pack.getDocument(entry._id);
-  }
-
-  return null;
-}
-
-function findBestIndexMatch(index, targetName, type) {
-  const target = normalizeItemName(targetName);
-  const candidates = [...index].filter((entry) => {
-    if (!type) return true;
-    return entry.type === type || String(entry.type ?? "").endsWith(`.${type}`);
-  });
-
-  return (
-    candidates.find((entry) => normalizeItemName(entry.name) === target) ??
-    candidates.find((entry) => normalizeItemName(entry.name).includes(target)) ??
-    candidates.find((entry) => target.includes(normalizeItemName(entry.name)))
-  );
-}
-
-function normalizeItemName(value) {
-  return String(value ?? "")
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase()
-    .replace(/['’]/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
 }
