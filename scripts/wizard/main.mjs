@@ -13,10 +13,34 @@ import TwentyQuestionsWizardV2 from "./twenty-questions-wizard-v2.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
 
-Hooks.once("init", () => {
+Hooks.once("init", async () => {
   console.log(`${MODULE_ID} | init`);
   if (!Handlebars.helpers.eq) {
     Handlebars.registerHelper("eq", (a, b) => a === b);
+  }
+
+  // Explicitly register V2 wizard partials so {{> "path"}} resolves.
+  // Foundry's module.json `preloadTemplates` is unreliable for partials
+  // referenced by name in HandlebarsApplicationMixin PARTS templates.
+  const partials = [
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/header.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/progress.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/content.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/footer.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-none.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-radio.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-select.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-nested.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-dragdrop.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-dragdrop-coupled.hbs",
+    "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-rolltable.hbs",
+  ];
+  const loader = foundry?.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates;
+  if (loader) {
+    await loader(partials);
+    console.log(`${MODULE_ID} | preloaded ${partials.length} V2 partials`);
+  } else {
+    console.warn(`${MODULE_ID} | no loadTemplates helper found; partials may not resolve`);
   }
 });
 
