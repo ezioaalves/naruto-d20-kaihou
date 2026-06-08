@@ -34,6 +34,11 @@
       "FINISH": "Finish",
       "CANCEL": "Cancel",
       "ROLL": "Roll"
+    },
+    "THEME": {
+      "SETTING_NAME": "Zen Scroll Theme — Enabled",
+      "SETTING_HINT": "Apply the sumi-e/parchment restyle to Foundry, PF1e sheets, and the naruto-d20 module. Disable to revert to vanilla Foundry chrome instantly (no reload needed).",
+      "COEXISTENCE_WARN": "naruto-d20-zen-theme is active alongside naruto-d20-kaihou v2.0.0+. Disable naruto-d20-zen-theme to avoid duplicate styling — Kaihou now ships the same theme internally."
     }
   }
 }
