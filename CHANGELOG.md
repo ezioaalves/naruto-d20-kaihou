@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.0.0 — 2026-06-08
+
+### Breaking
+- `naruto-d20-zen-theme` is now bundled into this module. Disable the standalone `naruto-d20-zen-theme` module before upgrading. A persistent in-game warning fires if both are enabled.
+
+### Added
+- Sumi-e/parchment theme (absorbed from `naruto-d20-zen-theme` v0.1.0). Toggleable via the world setting "Zen Scroll Theme — Enabled" (default ON).
+- SCSS build pipeline (`sass` devDependency, `npm run build:css`, `npm run watch:css`).
+- Design tokens published on `:root` via `scss/_tokens.scss` (colors, typography scale, spacing scale, radius, elevation, border weights, motion easings/durations, nature palette, village palette).
+- Reusable component primitive partials in `scss/components/` (`card`, `chip`, `drop-zone`, `pick-grid`, `stepper-sidebar`, `rolltable`). Empty in Phase 1; Phase 2 fills them with sumi-e styling and refactors the wizard to compose them.
+- CI guard (`npm run test:css-fresh`) fails the test suite if compiled CSS in `styles/` is stale relative to `scss/` source.
+- New i18n keys under `NARUTO_D20_KAIHOU.THEME.*`.
+
+### Changed
+- `assets/` reorganized: gameplay assets (`questions/`, `villages/`) stay at root; absorbed theme assets land under `assets/theme/`.
+- `module.json` `styles[]` now lists `styles/theme/zen.css` first and `styles/apps/twenty-questions-wizard.css` second.
+- `scripts/main.mjs` adds a single top-level `import "./theme/main.mjs"` so the theme registers its own hooks at module-load time.
+
+### Removed
+- Dark mode (`theme-dark` variant from zen-theme). Phase 1 ships light/parchment only; dark mode may return in a future phase.
+
+### Unchanged
+- Wizard mechanics (drag-drop, sub-pickers, validation, occupation/school auto-apply).
+- All compendia (villages, questions, schools, occupations).
+- Test suites: 100 JS (Vitest) + 53 Python (pytest), all still passing.
+
+---
+
 ## [1.1.3] - 2026-06-07
 
 ### Added
