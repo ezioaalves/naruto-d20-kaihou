@@ -85,8 +85,8 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     const canBack = currentIdx > 0;
 
     const validationResult = validate(this.wizardState);
-    const validationError =
-      validationResult.errors?.find((e) => e.qid === currentId)?.message ?? null;
+    const blockingError = this._errorForQuestion(validationResult, currentId);
+    const validationError = blockingError ? this._messageForError(blockingError) : null;
 
     return {
       currentId,
@@ -208,17 +208,37 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     if (currentIdx >= questions.length - 1) return;
 
     const validationResult = validate(this.wizardState);
-    const blockingError = validationResult.errors?.find(
-      (e) => e.qid === this.wizardState.currentId,
-    );
+    const blockingError = this._errorForQuestion(validationResult, this.wizardState.currentId);
     if (blockingError) {
-      ui.notifications?.warn(blockingError.message);
+      ui.notifications?.warn(this._messageForError(blockingError));
       await this.render();
       return;
     }
 
     this.wizardState = { ...this.wizardState, currentId: questions[currentIdx + 1].id };
     await this.render();
+  }
+
+  /**
+   * Return the first error in `result` that applies to question `qid`.
+   * Errors expose `field` (state-key name like "q1_village_uuid" or "q10"),
+   * not a `qid` — we match by the leading "qN_" prefix or by exact "qN" id.
+   */
+  _errorForQuestion(result, qid) {
+    if (!result?.errors?.length) return null;
+    return result.errors.find(
+      (e) => e.field === qid || e.field?.startsWith(`${qid}_`),
+    ) ?? null;
+  }
+
+  /** Translate a {field, code} validation error into a user-facing string. */
+  _messageForError(error) {
+    switch (error.code) {
+      case "REQUIRED":     return `${error.field} is required.`;
+      case "SUB_REQUIRED": return `Please answer the sub-question for ${error.field}.`;
+      case "Q10_COUPLED":  return "Please select both flaw and bonus feat (or neither).";
+      default:             return "Please fill in all required fields.";
+    }
   }
 
   static async _onCancel(_event, _target) {
