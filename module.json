@@ -11,6 +11,19 @@
     "styles/theme/zen.css",
     "styles/apps/twenty-questions-wizard.css"
   ],
+  "preloadTemplates": [
+    "templates/apps/tqw-v2/header.hbs",
+    "templates/apps/tqw-v2/progress.hbs",
+    "templates/apps/tqw-v2/content.hbs",
+    "templates/apps/tqw-v2/footer.hbs",
+    "templates/apps/tqw-v2/pick-none.hbs",
+    "templates/apps/tqw-v2/pick-radio.hbs",
+    "templates/apps/tqw-v2/pick-select.hbs",
+    "templates/apps/tqw-v2/pick-nested.hbs",
+    "templates/apps/tqw-v2/pick-dragdrop.hbs",
+    "templates/apps/tqw-v2/pick-dragdrop-coupled.hbs",
+    "templates/apps/tqw-v2/pick-rolltable.hbs"
+  ],
   "compatibility": {
     "minimum": "11",
     "verified": "13"
