@@ -382,6 +382,33 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
   _onRender(_context, _options) {
     super._onRender?.(_context, _options);
     this._wireDropZones();
+    this._wireChangeActions();
+  }
+
+  /**
+   * ApplicationV2's `actions` map only delegates click events. Selects,
+   * textareas, and most inputs fire `change` / `input` instead, so the
+   * `data-action="tqw-*-change"` attributes get ignored unless we wire
+   * a change-event delegator here.
+   */
+  _wireChangeActions() {
+    const root = this.element;
+    if (!root) return;
+    const CHANGE_ACTIONS = {
+      "tqw-select-change":    TwentyQuestionsWizardV2._onSelectChange,
+      "tqw-subpicker-change": TwentyQuestionsWizardV2._onSubpickerChange,
+      "tqw-narrative-change": TwentyQuestionsWizardV2._onNarrativeChange,
+    };
+    const handler = (event) => {
+      const target = event.target.closest?.("[data-action]");
+      if (!target) return;
+      const action = target.dataset.action;
+      const fn = CHANGE_ACTIONS[action];
+      if (fn) fn.call(this, event, target);
+    };
+    // `change` only — `input` would fire per-keystroke in the narrative
+    // textarea and trigger a full re-render mid-typing.
+    root.addEventListener("change", handler);
   }
 
   _wireDropZones() {
