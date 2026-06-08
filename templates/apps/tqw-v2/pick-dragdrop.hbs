@@ -1,0 +1,42 @@
+{{!-- Single drop-zone + browse button — Q2 occupation, Q3 trade, etc. --}}
+<div class="zen-card zen-card--bold tqw-v2__pick tqw-v2__pick--dragdrop">
+  <div class="zen-card__label">{{current.sidebarLabel}}</div>
+  <div class="zen-drop-zone zen-drop-zone--bold{{#if current.droppedItem}} zen-drop-zone--filled{{/if}}"
+       data-qid="{{current.id}}"
+       data-state-field="{{current.stateField}}">
+    {{#if current.droppedItem}}
+      <span class="zen-drop-zone__item-name">{{current.droppedItem.name}}</span>
+      <button type="button"
+              class="zen-drop-zone__clear"
+              data-action="tqw-clear-drop"
+              data-qid="{{current.id}}"
+              title="{{localize "NARUTO_D20_KAIHOU.WIZARD.CLEAR"}}">✕</button>
+    {{else}}
+      <em>{{localize "NARUTO_D20_KAIHOU.WIZARD.DRAG_HERE"}} {{current.sidebarLabel}}</em>
+    {{/if}}
+  </div>
+  {{#if current.browse}}
+    <button type="button"
+            class="zen-drop-zone__browse"
+            data-action="tqw-browse"
+            data-qid="{{current.id}}">
+      <i class="fas fa-book-open"></i> {{current.browse.label}}
+    </button>
+  {{/if}}
+  {{#if current.subPicker}}
+    <div class="tqw-v2__subpicker"{{#unless current.droppedItem}} hidden{{/unless}}>
+      <div class="zen-card__label">{{current.subPicker.label}}</div>
+      <select class="tqw-v2__select"
+              data-action="tqw-subpicker-change"
+              data-qid="{{current.id}}"
+              data-state-field="{{current.subPicker.stateField}}">
+        <option value="">— {{localize "NARUTO_D20_KAIHOU.WIZARD.CHOOSE"}} —</option>
+        {{#each current.subPicker.options}}
+          <option value="{{value}}" {{#if (eq value ../current.subPickerValue)}}selected{{/if}}>
+            {{label}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+  {{/if}}
+</div>

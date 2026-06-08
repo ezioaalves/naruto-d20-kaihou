@@ -1,0 +1,35 @@
+{{!-- Two side-by-side drop-zones — Q10 flaw + bonus feat. --}}
+<div class="zen-card zen-card--bold tqw-v2__pick tqw-v2__pick--coupled">
+  <div class="zen-pick-grid zen-pick-grid--coupled">
+    {{#each current.zones}}
+      <div class="tqw-v2__coupled-zone">
+        <div class="zen-card__label">{{label}}</div>
+        <div class="zen-drop-zone zen-drop-zone--bold{{#if droppedItem}} zen-drop-zone--filled{{/if}}"
+             data-qid="{{../current.id}}"
+             data-zone="{{@index}}"
+             data-state-field="{{stateField}}">
+          {{#if droppedItem}}
+            <span class="zen-drop-zone__item-name">{{droppedItem.name}}</span>
+            <button type="button"
+                    class="zen-drop-zone__clear"
+                    data-action="tqw-clear-drop"
+                    data-qid="{{../current.id}}"
+                    data-zone="{{@index}}"
+                    title="{{localize "NARUTO_D20_KAIHOU.WIZARD.CLEAR"}}">✕</button>
+          {{else}}
+            <em>{{label}}</em>
+          {{/if}}
+        </div>
+        {{#if browse}}
+          <button type="button"
+                  class="zen-drop-zone__browse"
+                  data-action="tqw-browse"
+                  data-qid="{{../current.id}}"
+                  data-zone="{{@index}}">
+            <i class="fas fa-book-open"></i> {{browse.label}}
+          </button>
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+</div>

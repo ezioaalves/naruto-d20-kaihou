@@ -1,0 +1,31 @@
+{{!-- Nested radio + sub-picker — Q7 outsider, Q8 faith, etc. --}}
+<div class="zen-card zen-card--bold tqw-v2__pick tqw-v2__pick--nested">
+  <div class="zen-card__label">{{current.sidebarLabel}}</div>
+  <div class="zen-pick-grid">
+    {{#each current.options}}
+      <button type="button"
+              class="zen-chip zen-chip--bold{{#if (eq value ../current.value)}} zen-chip--selected{{/if}}"
+              data-action="tqw-radio-select"
+              data-qid="{{../current.id}}"
+              data-value="{{value}}">
+        {{label}}
+      </button>
+    {{/each}}
+  </div>
+  {{#if current.subPicker}}
+    <div class="tqw-v2__subpicker"{{#unless current.value}} hidden{{/unless}}>
+      <div class="zen-card__label">{{current.subPicker.label}}</div>
+      <select class="tqw-v2__select"
+              data-action="tqw-subpicker-change"
+              data-qid="{{current.id}}"
+              data-state-field="{{current.subPicker.stateField}}">
+        <option value="">— {{localize "NARUTO_D20_KAIHOU.WIZARD.CHOOSE"}} —</option>
+        {{#each current.subPicker.options}}
+          <option value="{{value}}" {{#if (eq value ../current.subPickerValue)}}selected{{/if}}>
+            {{label}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+  {{/if}}
+</div>
