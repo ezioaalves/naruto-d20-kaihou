@@ -1,7 +1,38 @@
 /**
  * .zen-chip — pillbutton primitive (radio option, filter tag).
  *
- * Phase 1: empty placeholder.
- * Phase 2: rounded ink-stroke chip with hover halo, used by wizard radio
- * questions (Q4/Q7/Q8) and future filter UIs.
+ * Default variant — pill shape, thin ink border, parchment fill.
+ * Bold variant — heavier border, rounded corners, stronger contrast.
+ * `--selected` modifier — ink-accent background, parchment text.
  */
+
+.zen-chip {
+  display: inline-block;
+  padding: 3px 9px;
+  background: var(--zen-surface);
+  border: var(--zen-border-hair) solid var(--zen-ink);
+  color: var(--zen-ink);
+  border-radius: var(--zen-radius-round);
+  font-size: var(--zen-text-sm);
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--zen-duration-fast) var(--zen-easing-out),
+              color var(--zen-duration-fast) var(--zen-easing-out);
+}
+
+.zen-chip:hover {
+  background: var(--zen-row-hover);
+}
+
+.zen-chip--bold {
+  border: var(--zen-bold-border);
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+.zen-chip--selected {
+  background: var(--zen-ink-accent);
+  color: var(--zen-surface);
+  border-color: #3A2E1B;
+  box-shadow: 0 1px 3px rgba(94, 67, 39, 0.4);
+}
