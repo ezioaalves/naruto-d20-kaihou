@@ -1,7 +1,23 @@
 /**
- * .zen-pick-grid — equal-width horizontal option grid.
+ * .zen-pick-grid — equal-width horizontal option layout.
  *
- * Phase 1: empty placeholder.
- * Phase 2: flex-row layout with auto-equal columns, used to lay out radio
- * options consistently regardless of count (replaces wizard's per-app CSS).
+ * Bold-only — wizard layout helper. No default variant; non-wizard
+ * surfaces compose chips inline without this wrapper.
  */
+
+.zen-pick-grid {
+  display: flex;
+  gap: var(--zen-space-2);
+  flex-wrap: wrap;
+}
+
+.zen-pick-grid--coupled {
+  // Two side-by-side columns (Q10 flaw + bonus feat).
+  display: flex;
+  gap: var(--zen-space-2);
+}
+
+.zen-pick-grid--coupled > * {
+  flex: 1;
+  min-width: 0;
+}

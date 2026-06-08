@@ -1,9 +1,55 @@
 /**
  * .zen-progress-strip — horizontal step indicator with click-to-jump on answered.
  *
- * Bold-only primitive — consumed by the wizard (.tqw-v2 root). No default
- * variant: the strip is a wizard-specific affordance; other Kaihou surfaces
- * have no equivalent multi-step navigation.
+ * Bold-only — wizard-specific.
  *
- * Phase 2 implementation lives in Task B6.
+ * State classes on individual segments:
+ *   .zen-progress-strip__step          — pending / not yet reached
+ *   .zen-progress-strip__step--done    — answered (sage green, jumpable)
+ *   .zen-progress-strip__step--active  — current (ink-accent, glowing)
+ *
+ * Done steps are jumpable via data-action="tqw-progress-jump"; pending
+ * steps are non-interactive (no cursor pointer, no hover effect).
  */
+
+.zen-progress-strip {
+  background: rgba(94, 67, 39, 0.15);
+  border-bottom: var(--zen-border-hair) solid var(--zen-ink);
+  padding: var(--zen-space-2) var(--zen-space-3);
+}
+
+.zen-progress-strip__bar {
+  display: flex;
+  gap: 2px;
+  height: 8px;
+  margin-bottom: var(--zen-space-1);
+}
+
+.zen-progress-strip__step {
+  flex: 1;
+  background: rgba(94, 67, 39, 0.25);
+  border-radius: 0;
+  cursor: default;
+}
+
+.zen-progress-strip__step--done {
+  background: #5A6E5A;
+  cursor: pointer;
+}
+
+.zen-progress-strip__step--done:hover {
+  background: #6B7E6B;
+}
+
+.zen-progress-strip__step--active {
+  background: var(--zen-ink-accent);
+  box-shadow: 0 0 8px rgba(150, 60, 65, 0.5);
+}
+
+.zen-progress-strip__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--zen-text-xs);
+  opacity: 0.85;
+  color: var(--zen-ink);
+}
