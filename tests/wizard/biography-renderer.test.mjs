@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, parse, splice } from "../../scripts/apps/wizard/biography-renderer.mjs";
+import { render, parse, splice, strip } from "../../scripts/apps/wizard/biography-renderer.mjs";
 import { QUESTION_DEFINITIONS } from "../../scripts/apps/wizard/question-definitions.mjs";
 import { getOutcomeByRoll } from "../../scripts/apps/wizard/heritage-table.mjs";
 
@@ -167,5 +167,16 @@ describe("splice", () => {
     expect(result).toContain("New village memory.");
     expect(result).not.toContain("Old village memory.");
     expect(result).toContain("<p>Post.</p>");
+  });
+});
+
+describe("strip", () => {
+  it("removes the 20Q region, preserving player text around it", () => {
+    const bio = "<p>my own notes</p><!-- 20Q:START --><h2>20 Questions</h2><!-- 20Q:END --><p>more notes</p>";
+    expect(strip(bio)).toBe("<p>my own notes</p><p>more notes</p>");
+  });
+
+  it("returns the input unchanged when no region exists", () => {
+    expect(strip("<p>just notes</p>")).toBe("<p>just notes</p>");
   });
 });

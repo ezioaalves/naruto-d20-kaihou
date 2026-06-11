@@ -12,9 +12,8 @@
  * Originally extracted from the V1 TwentyQuestionsWizard finish logic.
  */
 
-import { questions as QUESTION_DEFINITIONS } from "./question-definitions.mjs";
 import { validate, loadFromActor, diffStates } from "./wizard-state.mjs";
-import { render as renderBiography, splice as spliceBiography } from "./biography-renderer.mjs";
+import { strip as stripBiography } from "./biography-renderer.mjs";
 import { getOutcomeByRoll, extractModifierDeltas, heritageFeatName } from "./heritage-table.mjs";
 import {
   emptyPlan,
@@ -86,12 +85,16 @@ export async function finishWizard(actor, state) {
     await actor.createEmbeddedDocuments("Item", q17Plan.creates);
   }
 
-  const bioHtml = renderBiography(state, {
-    questionDefs: QUESTION_DEFINITIONS,
-    getOutcomeByRoll,
+  // § 5.1: answers live in module flags; the bio field belongs to the player.
+  await actor.update({
+    "flags.naruto-d20-kaihou.wizard.narratives": { ...state.narratives },
   });
-  const newBio = spliceBiography(actor.system.details.biography.value, bioHtml);
-  await actor.update({ "system.details.biography.value": newBio });
+
+  const currentBio = actor.system.details.biography.value ?? "";
+  const strippedBio = stripBiography(currentBio);
+  if (strippedBio !== currentBio) {
+    await actor.update({ "system.details.biography.value": strippedBio });
+  }
 }
 
 function mergeTwo(a, b) {

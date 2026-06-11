@@ -231,6 +231,68 @@ describe("finishWizard Q18 heritage — grants Namesake pack feat (no direct cou
   });
 });
 
+describe("§ 5.1 narratives → flags", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("finish writes narratives to module flags and strips the old 20Q region from the bio", async () => {
+    const actor = makeActor({
+      system: {
+        details: {
+          biography: {
+            value: "<p>player notes</p><!-- 20Q:START -->old<!-- 20Q:END -->",
+          },
+        },
+      },
+    });
+    const state = {
+      ...validState(),
+      narratives: {
+        ...validState().narratives,
+        q5: "Protect the heir.",
+      },
+    };
+
+    await finishWizard(actor, state);
+
+    // All payload objects from every update() call, merged for easy lookup
+    const allUpdatePayloads = actor.update.mock.calls.map(([obj]) => obj);
+
+    // Assert: a call carried the narratives flag with q5
+    const narrativesPayload = allUpdatePayloads.find(
+      (obj) => obj["flags.naruto-d20-kaihou.wizard.narratives"] !== undefined
+    );
+    expect(narrativesPayload).toBeDefined();
+    expect(narrativesPayload["flags.naruto-d20-kaihou.wizard.narratives"].q5).toBe("Protect the heir.");
+
+    // Assert: a call stripped the 20Q region from bio
+    const bioPayload = allUpdatePayloads.find(
+      (obj) => obj["system.details.biography.value"] !== undefined
+    );
+    expect(bioPayload).toBeDefined();
+    expect(bioPayload["system.details.biography.value"]).toBe("<p>player notes</p>");
+  });
+
+  it("finish leaves an untouched player bio alone", async () => {
+    const actor = makeActor({
+      system: {
+        details: {
+          biography: { value: "<p>player notes only</p>" },
+        },
+      },
+    });
+
+    await finishWizard(actor, validState());
+
+    const allUpdatePayloads = actor.update.mock.calls.map(([obj]) => obj);
+    const bioPayload = allUpdatePayloads.find(
+      (obj) => obj["system.details.biography.value"] !== undefined
+    );
+    expect(bioPayload).toBeUndefined();
+  });
+});
+
 // ─── Re-answer replaces, never stacks ───────────────────────────────────────
 
 /**

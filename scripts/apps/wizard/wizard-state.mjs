@@ -226,10 +226,17 @@ export function loadFromActor(actor) {
     }
   }
 
-  // Parse narratives from biography HTML
-  const biographyHtml = actor?.system?.details?.biography?.value || "";
-  const parsedNarratives = parseNarratives(biographyHtml);
-  Object.assign(state.narratives, parsedNarratives);
+  // Narratives: module flags are canonical (§ 5.1); biography HTML parsing
+  // remains as a fallback for actors written by pre-contract versions.
+  const flagNarratives = actor?.flags?.["naruto-d20-kaihou"]?.wizard?.narratives;
+  if (flagNarratives && typeof flagNarratives === "object") {
+    for (const [k, v] of Object.entries(flagNarratives)) {
+      if (typeof v === "string" && k in state.narratives) state.narratives[k] = v;
+    }
+  } else {
+    const biographyHtml = actor?.system?.details?.biography?.value || "";
+    Object.assign(state.narratives, parseNarratives(biographyHtml));
+  }
 
   return state;
 }

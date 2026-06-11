@@ -127,6 +127,27 @@ describe("loadFromActor", () => {
     expect(s.q13_class_skill).toBe("gen");
   });
 
+  it("prefers narratives from module flags over biography HTML", () => {
+    const actor = mockActor({
+      flags: { "naruto-d20-kaihou": { wizard: { narratives: { q5: "From flags." } } } },
+      system: {
+        details: { biography: { value: '<h3 data-q="5">Q5</h3><p>From bio.</p>' } },
+        skills: {},
+      },
+    });
+    expect(loadFromActor(actor).narratives.q5).toBe("From flags.");
+  });
+
+  it("falls back to biography parsing when the narratives flag is absent", () => {
+    const actor = mockActor({
+      system: {
+        details: { biography: { value: '<h3 data-q="5">Q5</h3><p>From bio.</p>' } },
+        skills: {},
+      },
+    });
+    expect(loadFromActor(actor).narratives.q5).toBe("From bio.");
+  });
+
   it("parses narratives from biography <h3 data-q='N'><p>…</p> blocks", () => {
     const actor = mockActor({
       system: {
