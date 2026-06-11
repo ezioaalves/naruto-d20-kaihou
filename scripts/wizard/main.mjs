@@ -1,14 +1,13 @@
 /**
- * naruto-d20-kaihou module entry point.
+ * naruto-d20-kaihou wizard bootstrap.
  *
- * Phase 2: wizard migrated to ApplicationV2. The V1 class file is kept
- * runnable (and exposed on the game object for debug) until Phase K
- * deletes it.
+ * Phase K complete: the V1 Application wizard is deleted; the ApplicationV2
+ * wizard (twenty-questions-wizard-v2.mjs) is the only wizard.
  *
  * Architecture: docs/superpowers/specs/2026-06-08-wizard-restyle-v2-design.md
+ * Refactor:     docs/superpowers/specs/2026-06-11-kaihou-refactor-design.md
  */
 
-import TwentyQuestionsWizard from "./twenty-questions-wizard.mjs";
 import TwentyQuestionsWizardV2 from "./twenty-questions-wizard-v2.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
@@ -38,20 +37,20 @@ Hooks.once("init", async () => {
   const loader = foundry?.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates;
   if (loader) {
     await loader(partials);
-    console.log(`${MODULE_ID} | preloaded ${partials.length} V2 partials`);
+    console.log(`${MODULE_ID} | preloaded ${partials.length} wizard partials`);
   } else {
     console.warn(`${MODULE_ID} | no loadTemplates helper found; partials may not resolve`);
   }
 });
 
 Hooks.once("ready", () => {
-  console.log(`${MODULE_ID} | ready (Phase 2 V2 wizard)`);
+  console.log(`${MODULE_ID} | ready`);
   game[MODULE_ID] = game[MODULE_ID] || {};
-  game[MODULE_ID].TwentyQuestionsWizard = TwentyQuestionsWizard;     // legacy, debug only
-  game[MODULE_ID].TwentyQuestionsWizardV2 = TwentyQuestionsWizardV2;
+  game[MODULE_ID].TwentyQuestionsWizard = TwentyQuestionsWizardV2;
 });
 
 // Inject "20 Questions" button into PF1e actor sheet header (character and NPC).
+// NOTE: moves to a Biography-tab section in Plan 2 (spec § 5.1).
 Hooks.on("renderActorSheet", (app, html, data) => {
   if (!["character", "npc"].includes(data.actor.type)) return;
   if (!app.actor.items) return;
