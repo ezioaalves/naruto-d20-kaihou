@@ -62,6 +62,8 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
     footer:   { template: `modules/${MODULE_ID}/templates/apps/tqw-v2/footer.hbs` },
   };
 
+  _renderLock = false;
+
   constructor(actor, options = {}) {
     super(options);
     this.actor = actor;
@@ -221,26 +223,38 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
   }
 
   static async _onBack(_event, _target) {
-    const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
-    if (currentIdx <= 0) return;
-    this.wizardState = { ...this.wizardState, currentId: questions[currentIdx - 1].id };
-    await this.render();
+    if (this._renderLock) return;
+    this._renderLock = true;
+    try {
+      const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
+      if (currentIdx <= 0) return;
+      this.wizardState = { ...this.wizardState, currentId: questions[currentIdx - 1].id };
+      await this.render();
+    } finally {
+      this._renderLock = false;
+    }
   }
 
   static async _onNext(_event, _target) {
-    const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
-    if (currentIdx >= questions.length - 1) return;
+    if (this._renderLock) return;
+    this._renderLock = true;
+    try {
+      const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
+      if (currentIdx >= questions.length - 1) return;
 
-    const validationResult = validate(this.wizardState);
-    const blockingError = this._errorForQuestion(validationResult, this.wizardState.currentId);
-    if (blockingError) {
-      ui.notifications?.warn(this._messageForError(blockingError));
+      const validationResult = validate(this.wizardState);
+      const blockingError = this._errorForQuestion(validationResult, this.wizardState.currentId);
+      if (blockingError) {
+        ui.notifications?.warn(this._messageForError(blockingError));
+        await this.render();
+        return;
+      }
+
+      this.wizardState = { ...this.wizardState, currentId: questions[currentIdx + 1].id };
       await this.render();
-      return;
+    } finally {
+      this._renderLock = false;
     }
-
-    this.wizardState = { ...this.wizardState, currentId: questions[currentIdx + 1].id };
-    await this.render();
   }
 
   /**
@@ -274,6 +288,8 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
   }
 
   static async _onFinish(_event, _target) {
+    if (this._renderLock) return;
+    this._renderLock = true;
     try {
       await finishWizard(this.actor, this.wizardState);
       ui.notifications?.info(
@@ -292,15 +308,23 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       ui.notifications?.error(
         `${game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.FINISH_ERR")}: ${err.message}`,
       );
+    } finally {
+      this._renderLock = false;
     }
   }
 
   static async _onProgressJump(_event, target) {
-    const qid = target?.dataset?.qid;
-    if (!qid) return;
-    if (!canJumpTo(this.wizardState, qid)) return;
-    this.wizardState = jumpTo(this.wizardState, qid);
-    await this.render();
+    if (this._renderLock) return;
+    this._renderLock = true;
+    try {
+      const qid = target?.dataset?.qid;
+      if (!qid) return;
+      if (!canJumpTo(this.wizardState, qid)) return;
+      this.wizardState = jumpTo(this.wizardState, qid);
+      await this.render();
+    } finally {
+      this._renderLock = false;
+    }
   }
 
   static async _onRadioSelect(_event, target) {
