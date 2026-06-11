@@ -83,6 +83,16 @@ describe("buildAnswerRows", () => {
     expect(rows.find((r) => r.qid === "q5")).toMatchObject({ narrative: "Protect the heir." });
   });
 
+  it("carries the question text for narrative-first display", () => {
+    const actor = {
+      items: [],
+      flags: { "naruto-d20-kaihou": { wizard: { narratives: { q5: "Protect the heir." } } } },
+      system: {},
+    };
+    const row = buildAnswerRows(actor).find((r) => r.qid === "q5");
+    expect(row.question).toBe("What is your Shinobido (Caminho Ninja)?");
+  });
+
   it("falls back to parsing legacy bio HTML for narratives when flags absent", () => {
     const actor = {
       items: [],

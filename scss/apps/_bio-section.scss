@@ -103,34 +103,44 @@
       padding: var(--zen-space-2) var(--zen-space-3);
       box-shadow: var(--zen-elevation-card);
 
-      // Q-label: compressed uppercase, muted ink, display-font weight
+      // Q-number chip: compressed uppercase accent, inline before the question
       .tqw-bio-q {
-        display: block;
         font-family: var(--zen-font-body);
         font-weight: 700;
         font-size: var(--zen-text-xs);
         color: var(--zen-ink-accent);
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        margin-bottom: var(--zen-space-1);
+        margin-right: var(--zen-space-1);
       }
 
-      // Mechanical pick line — bold body font, ink color, above narrative.
-      .tqw-bio-mech {
-        margin: 0 0 var(--zen-space-1) 0;
+      // The question text itself — narrative-first layout leads with it.
+      .tqw-bio-question {
         font-family: var(--zen-font-body);
-        font-weight: 700;
+        font-weight: 600;
         font-size: var(--zen-text-sm);
         color: var(--zen-ink);
-        line-height: 1.4;
+        line-height: 1.3;
       }
 
+      // The player's written answer — the star of the row.
       p {
-        margin: 0;
+        margin: var(--zen-space-1) 0 0;
         font-family: var(--zen-font-flavor);
         font-size: var(--zen-text-sm);
         color: var(--zen-ink);
         line-height: 1.4;
+      }
+
+      // Mechanical pick — muted footnote under the narrative.
+      .tqw-bio-mech {
+        margin: var(--zen-space-1) 0 0;
+        font-family: var(--zen-font-body);
+        font-weight: 400;
+        font-style: italic;
+        font-size: var(--zen-text-xs);
+        color: var(--zen-ink-soft);
+        line-height: 1.3;
       }
     }
 

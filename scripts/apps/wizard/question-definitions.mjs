@@ -141,17 +141,15 @@ const Q7_RELATIONSHIP_OPTIONS = [
   },
 ];
 
-// Q8 Adherent/Sceptic options
+// Q8 Adherent/Sceptic options — text-only chips (GM ruling 2026-06-11)
 const Q8_CODE_OPTIONS = [
   {
     value: "adherent",
     label: "Code Adherent (Conviction)",
-    icon: "icons/svg/holy-shield.svg",
   },
   {
     value: "sceptic",
     label: "Code Sceptic (Pragmatism)",
-    icon: "icons/svg/book.svg",
   },
 ];
 

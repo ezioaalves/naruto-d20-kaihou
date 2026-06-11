@@ -98,11 +98,14 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
       ? foundry.utils.escapeHTML(text)
       : text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
+  // Narrative-first: the question text + the player's written answer lead;
+  // the mechanical pick is a muted footnote (GM ruling 2026-06-11).
   const answerRows = buildAnswerRows(actor).map((row) => `
   <div class="tqw-bio-answer">
-    <span class="tqw-bio-q">${row.qid.toUpperCase()} · ${row.label}</span>
-    ${row.mechanical ? `<p class="tqw-bio-mech">${escape(row.mechanical)}</p>` : ""}
+    <span class="tqw-bio-q">${row.qid.toUpperCase()}</span>
+    <span class="tqw-bio-question">${escape(row.question)}</span>
     ${row.narrative ? `<p>${escape(row.narrative).replace(/\n/g, "<br>")}</p>` : ""}
+    ${row.mechanical ? `<p class="tqw-bio-mech">${escape(row.mechanical)}</p>` : ""}
   </div>`).join("");
 
   const summary = grantCount > 0

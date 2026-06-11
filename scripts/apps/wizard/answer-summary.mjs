@@ -86,7 +86,13 @@ export function buildAnswerRows(actor) {
     const mechanical = mechanicalSummary(actor, q.id);
     const narrative = (narratives?.[q.id] ?? "").trim();
     if (!mechanical && !narrative) continue;
-    rows.push({ qid: q.id, label: q.sidebarLabel, mechanical, narrative });
+    rows.push({
+      qid: q.id,
+      label: q.sidebarLabel,
+      question: q.questionText,
+      mechanical,
+      narrative,
+    });
   }
   return rows;
 }
