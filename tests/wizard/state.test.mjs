@@ -2,6 +2,10 @@ import { describe, it, expect } from "vitest";
 import { defaultState, loadFromActor, diffStates, validate, canJumpTo, jumpTo } from "../../scripts/apps/wizard/wizard-state.mjs";
 
 describe("defaultState", () => {
+  it("initializes currentId to q1 (first Next must advance, not re-land)", () => {
+    expect(defaultState().currentId).toBe("q1");
+  });
+
   it("returns null for all mechanical fields", () => {
     const s = defaultState();
     expect(s.q1_village_uuid).toBeNull();

@@ -410,21 +410,20 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
   }
 
   /**
-   * Force-centre the wizard on first open. ApplicationV2 remembers
-   * the last drag position per app id, which leaves the window stuck
-   * against the sidebar after one offset drag — even reload doesn't
-   * recentre. Override here so every fresh open lands in the viewport
-   * centre, then user drags from there if they want.
+   * Force-centre the wizard on first open. ApplicationV2 computes its own
+   * initial placement when the frame is inserted, which happens AFTER
+   * _onFirstRender — so an immediate setPosition here gets overridden.
+   * Schedule the centring for the next animation frame, after insertion.
    */
   _onFirstRender(context, options) {
     super._onFirstRender?.(context, options);
-    const w = this.position?.width ?? 640;
-    const h = this.position?.height ?? 720;
-    this.setPosition({
-      left: Math.max(0, Math.round((window.innerWidth  - w) / 2)),
-      top:  Math.max(0, Math.round((window.innerHeight - h) / 2)),
-      width: w,
-      height: h,
+    requestAnimationFrame(() => {
+      const w = this.position?.width ?? 640;
+      const h = this.position?.height ?? 720;
+      this.setPosition({
+        left: Math.max(0, Math.round((window.innerWidth - w) / 2)),
+        top: Math.max(0, Math.round((window.innerHeight - h) / 2)),
+      });
     });
   }
 

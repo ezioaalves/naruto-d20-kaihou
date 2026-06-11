@@ -18,6 +18,9 @@
  */
 export function defaultState() {
   return {
+    // Navigation depends on currentId being initialized; without it,
+    // _onNext resolves findIndex to -1 and the first click re-lands on q1.
+    currentId: "q1",
     q1_village_uuid: null,
     q2_occupation_uuid: null,
     q3_school_uuid: null,
