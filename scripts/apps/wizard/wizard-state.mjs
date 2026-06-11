@@ -32,7 +32,6 @@ export function defaultState() {
     q13_mentor_technique_uuid: null,
     q13_class_skill: null,
     q16_restricted_item_uuid: null,
-    q17_skill_key: null,
     q18_heritage_roll: null,
     q18_heritage_locked_modifier: null,
     narratives: {
@@ -218,12 +217,6 @@ export function loadFromActor(actor) {
     state.q16_restricted_item_uuid = q16Item._id;
   }
 
-  // Q17 — Skill (snapshot from flag q17PickedSkill)
-  const skillKey = getWizardFlag(actor, "q17PickedSkill");
-  if (skillKey) {
-    state.q17_skill_key = skillKey;
-  }
-
   // Q18 — Heritage (snapshot from flag q18Heritage, which is { roll, deltaRep, deltaAP })
   const heritageSnapshot = getWizardFlag(actor, "q18Heritage");
   if (heritageSnapshot) {
@@ -271,7 +264,6 @@ export function diffStates(prev, next) {
     "q13_mentor_technique_uuid",
     "q13_class_skill",
     "q16_restricted_item_uuid",
-    "q17_skill_key",
     "q18_heritage_roll",
     "q18_heritage_locked_modifier",
   ];

@@ -17,6 +17,7 @@ import { validate, loadFromActor, diffStates } from "./wizard-state.mjs";
 import { render as renderBiography, splice as spliceBiography } from "./biography-renderer.mjs";
 import { getOutcomeByRoll, extractModifierDeltas } from "./heritage-table.mjs";
 import {
+  emptyPlan,
   applyQ1Village,
   applyQ4Affinity,
   applyQ7Loyalist,
@@ -26,9 +27,10 @@ import {
   applyDragDropFeat,
   applyQ10Coupled,
   applyQ13Mentor,
-  applyQ17SkillBump,
+  applyQ17ParentalInfluence,
   applyQ18Heritage,
 } from "./mechanic-applier.mjs";
+import { findCompendiumItemByName } from "../../grants/item-grants.mjs";
 
 export class FinishValidationError extends Error {
   constructor(errors) {
@@ -67,6 +69,12 @@ export async function finishWizard(actor, state) {
   }
   if (mergedPlan.deletes.length > 0) {
     await actor.deleteEmbeddedDocuments("Item", mergedPlan.deletes);
+  }
+
+  // Unconditional Q17 grant: Parental Influence feat (once per actor)
+  const q17Plan = await buildQ17Grant(actor);
+  if (q17Plan.creates.length > 0) {
+    await actor.createEmbeddedDocuments("Item", q17Plan.creates);
   }
 
   const bioHtml = renderBiography(state, {
@@ -150,10 +158,6 @@ async function planForField(actor, field, originalState, newState) {
     return data ? applyDragDropFeat(data, "q16RestrictedItem") : null;
   }
 
-  if (field === "q17_skill_key" && wasSet) {
-    return applyQ17SkillBump(actor, newValue);
-  }
-
   if (field === "q18_heritage_roll" && wasSet) {
     const outcome = getOutcomeByRoll(newValue);
     if (outcome) {
@@ -186,4 +190,20 @@ async function fetchItemData(actor, ref) {
     doc = actor.items.get(ref._id);
   }
   return doc?.toObject?.() ?? null;
+}
+
+async function buildQ17Grant(actor) {
+  const alreadyGranted = Array.from(actor.items ?? []).some(
+    (i) => i.flags?.["naruto-d20-kaihou"]?.wizard?.q17ParentalInfluence === true
+  );
+  if (alreadyGranted) return emptyPlan();
+
+  const doc = await findCompendiumItemByName(
+    "Parental Influence",
+    ["naruto-d20-kaihou.questions"],
+    "feat"
+  );
+  if (!doc) return emptyPlan();
+
+  return applyQ17ParentalInfluence(doc.toObject());
 }

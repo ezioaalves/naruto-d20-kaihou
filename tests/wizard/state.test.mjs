@@ -18,7 +18,6 @@ describe("defaultState", () => {
     expect(s.q13_mentor_technique_uuid).toBeNull();
     expect(s.q13_class_skill).toBeNull();
     expect(s.q16_restricted_item_uuid).toBeNull();
-    expect(s.q17_skill_key).toBeNull();
     expect(s.q18_heritage_roll).toBeNull();
     expect(s.q18_heritage_locked_modifier).toBeNull();
   });

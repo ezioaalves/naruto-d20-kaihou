@@ -464,16 +464,15 @@ export const QUESTION_DEFINITIONS = [
     browse: {kind: "compendium", pack: "pf1.items", label: "Browse Items"},
   },
 
-  // Q17 — Parents / 0-Rank Skill Bump (select, filtered)
+  // Q17 — Parents / Parental Influence feat grant (unconditional on finish)
   {
     id: "q17",
-    pickType: "select",
-    stateField: "q17_skill_key",
+    pickType: "none",
+    stateField: null,
     required: false,
     questionText: "Who are your parents?",
     sidebarLabel: "Parents",
-    narrativePrompt: "Name them — or name their absence. They tried to teach you something you may have ignored: pick a skill you have 0 ranks in, and tell us what that lesson was.",
-    optionsFromActor: "zeroRankSkills",
+    narrativePrompt: "Name them — or name their absence. They tried to teach you something you may have ignored — a skill you'd never bothered to practice. When the wizard finishes, you receive 1 bonus skill rank to spend freely.",
   },
 
   // Q18 — Namesake / Heritage Table (roll-table d10)

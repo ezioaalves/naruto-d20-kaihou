@@ -19,9 +19,7 @@ import {
   revertQ10Coupled,
   applyQ13Mentor,
   revertQ13Mentor,
-  applyQ17SkillBump,
-  revertQ17SkillBump,
-  listZeroRankSkills,
+  applyQ17ParentalInfluence,
   applyQ18Heritage,
   revertQ18Heritage,
 } from "../../scripts/apps/wizard/mechanic-applier.mjs";
@@ -278,64 +276,19 @@ describe("Q13 Mentor (technique drag-drop + separate classSkill marker)", () => 
   });
 });
 
-describe("Q17 0-rank skill bump", () => {
-  it("apply bumps rank by 2 and snapshots the key", () => {
-    const actor = mockActor({ system: { skills: { sur: { rank: 0 } }, classSkills: {} } });
-    const p = applyQ17SkillBump(actor, "sur");
-    expect(p.updates["system.skills.sur.rank"]).toBe(2);
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q17PickedSkill"]).toBe("sur");
+describe("applyQ17ParentalInfluence", () => {
+  it("creates a marker item with q17ParentalInfluence flag", () => {
+    const featData = {name: "Parental Influence", type: "feat", system: {bonusSkillRank: 1}};
+    const p = applyQ17ParentalInfluence(featData);
+    expect(p.creates).toHaveLength(1);
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q17ParentalInfluence).toBe(true);
+    expect(p.creates[0].name).toBe("Parental Influence");
   });
 
-  it("apply works for subskill paths (e.g. pro.subSkills.scribe)", () => {
-    const p = applyQ17SkillBump(mockActor(), "pro.subSkills.scribe");
-    expect(p.updates["system.skills.pro.subSkills.scribe.rank"]).toBe(2);
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q17PickedSkill"]).toBe("pro.subSkills.scribe");
-  });
-
-  it("revert subtracts 2 from snapshotted skill, floors at 0, clears snapshot", () => {
-    const actor = mockActor({
-      system: { skills: { sur: { rank: 2 } }, classSkills: {} },
-      flags: { "naruto-d20-kaihou": { wizard: { q17PickedSkill: "sur" } } },
-    });
-    const p = revertQ17SkillBump(actor);
-    expect(p.updates["system.skills.sur.rank"]).toBe(0);
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q17PickedSkill"]).toBeNull();
-  });
-
-  it("revert with no snapshot returns empty plan", () => {
-    const p = revertQ17SkillBump(mockActor());
-    expect(p).toEqual({ updates: {}, creates: [], deletes: [] });
-  });
-});
-
-describe("listZeroRankSkills (for Q17 UI picker)", () => {
-  it("returns top-level skills with rank 0", () => {
-    const actor = mockActor({
-      system: {
-        skills: { sur: { rank: 0 }, blf: { rank: 3 }, dip: { rank: 0 } },
-        classSkills: {},
-      },
-    });
-    const list = listZeroRankSkills(actor);
-    const keys = list.map((s) => s.key).sort();
-    expect(keys).toContain("sur");
-    expect(keys).toContain("dip");
-    expect(keys).not.toContain("blf");
-  });
-
-  it("returns subskills with rank 0 (e.g. craft sub)", () => {
-    const actor = mockActor({
-      system: {
-        skills: {
-          crf: { subSkills: { armor: { rank: 0 }, weapons: { rank: 2 } } },
-        },
-        classSkills: {},
-      },
-    });
-    const list = listZeroRankSkills(actor);
-    const keys = list.map((s) => s.key);
-    expect(keys).toContain("crf.subSkills.armor");
-    expect(keys).not.toContain("crf.subSkills.weapons");
+  it("accepts null featData gracefully — creates stub with marker", () => {
+    const p = applyQ17ParentalInfluence(null);
+    expect(p.creates).toHaveLength(1);
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q17ParentalInfluence).toBe(true);
   });
 });
 
