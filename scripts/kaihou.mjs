@@ -100,7 +100,13 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
 
   // Narrative-first: the question text + the player's written answer lead;
   // the mechanical pick is a muted footnote (GM ruling 2026-06-11).
-  const answerRows = buildAnswerRows(actor).map((row) => `
+  const rows = buildAnswerRows(actor);
+  console.debug(
+    `${MODULE_ID} | bio panel: actor="${actor.name}" isToken=${!!actor.isToken} ` +
+    `grants=${grantCount} rows=${rows.length} ` +
+    `narrativesFlag=${JSON.stringify(actor.flags?.["naruto-d20-kaihou"]?.wizard?.narratives ?? null)}`
+  );
+  const answerRows = rows.map((row) => `
   <div class="tqw-bio-answer">
     <span class="tqw-bio-q">${row.qid.toUpperCase()}</span>
     <span class="tqw-bio-question">${escape(row.question)}</span>
