@@ -123,3 +123,47 @@ def test_parse_args_defaults():
 def test_parse_args_dry_run():
     args = generate_questions.parse_args(["--dry-run"])
     assert args.dry_run is True
+
+
+def test_bonus_skill_rank_kind(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-bsr\nminor_benefit:\n  kind: bonus_skill_rank\n  value: 1\ntags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert data["system"]["flags"]["dictionary"] == {"bonusSkillRank": 1}
+
+
+def test_minor_benefits_list_merges_flags(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-multi\n"
+        "minor_benefits:\n"
+        "  - kind: reputation\n    value: 2\n"
+        "  - kind: action_point\n    value: 2\n"
+        "tags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert data["system"]["flags"]["dictionary"] == {"reputation": 2, "actionPoints": 2}
+
+
+def test_negative_benefit_values_pass_through(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: v-neg\n"
+        "minor_benefits:\n"
+        "  - kind: action_point\n    value: -2\n"
+        "tags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert data["system"]["flags"]["dictionary"] == {"actionPoints": -2}
+
+
+def test_question_feat_marker_flag_emitted(tmp_path):
+    fp = tmp_path / "q.yaml"
+    fp.write_text(
+        "name: V\nslug: q07-relationship-loyalist\n"
+        "minor_benefit:\n  kind: doc_only\n  value: x\ntags: []\n"
+    )
+    data = generate_questions.generate_one(fp, MAPPING_PATH)
+    assert data["flags"]["naruto-d20-kaihou"]["questionFeat"] == "q07-relationship-loyalist"

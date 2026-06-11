@@ -58,12 +58,26 @@ def translate_minor_benefit(kind: str, value: Any) -> dict[str, Any]:
         out["flags"]["actionPoints"] = value
     elif kind == "reputation":
         out["flags"]["reputation"] = value
+    elif kind == "bonus_skill_rank":
+        out["flags"]["bonusSkillRank"] = value
     elif kind == "doc_only":
         # No mechanical effect; the YAML description already carries the manual-application note.
         pass
     else:
         raise ValueError(f"Unknown minor_benefit.kind: {kind!r}")
 
+    return out
+
+
+def translate_minor_benefits(benefits: list[dict[str, Any]]) -> dict[str, Any]:
+    """Merge a list of minor benefits. Later flags of the same key overwrite
+    earlier ones — vault sources must not repeat a kind within one question."""
+    out: dict[str, Any] = {"changes": [], "flags": {}, "description_extra": ""}
+    for benefit in benefits:
+        part = translate_minor_benefit(benefit["kind"], benefit["value"])
+        out["changes"].extend(part["changes"])
+        out["flags"].update(part["flags"])
+        out["description_extra"] += part["description_extra"]
     return out
 
 
@@ -80,8 +94,8 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
     with open(yaml_path) as f:
         vault = yaml.safe_load(f)
 
-    benefit = vault["minor_benefit"]
-    parts = translate_minor_benefit(benefit["kind"], benefit["value"])
+    benefits = vault.get("minor_benefits") or [vault["minor_benefit"]]
+    parts = translate_minor_benefits(benefits)
 
     description_html = _description_to_html(vault.get("description", "")) + parts["description_extra"]
 
@@ -102,6 +116,7 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
         "type": "feat",
         "system": system,
     }
+    out["flags"] = {"naruto-d20-kaihou": {"questionFeat": vault["slug"]}}
     if vault.get("img"):
         out["img"] = vault["img"]
     return out
