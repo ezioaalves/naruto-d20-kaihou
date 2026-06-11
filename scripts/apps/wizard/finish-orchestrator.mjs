@@ -9,7 +9,7 @@
  *   5. Applies updates / creates / deletes to the actor
  *   6. Renders biography and splices into actor.system.details.biography.value
  *
- * V1 reference: scripts/wizard/twenty-questions-wizard.mjs:653-852.
+ * Originally extracted from the V1 TwentyQuestionsWizard finish logic.
  */
 
 import { questions as QUESTION_DEFINITIONS } from "./question-definitions.mjs";

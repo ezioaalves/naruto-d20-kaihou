@@ -3,7 +3,7 @@ import {
   HERITAGE_OUTCOMES,
   getOutcomeByRoll,
   extractModifierDeltas,
-} from "../../scripts/wizard/heritage-table.mjs";
+} from "../../scripts/apps/wizard/heritage-table.mjs";
 
 describe("HERITAGE_OUTCOMES", () => {
   it("has exactly 10 outcomes (rolls 1-10)", () => {

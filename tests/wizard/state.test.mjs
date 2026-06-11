@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { defaultState, loadFromActor, diffStates, validate, canJumpTo, jumpTo } from "../../scripts/wizard/wizard-state.mjs";
+import { defaultState, loadFromActor, diffStates, validate, canJumpTo, jumpTo } from "../../scripts/apps/wizard/wizard-state.mjs";
 
 describe("defaultState", () => {
   it("returns null for all mechanical fields", () => {

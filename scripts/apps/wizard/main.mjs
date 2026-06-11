@@ -2,13 +2,13 @@
  * naruto-d20-kaihou wizard bootstrap.
  *
  * Phase K complete: the V1 Application wizard is deleted; the ApplicationV2
- * wizard (twenty-questions-wizard-v2.mjs) is the only wizard.
+ * wizard (twenty-questions-wizard.mjs) is the only wizard.
  *
  * Architecture: docs/superpowers/specs/2026-06-08-wizard-restyle-v2-design.md
  * Refactor:     docs/superpowers/specs/2026-06-11-kaihou-refactor-design.md
  */
 
-import TwentyQuestionsWizardV2 from "./twenty-questions-wizard-v2.mjs";
+import TwentyQuestionsWizard from "./twenty-questions-wizard.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
 
@@ -46,7 +46,7 @@ Hooks.once("init", async () => {
 Hooks.once("ready", () => {
   console.log(`${MODULE_ID} | ready`);
   game[MODULE_ID] = game[MODULE_ID] || {};
-  game[MODULE_ID].TwentyQuestionsWizard = TwentyQuestionsWizardV2;
+  game[MODULE_ID].TwentyQuestionsWizard = TwentyQuestionsWizard;
 });
 
 // Inject "20 Questions" button into PF1e actor sheet header (character and NPC).
@@ -65,7 +65,7 @@ Hooks.on("renderActorSheet", (app, html, data) => {
   </button>`);
 
   button.on("click", () => {
-    const wizard = new TwentyQuestionsWizardV2(app.actor);
+    const wizard = new TwentyQuestionsWizard(app.actor);
     wizard.render(true);
   });
 
