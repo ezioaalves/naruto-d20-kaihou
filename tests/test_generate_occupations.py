@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-GENERATOR_PATH = REPO_ROOT / "scripts" / "generate-occupations.py"
+GENERATOR_PATH = REPO_ROOT / "generators" / "generate-occupations.py"
 FIXTURE_PATH = REPO_ROOT / "tests" / "fixtures" / "synthetic_occupation.md"
 MAPPING_PATH = REPO_ROOT / "data" / "skill-key-mapping.json"
 

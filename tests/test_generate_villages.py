@@ -9,7 +9,7 @@ import pytest
 
 # Load the generator (dash-named module) via importlib
 REPO_ROOT = Path(__file__).resolve().parent.parent
-GENERATOR_PATH = REPO_ROOT / "scripts" / "generate-villages.py"
+GENERATOR_PATH = REPO_ROOT / "generators" / "generate-villages.py"
 MAPPING_PATH = REPO_ROOT / "data" / "skill-key-mapping.json"
 FIXTURE_PATH = REPO_ROOT / "tests" / "fixtures" / "synthetic_village.yaml"
 

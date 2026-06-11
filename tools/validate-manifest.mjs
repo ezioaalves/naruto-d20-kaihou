@@ -39,6 +39,17 @@ for (const key of ["id", "title", "version", "compatibility"]) {
   }
 }
 
+// Version drift gate: package.json and module.json must agree (spec § 3.6).
+const pkgPath = join(ROOT, "package.json");
+if (existsSync(pkgPath)) {
+  const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
+  if (pkg.version !== manifest.version) {
+    errors.push(
+      `version drift: module.json has ${manifest.version} but package.json has ${pkg.version}`,
+    );
+  }
+}
+
 /** Record a referenced path that does not resolve to a file/dir on disk. */
 const checkPath = (relPath, context) => {
   if (typeof relPath !== "string" || relPath === "") {

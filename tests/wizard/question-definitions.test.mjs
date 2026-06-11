@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { QUESTION_DEFINITIONS } from "../../scripts/wizard/question-definitions.mjs";
+import { QUESTION_DEFINITIONS } from "../../scripts/apps/wizard/question-definitions.mjs";
 
 const VALID_PICK_TYPES = new Set([
   "none", "radio", "select", "nested", "drag-drop", "drag-drop-coupled", "roll-table",

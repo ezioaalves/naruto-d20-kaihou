@@ -7,25 +7,9 @@ import {
   linkRowFromDocument,
   normalizeItemName,
 } from "./item-grants.mjs";
-import {
-  registerOccupationAutoApply,
-  registerOccupationAutoRevert,
-} from "./occupation-application.mjs";
-
-// Theme layer — registers its own Hooks.once("init", ...) so must be loaded
-// at module-import time, before any Hooks.once events fire. Pure side-effect
-// import (no exports consumed here).
-import "./theme/main.mjs";
 
 const SCHOOL_FLAG = "school";
 const SCHOOL_GRANT_FLAG = "schoolGrant";
-
-Hooks.once("ready", () => {
-  registerSchoolAutoApply();
-  registerOccupationAutoApply();
-  registerOccupationAutoRevert();
-  console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
-});
 
 export function registerSchoolAutoApply() {
   Hooks.on("createItem", async (item, _options, userId) => {

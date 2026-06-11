@@ -1,4 +1,5 @@
 @use "colors";
+@use "sass:map";
 
 /**
  * Discipline color + icon hooks.
@@ -18,8 +19,8 @@ $disciplines: (
 );
 
 @each $key, $cfg in $disciplines {
-    $color: map-get($cfg, "color");
-    $icon: map-get($cfg, "icon");
+    $color: map.get($cfg, "color");
+    $icon: map.get($cfg, "icon");
 
     [data-discipline="#{$key}"],
     .discipline-#{$key} {
@@ -45,7 +46,7 @@ $disciplines: (
     border-bottom: 2px solid transparent;
 
     @each $key, $cfg in $disciplines {
-        $color: map-get($cfg, "color");
+        $color: map.get($cfg, "color");
         &[data-discipline="#{$key}"].active {
             border-bottom-color: $color;
             color: $color;

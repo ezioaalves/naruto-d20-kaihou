@@ -28,7 +28,7 @@ const MODULE_ID = "naruto-d20-kaihou";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     id: "twenty-questions-wizard-v2",
     classes: ["tqw-v2"],
@@ -40,18 +40,18 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     },
     position: { width: 640, height: 720 },
     actions: {
-      "tqw-back":              TwentyQuestionsWizardV2._onBack,
-      "tqw-next":              TwentyQuestionsWizardV2._onNext,
-      "tqw-cancel":            TwentyQuestionsWizardV2._onCancel,
-      "tqw-finish":            TwentyQuestionsWizardV2._onFinish,
-      "tqw-progress-jump":     TwentyQuestionsWizardV2._onProgressJump,
-      "tqw-radio-select":      TwentyQuestionsWizardV2._onRadioSelect,
-      "tqw-select-change":     TwentyQuestionsWizardV2._onSelectChange,
-      "tqw-subpicker-change":  TwentyQuestionsWizardV2._onSubpickerChange,
-      "tqw-narrative-change":  TwentyQuestionsWizardV2._onNarrativeChange,
-      "tqw-clear-drop":        TwentyQuestionsWizardV2._onClearDrop,
-      "tqw-browse":            TwentyQuestionsWizardV2._onBrowse,
-      "tqw-roll":              TwentyQuestionsWizardV2._onRoll,
+      "tqw-back":              TwentyQuestionsWizard._onBack,
+      "tqw-next":              TwentyQuestionsWizard._onNext,
+      "tqw-cancel":            TwentyQuestionsWizard._onCancel,
+      "tqw-finish":            TwentyQuestionsWizard._onFinish,
+      "tqw-progress-jump":     TwentyQuestionsWizard._onProgressJump,
+      "tqw-radio-select":      TwentyQuestionsWizard._onRadioSelect,
+      "tqw-select-change":     TwentyQuestionsWizard._onSelectChange,
+      "tqw-subpicker-change":  TwentyQuestionsWizard._onSubpickerChange,
+      "tqw-narrative-change":  TwentyQuestionsWizard._onNarrativeChange,
+      "tqw-clear-drop":        TwentyQuestionsWizard._onClearDrop,
+      "tqw-browse":            TwentyQuestionsWizard._onBrowse,
+      "tqw-roll":              TwentyQuestionsWizard._onRoll,
     },
   };
 
@@ -438,9 +438,9 @@ export default class TwentyQuestionsWizardV2 extends HandlebarsApplicationMixin(
     const root = this.element;
     if (!root) return;
     const CHANGE_ACTIONS = {
-      "tqw-select-change":    TwentyQuestionsWizardV2._onSelectChange,
-      "tqw-subpicker-change": TwentyQuestionsWizardV2._onSubpickerChange,
-      "tqw-narrative-change": TwentyQuestionsWizardV2._onNarrativeChange,
+      "tqw-select-change":    TwentyQuestionsWizard._onSelectChange,
+      "tqw-subpicker-change": TwentyQuestionsWizard._onSubpickerChange,
+      "tqw-narrative-change": TwentyQuestionsWizard._onNarrativeChange,
     };
     const handler = (event) => {
       const target = event.target.closest?.("[data-action]");

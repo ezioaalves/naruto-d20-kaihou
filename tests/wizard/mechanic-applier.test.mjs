@@ -24,7 +24,7 @@ import {
   listZeroRankSkills,
   applyQ18Heritage,
   revertQ18Heritage,
-} from "../../scripts/wizard/mechanic-applier.mjs";
+} from "../../scripts/apps/wizard/mechanic-applier.mjs";
 
 function mockActor(overrides = {}) {
   return {

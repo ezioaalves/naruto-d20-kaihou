@@ -4,8 +4,7 @@
   "description": "Kaihou-specific identity content (base classes, villages, flaws, schools, occupations, bloodlines, advanced classes) extending the public naruto-d20 module.",
   "version": "2.0.0",
   "esmodules": [
-    "scripts/wizard/main.mjs",
-    "scripts/main.mjs"
+    "scripts/kaihou.mjs"
   ],
   "styles": [
     "styles/theme/zen.css",

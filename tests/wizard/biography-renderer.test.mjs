@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { render, parse, splice } from "../../scripts/wizard/biography-renderer.mjs";
-import { QUESTION_DEFINITIONS } from "../../scripts/wizard/question-definitions.mjs";
-import { getOutcomeByRoll } from "../../scripts/wizard/heritage-table.mjs";
+import { render, parse, splice } from "../../scripts/apps/wizard/biography-renderer.mjs";
+import { QUESTION_DEFINITIONS } from "../../scripts/apps/wizard/question-definitions.mjs";
+import { getOutcomeByRoll } from "../../scripts/apps/wizard/heritage-table.mjs";
 
 function stateWith(overrides = {}) {
   const narratives = {};
