@@ -10,8 +10,8 @@
  * Layout C: header + progress-strip + sectioned content + footer.
  */
 
-@import "../tokens";
-@import "../components/index";
+@use "../tokens" as *;
+@use "../components/index" as *;
 
 .tqw-v2 {
   background: var(--zen-surface);

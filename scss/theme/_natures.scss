@@ -1,4 +1,5 @@
 @use "colors";
+@use "sass:map";
 
 /**
  * Nature glyphs and color hooks.
@@ -28,8 +29,8 @@ $natures: (
 );
 
 @each $name, $cfg in $natures {
-    $color: map-get($cfg, "color");
-    $ext: map-get($cfg, "ext");
+    $color: map.get($cfg, "color");
+    $ext: map.get($cfg, "ext");
 
     [data-nature="#{$name}"],
     .nature-#{$name} {
