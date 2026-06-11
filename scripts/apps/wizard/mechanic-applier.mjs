@@ -53,60 +53,20 @@ export function revertQ4Affinity(_actor) {
   return p;
 }
 
-// ─── Q7 Loyalist ──────────────────────────────────────────────────────────────
-export function applyQ7Loyalist(actor, _markerItemData) {
+// ─── Q7 / Q8 stance feats ─────────────────────────────────────────────────────
+// The wizard grants the generated pack feats (questions pack); their
+// reputation / action-point / bonus-skill-rank payloads ride as dictionary
+// flags and are applied by scripts/grants/question-effects.mjs on createItem
+// (and reverted on deleteItem). Appliers do no counter math.
+export function applyQ7Loyalist(featItemData) {
   const p = emptyPlan();
-  const current = actor.flags?.["naruto-d20"]?.reputation ?? 0;
-  p.updates["flags.naruto-d20.reputation"] = current + 1;
-  const markerItem = {
-    name: "Village Loyalist",
-    type: "feat",
-    img: "icons/svg/upgrade.svg",
-    system: {
-      subType: "trait",
-      description: {
-        value: "<p>Wizard-applied (20 Questions Q7): +1 Reputation from village loyalist stance.</p>",
-      },
-    },
-  };
-  p.creates.push(withWizardMarker(markerItem, "q7Loyalist"));
+  p.creates.push(withWizardMarker(featItemData ?? {}, "q7Loyalist"));
   return p;
 }
 
 export function revertQ7Loyalist(actor) {
   const p = emptyPlan();
-  const current = actor.flags?.["naruto-d20"]?.reputation ?? 0;
-  p.updates["flags.naruto-d20.reputation"] = current - 1;
   const id = findItemIdByMarker(actor, "q7Loyalist");
-  if (id) p.deletes.push(id);
-  return p;
-}
-
-// ─── Q8 Adherent ──────────────────────────────────────────────────────────────
-export function applyQ8Adherent(actor, _markerItemData) {
-  const p = emptyPlan();
-  const current = actor.flags?.["naruto-d20"]?.actionPoints ?? 0;
-  p.updates["flags.naruto-d20.actionPoints"] = current + 2;
-  const markerItem = {
-    name: "Code Adherent",
-    type: "feat",
-    img: "icons/svg/holy-shield.svg",
-    system: {
-      subType: "trait",
-      description: {
-        value: "<p>Wizard-applied (20 Questions Q8): +2 Action Points from code conviction.</p>",
-      },
-    },
-  };
-  p.creates.push(withWizardMarker(markerItem, "q8Adherent"));
-  return p;
-}
-
-export function revertQ8Adherent(actor) {
-  const p = emptyPlan();
-  const current = actor.flags?.["naruto-d20"]?.actionPoints ?? 0;
-  p.updates["flags.naruto-d20.actionPoints"] = current - 2;
-  const id = findItemIdByMarker(actor, "q8Adherent");
   if (id) p.deletes.push(id);
   return p;
 }
@@ -130,26 +90,15 @@ export function revertQ1Village(actor) {
 // feat, wealth, reputation) are applied by scripts/occupation-application.mjs
 // on the createItem hook, so the wizard only needs to add/remove the item.
 
-// ─── Q7 Outsider ──────────────────────────────────────────────────────────────
-// classSkills are set on the marker item itself; PF1e aggregates class skills
-// from feat/class/race items, NOT from actor.system.classSkills directly.
-export function applyQ7Outsider(_actor, _markerItemData, classSkillKey) {
+// classSkills are set on the granted item itself; PF1e aggregates class
+// skills from feat/class/race items, NOT from actor.system.classSkills.
+export function applyQ7Outsider(featItemData, classSkillKey) {
   const p = emptyPlan();
-  const markerItem = {
-    name: "Village Outsider",
-    type: "feat",
-    img: "icons/svg/downgrade.svg",
-    system: {
-      subType: "trait",
-      description: {
-        value: classSkillKey
-          ? `<p>Wizard-applied (20 Questions Q7): self-reliance grants <strong>${classSkillKey}</strong> as a class skill.</p>`
-          : "<p>Wizard-applied (20 Questions Q7): village outsider stance.</p>",
-      },
-      classSkills: classSkillKey ? { [classSkillKey]: true } : {},
-    },
-  };
-  p.creates.push(withWizardMarker(markerItem, "q7Outsider"));
+  const feat = { ...(featItemData ?? {}) };
+  if (classSkillKey) {
+    feat.system = { ...(feat.system ?? {}), classSkills: { [classSkillKey]: true } };
+  }
+  p.creates.push(withWizardMarker(feat, "q7Outsider"));
   if (classSkillKey) {
     p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"] = classSkillKey;
   }
@@ -165,27 +114,22 @@ export function revertQ7Outsider(actor) {
   return p;
 }
 
-// ─── Q8 Sceptic ───────────────────────────────────────────────────────────────
-// Pragmatist stance grants 1 unallocated bonus skill point. The marker feat's
-// description documents it; the player (with GM oversight) places the rank in
-// any skill of their choice later. We bump a counter flag so the spend can be
-// audited.
-export function applyQ8Sceptic(actor, _markerItemData) {
+export function applyQ8Adherent(featItemData) {
   const p = emptyPlan();
-  const markerItem = {
-    name: "Code Sceptic",
-    type: "feat",
-    img: "icons/svg/book.svg",
-    system: {
-      subType: "trait",
-      description: {
-        value: "<p>Wizard-applied (20 Questions Q8): pragmatist's stance grants <strong>+1 bonus skill point</strong> to allocate freely (GM's discretion).</p>",
-      },
-    },
-  };
-  p.creates.push(withWizardMarker(markerItem, "q8Sceptic"));
-  const current = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q8BonusSkillPoints ?? 0;
-  p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"] = current + 1;
+  p.creates.push(withWizardMarker(featItemData ?? {}, "q8Adherent"));
+  return p;
+}
+
+export function revertQ8Adherent(actor) {
+  const p = emptyPlan();
+  const id = findItemIdByMarker(actor, "q8Adherent");
+  if (id) p.deletes.push(id);
+  return p;
+}
+
+export function applyQ8Sceptic(featItemData) {
+  const p = emptyPlan();
+  p.creates.push(withWizardMarker(featItemData ?? {}, "q8Sceptic"));
   return p;
 }
 
@@ -193,8 +137,6 @@ export function revertQ8Sceptic(actor) {
   const p = emptyPlan();
   const id = findItemIdByMarker(actor, "q8Sceptic");
   if (id) p.deletes.push(id);
-  const current = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q8BonusSkillPoints ?? 0;
-  p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"] = Math.max(0, current - 1);
   return p;
 }
 

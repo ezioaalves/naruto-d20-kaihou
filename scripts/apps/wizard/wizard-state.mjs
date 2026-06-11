@@ -177,11 +177,6 @@ export function loadFromActor(actor) {
   const q8ScepticItem = findItemByMarker(actor, "q8Sceptic");
   if (q8ScepticItem) {
     state.q8_code = "sceptic";
-    // Load the subskill snapshot
-    const scepticSkill = getWizardFlag(actor, "q8ScepticSubskill");
-    if (scepticSkill) {
-      state.q8_sceptic_subskill = scepticSkill;
-    }
   }
 
   // Q9 — Level 1 Feat (marker flag q9Level1Feat)

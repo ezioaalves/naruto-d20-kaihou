@@ -114,9 +114,13 @@ async function planForField(actor, field, originalState, newState) {
   if (field === "q7_relationship") {
     const oldRel = originalState.q7_relationship;
     const newRel = newValue;
-    if (newRel === "loyalist" && oldRel !== "loyalist") return applyQ7Loyalist(actor, {});
+    if (newRel === "loyalist" && oldRel !== "loyalist") {
+      const feat = await fetchQuestionFeat("Village Loyalist");
+      return feat ? applyQ7Loyalist(feat) : null;
+    }
     if (newRel === "outsider" && oldRel !== "outsider") {
-      return applyQ7Outsider(actor, {}, newState.q7_outsider_class_skill);
+      const feat = await fetchQuestionFeat("Village Outsider");
+      return feat ? applyQ7Outsider(feat, newState.q7_outsider_class_skill) : null;
     }
     return null;
   }
@@ -124,9 +128,13 @@ async function planForField(actor, field, originalState, newState) {
   if (field === "q8_code") {
     const oldCode = originalState.q8_code;
     const newCode = newValue;
-    if (newCode === "adherent" && oldCode !== "adherent") return applyQ8Adherent(actor, {});
+    if (newCode === "adherent" && oldCode !== "adherent") {
+      const feat = await fetchQuestionFeat("Code Adherent");
+      return feat ? applyQ8Adherent(feat) : null;
+    }
     if (newCode === "sceptic" && oldCode !== "sceptic") {
-      return applyQ8Sceptic(actor, {});
+      const feat = await fetchQuestionFeat("Code Sceptic");
+      return feat ? applyQ8Sceptic(feat) : null;
     }
     return null;
   }
@@ -177,6 +185,18 @@ function mergePlans(plans) {
     merged.deletes.push(...plan.deletes);
   }
   return merged;
+}
+
+const QUESTIONS_PACK_IDS = ["naruto-d20-kaihou.questions"];
+
+async function fetchQuestionFeat(name) {
+  const doc = await findCompendiumItemByName(name, QUESTIONS_PACK_IDS, "feat");
+  if (!doc) {
+    console.warn(`naruto-d20-kaihou | question feat missing from compendia: ${name}`);
+    globalThis.ui?.notifications?.warn(`20 Questions: missing compendium feat "${name}"`);
+    return null;
+  }
+  return doc.toObject();
 }
 
 async function fetchItemData(actor, ref) {

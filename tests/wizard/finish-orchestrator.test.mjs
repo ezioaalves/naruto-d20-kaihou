@@ -4,14 +4,32 @@ import {describe, it, expect, vi, beforeEach} from "vitest";
 globalThis.fromUuid = vi.fn().mockResolvedValue(null);
 globalThis.ui = {notifications: {error: vi.fn(), warn: vi.fn()}};
 
-// Mock game.packs for findCompendiumItemByName
-const mockParentalInfluenceDoc = {
-  toObject: () => ({
-    name: "Parental Influence",
-    type: "feat",
-    system: {bonusSkillRank: 1},
-    flags: {},
-  }),
+// Pack-feat stubs for the questions pack (Q7/Q8 stance feats + Q17 grant)
+function makeQuestionsDoc(name, extraSystem = {}) {
+  return {
+    toObject: () => ({
+      name,
+      type: "feat",
+      system: {subType: "trait", description: {value: "<p>x</p>"}, ...extraSystem},
+      flags: {"naruto-d20-kaihou": {questionFeat: `slug-${name}`}},
+    }),
+  };
+}
+
+const QUESTIONS_INDEX = [
+  {_id: "d2fe25f978a93d9a", name: "Parental Influence", type: "feat"},
+  {_id: "aaaa000000000001", name: "Village Loyalist", type: "feat"},
+  {_id: "aaaa000000000002", name: "Village Outsider", type: "feat"},
+  {_id: "aaaa000000000003", name: "Code Adherent", type: "feat"},
+  {_id: "aaaa000000000004", name: "Code Sceptic", type: "feat"},
+];
+
+const QUESTIONS_DOCS = {
+  "d2fe25f978a93d9a": makeQuestionsDoc("Parental Influence", {bonusSkillRank: 1}),
+  "aaaa000000000001": makeQuestionsDoc("Village Loyalist", {flags: {dictionary: {reputation: 1}}}),
+  "aaaa000000000002": makeQuestionsDoc("Village Outsider"),
+  "aaaa000000000003": makeQuestionsDoc("Code Adherent", {flags: {dictionary: {actionPoints: 2}}}),
+  "aaaa000000000004": makeQuestionsDoc("Code Sceptic", {flags: {dictionary: {bonusSkillRank: 1}}}),
 };
 
 globalThis.game = {
@@ -19,10 +37,8 @@ globalThis.game = {
     get: vi.fn((id) => {
       if (id === "naruto-d20-kaihou.questions") {
         return {
-          getIndex: vi.fn().mockResolvedValue([
-            {_id: "d2fe25f978a93d9a", name: "Parental Influence", type: "feat"},
-          ]),
-          getDocument: vi.fn().mockResolvedValue(mockParentalInfluenceDoc),
+          getIndex: vi.fn().mockResolvedValue(QUESTIONS_INDEX),
+          getDocument: vi.fn((docId) => Promise.resolve(QUESTIONS_DOCS[docId] ?? null)),
         };
       }
       return undefined;
@@ -30,7 +46,7 @@ globalThis.game = {
   },
 };
 
-import {finishWizard, FinishValidationError} from "../../scripts/apps/wizard/finish-orchestrator.mjs";
+import {finishWizard} from "../../scripts/apps/wizard/finish-orchestrator.mjs";
 
 function makeActor(overrides = {}) {
   return {
@@ -97,5 +113,75 @@ describe("finishWizard Q17 unconditional grant", () => {
     const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
     const piList = allCreates.filter((i) => i.name === "Parental Influence");
     expect(piList).toHaveLength(0);
+  });
+});
+
+describe("finishWizard Q7 loyalist — pack feat grant (no direct counter)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("creates Village Loyalist pack feat with wizard marker when q7=loyalist", async () => {
+    const actor = makeActor();
+    await finishWizard(actor, validState());
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const feat = allCreates.find((i) => i.name === "Village Loyalist");
+    expect(feat).toBeDefined();
+    expect(feat.flags["naruto-d20-kaihou"].wizard.q7Loyalist).toBe(true);
+    // questionFeat stamp preserved from the pack doc
+    expect(feat.flags["naruto-d20-kaihou"].questionFeat).toBeTruthy();
+  });
+
+  it("does NOT write flags.naruto-d20.reputation directly (engine handles it)", async () => {
+    const actor = makeActor();
+    await finishWizard(actor, validState());
+    const allUpdates = actor.update.mock.calls.flatMap(([obj]) => Object.keys(obj));
+    expect(allUpdates).not.toContain("flags.naruto-d20.reputation");
+  });
+});
+
+describe("finishWizard Q8 adherent — pack feat grant (no direct counter)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("creates Code Adherent pack feat with wizard marker when q8=adherent", async () => {
+    const actor = makeActor();
+    await finishWizard(actor, validState());
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const feat = allCreates.find((i) => i.name === "Code Adherent");
+    expect(feat).toBeDefined();
+    expect(feat.flags["naruto-d20-kaihou"].wizard.q8Adherent).toBe(true);
+  });
+
+  it("does NOT write flags.naruto-d20.actionPoints directly (engine handles it)", async () => {
+    const actor = makeActor();
+    await finishWizard(actor, validState());
+    const allUpdates = actor.update.mock.calls.flatMap(([obj]) => Object.keys(obj));
+    expect(allUpdates).not.toContain("flags.naruto-d20.actionPoints");
+  });
+});
+
+describe("finishWizard Q8 sceptic — pack feat grant", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("creates Code Sceptic pack feat with wizard marker when q8=sceptic", async () => {
+    const actor = makeActor();
+    const state = {...validState(), q8_code: "sceptic"};
+    await finishWizard(actor, state);
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const feat = allCreates.find((i) => i.name === "Code Sceptic");
+    expect(feat).toBeDefined();
+    expect(feat.flags["naruto-d20-kaihou"].wizard.q8Sceptic).toBe(true);
+  });
+
+  it("does NOT write q8BonusSkillPoints counter directly (engine handles it)", async () => {
+    const actor = makeActor();
+    const state = {...validState(), q8_code: "sceptic"};
+    await finishWizard(actor, state);
+    const allUpdates = actor.update.mock.calls.flatMap(([obj]) => Object.keys(obj));
+    expect(allUpdates).not.toContain("flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints");
   });
 });

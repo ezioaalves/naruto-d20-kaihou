@@ -54,60 +54,83 @@ describe("Q4 Affinity (flag-only)", () => {
   });
 });
 
-describe("Q7 Loyalist (item add + reputation +1)", () => {
-  it("apply creates the marker item with q7Loyalist flag and bumps reputation", () => {
-    const actor = mockActor({ flags: { "naruto-d20": { reputation: 3 } } });
-    const p = applyQ7Loyalist(actor, "marker-item-data");
-    expect(p.updates["flags.naruto-d20.reputation"]).toBe(4);
-    expect(p.creates).toHaveLength(1);
-    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q7Loyalist).toBe(true);
-  });
+function packFeat(name, dictionary = {}) {
+  return {
+    name,
+    type: "feat",
+    system: { subType: "trait", description: { value: "<p>x</p>" }, flags: { dictionary } },
+    flags: { "naruto-d20-kaihou": { questionFeat: `slug-${name}` } },
+  };
+}
 
-  it("apply with current reputation undefined treats as 0 (+1 → 1)", () => {
-    const actor = mockActor();
-    const p = applyQ7Loyalist(actor, "marker-data");
-    expect(p.updates["flags.naruto-d20.reputation"]).toBe(1);
-  });
-
-  it("revert removes the marker item and decrements reputation by 1", () => {
-    const actor = mockActor({
-      flags: { "naruto-d20": { reputation: 5 } },
-      items: [
-        { _id: "old-marker", flags: { "naruto-d20-kaihou": { wizard: { q7Loyalist: true } } } },
-      ],
-    });
-    const p = revertQ7Loyalist(actor);
-    expect(p.deletes).toContain("old-marker");
-    expect(p.updates["flags.naruto-d20.reputation"]).toBe(4);
-  });
-
-  it("revert on actor with no Loyalist item returns empty deletes but still decrements", () => {
-    const actor = mockActor({ flags: { "naruto-d20": { reputation: 2 } } });
-    const p = revertQ7Loyalist(actor);
-    expect(p.deletes).toEqual([]);
-    expect(p.updates["flags.naruto-d20.reputation"]).toBe(1);
+describe("applyQ7Loyalist (pack feat)", () => {
+  it("creates the marked pack feat and performs NO direct counter updates", () => {
+    const plan = applyQ7Loyalist(packFeat("Village Loyalist", { reputation: 1 }));
+    expect(plan.creates).toHaveLength(1);
+    expect(plan.creates[0].name).toBe("Village Loyalist");
+    expect(plan.creates[0].flags["naruto-d20-kaihou"].wizard.q7Loyalist).toBe(true);
+    expect(plan.creates[0].flags["naruto-d20-kaihou"].questionFeat).toBeTruthy();
+    expect(plan.updates).toEqual({});
   });
 });
 
-describe("Q8 Adherent (item add + actionPoints +2)", () => {
-  it("apply creates the marker item and bumps actionPoints by 2", () => {
-    const actor = mockActor({ flags: { "naruto-d20": { actionPoints: 5 } } });
-    const p = applyQ8Adherent(actor, "marker-data");
-    expect(p.updates["flags.naruto-d20.actionPoints"]).toBe(7);
-    expect(p.creates).toHaveLength(1);
-    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q8Adherent).toBe(true);
+describe("applyQ7Outsider (pack feat)", () => {
+  it("creates the marked pack feat with the chosen class skill and snapshot flag", () => {
+    const plan = applyQ7Outsider(packFeat("Village Outsider"), "sur");
+    expect(plan.creates[0].system.classSkills).toEqual({ sur: true });
+    expect(plan.creates[0].flags["naruto-d20-kaihou"].wizard.q7Outsider).toBe(true);
+    expect(plan.updates).toEqual({
+      "flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill": "sur",
+    });
   });
 
-  it("revert removes marker and subtracts 2 from actionPoints", () => {
-    const actor = mockActor({
-      flags: { "naruto-d20": { actionPoints: 8 } },
-      items: [
-        { _id: "adh-marker", flags: { "naruto-d20-kaihou": { wizard: { q8Adherent: true } } } },
-      ],
+  it("does not mutate the passed-in feat data", () => {
+    const data = packFeat("Village Outsider");
+    applyQ7Outsider(data, "sur");
+    expect(data.system.classSkills).toBeUndefined();
+  });
+});
+
+describe("applyQ8Adherent / applyQ8Sceptic (pack feats)", () => {
+  it("adherent: creates marked feat, no direct AP update", () => {
+    const plan = applyQ8Adherent(packFeat("Code Adherent", { actionPoints: 2 }));
+    expect(plan.creates[0].flags["naruto-d20-kaihou"].wizard.q8Adherent).toBe(true);
+    expect(plan.updates).toEqual({});
+  });
+
+  it("sceptic: creates marked feat, no counter math (engine owns bonusSkillRank)", () => {
+    const plan = applyQ8Sceptic(packFeat("Code Sceptic", { bonusSkillRank: 1 }));
+    expect(plan.creates[0].flags["naruto-d20-kaihou"].wizard.q8Sceptic).toBe(true);
+    expect(plan.updates).toEqual({});
+  });
+});
+
+describe("revertQ7 / revertQ8 (engine-era)", () => {
+  function actorWithMarker(markerKey) {
+    return {
+      items: [{ _id: "m1", flags: { "naruto-d20-kaihou": { wizard: { [markerKey]: true } } } }],
+      flags: {},
+    };
+  }
+
+  it("revertQ7Loyalist deletes the marker item and performs NO counter updates", () => {
+    const plan = revertQ7Loyalist(actorWithMarker("q7Loyalist"));
+    expect(plan.deletes).toEqual(["m1"]);
+    expect(plan.updates).toEqual({});
+  });
+
+  it("revertQ7Outsider deletes the marker and clears the class-skill snapshot", () => {
+    const plan = revertQ7Outsider(actorWithMarker("q7Outsider"));
+    expect(plan.deletes).toEqual(["m1"]);
+    expect(plan.updates).toEqual({
+      "flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill": null,
     });
-    const p = revertQ8Adherent(actor);
-    expect(p.deletes).toContain("adh-marker");
-    expect(p.updates["flags.naruto-d20.actionPoints"]).toBe(6);
+  });
+
+  it("revertQ8Adherent / revertQ8Sceptic delete markers without counter math", () => {
+    expect(revertQ8Adherent(actorWithMarker("q8Adherent")).updates).toEqual({});
+    expect(revertQ8Sceptic(actorWithMarker("q8Sceptic")).updates).toEqual({});
+    expect(revertQ8Sceptic(actorWithMarker("q8Sceptic")).deletes).toEqual(["m1"]);
   });
 });
 
@@ -134,72 +157,6 @@ describe("Q1 Village (item add only)", () => {
 // the "q2OccupationItem" marker. All grants (class skills, feat, wealth, rep)
 // are applied by scripts/occupation-application.mjs on the createItem hook.
 
-describe("Q7 Outsider (marker item carries classSkill grant)", () => {
-  it("apply creates a feat-type marker item with classSkills set, snapshots the key", () => {
-    const p = applyQ7Outsider(mockActor(), {}, "sur");
-    expect(p.creates).toHaveLength(1);
-    expect(p.creates[0].type).toBe("feat");
-    expect(p.creates[0].system.classSkills.sur).toBe(true);
-    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q7Outsider).toBe(true);
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"]).toBe("sur");
-  });
-
-  it("revert deletes the marker item (PF1e re-aggregates classSkills) and clears snapshot", () => {
-    const actor = mockActor({
-      items: [{ _id: "out1", flags: { "naruto-d20-kaihou": { wizard: { q7Outsider: true } } } }],
-      flags: { "naruto-d20-kaihou": { wizard: { q7OutsiderClassSkill: "sur" } } },
-    });
-    const p = revertQ7Outsider(actor);
-    expect(p.deletes).toContain("out1");
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q7OutsiderClassSkill"]).toBeNull();
-    // We no longer touch actor.system.classSkills — class skill grant lives on the item
-    expect(Object.keys(p.updates).some((k) => k.startsWith("system.classSkills"))).toBe(false);
-  });
-
-  it("revert with no snapshot does NOT touch classSkills", () => {
-    const actor = mockActor({
-      items: [{ _id: "out2", flags: { "naruto-d20-kaihou": { wizard: { q7Outsider: true } } } }],
-    });
-    const p = revertQ7Outsider(actor);
-    expect(p.deletes).toContain("out2");
-    expect(Object.keys(p.updates).some((k) => k.startsWith("system.classSkills"))).toBe(false);
-  });
-});
-
-describe("Q8 Sceptic (item add + bonus-skill-point counter)", () => {
-  it("apply adds marker and bumps the q8BonusSkillPoints counter from 0", () => {
-    const actor = mockActor();
-    const p = applyQ8Sceptic(actor, { name: "Sceptic", type: "feat" });
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"]).toBe(1);
-    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q8Sceptic).toBe(true);
-  });
-
-  it("apply increments existing counter (idempotent stack)", () => {
-    const actor = mockActor({
-      flags: { "naruto-d20-kaihou": { wizard: { q8BonusSkillPoints: 2 } } },
-    });
-    const p = applyQ8Sceptic(actor, {});
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"]).toBe(3);
-  });
-
-  it("revert removes the marker and decrements the counter", () => {
-    const actor = mockActor({
-      items: [{ _id: "scp1", flags: { "naruto-d20-kaihou": { wizard: { q8Sceptic: true } } } }],
-      flags: { "naruto-d20-kaihou": { wizard: { q8BonusSkillPoints: 1 } } },
-    });
-    const p = revertQ8Sceptic(actor);
-    expect(p.deletes).toContain("scp1");
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"]).toBe(0);
-  });
-
-  it("revert floors counter at 0 (no negatives)", () => {
-    const actor = mockActor({
-      flags: { "naruto-d20-kaihou": { wizard: { q8BonusSkillPoints: 0 } } },
-    });
-    const p = revertQ8Sceptic(actor);
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints"]).toBe(0);
-  });
-});
 
 describe("applyDragDropFeat / revertDragDropFeat (used for Q3, Q9, Q16)", () => {
   it("apply adds item with the given marker flag", () => {
