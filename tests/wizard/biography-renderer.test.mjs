@@ -20,7 +20,6 @@ function stateWith(overrides = {}) {
     q13_mentor_technique_uuid: null,
     q13_class_skill: null,
     q16_restricted_item_uuid: null,
-    q17_skill_key: null,
     q18_heritage_roll: null,
     q18_heritage_locked_modifier: null,
     narratives,
