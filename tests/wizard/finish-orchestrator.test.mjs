@@ -22,6 +22,7 @@ const QUESTIONS_INDEX = [
   {_id: "aaaa000000000002", name: "Village Outsider", type: "feat"},
   {_id: "aaaa000000000003", name: "Code Adherent", type: "feat"},
   {_id: "aaaa000000000004", name: "Code Sceptic", type: "feat"},
+  {_id: "aaaa000000000005", name: "Mentor's Lesson", type: "feat"},
 ];
 
 const QUESTIONS_DOCS = {
@@ -30,6 +31,7 @@ const QUESTIONS_DOCS = {
   "aaaa000000000002": makeQuestionsDoc("Village Outsider"),
   "aaaa000000000003": makeQuestionsDoc("Code Adherent", {flags: {dictionary: {actionPoints: 2}}}),
   "aaaa000000000004": makeQuestionsDoc("Code Sceptic", {flags: {dictionary: {bonusSkillRank: 1}}}),
+  "aaaa000000000005": makeQuestionsDoc("Mentor's Lesson"),
 };
 
 globalThis.game = {

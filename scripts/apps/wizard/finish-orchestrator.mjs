@@ -158,7 +158,9 @@ async function planForField(actor, field, originalState, newState) {
 
   if (field === "q13_mentor_technique_uuid" && wasSet && isObject) {
     const data = await fetchItemData(actor, newValue);
-    return data ? applyQ13Mentor(actor, data, newState.q13_class_skill) : null;
+    if (!data) return null;
+    const mentorFeat = await fetchQuestionFeat("Mentor's Lesson");
+    return applyQ13Mentor(data, mentorFeat, newState.q13_class_skill);
   }
 
   if (field === "q16_restricted_item_uuid" && wasSet && isObject) {

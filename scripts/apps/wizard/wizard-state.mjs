@@ -195,8 +195,8 @@ export function loadFromActor(actor) {
     state.q10_bonus_feat_uuid = q10BonusFeatItem._id;
   }
 
-  // Q13 — Mentor Technique + Class Skill (marker flag q13MentorTechnique)
-  const q13Item = findItemByMarker(actor, "q13MentorTechnique");
+  // Q13 — Mentor Technique + Class Skill (marker flag q13Mentor)
+  const q13Item = findItemByMarker(actor, "q13Mentor");
   if (q13Item) {
     state.q13_mentor_technique_uuid = q13Item._id;
     // Load the class skill snapshot

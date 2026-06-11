@@ -115,6 +115,18 @@ describe("loadFromActor", () => {
     expect(s.q18_heritage_locked_modifier).toEqual({ deltaRep: 0, deltaAP: 3 });
   });
 
+  it("loads q13_mentor_technique_uuid from item with q13Mentor marker (applier round-trip)", () => {
+    const actor = mockActor({
+      items: [
+        { _id: "tech1", flags: { "naruto-d20-kaihou": { wizard: { q13Mentor: true } } } },
+      ],
+      flags: { "naruto-d20-kaihou": { wizard: { q13ClassSkill: "gen" } } },
+    });
+    const s = loadFromActor(actor);
+    expect(s.q13_mentor_technique_uuid).toBe("tech1");
+    expect(s.q13_class_skill).toBe("gen");
+  });
+
   it("parses narratives from biography <h3 data-q='N'><p>…</p> blocks", () => {
     const actor = mockActor({
       system: {

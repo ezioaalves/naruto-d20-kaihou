@@ -5,10 +5,19 @@ function mockActor(items = []) {
   return {items, flags: {"naruto-d20-kaihou": {wizard: {}}}};
 }
 
+function packFeat(name, dictionary = {}) {
+  return {
+    name,
+    type: "feat",
+    system: { subType: "trait", description: { value: "<p>x</p>" }, flags: { dictionary } },
+    flags: { "naruto-d20-kaihou": { questionFeat: `slug-${name}` } },
+  };
+}
+
 describe("Q13 sub-picker contract", () => {
   it("creates technique + skill marker when classSkillKey is provided", () => {
     const tech = {name: "Shadow Clone", type: "naruto-d20.technique", system: {}};
-    const p = applyQ13Mentor(mockActor(), tech, "nin");
+    const p = applyQ13Mentor(tech, packFeat("Mentor's Lesson"), "nin");
     expect(p.creates).toHaveLength(2);
     const mentor = p.creates.find((i) => i.flags["naruto-d20-kaihou"]?.wizard?.q13Mentor);
     const skill  = p.creates.find((i) => i.flags["naruto-d20-kaihou"]?.wizard?.q13MentorSkill);
@@ -20,10 +29,17 @@ describe("Q13 sub-picker contract", () => {
 
   it("creates only technique when classSkillKey is null — sub-picker was not filled", () => {
     const tech = {name: "Shadow Clone", type: "naruto-d20.technique", system: {}};
-    const p = applyQ13Mentor(mockActor(), tech, null);
-    expect(p.creates).toHaveLength(1);
+    const p = applyQ13Mentor(tech, packFeat("Mentor's Lesson"), null);
+    expect(p.creates).toHaveLength(2);
     expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q13Mentor).toBe(true);
     expect(p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"]).toBeUndefined();
+  });
+
+  it("creates only technique when no pack feat is available", () => {
+    const tech = {name: "Shadow Clone", type: "naruto-d20.technique", system: {}};
+    const p = applyQ13Mentor(tech, null, null);
+    expect(p.creates).toHaveLength(1);
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q13Mentor).toBe(true);
   });
 
   it("revert removes both technique and skill marker items", () => {

@@ -173,12 +173,14 @@ export function revertQ10Coupled(actor) {
 
 // ─── Q13 Mentor (technique + classSkill) ──────────────────────────────────────
 // Technique items are type "naruto-d20.technique" — PF1e aggregates classSkills
-// only from class/feat/race items, so the class skill grant rides on a separate
-// "Mentor's Lesson" marker feat created alongside the technique. Per the
-// naruto-d20 module, a technique is "learned" iff system.learning.learned is
-// true; the wizard sets it directly so the player skips the empathy / training
-// flow for a mentor-taught Rank-2 technique.
-export function applyQ13Mentor(_actor, techniqueItemData, classSkillKey) {
+// only from class/feat/race items, so the class-skill grant rides on the
+// generated "Mentor's Lesson" pack feat (questions pack, doc_only payload,
+// questionFeat marker) embedded alongside the technique. The wizard sets the
+// player-chosen class skill on the embedded copy (system.classSkills), like
+// Q7 Outsider. Per the naruto-d20 module, a technique is "learned" iff
+// system.learning.learned is true; the wizard sets it directly so the player
+// skips the empathy / training flow for a mentor-taught Rank-2 technique.
+export function applyQ13Mentor(techniqueItemData, mentorFeatData, classSkillKey) {
   const p = emptyPlan();
   const technique = { ...(techniqueItemData ?? {}) };
   technique.system = {
@@ -189,20 +191,14 @@ export function applyQ13Mentor(_actor, techniqueItemData, classSkillKey) {
     },
   };
   p.creates.push(withWizardMarker(technique, "q13Mentor"));
+  if (mentorFeatData) {
+    const feat = { ...mentorFeatData };
+    if (classSkillKey) {
+      feat.system = { ...(feat.system ?? {}), classSkills: { [classSkillKey]: true } };
+    }
+    p.creates.push(withWizardMarker(feat, "q13MentorSkill"));
+  }
   if (classSkillKey) {
-    const skillMarker = {
-      name: "Mentor's Lesson",
-      type: "feat",
-      img: "icons/svg/book.svg",
-      system: {
-        subType: "trait",
-        description: {
-          value: `<p>Wizard-applied (20 Questions Q13): mentor taught <strong>${classSkillKey}</strong> as a class skill.</p>`,
-        },
-        classSkills: { [classSkillKey]: true },
-      },
-    };
-    p.creates.push(withWizardMarker(skillMarker, "q13MentorSkill"));
     p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"] = classSkillKey;
   }
   return p;

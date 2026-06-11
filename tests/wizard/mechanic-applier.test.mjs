@@ -205,17 +205,25 @@ describe("Q10 coupled (flaw + bonus feat)", () => {
   });
 });
 
-describe("Q13 Mentor (technique drag-drop + separate classSkill marker)", () => {
-  it("apply adds the technique item (auto-learned) and a separate feat marker carrying the classSkill", () => {
-    const tech = { name: "Body Substitution", type: "naruto-d20.technique" };
-    const p = applyQ13Mentor(mockActor(), tech, "khi");
-    expect(p.creates).toHaveLength(2);
-    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q13Mentor).toBe(true);
-    expect(p.creates[0].system.learning.learned).toBe(true);
-    expect(p.creates[1].type).toBe("feat");
-    expect(p.creates[1].system.classSkills.khi).toBe(true);
-    expect(p.creates[1].flags["naruto-d20-kaihou"].wizard.q13MentorSkill).toBe(true);
-    expect(p.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"]).toBe("khi");
+describe("applyQ13Mentor (pack Mentor's Lesson)", () => {
+  const technique = { name: "Water Bullet", type: "naruto-d20.technique", system: {} };
+
+  it("grants the technique as learned + the pack feat carrying the class skill", () => {
+    const plan = applyQ13Mentor(technique, packFeat("Mentor's Lesson"), "gen");
+    expect(plan.creates).toHaveLength(2);
+    const [tech, feat] = plan.creates;
+    expect(tech.system.learning.learned).toBe(true);
+    expect(tech.flags["naruto-d20-kaihou"].wizard.q13Mentor).toBe(true);
+    expect(feat.name).toBe("Mentor's Lesson");
+    expect(feat.system.classSkills).toEqual({ gen: true });
+    expect(feat.flags["naruto-d20-kaihou"].wizard.q13MentorSkill).toBe(true);
+    expect(plan.updates["flags.naruto-d20-kaihou.wizard.q13ClassSkill"]).toBe("gen");
+  });
+
+  it("grants only the learned technique when no pack feat is available", () => {
+    const plan = applyQ13Mentor(technique, null, "gen");
+    expect(plan.creates).toHaveLength(1);
+    expect(plan.creates[0].system.learning.learned).toBe(true);
   });
 
   it("revert deletes both the technique and skill markers and clears snapshot", () => {
