@@ -8,7 +8,7 @@ function stateWith(overrides = {}) {
   for (let i = 1; i <= 20; i++) narratives[`q${i}`] = "";
   return {
     q1_village_uuid: null,
-    q3_human_bonus_feat_uuid: null,
+    q3_school_uuid: null,
     q4_affinity: null,
     q7_relationship: null,
     q7_outsider_class_skill: null,

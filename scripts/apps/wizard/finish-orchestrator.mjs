@@ -94,9 +94,9 @@ async function planForField(actor, field, originalState, newState) {
     return data ? applyDragDropFeat(data, "q2OccupationItem") : null;
   }
 
-  if (field === "q3_human_bonus_feat_uuid" && wasSet && isObject) {
+  if (field === "q3_school_uuid" && wasSet && isObject) {
     const data = await fetchItemData(actor, newValue);
-    return data ? applyDragDropFeat(data, "q3HumanBonusFeat") : null;
+    return data ? applyDragDropFeat(data, "q3School") : null;
   }
 
   if (field === "q4_affinity" && wasSet) {

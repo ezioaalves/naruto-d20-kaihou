@@ -20,7 +20,7 @@ export function defaultState() {
   return {
     q1_village_uuid: null,
     q2_occupation_uuid: null,
-    q3_human_bonus_feat_uuid: null,
+    q3_school_uuid: null,
     q4_affinity: null,
     q7_relationship: null,
     q7_outsider_class_skill: null,
@@ -139,10 +139,10 @@ export function loadFromActor(actor) {
     state.q2_occupation_uuid = q2Item._id;
   }
 
-  // Q3 — Human Bonus Feat (marker flag q3HumanBonusFeat)
-  const q3Item = findItemByMarker(actor, "q3HumanBonusFeat");
+  // Q3 — School (marker flag q3School)
+  const q3Item = findItemByMarker(actor, "q3School");
   if (q3Item) {
-    state.q3_human_bonus_feat_uuid = q3Item._id;
+    state.q3_school_uuid = q3Item._id;
   }
 
   // Q4 — Affinity (read from flags.naruto-d20.chakra.nature.primary)
@@ -259,7 +259,7 @@ export function diffStates(prev, next) {
   const topFields = [
     "q1_village_uuid",
     "q2_occupation_uuid",
-    "q3_human_bonus_feat_uuid",
+    "q3_school_uuid",
     "q4_affinity",
     "q7_relationship",
     "q7_outsider_class_skill",

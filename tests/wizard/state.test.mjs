@@ -6,7 +6,7 @@ describe("defaultState", () => {
     const s = defaultState();
     expect(s.q1_village_uuid).toBeNull();
     expect(s.q2_occupation_uuid).toBeNull();
-    expect(s.q3_human_bonus_feat_uuid).toBeNull();
+    expect(s.q3_school_uuid).toBeNull();
     expect(s.q4_affinity).toBeNull();
     expect(s.q7_relationship).toBeNull();
     expect(s.q7_outsider_class_skill).toBeNull();

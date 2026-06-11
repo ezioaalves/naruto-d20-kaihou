@@ -270,14 +270,14 @@ export const QUESTION_DEFINITIONS = [
   {
     id: "q3",
     pickType: "drag-drop",
-    stateField: "q3_human_bonus_feat_uuid",
+    stateField: "q3_school_uuid",
     required: false,
     questionText: "What is your biggest talent?",
     sidebarLabel: "Talent",
     narrativePrompt: "",
-    markerFlag: "q3HumanBonusFeat",
+    markerFlag: "q3School",
     dropAccepts: {type: "feat"},
-    browse: {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse Feats"},
+    browse: {kind: "pack", id: "naruto-d20-kaihou.schools", label: "Browse Schools"},
   },
 
   // Q4 — Nature Affinity (radio)

@@ -205,10 +205,10 @@ describe("Q8 Sceptic (item add + bonus-skill-point counter)", () => {
 
 describe("applyDragDropFeat / revertDragDropFeat (used for Q3, Q9, Q16)", () => {
   it("apply adds item with the given marker flag", () => {
-    const p = applyDragDropFeat({ name: "Animal Bond", type: "feat" }, "q3HumanBonusFeat");
+    const p = applyDragDropFeat({ name: "Animal Bond", type: "feat" }, "q3School");
     expect(p.creates).toHaveLength(1);
     expect(p.creates[0].name).toBe("Animal Bond");
-    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q3HumanBonusFeat).toBe(true);
+    expect(p.creates[0].flags["naruto-d20-kaihou"].wizard.q3School).toBe(true);
   });
 
   it("revert deletes item matched by marker flag", () => {
@@ -220,7 +220,7 @@ describe("applyDragDropFeat / revertDragDropFeat (used for Q3, Q9, Q16)", () => 
   });
 
   it("revert with no matching item returns empty plan", () => {
-    const p = revertDragDropFeat(mockActor(), "q3HumanBonusFeat");
+    const p = revertDragDropFeat(mockActor(), "q3School");
     expect(p).toEqual({ updates: {}, creates: [], deletes: [] });
   });
 });
