@@ -230,3 +230,296 @@ describe("finishWizard Q18 heritage — grants Namesake pack feat (no direct cou
     });
   });
 });
+
+// ─── Re-answer replaces, never stacks ───────────────────────────────────────
+
+/**
+ * Build a mock actor that already has wizard-marker items on it, plus flags.
+ * The required "unchanged" fields (q1, q4, q7 via items, q8 via items) are
+ * pre-loaded so diffStates won't list them as changed.
+ *
+ * @param {Object} opts
+ * @param {Object[]} opts.extraItems   - additional marker items beyond the baseline
+ * @param {Object}  opts.extraFlags    - additional flags.naruto-d20-kaihou.wizard entries
+ * @param {string}  opts.q7Rel         - "loyalist"|"outsider" for the baseline
+ * @param {string}  opts.q8Code        - "adherent"|"sceptic" for the baseline
+ * @param {string}  opts.q7OutsiderSkill - class skill if q7Rel="outsider"
+ */
+function makeActorWithState({
+  extraItems = [],
+  extraFlags = {},
+  q7Rel = "loyalist",
+  q8Code = "adherent",
+  q7OutsiderSkill = null,
+} = {}) {
+  // Baseline marker items so q1/q7/q8 are "already set" on the actor.
+  const baseItems = [
+    // Q1 village marker (id matches validState().q1_village_uuid so diff sees it unchanged)
+    {
+      _id: "bc053d4ef2995ea0",
+      name: "Test Village",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q1Village: true}}},
+    },
+  ];
+
+  if (q7Rel === "loyalist") {
+    baseItems.push({
+      _id: "loy_base",
+      name: "Village Loyalist",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q7Loyalist: true}}},
+    });
+  } else if (q7Rel === "outsider") {
+    baseItems.push({
+      _id: "out_base",
+      name: "Village Outsider",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q7Outsider: true}}},
+    });
+  }
+
+  if (q8Code === "adherent") {
+    baseItems.push({
+      _id: "adh_base",
+      name: "Code Adherent",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q8Adherent: true}}},
+    });
+  } else if (q8Code === "sceptic") {
+    baseItems.push({
+      _id: "sep_base",
+      name: "Code Sceptic",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q8Sceptic: true}}},
+    });
+  }
+
+  const baseWizardFlags = {};
+  if (q7OutsiderSkill) {
+    baseWizardFlags.q7OutsiderClassSkill = q7OutsiderSkill;
+  }
+
+  return makeActor({
+    items: [...baseItems, ...extraItems],
+    flags: {
+      "naruto-d20": {chakra: {nature: {primary: "Fire"}}},
+      "naruto-d20-kaihou": {wizard: {...baseWizardFlags, ...extraFlags}},
+    },
+  });
+}
+
+/**
+ * Returns a state that matches what loadFromActor would read back from
+ * makeActorWithState, then applies overrides.
+ */
+function loadedState(actorOpts = {}, stateOverrides = {}) {
+  const {q7Rel = "loyalist", q8Code = "adherent", q7OutsiderSkill = null} = actorOpts;
+
+  const base = {
+    ...validState(),
+    // q1_village_uuid matches the marker item _id so it's NOT in changedFields
+    q1_village_uuid: "bc053d4ef2995ea0",
+    q4_affinity: "Fire",
+    q7_relationship: q7Rel,
+    q7_outsider_class_skill: q7OutsiderSkill,
+    q8_code: q8Code,
+  };
+  return {...base, ...stateOverrides};
+}
+
+describe("re-answer replaces, never stacks", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  // ── Test 1: Q7 switch loyalist → outsider ──────────────────────────────────
+  it("Q7 switch: deletes old loyalist marker, creates Village Outsider, NOT Village Loyalist", async () => {
+    // Actor already has the loyalist item with id "loy1"
+    const loy1Item = {
+      _id: "loy1",
+      name: "Village Loyalist",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q7Loyalist: true}}},
+    };
+    const actor = makeActorWithState({
+      // Override the baseline loyalist with our specific id
+      q7Rel: "loyalist",
+      q8Code: "adherent",
+      extraItems: [],
+    });
+    // Replace the base loyalist item with our "loy1" id version
+    actor.items = actor.items.filter(
+      (i) => !i.flags?.["naruto-d20-kaihou"]?.wizard?.q7Loyalist
+    );
+    actor.items.push(loy1Item);
+
+    const state = loadedState({q7Rel: "loyalist", q8Code: "adherent"}, {
+      q7_relationship: "outsider",
+      q7_outsider_class_skill: "sur",
+    });
+
+    await finishWizard(actor, state);
+
+    const allDeletes = actor.deleteEmbeddedDocuments.mock.calls.flatMap(([, ids]) => ids);
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const createdNames = allCreates.map((i) => i.name);
+
+    // Old loyalist must be deleted
+    expect(allDeletes).toContain("loy1");
+    // New outsider created
+    expect(createdNames).toContain("Village Outsider");
+    // Old loyalist NOT re-created
+    expect(createdNames.filter((n) => n === "Village Loyalist")).toHaveLength(0);
+  });
+
+  // ── Test 2: Q18 re-roll ────────────────────────────────────────────────────
+  it("Q18 re-roll: deletes old heritage feat, creates new one for the new roll", async () => {
+    const h1Item = {
+      _id: "h1",
+      name: "Namesake: Glorious Sacrifice",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q18HeritageFeat: true}}},
+    };
+    const actor = makeActorWithState({
+      q7Rel: "loyalist",
+      q8Code: "adherent",
+      extraItems: [h1Item],
+      extraFlags: {q18Heritage: {roll: 2, deltaRep: 2, deltaAP: 2}},
+    });
+
+    // Actor already had roll=2; now re-answering with roll=1
+    const state = loadedState({q7Rel: "loyalist", q8Code: "adherent"}, {
+      q18_heritage_roll: 1,
+      q18_heritage_locked_modifier: {deltaRep: 2, deltaAP: 2}, // old snapshot — will change
+    });
+
+    await finishWizard(actor, state);
+
+    const allDeletes = actor.deleteEmbeddedDocuments.mock.calls.flatMap(([, ids]) => ids);
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const createdNames = allCreates.map((i) => i.name);
+
+    expect(allDeletes).toContain("h1");
+    expect(createdNames).toContain("Namesake: Famous Deed");
+    // Old feat NOT re-created
+    expect(createdNames.filter((n) => n === "Namesake: Glorious Sacrifice")).toHaveLength(0);
+  });
+
+  // ── Test 3: Q9 re-drop ────────────────────────────────────────────────────
+  it("Q9 re-drop: deletes old feat item, creates new one from the new ref", async () => {
+    const old9Item = {
+      _id: "old9",
+      name: "Old Feat",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q9Level1Feat: true}}},
+    };
+    // New feat via fromUuid
+    const newFeatDoc = {
+      toObject: () => ({
+        name: "New Feat",
+        type: "feat",
+        system: {},
+        flags: {},
+      }),
+    };
+    globalThis.fromUuid = vi.fn().mockImplementation((uuid) => {
+      if (uuid === "Item.newFeatUuid") return Promise.resolve(newFeatDoc);
+      return Promise.resolve(null);
+    });
+
+    const actor = makeActorWithState({
+      q7Rel: "loyalist",
+      q8Code: "adherent",
+      extraItems: [old9Item],
+    });
+    // loadFromActor sees q9_level1_feat_uuid = "old9" (string id)
+    const state = loadedState({q7Rel: "loyalist", q8Code: "adherent"}, {
+      q9_level1_feat_uuid: {uuid: "Item.newFeatUuid", _id: "newFeat", name: "New Feat"},
+    });
+    // Patch actor.items so q9 old value = "old9" (string) — already there from marker item
+
+    await finishWizard(actor, state);
+
+    const allDeletes = actor.deleteEmbeddedDocuments.mock.calls.flatMap(([, ids]) => ids);
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const createdNames = allCreates.map((i) => i.name);
+
+    expect(allDeletes).toContain("old9");
+    expect(createdNames).toContain("New Feat");
+  });
+
+  // ── Test 4: Q7 sub-field only ────────────────────────────────────────────
+  it("Q7 sub-field only: changing q7_outsider_class_skill reverts old outsider, creates new one with new skill", async () => {
+    // Actor is already "outsider" with skill "sur"
+    const out1Item = {
+      _id: "out1",
+      name: "Village Outsider",
+      type: "feat",
+      flags: {"naruto-d20-kaihou": {wizard: {q7Outsider: true}}},
+    };
+    const actor = makeActorWithState({
+      q7Rel: "outsider",
+      q8Code: "adherent",
+      q7OutsiderSkill: "sur",
+      extraItems: [],
+    });
+    // Replace baseline outsider with our "out1"
+    actor.items = actor.items.filter(
+      (i) => !i.flags?.["naruto-d20-kaihou"]?.wizard?.q7Outsider
+    );
+    actor.items.push(out1Item);
+
+    // State: relationship unchanged (still "outsider"), only class skill changes
+    const state = loadedState(
+      {q7Rel: "outsider", q8Code: "adherent", q7OutsiderSkill: "sur"},
+      {q7_outsider_class_skill: "ste"}
+    );
+
+    await finishWizard(actor, state);
+
+    const allDeletes = actor.deleteEmbeddedDocuments.mock.calls.flatMap(([, ids]) => ids);
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const outsiderCreates = allCreates.filter((i) => i.name === "Village Outsider");
+
+    // Old outsider item deleted
+    expect(allDeletes).toContain("out1");
+    // Exactly ONE new outsider created (not stacked)
+    expect(outsiderCreates).toHaveLength(1);
+    // The new outsider has the new class skill
+    expect(outsiderCreates[0].system?.classSkills?.ste).toBe(true);
+  });
+
+  // ── Test 5: Clear optional question ──────────────────────────────────────
+  it("Clear Q16: deletes old restricted item marker, creates nothing for q16", async () => {
+    const it1Item = {
+      _id: "it1",
+      name: "Restricted Sword",
+      type: "weapon",
+      flags: {"naruto-d20-kaihou": {wizard: {q16RestrictedItem: true}}},
+    };
+    const actor = makeActorWithState({
+      q7Rel: "loyalist",
+      q8Code: "adherent",
+      extraItems: [it1Item],
+    });
+    // loadFromActor sees q16_restricted_item_uuid = "it1" (string)
+    // We finish with q16 cleared to null
+    const state = loadedState({q7Rel: "loyalist", q8Code: "adherent"}, {
+      q16_restricted_item_uuid: null,
+    });
+    // Force the loaded "old" state to have the item set so diff sees a change.
+    // We do that by having the item with marker on the actor (which loadFromActor will read).
+
+    await finishWizard(actor, state);
+
+    const allDeletes = actor.deleteEmbeddedDocuments.mock.calls.flatMap(([, ids]) => ids);
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const q16Creates = allCreates.filter(
+      (i) => i.flags?.["naruto-d20-kaihou"]?.wizard?.q16RestrictedItem === true
+    );
+
+    expect(allDeletes).toContain("it1");
+    expect(q16Creates).toHaveLength(0);
+  });
+});

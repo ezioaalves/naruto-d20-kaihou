@@ -19,16 +19,25 @@ import { getOutcomeByRoll, extractModifierDeltas, heritageFeatName } from "./her
 import {
   emptyPlan,
   applyQ1Village,
+  revertQ1Village,
   applyQ4Affinity,
   applyQ7Loyalist,
+  revertQ7Loyalist,
   applyQ7Outsider,
+  revertQ7Outsider,
   applyQ8Adherent,
+  revertQ8Adherent,
   applyQ8Sceptic,
+  revertQ8Sceptic,
   applyDragDropFeat,
+  revertDragDropFeat,
   applyQ10Coupled,
+  revertQ10Coupled,
   applyQ13Mentor,
+  revertQ13Mentor,
   applyQ17ParentalInfluence,
   applyQ18Heritage,
+  revertQ18Heritage,
 } from "./mechanic-applier.mjs";
 import { findCompendiumItemByName } from "../../grants/item-grants.mjs";
 
@@ -85,96 +94,154 @@ export async function finishWizard(actor, state) {
   await actor.update({ "system.details.biography.value": newBio });
 }
 
+function mergeTwo(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  return {
+    updates: { ...a.updates, ...b.updates },
+    creates: [...a.creates, ...b.creates],
+    deletes: [...a.deletes, ...b.deletes],
+  };
+}
+
+const DRAGDROP_MARKERS = {
+  q2_occupation_uuid: "q2OccupationItem",
+  q3_school_uuid: "q3School",
+  q9_level1_feat_uuid: "q9Level1Feat",
+  q16_restricted_item_uuid: "q16RestrictedItem",
+};
+
 async function planForField(actor, field, originalState, newState) {
   if (field.startsWith("narratives.")) return null;
 
   const newValue = newState[field];
+  const oldValue = originalState[field];
   const wasSet = newValue != null;
   const isObject = typeof newValue === "object" && newValue !== null;
 
-  if (field === "q1_village_uuid" && wasSet && typeof newValue === "string") {
+  if (field === "q1_village_uuid") {
+    const revert = oldValue != null ? revertQ1Village(actor) : null;
+    if (!(wasSet && typeof newValue === "string")) return revert;
     const data = await fetchItemData(actor, { id: newValue, pack: "naruto-d20-kaihou.villages" });
-    return data ? applyQ1Village(actor, data) : null;
+    return mergeTwo(revert, data ? applyQ1Village(actor, data) : null);
   }
 
-  if (field === "q2_occupation_uuid" && wasSet && isObject) {
+  if (field in DRAGDROP_MARKERS) {
+    const marker = DRAGDROP_MARKERS[field];
+    const revert = oldValue != null ? revertDragDropFeat(actor, marker) : null;
+    if (!(wasSet && isObject)) return revert;
     const data = await fetchItemData(actor, newValue);
-    return data ? applyDragDropFeat(data, "q2OccupationItem") : null;
+    return mergeTwo(revert, data ? applyDragDropFeat(data, marker) : null);
   }
 
-  if (field === "q3_school_uuid" && wasSet && isObject) {
-    const data = await fetchItemData(actor, newValue);
-    return data ? applyDragDropFeat(data, "q3School") : null;
+  if (field === "q4_affinity") {
+    return wasSet ? applyQ4Affinity(actor, newValue) : null;
   }
 
-  if (field === "q4_affinity" && wasSet) {
-    return applyQ4Affinity(actor, newValue);
-  }
+  if (field === "q7_relationship" || field === "q7_outsider_class_skill") {
+    const relChanged = newState.q7_relationship !== originalState.q7_relationship;
+    const skillChanged =
+      newState.q7_outsider_class_skill !== originalState.q7_outsider_class_skill;
+    if (!relChanged && !skillChanged) return null;
+    // When BOTH changed, the q7_relationship invocation owns the work.
+    // Skip the sub-field invocation to avoid duplicate plans.
+    if (field === "q7_outsider_class_skill" && relChanged) return null;
+    // When only the sub-field changed, the q7_relationship field is not in changedFields
+    // at all, so this guard only fires for the q7_relationship invocation when skill didn't change.
+    if (field === "q7_relationship" && !relChanged) return null;
 
-  if (field === "q7_relationship") {
-    const oldRel = originalState.q7_relationship;
-    const newRel = newValue;
-    if (newRel === "loyalist" && oldRel !== "loyalist") {
+    let revert = null;
+    if (originalState.q7_relationship === "loyalist") revert = revertQ7Loyalist(actor);
+    if (originalState.q7_relationship === "outsider") revert = revertQ7Outsider(actor);
+
+    const newRel = newState.q7_relationship;
+    if (newRel === "loyalist") {
       const feat = await fetchQuestionFeat("Village Loyalist");
-      return feat ? applyQ7Loyalist(feat) : null;
+      return mergeTwo(revert, feat ? applyQ7Loyalist(feat) : null);
     }
-    if (newRel === "outsider" && oldRel !== "outsider") {
+    if (newRel === "outsider") {
       const feat = await fetchQuestionFeat("Village Outsider");
-      return feat ? applyQ7Outsider(feat, newState.q7_outsider_class_skill) : null;
+      return mergeTwo(revert, feat ? applyQ7Outsider(feat, newState.q7_outsider_class_skill) : null);
     }
-    return null;
+    return revert;
   }
 
   if (field === "q8_code") {
-    const oldCode = originalState.q8_code;
-    const newCode = newValue;
-    if (newCode === "adherent" && oldCode !== "adherent") {
+    if (newValue === oldValue) return null;
+    let revert = null;
+    if (oldValue === "adherent") revert = revertQ8Adherent(actor);
+    if (oldValue === "sceptic") revert = revertQ8Sceptic(actor);
+    if (newValue === "adherent") {
       const feat = await fetchQuestionFeat("Code Adherent");
-      return feat ? applyQ8Adherent(feat) : null;
+      return mergeTwo(revert, feat ? applyQ8Adherent(feat) : null);
     }
-    if (newCode === "sceptic" && oldCode !== "sceptic") {
+    if (newValue === "sceptic") {
       const feat = await fetchQuestionFeat("Code Sceptic");
-      return feat ? applyQ8Sceptic(feat) : null;
+      return mergeTwo(revert, feat ? applyQ8Sceptic(feat) : null);
     }
-    return null;
-  }
-
-  if (field === "q9_level1_feat_uuid" && wasSet && isObject) {
-    const data = await fetchItemData(actor, newValue);
-    return data ? applyDragDropFeat(data, "q9Level1Feat") : null;
+    return revert;
   }
 
   // Q10 coupled — anchor on flaw, skip bonus feat (handled in the same plan).
   if (field === "q10_bonus_feat_uuid") return null;
   if (field === "q10_flaw_uuid") {
+    const hadOld =
+      originalState.q10_flaw_uuid != null || originalState.q10_bonus_feat_uuid != null;
+    const revert = hadOld ? revertQ10Coupled(actor) : null;
     const flawRef = newState.q10_flaw_uuid;
     const bonusRef = newState.q10_bonus_feat_uuid;
     const flawData = flawRef && typeof flawRef === "object"
       ? await fetchItemData(actor, flawRef) : null;
     const bonusData = bonusRef && typeof bonusRef === "object"
       ? await fetchItemData(actor, bonusRef) : null;
-    return applyQ10Coupled(flawData, bonusData);
+    if (!flawData && !bonusData) return revert;
+    return mergeTwo(revert, applyQ10Coupled(flawData, bonusData));
   }
 
-  if (field === "q13_mentor_technique_uuid" && wasSet && isObject) {
-    const data = await fetchItemData(actor, newValue);
-    if (!data) return null;
+  if (field === "q13_mentor_technique_uuid" || field === "q13_class_skill") {
+    const techChanged =
+      JSON.stringify(newState.q13_mentor_technique_uuid) !==
+      JSON.stringify(originalState.q13_mentor_technique_uuid);
+    const skillChanged = newState.q13_class_skill !== originalState.q13_class_skill;
+    if (!techChanged && !skillChanged) return null;
+    // When BOTH changed, the q13_mentor_technique_uuid invocation owns the work.
+    if (field === "q13_class_skill" && techChanged) return null;
+
+    const hadOld = originalState.q13_mentor_technique_uuid != null;
+    const revert = hadOld ? revertQ13Mentor(actor) : null;
+
+    // Resolve the technique ref — new state may have an object ref (if the
+    // technique itself changed) or a bare string id (if only the class skill
+    // changed and loadFromActor stored the existing item's _id as a string).
+    const ref = newState.q13_mentor_technique_uuid;
+    let techniqueData = null;
+    if (ref && typeof ref === "object") {
+      techniqueData = await fetchItemData(actor, ref);
+    } else if (ref && typeof ref === "string" && !techChanged) {
+      // Only class skill changed; the technique item already lives on the actor
+      // with the q13Mentor marker. Fetch it directly from the actor's items.
+      const existingItem = (actor.items ?? []).find(
+        (i) => i.flags?.["naruto-d20-kaihou"]?.wizard?.q13Mentor === true
+      );
+      if (existingItem) {
+        techniqueData = existingItem.toObject?.() ?? { ...existingItem };
+      }
+    }
+
+    if (!techniqueData) return revert;
     const mentorFeat = await fetchQuestionFeat("Mentor's Lesson");
-    return applyQ13Mentor(data, mentorFeat, newState.q13_class_skill);
+    return mergeTwo(revert, applyQ13Mentor(techniqueData, mentorFeat, newState.q13_class_skill));
   }
 
-  if (field === "q16_restricted_item_uuid" && wasSet && isObject) {
-    const data = await fetchItemData(actor, newValue);
-    return data ? applyDragDropFeat(data, "q16RestrictedItem") : null;
-  }
-
-  if (field === "q18_heritage_roll" && wasSet) {
+  if (field === "q18_heritage_roll") {
+    const revert = originalState.q18_heritage_roll != null ? revertQ18Heritage(actor) : null;
+    if (!wasSet) return revert;
     const outcome = getOutcomeByRoll(newValue);
-    if (!outcome) return null;
+    if (!outcome) return revert;
     const feat = await fetchQuestionFeat(heritageFeatName(newValue));
-    if (!feat) return null;
+    if (!feat) return revert;
     const deltas = extractModifierDeltas(outcome.modifier);
-    return applyQ18Heritage(feat, newValue, deltas);
+    return mergeTwo(revert, applyQ18Heritage(feat, newValue, deltas));
   }
 
   return null;
