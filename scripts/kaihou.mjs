@@ -4,7 +4,7 @@
  * Responsibilities, by hook:
  *  - init:  Handlebars helpers + wizard partial preload
  *  - ready: expose the wizard class, register school/occupation auto-appliers
- *  - renderActorSheet: inject the "20 Questions" header button
+ *  - renderActorSheetPFCharacter: inject the "20 Questions" Biography-tab section
  *
  * All behavior lives in the concern modules: scripts/apps/wizard/ (the
  * ApplicationV2 wizard), scripts/grants/ (compendium-grant engine + school /
@@ -71,25 +71,32 @@ Hooks.once("ready", () => {
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 });
 
-// Inject "20 Questions" button into PF1e actor sheet header (character and NPC).
-// NOTE: moves to a Biography-tab section in Plan 2 (spec § 5.1).
-Hooks.on("renderActorSheet", (app, html, data) => {
-  if (!["character", "npc"].includes(data.actor.type)) return;
-  if (!app.actor.items) return;
+// Inject "20 Questions" section into PF1e character sheet Biography tab.
+Hooks.on("renderActorSheetPFCharacter", (app, html, _data) => {
+  const bioTab = html.find('.tab[data-tab="biography"]');
+  if (bioTab.length === 0) return;
 
-  let header = html.find(".sheet-header");
-  if (header.length === 0) header = html.find(".window-header");
-  if (header.length === 0) header = html.find("header");
-  if (header.length === 0) return;
+  const actor = app.actor;
+  const wizardItemCount = Array.from(actor.items ?? []).filter(
+    (i) => i.flags?.["naruto-d20-kaihou"]?.wizard
+  ).length;
 
-  const button = $(`<button type="button" class="tqw-sheet-button" title="Open 20 Questions Wizard">
-    <i class="fas fa-scroll"></i> 20 Questions
-  </button>`);
+  const summary = wizardItemCount > 0
+    ? `<p class="tqw-bio-summary hint">${wizardItemCount} mechanic grant(s) applied by the 20 Questions wizard.</p>`
+    : `<p class="tqw-bio-summary hint">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
 
-  button.on("click", () => {
-    const wizard = new TwentyQuestionsWizard(app.actor);
+  const section = $(`<div class="tqw-bio-section flexcol">
+    <h3 class="tqw-bio-header">20 Questions</h3>
+    ${summary}
+    <button type="button" class="tqw-sheet-button">
+      <i class="fas fa-scroll"></i> Open 20 Questions Wizard
+    </button>
+  </div>`);
+
+  section.find(".tqw-sheet-button").on("click", () => {
+    const wizard = new TwentyQuestionsWizard(actor);
     wizard.render(true);
   });
 
-  header.append(button);
+  bioTab.prepend(section);
 });

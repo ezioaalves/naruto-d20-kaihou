@@ -20,7 +20,7 @@ export function defaultState() {
   return {
     q1_village_uuid: null,
     q2_occupation_uuid: null,
-    q3_human_bonus_feat_uuid: null,
+    q3_school_uuid: null,
     q4_affinity: null,
     q7_relationship: null,
     q7_outsider_class_skill: null,
@@ -32,7 +32,6 @@ export function defaultState() {
     q13_mentor_technique_uuid: null,
     q13_class_skill: null,
     q16_restricted_item_uuid: null,
-    q17_skill_key: null,
     q18_heritage_roll: null,
     q18_heritage_locked_modifier: null,
     narratives: {
@@ -139,10 +138,10 @@ export function loadFromActor(actor) {
     state.q2_occupation_uuid = q2Item._id;
   }
 
-  // Q3 — Human Bonus Feat (marker flag q3HumanBonusFeat)
-  const q3Item = findItemByMarker(actor, "q3HumanBonusFeat");
+  // Q3 — School (marker flag q3School)
+  const q3Item = findItemByMarker(actor, "q3School");
   if (q3Item) {
-    state.q3_human_bonus_feat_uuid = q3Item._id;
+    state.q3_school_uuid = q3Item._id;
   }
 
   // Q4 — Affinity (read from flags.naruto-d20.chakra.nature.primary)
@@ -218,12 +217,6 @@ export function loadFromActor(actor) {
     state.q16_restricted_item_uuid = q16Item._id;
   }
 
-  // Q17 — Skill (snapshot from flag q17PickedSkill)
-  const skillKey = getWizardFlag(actor, "q17PickedSkill");
-  if (skillKey) {
-    state.q17_skill_key = skillKey;
-  }
-
   // Q18 — Heritage (snapshot from flag q18Heritage, which is { roll, deltaRep, deltaAP })
   const heritageSnapshot = getWizardFlag(actor, "q18Heritage");
   if (heritageSnapshot) {
@@ -259,7 +252,7 @@ export function diffStates(prev, next) {
   const topFields = [
     "q1_village_uuid",
     "q2_occupation_uuid",
-    "q3_human_bonus_feat_uuid",
+    "q3_school_uuid",
     "q4_affinity",
     "q7_relationship",
     "q7_outsider_class_skill",
@@ -271,7 +264,6 @@ export function diffStates(prev, next) {
     "q13_mentor_technique_uuid",
     "q13_class_skill",
     "q16_restricted_item_uuid",
-    "q17_skill_key",
     "q18_heritage_roll",
     "q18_heritage_locked_modifier",
   ];

@@ -6,7 +6,7 @@ describe("defaultState", () => {
     const s = defaultState();
     expect(s.q1_village_uuid).toBeNull();
     expect(s.q2_occupation_uuid).toBeNull();
-    expect(s.q3_human_bonus_feat_uuid).toBeNull();
+    expect(s.q3_school_uuid).toBeNull();
     expect(s.q4_affinity).toBeNull();
     expect(s.q7_relationship).toBeNull();
     expect(s.q7_outsider_class_skill).toBeNull();
@@ -18,7 +18,6 @@ describe("defaultState", () => {
     expect(s.q13_mentor_technique_uuid).toBeNull();
     expect(s.q13_class_skill).toBeNull();
     expect(s.q16_restricted_item_uuid).toBeNull();
-    expect(s.q17_skill_key).toBeNull();
     expect(s.q18_heritage_roll).toBeNull();
     expect(s.q18_heritage_locked_modifier).toBeNull();
   });

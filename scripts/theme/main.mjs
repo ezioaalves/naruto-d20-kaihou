@@ -113,7 +113,3 @@ Hooks.on("renderApplicationV2", (_app, html) => {
 Hooks.on("renderChatMessage", (_msg, html) => {
   tagElement(html);
 });
-
-Hooks.on("renderSidebar", (_app, html) => {
-  tagElement(html);
-});

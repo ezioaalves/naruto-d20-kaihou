@@ -12,7 +12,7 @@
  * persisted to the actor only on `tqw-finish`.
  */
 
-import { questions, ALL_SKILL_OPTIONS } from "./question-definitions.mjs";
+import { questions } from "./question-definitions.mjs";
 import {
   defaultState,
   loadFromActor,
@@ -22,7 +22,6 @@ import {
 } from "./wizard-state.mjs";
 import { openBrowse } from "./browse.mjs";
 import { finishWizard, FinishValidationError } from "./finish-orchestrator.mjs";
-import { listZeroRankSkills } from "./mechanic-applier.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
 
@@ -61,6 +60,8 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
     content:  { template: `modules/${MODULE_ID}/templates/apps/tqw-v2/content.hbs` },
     footer:   { template: `modules/${MODULE_ID}/templates/apps/tqw-v2/footer.hbs` },
   };
+
+  _renderLock = false;
 
   constructor(actor, options = {}) {
     super(options);
@@ -162,29 +163,6 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       enriched.subPickerValue = this.wizardState[question.subPicker.stateField] ?? null;
     }
 
-    // Dynamic options sourced from the actor (Q17 0-rank skills).
-    if (question.optionsFromActor === "zeroRankSkills") {
-      const friendlyLabels = new Map(ALL_SKILL_OPTIONS.map((o) => [o.value, o.label]));
-      const pf1Labels = (typeof pf1 !== "undefined" && pf1?.config?.skills) || {};
-      const actorSkills = this.actor.system?.skills ?? {};
-      const prettify = (key) => {
-        if (friendlyLabels.has(key)) return friendlyLabels.get(key);
-        const m = key.match(/^([^.]+)\.subSkills\.(.+)$/);
-        if (m) {
-          const [, parentKey, subKey] = m;
-          const parentLabel = friendlyLabels.get(parentKey) ?? pf1Labels[parentKey] ?? parentKey;
-          const subData = actorSkills?.[parentKey]?.subSkills?.[subKey];
-          const subName = subData?.name ?? subKey.replace(/[<>]/g, "").replace(/_/g, " ");
-          return `${parentLabel} (${subName})`;
-        }
-        return pf1Labels[key] ?? key;
-      };
-      enriched.options = listZeroRankSkills(this.actor).map((s) => ({
-        value: s.key,
-        label: prettify(s.key),
-      }));
-    }
-
     // Roll-table current rolled value + outcome lookup.
     // Q18 has rollFormula + outcomes:[{roll,name,modifier,otherEffects}].
     // The roll result is stored at state.q18_heritage_roll (first element of
@@ -221,26 +199,38 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
   }
 
   static async _onBack(_event, _target) {
-    const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
-    if (currentIdx <= 0) return;
-    this.wizardState = { ...this.wizardState, currentId: questions[currentIdx - 1].id };
-    await this.render();
+    if (this._renderLock) return;
+    this._renderLock = true;
+    try {
+      const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
+      if (currentIdx <= 0) return;
+      this.wizardState = { ...this.wizardState, currentId: questions[currentIdx - 1].id };
+      await this.render();
+    } finally {
+      this._renderLock = false;
+    }
   }
 
   static async _onNext(_event, _target) {
-    const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
-    if (currentIdx >= questions.length - 1) return;
+    if (this._renderLock) return;
+    this._renderLock = true;
+    try {
+      const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
+      if (currentIdx >= questions.length - 1) return;
 
-    const validationResult = validate(this.wizardState);
-    const blockingError = this._errorForQuestion(validationResult, this.wizardState.currentId);
-    if (blockingError) {
-      ui.notifications?.warn(this._messageForError(blockingError));
+      const validationResult = validate(this.wizardState);
+      const blockingError = this._errorForQuestion(validationResult, this.wizardState.currentId);
+      if (blockingError) {
+        ui.notifications?.warn(this._messageForError(blockingError));
+        await this.render();
+        return;
+      }
+
+      this.wizardState = { ...this.wizardState, currentId: questions[currentIdx + 1].id };
       await this.render();
-      return;
+    } finally {
+      this._renderLock = false;
     }
-
-    this.wizardState = { ...this.wizardState, currentId: questions[currentIdx + 1].id };
-    await this.render();
   }
 
   /**
@@ -274,6 +264,8 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
   }
 
   static async _onFinish(_event, _target) {
+    if (this._renderLock) return;
+    this._renderLock = true;
     try {
       await finishWizard(this.actor, this.wizardState);
       ui.notifications?.info(
@@ -292,15 +284,23 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       ui.notifications?.error(
         `${game.i18n.localize("NARUTO_D20_KAIHOU.WIZARD.FINISH_ERR")}: ${err.message}`,
       );
+    } finally {
+      this._renderLock = false;
     }
   }
 
   static async _onProgressJump(_event, target) {
-    const qid = target?.dataset?.qid;
-    if (!qid) return;
-    if (!canJumpTo(this.wizardState, qid)) return;
-    this.wizardState = jumpTo(this.wizardState, qid);
-    await this.render();
+    if (this._renderLock) return;
+    this._renderLock = true;
+    try {
+      const qid = target?.dataset?.qid;
+      if (!qid) return;
+      if (!canJumpTo(this.wizardState, qid)) return;
+      this.wizardState = jumpTo(this.wizardState, qid);
+      await this.render();
+    } finally {
+      this._renderLock = false;
+    }
   }
 
   static async _onRadioSelect(_event, target) {

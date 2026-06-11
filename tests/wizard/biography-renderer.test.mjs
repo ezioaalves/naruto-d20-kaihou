@@ -8,7 +8,7 @@ function stateWith(overrides = {}) {
   for (let i = 1; i <= 20; i++) narratives[`q${i}`] = "";
   return {
     q1_village_uuid: null,
-    q3_human_bonus_feat_uuid: null,
+    q3_school_uuid: null,
     q4_affinity: null,
     q7_relationship: null,
     q7_outsider_class_skill: null,
@@ -20,7 +20,6 @@ function stateWith(overrides = {}) {
     q13_mentor_technique_uuid: null,
     q13_class_skill: null,
     q16_restricted_item_uuid: null,
-    q17_skill_key: null,
     q18_heritage_roll: null,
     q18_heritage_locked_modifier: null,
     narratives,
