@@ -29,11 +29,4 @@
   flex-wrap: unset;
 }
 
-// Ring icon inside a chip button.
-.zen-chip__icon {
-  display: block;
-  margin: 0 auto var(--zen-space-1);
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
+// Icon sizing moved to .zen-chip--icon in _chip.scss (owns icon sizing).

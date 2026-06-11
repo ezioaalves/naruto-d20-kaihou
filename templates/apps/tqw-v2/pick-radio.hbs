@@ -4,7 +4,7 @@
   <div class="zen-pick-grid" data-qid="{{current.id}}">
     {{#each current.options}}
       <button type="button"
-              class="zen-chip zen-chip--bold{{#if (eq value ../current.value)}} zen-chip--selected{{/if}}"
+              class="zen-chip zen-chip--bold{{#if icon}} zen-chip--icon{{/if}}{{#if (eq value ../current.value)}} zen-chip--selected{{/if}}"
               data-action="tqw-radio-select"
               data-qid="{{../current.id}}"
               data-value="{{value}}">

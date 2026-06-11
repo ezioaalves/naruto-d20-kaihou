@@ -36,3 +36,22 @@
   border-color: #3A2E1B;
   box-shadow: 0 1px 3px rgba(94, 67, 39, 0.4);
 }
+
+// Icon chips (Q4 nature rings): the chip wraps icon + label as a column.
+.zen-chip--icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--zen-space-1);
+  padding: var(--zen-space-2);
+  height: auto;
+  border-radius: 14px;
+
+  .zen-chip__icon {
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    object-fit: contain;
+  }
+}

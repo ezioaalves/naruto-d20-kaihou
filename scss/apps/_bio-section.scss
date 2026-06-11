@@ -115,6 +115,16 @@
         margin-bottom: var(--zen-space-1);
       }
 
+      // Mechanical pick line — bold body font, ink color, above narrative.
+      .tqw-bio-mech {
+        margin: 0 0 var(--zen-space-1) 0;
+        font-family: var(--zen-font-body);
+        font-weight: 700;
+        font-size: var(--zen-text-sm);
+        color: var(--zen-ink);
+        line-height: 1.4;
+      }
+
       p {
         margin: 0;
         font-family: var(--zen-font-flavor);

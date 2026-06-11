@@ -15,8 +15,7 @@
  */
 
 import TwentyQuestionsWizard from "./apps/wizard/twenty-questions-wizard.mjs";
-import { QUESTION_DEFINITIONS } from "./apps/wizard/question-definitions.mjs";
-import { parse as parseBiography } from "./apps/wizard/biography-renderer.mjs";
+import { buildAnswerRows } from "./apps/wizard/answer-summary.mjs";
 import { registerSchoolAutoApply } from "./grants/school-apply.mjs";
 import {
   registerOccupationAutoApply,
@@ -90,15 +89,6 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
 
   const actor = app.actor;
 
-  // Prefer flags; fall back to parsing the legacy bio HTML region.
-  const flagNarratives = actor.flags?.["naruto-d20-kaihou"]?.wizard?.narratives ?? {};
-  const hasFlagAnswers = Object.values(flagNarratives).some(
-    (v) => typeof v === "string" && v.trim()
-  );
-  const narratives = hasFlagAnswers
-    ? flagNarratives
-    : parseBiography(actor.system?.details?.biography?.value ?? "").narratives;
-
   const grantCount = Array.from(actor.items ?? []).filter(
     (i) => i.flags?.["naruto-d20-kaihou"]?.wizard
   ).length;
@@ -108,14 +98,12 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
       ? foundry.utils.escapeHTML(text)
       : text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-  const answerRows = QUESTION_DEFINITIONS.map((q) => {
-    const text = narratives[q.id];
-    if (!text || !text.trim()) return "";
-    return `<div class="tqw-bio-answer">
-      <span class="tqw-bio-q">${q.id.toUpperCase()} · ${q.sidebarLabel}</span>
-      <p>${escape(text).replace(/\n/g, "<br>")}</p>
-    </div>`;
-  }).join("");
+  const answerRows = buildAnswerRows(actor).map((row) => `
+  <div class="tqw-bio-answer">
+    <span class="tqw-bio-q">${row.qid.toUpperCase()} · ${row.label}</span>
+    ${row.mechanical ? `<p class="tqw-bio-mech">${escape(row.mechanical)}</p>` : ""}
+    ${row.narrative ? `<p>${escape(row.narrative).replace(/\n/g, "<br>")}</p>` : ""}
+  </div>`).join("");
 
   const summary = grantCount > 0
     ? `<p class="tqw-bio-summary hint">${grantCount} mechanic grant(s) applied by the wizard.</p>`

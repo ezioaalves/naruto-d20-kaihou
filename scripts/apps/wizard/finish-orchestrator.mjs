@@ -69,23 +69,8 @@ export async function finishWizard(actor, state) {
 
   const mergedPlan = mergePlans(plans);
 
-  if (Object.keys(mergedPlan.updates).length > 0) {
-    await actor.update(mergedPlan.updates);
-  }
-  if (mergedPlan.creates.length > 0) {
-    await actor.createEmbeddedDocuments("Item", mergedPlan.creates);
-  }
-  if (mergedPlan.deletes.length > 0) {
-    await actor.deleteEmbeddedDocuments("Item", mergedPlan.deletes);
-  }
-
-  // Unconditional Q17 grant: Parental Influence feat (once per actor)
-  const q17Plan = await buildQ17Grant(actor);
-  if (q17Plan.creates.length > 0) {
-    await actor.createEmbeddedDocuments("Item", q17Plan.creates);
-  }
-
-  // § 5.1: answers live in module flags; the bio field belongs to the player.
+  // § 5.1: persist narratives + strip legacy bio region BEFORE any grant
+  // create/delete, so free-text answers are saved even if a later op throws.
   await actor.update({
     "flags.naruto-d20-kaihou.wizard.narratives": { ...state.narratives },
   });
@@ -94,6 +79,26 @@ export async function finishWizard(actor, state) {
   const strippedBio = stripBiography(currentBio);
   if (strippedBio !== currentBio) {
     await actor.update({ "system.details.biography.value": strippedBio });
+  }
+
+  if (Object.keys(mergedPlan.updates).length > 0) {
+    await actor.update(mergedPlan.updates);
+  }
+  if (mergedPlan.creates.length > 0) {
+    await actor.createEmbeddedDocuments("Item", mergedPlan.creates);
+  }
+  // Filter deletes to ids that actually exist on the actor — Foundry throws on
+  // missing ids and would abort the entire flow.
+  const existingIds = new Set(Array.from(actor.items ?? []).map((i) => i._id ?? i.id));
+  const deletes = mergedPlan.deletes.filter((id) => existingIds.has(id));
+  if (deletes.length > 0) {
+    await actor.deleteEmbeddedDocuments("Item", deletes);
+  }
+
+  // Unconditional Q17 grant: Parental Influence feat (once per actor)
+  const q17Plan = await buildQ17Grant(actor);
+  if (q17Plan.creates.length > 0) {
+    await actor.createEmbeddedDocuments("Item", q17Plan.creates);
   }
 }
 
