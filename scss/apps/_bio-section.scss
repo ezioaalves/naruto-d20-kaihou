@@ -51,18 +51,31 @@
       z-index: 1;
     }
 
-    // ── Header ────────────────────────────────────────────────────────────
+    // ── Header row: title left, icon button right ─────────────────────────
+    .tqw-bio-header-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--zen-space-2);
+      border-bottom: var(--zen-bold-accent-rule);
+      padding-bottom: var(--zen-space-1);
+      margin-bottom: var(--zen-space-1);
+      // Prevent the row itself from overflowing narrow columns
+      min-width: 0;
+    }
+
     .tqw-bio-header {
       font-family: var(--zen-font-display);
       font-size: var(--zen-text-xl);
       color: var(--zen-ink);
       letter-spacing: 0.5px;
-      margin: 0 0 var(--zen-space-1) 0;
-      padding-bottom: var(--zen-space-1);
-      // Accent under-rule matching .tqw-v2__question
-      border-bottom: var(--zen-bold-accent-rule);
-      display: inline-block;
-      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: none;  // border moves up to .tqw-bio-header-row
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     // ── Status summary ────────────────────────────────────────────────────
@@ -119,28 +132,39 @@
       margin: 0;
     }
 
-    // ── Launch button — ink-on-parchment, no radius, mirrors tqw-v2__btn--primary ──
+    // ── Launch button — compact icon-only, ink-on-parchment, sits in header row ──
+    // No radius, no width:100%, no margin-top:auto. Square ~30px touch target.
     .tqw-sheet-button {
-      width: 100%;
+      flex-shrink: 0;
+      align-self: center;
+      width: 30px;
+      height: 30px;
       background: var(--zen-ink);
       color: var(--zen-surface);
       border: var(--zen-bold-border);
       border-radius: 0;
-      padding: var(--zen-space-2) var(--zen-space-3);
-      font-family: var(--zen-font-body);
-      font-size: var(--zen-text-sm);
-      font-weight: 600;
-      letter-spacing: 0.03em;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       transition: background var(--zen-duration-fast) var(--zen-easing-out);
-      margin-top: auto;
+      // Ensure the button never adds width that overflows narrow columns
+      min-width: 0;
 
       i {
-        opacity: 0.85;
+        font-size: var(--zen-text-sm);
+        opacity: 0.9;
+        pointer-events: none;
       }
 
       &:hover {
         background: #3a2e1b;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--zen-ink-accent);
+        outline-offset: 2px;
       }
     }
   }

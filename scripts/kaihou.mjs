@@ -16,6 +16,7 @@
 
 import TwentyQuestionsWizard from "./apps/wizard/twenty-questions-wizard.mjs";
 import { QUESTION_DEFINITIONS } from "./apps/wizard/question-definitions.mjs";
+import { parse as parseBiography } from "./apps/wizard/biography-renderer.mjs";
 import { registerSchoolAutoApply } from "./grants/school-apply.mjs";
 import {
   registerOccupationAutoApply,
@@ -75,14 +76,29 @@ Hooks.once("ready", () => {
 });
 
 // § 5.1 — two-column Biography tab: the player's bio editor on the left,
-// the 20 Questions answers + launch button on the right. Answers read from
-// module flags (never from the bio field).
-Hooks.on("renderActorSheetPFCharacter", (app, html, _data) => {
+// the 20 Questions answers + launch button on the right.
+//
+// Fires on the generic renderActorSheet hook so NPC sheets are also covered
+// (PF1e's character and NPC sheets both descend from ActorSheet).
+// Answers are read from module flags first; actors completed by older module
+// versions may store answers in the bio HTML instead (the legacy fallback).
+Hooks.on("renderActorSheet", (app, html, _data) => {
+  if (!["character", "npc"].includes(app.actor?.type)) return;
+
   const bioTab = html.find('.tab[data-tab="biography"]');
   if (bioTab.length === 0 || bioTab.find(".tqw-bio-grid").length > 0) return;
 
   const actor = app.actor;
-  const narratives = actor.flags?.["naruto-d20-kaihou"]?.wizard?.narratives ?? {};
+
+  // Prefer flags; fall back to parsing the legacy bio HTML region.
+  const flagNarratives = actor.flags?.["naruto-d20-kaihou"]?.wizard?.narratives ?? {};
+  const hasFlagAnswers = Object.values(flagNarratives).some(
+    (v) => typeof v === "string" && v.trim()
+  );
+  const narratives = hasFlagAnswers
+    ? flagNarratives
+    : parseBiography(actor.system?.details?.biography?.value ?? "").narratives;
+
   const grantCount = Array.from(actor.items ?? []).filter(
     (i) => i.flags?.["naruto-d20-kaihou"]?.wizard
   ).length;
@@ -106,12 +122,14 @@ Hooks.on("renderActorSheetPFCharacter", (app, html, _data) => {
     : `<p class="tqw-bio-summary hint">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
 
   const right = $(`<aside class="tqw-bio-right">
-    <h3 class="tqw-bio-header">20 Questions</h3>
+    <div class="tqw-bio-header-row">
+      <h3 class="tqw-bio-header">20 Questions</h3>
+      <button type="button" class="tqw-sheet-button" title="Open 20 Questions Wizard" aria-label="Open 20 Questions Wizard">
+        <i class="fas fa-scroll"></i>
+      </button>
+    </div>
     ${summary}
     <div class="tqw-bio-answers">${answerRows || '<p class="hint tqw-bio-empty">No answers recorded yet.</p>'}</div>
-    <button type="button" class="tqw-sheet-button">
-      <i class="fas fa-scroll"></i> Open 20 Questions Wizard
-    </button>
   </aside>`);
 
   right.find(".tqw-sheet-button").on("click", () => {
