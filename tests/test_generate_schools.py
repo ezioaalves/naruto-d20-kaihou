@@ -10,7 +10,7 @@ import pytest
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-GENERATOR_PATH = REPO_ROOT / "scripts" / "generate-schools.py"
+GENERATOR_PATH = REPO_ROOT / "generators" / "generate-schools.py"
 FIXTURE_PATH = REPO_ROOT / "tests" / "fixtures" / "synthetic_schools.yaml"
 
 if not GENERATOR_PATH.exists():

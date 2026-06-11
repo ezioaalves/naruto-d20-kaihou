@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-GENERATOR_PATH = REPO_ROOT / "scripts" / "generate-questions.py"
+GENERATOR_PATH = REPO_ROOT / "generators" / "generate-questions.py"
 MAPPING_PATH = REPO_ROOT / "data" / "skill-key-mapping.json"
 FIXTURE_PATH = REPO_ROOT / "tests" / "fixtures" / "synthetic_question.yaml"
 
