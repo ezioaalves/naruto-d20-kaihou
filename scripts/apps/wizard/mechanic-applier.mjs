@@ -222,27 +222,26 @@ export function applyQ17ParentalInfluence(featItemData) {
   return p;
 }
 
-// ─── Q18 Heritage Modifier ────────────────────────────────────────────────────
-export function applyQ18Heritage(actor, roll, deltas) {
+// ─── Q18 Heritage ─────────────────────────────────────────────────────────────
+// The rolled outcome is granted as its generated pack feat ("Namesake: …");
+// reputation / action-point deltas ride the feat's dictionary flags and are
+// applied by the question-effects engine. The snapshot flag records the roll
+// for state reload and the locked-modifier display.
+export function applyQ18Heritage(featItemData, roll, deltas) {
   const p = emptyPlan();
-  const deltaRep = deltas?.deltaRep ?? 0;
-  const deltaAP = deltas?.deltaAP ?? 0;
-  const currentRep = actor.flags?.["naruto-d20"]?.reputation ?? 0;
-  const currentAP = actor.flags?.["naruto-d20"]?.actionPoints ?? 0;
-  p.updates["flags.naruto-d20.reputation"] = currentRep + deltaRep;
-  p.updates["flags.naruto-d20.actionPoints"] = currentAP + deltaAP;
-  p.updates["flags.naruto-d20-kaihou.wizard.q18Heritage"] = { roll, deltaRep, deltaAP };
+  p.creates.push(withWizardMarker(featItemData ?? {}, "q18HeritageFeat"));
+  p.updates["flags.naruto-d20-kaihou.wizard.q18Heritage"] = {
+    roll,
+    deltaRep: deltas?.deltaRep ?? 0,
+    deltaAP: deltas?.deltaAP ?? 0,
+  };
   return p;
 }
 
 export function revertQ18Heritage(actor) {
   const p = emptyPlan();
-  const snapshot = actor.flags?.["naruto-d20-kaihou"]?.wizard?.q18Heritage;
-  if (!snapshot) return p;
-  const currentRep = actor.flags?.["naruto-d20"]?.reputation ?? 0;
-  const currentAP = actor.flags?.["naruto-d20"]?.actionPoints ?? 0;
-  p.updates["flags.naruto-d20.reputation"] = currentRep - (snapshot.deltaRep ?? 0);
-  p.updates["flags.naruto-d20.actionPoints"] = currentAP - (snapshot.deltaAP ?? 0);
+  const id = findItemIdByMarker(actor, "q18HeritageFeat");
+  if (id) p.deletes.push(id);
   p.updates["flags.naruto-d20-kaihou.wizard.q18Heritage"] = null;
   return p;
 }

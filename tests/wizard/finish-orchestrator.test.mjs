@@ -23,6 +23,9 @@ const QUESTIONS_INDEX = [
   {_id: "aaaa000000000003", name: "Code Adherent", type: "feat"},
   {_id: "aaaa000000000004", name: "Code Sceptic", type: "feat"},
   {_id: "aaaa000000000005", name: "Mentor's Lesson", type: "feat"},
+  // Q18 Namesake feats (roll 1 and roll 2 used by tests below)
+  {_id: "bbbb000000000001", name: "Namesake: Famous Deed", type: "feat"},
+  {_id: "bbbb000000000002", name: "Namesake: Glorious Sacrifice", type: "feat"},
 ];
 
 const QUESTIONS_DOCS = {
@@ -32,6 +35,8 @@ const QUESTIONS_DOCS = {
   "aaaa000000000003": makeQuestionsDoc("Code Adherent", {flags: {dictionary: {actionPoints: 2}}}),
   "aaaa000000000004": makeQuestionsDoc("Code Sceptic", {flags: {dictionary: {bonusSkillRank: 1}}}),
   "aaaa000000000005": makeQuestionsDoc("Mentor's Lesson"),
+  "bbbb000000000001": makeQuestionsDoc("Namesake: Famous Deed", {flags: {dictionary: {reputation: 1}}}),
+  "bbbb000000000002": makeQuestionsDoc("Namesake: Glorious Sacrifice", {flags: {dictionary: {reputation: 2, actionPoints: 2}}}),
 };
 
 globalThis.game = {
@@ -185,5 +190,43 @@ describe("finishWizard Q8 sceptic — pack feat grant", () => {
     await finishWizard(actor, state);
     const allUpdates = actor.update.mock.calls.flatMap(([obj]) => Object.keys(obj));
     expect(allUpdates).not.toContain("flags.naruto-d20-kaihou.wizard.q8BonusSkillPoints");
+  });
+});
+
+describe("finishWizard Q18 heritage — grants Namesake pack feat (no direct counter)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("creates the Namesake pack feat with q18HeritageFeat marker when heritage roll is set", async () => {
+    const actor = makeActor();
+    const state = {...validState(), q18_heritage_roll: 1};
+    await finishWizard(actor, state);
+    const allCreates = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    const feat = allCreates.find((i) => i.name === "Namesake: Famous Deed");
+    expect(feat).toBeDefined();
+    expect(feat.flags["naruto-d20-kaihou"].wizard.q18HeritageFeat).toBe(true);
+  });
+
+  it("writes the roll snapshot flag but NO direct counter updates for reputation or actionPoints", async () => {
+    const actor = makeActor();
+    const state = {...validState(), q18_heritage_roll: 2};
+    await finishWizard(actor, state);
+    const allUpdates = actor.update.mock.calls.flatMap(([obj]) => Object.keys(obj));
+    expect(allUpdates).not.toContain("flags.naruto-d20.reputation");
+    expect(allUpdates).not.toContain("flags.naruto-d20.actionPoints");
+    // Snapshot must be present
+    expect(allUpdates).toContain("flags.naruto-d20-kaihou.wizard.q18Heritage");
+  });
+
+  it("snapshot flag records the correct roll and deltas", async () => {
+    const actor = makeActor();
+    const state = {...validState(), q18_heritage_roll: 2};
+    await finishWizard(actor, state);
+    const allUpdateArgs = actor.update.mock.calls.flatMap(([obj]) => obj);
+    const snapshot = allUpdateArgs.find((obj) => obj?.["flags.naruto-d20-kaihou.wizard.q18Heritage"]);
+    expect(snapshot?.["flags.naruto-d20-kaihou.wizard.q18Heritage"]).toEqual({
+      roll: 2, deltaRep: 2, deltaAP: 2,
+    });
   });
 });

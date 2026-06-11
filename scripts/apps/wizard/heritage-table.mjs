@@ -86,6 +86,17 @@ export function getOutcomeByRoll(roll) {
 }
 
 /**
+ * Name of the generated questions-pack feat for a heritage roll.
+ * Must match the vault YAML names (Q18_namesake_*.yaml).
+ * @param {number} roll - The d10 roll result (1-10)
+ * @returns {string|null} The pack feat name, or null if roll is invalid
+ */
+export function heritageFeatName(roll) {
+  const outcome = getOutcomeByRoll(roll);
+  return outcome ? `Namesake: ${outcome.name}` : null;
+}
+
+/**
  * Extract Reputation and Action Point deltas from a Modifier string.
  * Parses strings like "+1 Reputation", "-2 Action Points", "+2 Action Points, +2 Reputation", etc.
  *

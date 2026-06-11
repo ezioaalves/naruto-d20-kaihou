@@ -15,7 +15,7 @@
 import { questions as QUESTION_DEFINITIONS } from "./question-definitions.mjs";
 import { validate, loadFromActor, diffStates } from "./wizard-state.mjs";
 import { render as renderBiography, splice as spliceBiography } from "./biography-renderer.mjs";
-import { getOutcomeByRoll, extractModifierDeltas } from "./heritage-table.mjs";
+import { getOutcomeByRoll, extractModifierDeltas, heritageFeatName } from "./heritage-table.mjs";
 import {
   emptyPlan,
   applyQ1Village,
@@ -170,10 +170,11 @@ async function planForField(actor, field, originalState, newState) {
 
   if (field === "q18_heritage_roll" && wasSet) {
     const outcome = getOutcomeByRoll(newValue);
-    if (outcome) {
-      const deltas = extractModifierDeltas(outcome.modifier);
-      return applyQ18Heritage(actor, newValue, deltas);
-    }
+    if (!outcome) return null;
+    const feat = await fetchQuestionFeat(heritageFeatName(newValue));
+    if (!feat) return null;
+    const deltas = extractModifierDeltas(outcome.modifier);
+    return applyQ18Heritage(feat, newValue, deltas);
   }
 
   return null;
