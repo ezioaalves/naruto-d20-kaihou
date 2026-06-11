@@ -1,0 +1,28 @@
+{
+  "_id": "260b80d8e30b77f0",
+  "_key": "!items!260b80d8e30b77f0",
+  "name": "Namesake: Elevated for Service",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your family was elevated for service. (Heritage roll 7) <p><b>Modifier:</b> -1 Reputation, +1 Action Point.</p> <p><b>Other effects (apply manually):</b> Craft is a class skill; pick an untrained Craft subskill and gain +1 rank in it.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": -1,
+        "actionPoints": 1
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-elevated-for-service"
+    }
+  }
+}

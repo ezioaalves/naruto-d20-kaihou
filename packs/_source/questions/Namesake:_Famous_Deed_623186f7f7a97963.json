@@ -1,0 +1,27 @@
+{
+  "_id": "623186f7f7a97963",
+  "_key": "!items!623186f7f7a97963",
+  "name": "Namesake: Famous Deed",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>You were named for a famous deed. (Heritage roll 1) <p><b>Modifier:</b> +1 Reputation.</p> <p><b>Other effects (apply manually):</b> Roll d10 again for a starting item type (1-3 weapon, 4-6 armor, 7-8 other, 9 vehicle, 10 boat/estate); worth no more than 15.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": 1
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-famous-deed"
+    }
+  }
+}

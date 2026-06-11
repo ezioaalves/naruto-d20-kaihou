@@ -1,0 +1,23 @@
+{
+  "_id": "c7a919f8f2fa3bc1",
+  "_key": "!items!c7a919f8f2fa3bc1",
+  "name": "Mentor's Lesson",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your mentor's training settled deep. Beyond the technique itself, they drilled you in a discipline that became second nature. <p><b>Grants:</b> one class skill, chosen in the 20 Questions wizard and written onto this feat when granted.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q13",
+      "Mentor"
+    ],
+    "changes": []
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q13-mentors-lesson"
+    }
+  },
+  "img": "icons/svg/book.svg"
+}

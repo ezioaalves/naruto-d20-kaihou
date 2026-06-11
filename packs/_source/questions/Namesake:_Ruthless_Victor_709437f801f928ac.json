@@ -1,0 +1,27 @@
+{
+  "_id": "709437f801f928ac",
+  "_key": "!items!709437f801f928ac",
+  "name": "Namesake: Ruthless Victor",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>You were named for a ruthless victor. (Heritage roll 6) <p><b>Modifier:</b> -2 Reputation.</p> <p><b>Other effects (apply manually):</b> Roll d4 for a chakra skill (1 Chakra Control, 2 Genjutsu, 3 Ninjutsu, 4 Taijutsu); it becomes a class skill, OR gain +1 trait bonus if it already is one.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": -2
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-ruthless-victor"
+    }
+  }
+}

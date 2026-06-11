@@ -19,5 +19,10 @@
       }
     }
   },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q07-relationship-loyalist"
+    }
+  },
   "img": "icons/svg/upgrade.svg"
 }

@@ -1,0 +1,27 @@
+{
+  "_id": "28b47ce80b7a0f17",
+  "_key": "!items!28b47ce80b7a0f17",
+  "name": "Namesake: Imperial Heritage",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your name carries imperial heritage. (Heritage roll 9) <p><b>Modifier:</b> +3 Action Points.</p> <p><b>Other effects (apply manually):</b> Gain Action Boost as a bonus feat.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "actionPoints": 3
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-imperial-heritage"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "_id": "c070b1686e35602c",
+  "_key": "!items!c070b1686e35602c",
+  "name": "Namesake: Stolen Knowledge",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your name carries stolen knowledge. (Heritage roll 8) <p><b>Modifier:</b> -2 Action Points.</p> <p><b>Other effects (apply manually):</b> Learn a Rank 3 technique (d10 type roll: 1-2 Ninjutsu, 3 Chakra Control, 4-6 Taijutsu, 7 Fuinjutsu, 8 Genjutsu, 9 Hijutsu, 10 Kinjutsu); pick one technique of that type.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "actionPoints": -2
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-stolen-knowledge"
+    }
+  }
+}
