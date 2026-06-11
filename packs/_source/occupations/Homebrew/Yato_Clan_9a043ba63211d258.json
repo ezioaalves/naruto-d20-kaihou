@@ -1,0 +1,72 @@
+{
+  "_id": "9a043ba63211d258",
+  "_key": "!items!9a043ba63211d258",
+  "name": "Yato Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Yato clan is a feared clan of ferocious warriors who possess the &quot;Chi no Bousou&quot; (Rampage of Blood) bloodline. This ability allows them to enter a berserker state, granting them immense physical power and resilience at the cost of their own life force and tactical reasoning. They are forces of nature on the battlefield, driven by pure combat instinct.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Yato Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Climb, Intimidate, Jump, Survival, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Chi no Bousou), [Universal: Risky Strike], Endurance, Genin, Great Fortitude.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Yato Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-yato-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Yato Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Climb",
+            "slug": "climb",
+            "key": "clm"
+          },
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Jump",
+            "slug": "acrobatics",
+            "key": "acr"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Chi no Bousou)",
+          "[Universal: Risky Strike]",
+          "Endurance",
+          "Genin",
+          "Great Fortitude"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

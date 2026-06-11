@@ -1,0 +1,67 @@
+{
+  "_id": "59bf4e4bd26bab1a",
+  "_key": "!items!59bf4e4bd26bab1a",
+  "name": "Fuuryuu Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Fuuryuu clan are masters of lightning-infused taijutsu, thanks to their &quot;Konpeki Shitai&quot; (Azure Body) bloodline. They can coat their bodies in a shimmering blue aura of lightning chakra, dramatically increasing their speed, reflexes, and the destructive power of their physical attacks, similar to the Raikage&#x27;s Lightning Release Armour.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Fuuryuu Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Jump, Ninjutsu, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Konpeki Shitai), Taijutsu Adept, Improved Initiative, Genin, Run.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Fuuryuu Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-fuuryuu-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Fuuryuu Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Jump",
+            "slug": "acrobatics",
+            "key": "acr"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Konpeki Shitai)",
+          "Taijutsu Adept",
+          "Improved Initiative",
+          "Genin",
+          "Run"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

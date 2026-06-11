@@ -1,0 +1,66 @@
+{
+  "_id": "e9c596deba73e967",
+  "_key": "!items!e9c596deba73e967",
+  "name": "Iburi Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Iburi clan is a reclusive clan whose members possess a unique and often unstable bloodline that allows them to turn their bodies into smoke. This ability grants them exceptional powers of infiltration and evasion, but its volatility means many clan members live in seclusion to protect themselves. Those who master this power are truly untouchable spies and assassins.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Iburi Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Escape Artist, Hide, Ninjutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Akekochuu), Stealthy, Dodge, Genin.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Iburi Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-iburi-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Iburi Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Escape Artist",
+            "slug": "escape-artist",
+            "key": "esc"
+          },
+          {
+            "label": "Hide",
+            "slug": "stealth",
+            "key": "ste"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Akekochuu)",
+          "Stealthy",
+          "Dodge",
+          "Genin"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

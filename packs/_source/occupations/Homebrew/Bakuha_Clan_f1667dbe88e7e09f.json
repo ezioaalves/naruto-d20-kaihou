@@ -1,0 +1,67 @@
+{
+  "_id": "f1667dbe88e7e09f",
+  "_key": "!items!f1667dbe88e7e09f",
+  "name": "Bakuha Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Bakuha clan possesses the &quot;Genshigan,&quot; a terrifying dojutsu that allows them to perceive the molecular structure of matter and, with extreme focus, break it down. This makes them incredibly dangerous shinobi, capable of disintegrating objects and living beings. This power requires immense concentration and chakra control to use effectively and safely.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Bakuha Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Knowledge (physical sciences), Ninjutsu, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Genshigan), Chakra Penetration, Ninjutsu Adept, Genin, Focused.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Bakuha Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-bakuha-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Bakuha Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Knowledge (physical sciences)",
+            "slug": "knowledge-engineering",
+            "key": "ken"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Genshigan)",
+          "Chakra Penetration",
+          "Ninjutsu Adept",
+          "Genin",
+          "Focused"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

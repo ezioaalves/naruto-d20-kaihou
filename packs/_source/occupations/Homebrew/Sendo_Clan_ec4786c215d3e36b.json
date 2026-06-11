@@ -1,0 +1,72 @@
+{
+  "_id": "ec4786c215d3e36b",
+  "_key": "!items!ec4786c215d3e36b",
+  "name": "Sendo Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Sendo clan is a noble family of diplomats and strategists. They possess the &quot;Keireigan,&quot; a subtle dojutsu that allows them to perceive the emotional state and true intentions of others. This makes them masters of negotiation, interrogation, and psychological warfare, able to navigate complex social and political landscapes with ease.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Sendo Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Bluff, Diplomacy, Genjutsu, Knowledge (behavioral science), Knowledge (civics).</p><p><b>Feat:</b> Select one from Advanced Bloodline (Keireigan), Force of Personality, Combat Tactics, Genin, Trustworthy.</p><p><b>Wealth Bonus Increase:</b> +2</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Sendo Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-sendo-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Sendo Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Bluff",
+            "slug": "bluff",
+            "key": "blf"
+          },
+          {
+            "label": "Diplomacy",
+            "slug": "diplomacy",
+            "key": "dip"
+          },
+          {
+            "label": "Genjutsu",
+            "slug": "genjutsu",
+            "key": "gnj"
+          },
+          {
+            "label": "Knowledge (behavioral science)",
+            "slug": "sense-motive",
+            "key": "sen"
+          },
+          {
+            "label": "Knowledge (civics)",
+            "slug": "knowledge-nobility",
+            "key": "kno"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Keireigan)",
+          "Force of Personality",
+          "Combat Tactics",
+          "Genin",
+          "Trustworthy"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 2,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

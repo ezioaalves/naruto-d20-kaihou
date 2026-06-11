@@ -1,0 +1,72 @@
+{
+  "_id": "bf7905c0c8b5339a",
+  "_key": "!items!bf7905c0c8b5339a",
+  "name": "Izuno Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Izuno clan possesses the &quot;Seiseigan&quot; (Star Eye), a beautiful and powerful dojutsu that allows them to perceive chakra pathways as a celestial star chart. This gives them incredible insight into the flow of chakra, allowing them to predict an opponent&#x27;s moves, identify weaknesses, and even track the residual chakra of past events with stunning accuracy.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Izuno Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Genjutsu, Investigate, Ninjutsu, Sense Motive.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Seiseigan), [Universal: Defensive Stance], Insightful Reflexes, Genin, Studious.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Izuno Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-izuno-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Izuno Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Genjutsu",
+            "slug": "genjutsu",
+            "key": "gnj"
+          },
+          {
+            "label": "Investigate",
+            "slug": "perception",
+            "key": "per"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Sense Motive",
+            "slug": "sense-motive",
+            "key": "sen"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Seiseigan)",
+          "[Universal: Defensive Stance]",
+          "Insightful Reflexes",
+          "Genin",
+          "Studious"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

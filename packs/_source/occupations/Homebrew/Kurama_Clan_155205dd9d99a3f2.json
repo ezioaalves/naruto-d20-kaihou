@@ -1,0 +1,72 @@
+{
+  "_id": "155205dd9d99a3f2",
+  "_key": "!items!155205dd9d99a3f2",
+  "name": "Kurama Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kurama clan are unparalleled masters of genjutsu. Their bloodline grants them such incredible talent in this art that their illusions can have real-world consequences, convincing the victim&#x27;s brain to manifest physical damage. This power, however, can sometimes be unstable, creating a dangerous second personality within the user if not properly controlled.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Kurama Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Bluff, Chakra Control, Craft (painting), Genjutsu, Knowledge (behavioral science).</p><p><b>Feat:</b> Select one from Advanced Bloodline (Kurama), Genjutsu Adept, Technique Focus (Genjutsu), Genin, Force of Personality.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Kurama Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-kurama-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Kurama Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Bluff",
+            "slug": "bluff",
+            "key": "blf"
+          },
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Craft (painting)",
+            "slug": "craft-calligraphy",
+            "key": "crf"
+          },
+          {
+            "label": "Genjutsu",
+            "slug": "genjutsu",
+            "key": "gnj"
+          },
+          {
+            "label": "Knowledge (behavioral science)",
+            "slug": "sense-motive",
+            "key": "sen"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Kurama)",
+          "Genjutsu Adept",
+          "Technique Focus (Genjutsu)",
+          "Genin",
+          "Force of Personality"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "_id": "3b64bcf8bc51c885",
+  "_key": "!items!3b64bcf8bc51c885",
+  "name": "Kisharin Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kisharin are a clan of weapon specialists, particularly known for their mastery of shuriken, kunai, and other throwing weapons. Their &quot;Kazaguruma&quot; (Pinwheel) bloodline grants them unparalleled accuracy and the uncanny ability to manipulate the trajectory of their projectiles in mid-air, making their attacks almost impossible to dodge.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Kisharin Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Craft (mechanical), Ninjutsu, Sleight of Hand, Spot, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Kazaguruma), Precise Shot, Far Shot, Genin, Nin Weapons Proficiency.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Kisharin Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-kisharin-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Kisharin Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Craft (mechanical)",
+            "slug": "craft-mechanics",
+            "key": "crf"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Sleight of Hand",
+            "slug": "sleight-of-hand",
+            "key": "slt"
+          },
+          {
+            "label": "Spot",
+            "slug": "perception",
+            "key": "per"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Kazaguruma)",
+          "Precise Shot",
+          "Far Shot",
+          "Genin",
+          "Nin Weapons Proficiency"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

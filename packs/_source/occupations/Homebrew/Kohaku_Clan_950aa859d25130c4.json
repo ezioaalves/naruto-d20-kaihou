@@ -1,0 +1,62 @@
+{
+  "_id": "950aa859d25130c4",
+  "_key": "!items!950aa859d25130c4",
+  "name": "Kohaku Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kohaku clan are swift and agile shinobi, known for their &quot;Sonic&quot; bloodline which allows them to move at incredible speeds, often appearing as a blur to the naked eye. They are masters of hit-and-run tactics, using their speed to overwhelm opponents before they can react. They are close allies of the Tsuchigumo clan.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Kohaku Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Balance, Sleight of Hand, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Sonic), Improved Initiative, Run, Genin, Dodge.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Kohaku Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-kohaku-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Kohaku Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Balance",
+            "slug": "acrobatics",
+            "key": "acr"
+          },
+          {
+            "label": "Sleight of Hand",
+            "slug": "sleight-of-hand",
+            "key": "slt"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Sonic)",
+          "Improved Initiative",
+          "Run",
+          "Genin",
+          "Dodge"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

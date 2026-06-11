@@ -1,0 +1,62 @@
+{
+  "_id": "8a9ef969fed09e3c",
+  "_key": "!items!8a9ef969fed09e3c",
+  "name": "Hoki Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Hoki clan is a branch family of the prestigious Hyuuga clan. They possess the &quot;Toushigan&quot; (Telescope Eye), a dojutsu that, while not as powerful in all aspects as the Byakugan, grants them incredible long-range vision and the ability to see through solid objects. This makes them exceptional scouts, spies, and archers.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Hoki Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Investigate, Ninjutsu, Survival.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Toushigan), Far Shot, Keen Senses, Genin, Precise Shot.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Hoki Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-hoki-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Hoki Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Investigate",
+            "slug": "perception",
+            "key": "per"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Toushigan)",
+          "Far Shot",
+          "Keen Senses",
+          "Genin",
+          "Precise Shot"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

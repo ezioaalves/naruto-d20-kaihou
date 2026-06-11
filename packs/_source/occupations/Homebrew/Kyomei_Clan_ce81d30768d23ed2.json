@@ -1,0 +1,67 @@
+{
+  "_id": "ce81d30768d23ed2",
+  "_key": "!items!ce81d30768d23ed2",
+  "name": "Kyomei Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kyomei clan possesses the unique ability of &quot;Chakra Resonance,&quot; allowing them to synchronize with the chakra of allies to boost their techniques, or disrupt the chakra of enemies to weaken their jutsu. They are invaluable support shinobi and formidable anti-ninjutsu specialists, capable of turning the tide of battle without throwing a single punch.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Kyomei Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Diplomacy, Ninjutsu, Sense Motive.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Chakra Resonance), Chakra Presence, Harmony, Genin, Ninjutsu Adept.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Kyomei Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-kyomei-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Kyomei Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Diplomacy",
+            "slug": "diplomacy",
+            "key": "dip"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Sense Motive",
+            "slug": "sense-motive",
+            "key": "sen"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Chakra Resonance)",
+          "Chakra Presence",
+          "Harmony",
+          "Genin",
+          "Ninjutsu Adept"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

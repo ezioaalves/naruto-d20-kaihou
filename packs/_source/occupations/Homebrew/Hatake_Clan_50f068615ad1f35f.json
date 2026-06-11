@@ -1,0 +1,72 @@
+{
+  "_id": "50f068615ad1f35f",
+  "_key": "!items!50f068615ad1f35f",
+  "name": "Hatake Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Hatake clan is a small but highly respected clan in Konohagakure, known for producing exceptionally talented and versatile shinobi like the famed &quot;White Fang of the Leaf.&quot; They are renowned for their combat prowess, advanced tracking skills, and unwavering loyalty to their comrades, making them some of the most reliable ninja in the village.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Hatake Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Ninjutsu, Survival, Taijutsu, Treat Injury.</p><p><b>Feat:</b> Select one from Genin, Ninjutsu Adept, Taijutsu Adept, Track, Archaic Weapon Proficiency.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +2</p><p><b>Affiliation:</b> You require 1 less success to learn Konoha specific techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-hatake-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Hatake Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          },
+          {
+            "label": "Treat Injury",
+            "slug": "heal",
+            "key": "hea"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Genin",
+          "Ninjutsu Adept",
+          "Taijutsu Adept",
+          "Track",
+          "Archaic Weapon Proficiency"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 2
+      }
+    }
+  }
+}

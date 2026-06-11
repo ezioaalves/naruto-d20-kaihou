@@ -1,0 +1,72 @@
+{
+  "_id": "d9c23cdd91061007",
+  "_key": "!items!d9c23cdd91061007",
+  "name": "Tsuchigumo Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Tsuchigumo clan is a clan known for their powerful and often forbidden jutsu. They were once a prominent force, though their numbers have dwindled. They possess a deep knowledge of secret techniques, making them both respected and feared.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Tsuchigumo Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Fuinjutsu, Knowledge (ninja lore), Ninjutsu, Survival.</p><p><b>Feat:</b> Select one from Advanced Study, Sealweaver, Genin, Genius Ninja, Ninjutsu Adept.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Tsuchigumo Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-tsuchigumo-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Tsuchigumo Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Fuinjutsu",
+            "slug": "fuinjutsu",
+            "key": "fui"
+          },
+          {
+            "label": "Knowledge (ninja lore)",
+            "slug": "knowledge-ninja-lore",
+            "key": "lor"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Study",
+          "Sealweaver",
+          "Genin",
+          "Genius Ninja",
+          "Ninjutsu Adept"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

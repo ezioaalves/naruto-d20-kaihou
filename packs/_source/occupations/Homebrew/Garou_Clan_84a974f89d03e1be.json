@@ -1,0 +1,67 @@
+{
+  "_id": "84a974f89d03e1be",
+  "_key": "!items!84a974f89d03e1be",
+  "name": "Garou Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Garou clan are masters of atmospheric manipulation, thanks to their &quot;Kesshuu&quot; (Pressure) bloodline. They can increase or decrease the air pressure in a given area, creating crushing force fields, powerful shockwaves, or vacuums to suffocate their opponents. This makes them incredibly versatile and dangerous foes.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Garou Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Knowledge (physical sciences), Ninjutsu, Survival.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Kesshuu), Ninjutsu Adept, Focused, Genin, Empower Technique.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Garou Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-garou-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Garou Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Knowledge (physical sciences)",
+            "slug": "knowledge-engineering",
+            "key": "ken"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Kesshuu)",
+          "Ninjutsu Adept",
+          "Focused",
+          "Genin",
+          "Empower Technique"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

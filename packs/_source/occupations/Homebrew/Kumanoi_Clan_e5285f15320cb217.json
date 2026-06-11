@@ -1,0 +1,72 @@
+{
+  "_id": "e5285f15320cb217",
+  "_key": "!items!e5285f15320cb217",
+  "name": "Kumanoi Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kumanoi clan possesses the &quot;Shikawa Myaku&quot; (Antler Vein), a bloodline that allows them to grow and manipulate their bone structure, similar to the Kaguya clan&#x27;s Shikotsumyaku. However, the Kumanoi&#x27;s bone manifestations often resemble the powerful antlers of deer and moose, which they use for devastating charging attacks and incredibly durable defenses.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Kumanoi Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Intimidate, Ninjutsu, Survival, Taijutsu, Tumble.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Shikawa Myaku), [Universal: Risky Strike], Endurance, Genin, Powerful Maneuvers.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Kumanoi Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-kumanoi-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Kumanoi Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          },
+          {
+            "label": "Tumble",
+            "slug": "acrobatics",
+            "key": "acr"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Shikawa Myaku)",
+          "[Universal: Risky Strike]",
+          "Endurance",
+          "Genin",
+          "Powerful Maneuvers"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "_id": "d151c6dd162d736f",
+  "_key": "!items!d151c6dd162d736f",
+  "name": "Boei Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Boei clan are the ultimate protectors, possessing the &quot;Oukokoi&quot; (Royal Guard) bloodline which grants them unparalleled defensive capabilities. They can create powerful chakra barriers, reinforce their bodies to withstand incredible damage, and sense incoming threats with uncanny accuracy. They are the living shields of the ninja world.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Boei Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Ninjutsu, Sense Motive, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Oukokoi), [Universal: Defensive Stance], Endurance, Genin, Great Fortitude.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Boei Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-boei-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Boei Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Sense Motive",
+            "slug": "sense-motive",
+            "key": "sen"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Oukokoi)",
+          "[Universal: Defensive Stance]",
+          "Endurance",
+          "Genin",
+          "Great Fortitude"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

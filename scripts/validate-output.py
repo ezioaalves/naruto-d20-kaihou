@@ -144,7 +144,7 @@ def validate_all(verbose: bool = False) -> int:
     sources_root = Path("packs/_source")
     if sources_root.is_dir():
         for source_dir in sorted(p for p in sources_root.iterdir() if p.is_dir()):
-            items_to_validate.extend(sorted(source_dir.glob("*.json")))
+            items_to_validate.extend(sorted(source_dir.rglob("*.json")))
 
     if not items_to_validate:
         print("No JSON files found in packs/_source/")

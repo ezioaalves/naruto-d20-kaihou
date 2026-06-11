@@ -1,0 +1,73 @@
+{
+  "_id": "0a085aea68141ea3",
+  "_key": "!items!0a085aea68141ea3",
+  "name": "Tenro Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Tenro clan are fierce warriors known for their &quot;Kamitora&quot; (God-Tiger) bloodline, which grants them incredible speed, reflexes, and predatory senses. They are masters of a unique and aggressive form of Taijutsu that mimics the movements of a hunting tiger.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Tenro Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Balance, Climb, Listen, Survival, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Kamitora), Brawl, Combat Martial Arts, Taijutsu Adept, Genin, Run.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Tenro Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-tenro-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Tenro Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Balance",
+            "slug": "acrobatics",
+            "key": "acr"
+          },
+          {
+            "label": "Climb",
+            "slug": "climb",
+            "key": "clm"
+          },
+          {
+            "label": "Listen",
+            "slug": "perception",
+            "key": "per"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Kamitora)",
+          "Brawl",
+          "Combat Martial Arts",
+          "Taijutsu Adept",
+          "Genin",
+          "Run"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

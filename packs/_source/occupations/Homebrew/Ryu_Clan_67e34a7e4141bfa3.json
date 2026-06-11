@@ -1,0 +1,67 @@
+{
+  "_id": "67e34a7e4141bfa3",
+  "_key": "!items!67e34a7e4141bfa3",
+  "name": "Ryu Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Ryu clan are known for their &quot;Kyome&quot; (Giant Roar) bloodline, which allows them to generate powerful, concussive sound waves from their mouths. Unlike the subtle genjutsu of the Taketori, the Ryu clan&#x27;s techniques are pure, raw power, capable of shattering stone, disorienting opponents, and creating devastating shockwaves.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Ryu Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Intimidate, Ninjutsu, Survival.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Kyome), Ninjutsu Adept, [Universal: Risky Strike], Genin, Great Fortitude.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Ryu Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-ryu-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Ryu Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Kyome)",
+          "Ninjutsu Adept",
+          "[Universal: Risky Strike]",
+          "Genin",
+          "Great Fortitude"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

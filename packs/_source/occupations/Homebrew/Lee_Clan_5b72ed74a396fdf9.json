@@ -1,0 +1,67 @@
+{
+  "_id": "5b72ed74a396fdf9",
+  "_key": "!items!5b72ed74a396fdf9",
+  "name": "Lee Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Lee clan is a family of taijutsu specialists, known for their incredible work ethic and dedication to physical conditioning. While they have little to no aptitude for ninjutsu or genjutsu, their mastery of hand-to-hand combat is second to none, allowing them to overcome any obstacle through sheer effort and willpower. They are the embodiment of &quot;hard work beats talent.&quot;</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Lee Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Balance, Climb, Concentration, Taijutsu.</p><p><b>Feat:</b> Select one from Genin, Taijutsu Adept, Endurance, Great Fortitude, Run.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn non-hijutsu Taijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-lee-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Lee Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Balance",
+            "slug": "acrobatics",
+            "key": "acr"
+          },
+          {
+            "label": "Climb",
+            "slug": "climb",
+            "key": "clm"
+          },
+          {
+            "label": "Concentration",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Genin",
+          "Taijutsu Adept",
+          "Endurance",
+          "Great Fortitude",
+          "Run"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

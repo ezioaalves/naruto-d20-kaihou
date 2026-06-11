@@ -1,0 +1,72 @@
+{
+  "_id": "fc53856526e7fb0f",
+  "_key": "!items!fc53856526e7fb0f",
+  "name": "Kodon Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kodon clan possesses the &quot;Ketsueki&quot; (Blood) bloodline, a unique and macabre ability that allows them to manipulate their own blood after it leaves their body. They can harden it to create sharp weapons, lay traps, or use it in its liquid form for binding and tracking purposes. This makes them resilient and unpredictable fighters.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Kodon Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Ninjutsu, Survival, Taijutsu, Treat Injury.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Ketsueki), Great Fortitude, Ninjutsu Adept, Genin, Endurance.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Kodon Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-kodon-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Kodon Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          },
+          {
+            "label": "Treat Injury",
+            "slug": "heal",
+            "key": "hea"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Ketsueki)",
+          "Great Fortitude",
+          "Ninjutsu Adept",
+          "Genin",
+          "Endurance"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

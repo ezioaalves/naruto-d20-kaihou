@@ -1,0 +1,72 @@
+{
+  "_id": "f60ae5e4a6e6d1cd",
+  "_key": "!items!f60ae5e4a6e6d1cd",
+  "name": "Seijina Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Seijina are a legendary clan, said to be descended from the lightning god Raijin himself. They possess the &quot;Raijinsatsu&quot; bloodline and the &quot;Purumazuton&quot; (Plasma Release) advanced nature transformation, allowing them to create and control super-heated plasma, a state of matter even more destructive than lightning. Their power is immense and terrifying to behold.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Seijina Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Intimidate, Knowledge (physical sciences), Ninjutsu, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Raijinsatsu), Elemental Specialization (Plasma), Ninjutsu Adept, Genin, Empower Technique.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +2</p><p><b>Affiliation:</b> You require 1 less success to learn Seijina Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-seijina-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Seijina Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Knowledge (physical sciences)",
+            "slug": "knowledge-engineering",
+            "key": "ken"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Raijinsatsu)",
+          "Elemental Specialization (Plasma)",
+          "Ninjutsu Adept",
+          "Genin",
+          "Empower Technique"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 2
+      }
+    }
+  }
+}

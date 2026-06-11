@@ -1,0 +1,67 @@
+{
+  "_id": "f29fabcf343d8a91",
+  "_key": "!items!f29fabcf343d8a91",
+  "name": "Hozuki Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Hozuki clan, hailing from Kirigakure, are masters of water-based ninjutsu. Their signature technique allows them to turn their bodies into a liquid form, making them incredibly difficult to harm with physical attacks and granting them unparalleled stealth and infiltration capabilities, especially in or near water. They are a proud and powerful clan of the Hidden Mist.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Hozuki Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Hide, Ninjutsu, Swim.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Hozuki), Ninjutsu Adept, Stealthy, Genin, Archaic Weapon Proficiency.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Hozuki Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-hozuki-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Hozuki Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Hide",
+            "slug": "stealth",
+            "key": "ste"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Swim",
+            "slug": "swim",
+            "key": "swm"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Hozuki)",
+          "Ninjutsu Adept",
+          "Stealthy",
+          "Genin",
+          "Archaic Weapon Proficiency"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

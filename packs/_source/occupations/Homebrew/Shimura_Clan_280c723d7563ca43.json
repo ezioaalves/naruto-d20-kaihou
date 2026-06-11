@@ -1,0 +1,88 @@
+{
+  "_id": "280c723d7563ca43",
+  "_key": "!items!280c723d7563ca43",
+  "name": "Shimura Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Shimura clan is a pragmatic and highly disciplined clan with deep roots in Konohagakure. Known for their unwavering, often severe loyalty to the village, they operate in the shadows, prioritizing the village&#x27;s security above all else. They are skilled in a variety of covert arts and are not afraid to use any means necessary to achieve their goals, making them a respected, if feared, pillar of Konoha&#x27;s strength.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Shimura Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Fuinjutsu, Intimidate, Knowledge (civics), Knowledge (ninja lore), Knowledge (tactics), Ninjutsu, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Kyuushou Kousei), Genin, Iron Will, Ninjutsu Adept, Taijutsu Adept, Trustworthy.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Konoha specific techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-shimura-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Shimura Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Fuinjutsu",
+            "slug": "fuinjutsu",
+            "key": "fui"
+          },
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Knowledge (civics)",
+            "slug": "knowledge-nobility",
+            "key": "kno"
+          },
+          {
+            "label": "Knowledge (ninja lore)",
+            "slug": "knowledge-ninja-lore",
+            "key": "lor"
+          },
+          {
+            "label": "Knowledge (tactics)",
+            "slug": "knowledge-arcana",
+            "key": "kar"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Kyuushou Kousei)",
+          "Genin",
+          "Iron Will",
+          "Ninjutsu Adept",
+          "Taijutsu Adept",
+          "Trustworthy"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

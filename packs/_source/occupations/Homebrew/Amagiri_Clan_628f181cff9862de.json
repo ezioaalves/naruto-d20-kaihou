@@ -1,0 +1,67 @@
+{
+  "_id": "628f181cff9862de",
+  "_key": "!items!628f181cff9862de",
+  "name": "Amagiri Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Amagiri are a formidable clan possessing the Boil Release (Futton) advanced nature transformation, allowing them to create a highly corrosive vapor capable of melting nearly anything. Their unique &quot;Ajna Bindu,&quot; a third-eye marking that appears on their forehead when their power is active, is a symbol of the immense chakra control required to master this dangerous ability.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Amagiri Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Intimidate, Ninjutsu, Survival.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Ajna Bindu), Elemental Specialization (Boil), Ninjutsu Adept, Genin, [Universal: Risky Strike].</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Amagiri Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-amagiri-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Amagiri Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Ajna Bindu)",
+          "Elemental Specialization (Boil)",
+          "Ninjutsu Adept",
+          "Genin",
+          "[Universal: Risky Strike]"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

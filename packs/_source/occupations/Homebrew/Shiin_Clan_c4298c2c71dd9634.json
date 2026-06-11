@@ -1,0 +1,67 @@
+{
+  "_id": "c4298c2c71dd9634",
+  "_key": "!items!c4298c2c71dd9634",
+  "name": "Shiin Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Shiin clan are masters of shadow manipulation, possessing the &quot;Koimeigan,&quot; a bloodline that allows them to control and solidify darkness itself. Unlike the Nara clan&#x27;s shadow imitation techniques, the Shiin can create tangible weapons, armor, and constructs from shadows, making them formidable and unpredictable combatants who thrive in the dark.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Shiin Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Craft (mechanical), Hide, Ninjutsu, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Koimeigan), Ninjutsu Adept, Stealthy, Genin, [Universal: Risky Strike].</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Shiin Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-shiin-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Shiin Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Craft (mechanical)",
+            "slug": "craft-mechanics",
+            "key": "crf"
+          },
+          {
+            "label": "Hide",
+            "slug": "stealth",
+            "key": "ste"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Koimeigan)",
+          "Ninjutsu Adept",
+          "Stealthy",
+          "Genin",
+          "[Universal: Risky Strike]"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

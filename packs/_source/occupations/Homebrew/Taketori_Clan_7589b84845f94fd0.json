@@ -1,0 +1,72 @@
+{
+  "_id": "7589b84845f94fd0",
+  "_key": "!items!7589b84845f94fd0",
+  "name": "Taketori Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Taketori clan are masters of sound, utilizing their &quot;Reikyou&quot; bloodline to manipulate sound waves for a variety of effects. They are known for their powerful sound-based genjutsu and destructive ninjutsu, often employing small, chakra-infused bells or other instruments as catalysts for their techniques. Their abilities can soothe, hypnotize, or shatter, making them versatile and dangerous shinobi.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Taketori Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Genjutsu, Ninjutsu, Perform (any), Sleight of Hand.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Reikyou), Genjutsu Adept, Ninjutsu Adept, Genin, Skill Focus (Perform).</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Taketori Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-taketori-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Taketori Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Genjutsu",
+            "slug": "genjutsu",
+            "key": "gnj"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Perform (any)",
+            "slug": "perform",
+            "key": "prf"
+          },
+          {
+            "label": "Sleight of Hand",
+            "slug": "sleight-of-hand",
+            "key": "slt"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Reikyou)",
+          "Genjutsu Adept",
+          "Ninjutsu Adept",
+          "Genin",
+          "Skill Focus (Perform)"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

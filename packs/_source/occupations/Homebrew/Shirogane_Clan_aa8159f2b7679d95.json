@@ -1,0 +1,67 @@
+{
+  "_id": "aa8159f2b7679d95",
+  "_key": "!items!aa8159f2b7679d95",
+  "name": "Shirogane Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Shirogane clan is a reclusive and often feared clan, known for their unique &quot;Medusa Eye&quot; bloodline. This powerful dojutsu allows them to temporarily petrify or dramatically slow their opponents with a mere gaze. Due to the dangerous nature of their ability, they tend to live in isolation, honing their control to prevent accidental harm.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Shirogane Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Genjutsu, Intimidate, Ninjutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Medusa Eye), Genjutsu Adept, Technique Focus (Genjutsu), Genin, Iron Will.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Shirogane Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-shirogane-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Shirogane Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Genjutsu",
+            "slug": "genjutsu",
+            "key": "gnj"
+          },
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Medusa Eye)",
+          "Genjutsu Adept",
+          "Technique Focus (Genjutsu)",
+          "Genin",
+          "Iron Will"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

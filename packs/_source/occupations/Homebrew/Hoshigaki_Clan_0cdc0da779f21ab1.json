@@ -1,0 +1,72 @@
+{
+  "_id": "0cdc0da779f21ab1",
+  "_key": "!items!0cdc0da779f21ab1",
+  "name": "Hoshigaki Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Hoshigaki clan is a fearsome clan from Kirigakure, whose members possess distinct shark-like features, including sharp teeth and gills. They are powerful shinobi with a natural affinity for Water Release and a massive chakra pool. Their aggressive, predatory combat style makes them formidable opponents, especially in aquatic environments.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Hoshigaki Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Intimidate, Ninjutsu, Survival, Swim, Taijutsu.</p><p><b>Feat:</b> Select one from Genin, Ninjutsu Adept, [Universal: Risky Strike], Improved Chakra Pool, Archaic Weapon Proficiency.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Hoshigaki Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-hoshigaki-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Hoshigaki Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Swim",
+            "slug": "swim",
+            "key": "swm"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Genin",
+          "Ninjutsu Adept",
+          "[Universal: Risky Strike]",
+          "Improved Chakra Pool",
+          "Archaic Weapon Proficiency"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

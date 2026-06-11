@@ -1,0 +1,72 @@
+{
+  "_id": "50371aef0b0993ec",
+  "_key": "!items!50371aef0b0993ec",
+  "name": "Chinoike Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Chinoike clan was a powerful clan once feared for their Ketsuryugan, a dojutsu that grants them the ability to manipulate any liquid with a high iron concentration, most notably blood. This makes them terrifying masters of genjutsu and ninjutsu, capable of controlling opponents from within or creating powerful, blood-based attacks.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Chinoike Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Genjutsu, Intimidate, Knowledge (ninja lore), Ninjutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Ketsuryugan), Genjutsu Adept, Ninjutsu Adept, Genin, Iron Will.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Chinoike Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-chinoike-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Chinoike Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Genjutsu",
+            "slug": "genjutsu",
+            "key": "gnj"
+          },
+          {
+            "label": "Intimidate",
+            "slug": "intimidate",
+            "key": "int"
+          },
+          {
+            "label": "Knowledge (ninja lore)",
+            "slug": "knowledge-ninja-lore",
+            "key": "lor"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Ketsuryugan)",
+          "Genjutsu Adept",
+          "Ninjutsu Adept",
+          "Genin",
+          "Iron Will"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

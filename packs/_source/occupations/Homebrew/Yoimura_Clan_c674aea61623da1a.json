@@ -1,0 +1,72 @@
+{
+  "_id": "c674aea61623da1a",
+  "_key": "!items!c674aea61623da1a",
+  "name": "Yoimura Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Yoimura clan are renowned artists and shinobi who practice a unique and deadly art form: the manipulation of explosive clay. By infusing clay with their chakra through special mouths on their hands, they can sculpt it into various animated forms that can be detonated at will. They are masters of demolition, art, and long-range combat.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Yoimura Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Craft (sculpting), Hide, Ninjutsu, Sleight of Hand, Spot.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Clay Artist), Ninjutsu Adept, Precise Shot, Genin, Deceptive.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Yoimura Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-yoimura-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Yoimura Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Craft (sculpting)",
+            "slug": "craft-calligraphy",
+            "key": "crf"
+          },
+          {
+            "label": "Hide",
+            "slug": "stealth",
+            "key": "ste"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Sleight of Hand",
+            "slug": "sleight-of-hand",
+            "key": "slt"
+          },
+          {
+            "label": "Spot",
+            "slug": "perception",
+            "key": "per"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Clay Artist)",
+          "Ninjutsu Adept",
+          "Precise Shot",
+          "Genin",
+          "Deceptive"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

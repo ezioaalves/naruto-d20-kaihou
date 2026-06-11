@@ -1,0 +1,77 @@
+{
+  "_id": "d515fc51843674f3",
+  "_key": "!items!d515fc51843674f3",
+  "name": "Rinha Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Rinha clan possesses the &quot;Katsugan&quot; (Living Eye), a dojutsu that allows them to perceive the flow of life force and chakra within living organisms. This unique ability makes them exceptional medics, trackers, and analysts, able to diagnose injuries and track targets with uncanny precision.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Rinha Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Knowledge (earth and life sciences), Ninjutsu, Search, Survival, Treat Injury.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Katsugan), Medical Expert, Keen Senses, Genin, Studious.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Rinha Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-rinha-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Rinha Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Knowledge (earth and life sciences)",
+            "slug": "knowledge-nature",
+            "key": "kna"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Search",
+            "slug": "perception",
+            "key": "per"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Treat Injury",
+            "slug": "heal",
+            "key": "hea"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Katsugan)",
+          "Medical Expert",
+          "Keen Senses",
+          "Genin",
+          "Studious"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

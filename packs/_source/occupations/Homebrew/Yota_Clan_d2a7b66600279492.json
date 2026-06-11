@@ -1,0 +1,67 @@
+{
+  "_id": "d2a7b66600279492",
+  "_key": "!items!d2a7b66600279492",
+  "name": "Yota Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Yota clan were a mysterious, nomadic clan with the unique and powerful ability to manipulate the weather. By channeling their emotions into their chakra, they could freely create rain, wind, and lightning. This power made them both a potential blessing and a curse to those they encountered, as their emotional state directly influenced the environment around them.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Yota Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Ninjutsu, Perform (singing), Survival.</p><p><b>Feat:</b> Select one from Genin, Ninjutsu Adept, Elemental Specialization (any), Weather Forecast, Force of Personality.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Yota Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-yota-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Yota Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Perform (singing)",
+            "slug": "perform",
+            "key": "prf"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Genin",
+          "Ninjutsu Adept",
+          "Elemental Specialization (any)",
+          "Weather Forecast",
+          "Force of Personality"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}

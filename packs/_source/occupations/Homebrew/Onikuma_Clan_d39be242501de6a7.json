@@ -1,0 +1,67 @@
+{
+  "_id": "d39be242501de6a7",
+  "_key": "!items!d39be242501de6a7",
+  "name": "Onikuma Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Onikuma are a legendary and mysterious clan, whispered to possess the &quot;Tokeidome&quot; (Time Stop) bloodline. This ultimate power allows them to halt the flow of time for a mere instant, a moment that can decide any battle. This ability is incredibly rare, difficult to master, and drains an immense amount of chakra, making its users both revered and feared.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Onikuma Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Chakra Control, Genjutsu, Ninjutsu, Sense Motive.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Tokeidome), Focused, Iron Will, Genin, Improved Chakra Pool.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +2</p><p><b>Affiliation:</b> You require 1 less success to learn Onikuma Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-onikuma-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Onikuma Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Chakra Control",
+            "slug": "chakra-control",
+            "key": "ckc"
+          },
+          {
+            "label": "Genjutsu",
+            "slug": "genjutsu",
+            "key": "gnj"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Sense Motive",
+            "slug": "sense-motive",
+            "key": "sen"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Tokeidome)",
+          "Focused",
+          "Iron Will",
+          "Genin",
+          "Improved Chakra Pool"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 2
+      }
+    }
+  }
+}

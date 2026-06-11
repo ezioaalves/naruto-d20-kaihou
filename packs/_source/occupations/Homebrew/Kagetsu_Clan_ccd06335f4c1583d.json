@@ -1,0 +1,67 @@
+{
+  "_id": "ccd06335f4c1583d",
+  "_key": "!items!ccd06335f4c1583d",
+  "name": "Kagetsu Clan",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>The Kagetsu clan possesses the &quot;Motteyochi&quot; (Full Moon) bloodline, a unique trait that ties their power to the lunar cycle. They gain enhanced strength, speed, and chakra recovery during the night, with their abilities peaking during the full moon. They are masters of nighttime combat, infiltration, and assassination.</p><p><b>Source:</b> Mechanics/Character_Options/Occupations/Homebrew/Kagetsu Clan.md</p><p><b>Category:</b> Homebrew</p><p><b>Prerequisite:</b> Age 8+</p><p><b>Class Skills:</b> Select 2 from Hide, Ninjutsu, Survival, Taijutsu.</p><p><b>Feat:</b> Select one from Advanced Bloodline (Motteyochi), Stealthy, Alertness, Genin, Dodge.</p><p><b>Wealth Bonus Increase:</b> +1</p><p><b>Reputation Bonus Increase:</b> +1</p><p><b>Affiliation:</b> You require 1 less success to learn Kagetsu Hijutsu techniques.</p>"
+    },
+    "tags": [
+      "Occupation",
+      "Homebrew"
+    ],
+    "classSkills": {},
+    "changes": [],
+    "links": {
+      "supplements": []
+    }
+  },
+  "img": "modules/naruto-d20-zen-theme/assets/icons/items/title.svg",
+  "flags": {
+    "naruto-d20-kaihou": {
+      "occupation": {
+        "slug": "homebrew-kagetsu-clan",
+        "sourceMd": "Mechanics/Character_Options/Occupations/Homebrew/Kagetsu Clan.md",
+        "sourceCategory": "Homebrew",
+        "sourceSubcategory": null,
+        "skillSelectCount": 2,
+        "fixedClassSkills": [],
+        "classSkillOptions": [
+          {
+            "label": "Hide",
+            "slug": "stealth",
+            "key": "ste"
+          },
+          {
+            "label": "Ninjutsu",
+            "slug": "ninjutsu",
+            "key": "nin"
+          },
+          {
+            "label": "Survival",
+            "slug": "survival",
+            "key": "sur"
+          },
+          {
+            "label": "Taijutsu",
+            "slug": "taijutsu",
+            "key": "tai"
+          }
+        ],
+        "featSelectCount": 1,
+        "featOptions": [
+          "Advanced Bloodline (Motteyochi)",
+          "Stealthy",
+          "Alertness",
+          "Genin",
+          "Dodge"
+        ],
+        "techniqueOptions": [],
+        "wealthBonus": 1,
+        "reputationBonus": 1
+      }
+    }
+  }
+}
