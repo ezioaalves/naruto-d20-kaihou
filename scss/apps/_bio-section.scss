@@ -1,0 +1,147 @@
+/**
+ * § 5.1 Biography-tab two-column section (PF1e character sheet).
+ * Left column: PF1e's own biography editor (player notes, untouched).
+ * Right column: the 20 Questions answers summary + wizard launch button.
+ *
+ * Design: bold sumi-e — the right column is a companion scroll panel.
+ * The column divider is a heavy ink stroke (--zen-bold-border).
+ * Answer entries use the card-bold motif: no radius, accent left-rule.
+ * Header matches the wizard's display-font treatment.
+ * Button is ink-on-parchment (mirrors .tqw-v2__btn--primary).
+ * A subtle grain overlay ties the panel visually to the wizard.
+ */
+@use "../tokens" as *;
+
+.tab[data-tab="biography"] .tqw-bio-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(220px, 2fr);
+  gap: 0;
+  height: 100%;
+
+  .tqw-bio-left {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding-right: var(--zen-space-3);
+  }
+
+  .tqw-bio-right {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--zen-space-2);
+    padding: var(--zen-space-3) var(--zen-space-3) var(--zen-space-3) var(--zen-space-4);
+    // Heavy ink stroke as divider — the sumi-e brush-stroke column separator.
+    border-left: var(--zen-bold-border);
+    overflow-y: auto;
+    // Grain texture matching the wizard backdrop.
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: var(--zen-bold-grain);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    // ── Header ────────────────────────────────────────────────────────────
+    .tqw-bio-header {
+      font-family: var(--zen-font-display);
+      font-size: var(--zen-text-xl);
+      color: var(--zen-ink);
+      letter-spacing: 0.5px;
+      margin: 0 0 var(--zen-space-1) 0;
+      padding-bottom: var(--zen-space-1);
+      // Accent under-rule matching .tqw-v2__question
+      border-bottom: var(--zen-bold-accent-rule);
+      display: inline-block;
+      width: 100%;
+    }
+
+    // ── Status summary ────────────────────────────────────────────────────
+    .tqw-bio-summary {
+      font-size: var(--zen-text-xs);
+      color: var(--zen-ink-mute);
+      margin: 0;
+      font-style: italic;
+    }
+
+    // ── Answers scroll area ───────────────────────────────────────────────
+    .tqw-bio-answers {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--zen-space-2);
+    }
+
+    // Each answer entry — card-bold motif: no radius, accent left-border.
+    .tqw-bio-answer {
+      background: var(--zen-bold-card-bg);
+      border: var(--zen-border-hair) solid var(--zen-border);
+      border-left: var(--zen-bold-accent-rule);
+      padding: var(--zen-space-2) var(--zen-space-3);
+      box-shadow: var(--zen-elevation-card);
+
+      // Q-label: compressed uppercase, muted ink, display-font weight
+      .tqw-bio-q {
+        display: block;
+        font-family: var(--zen-font-body);
+        font-weight: 700;
+        font-size: var(--zen-text-xs);
+        color: var(--zen-ink-accent);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: var(--zen-space-1);
+      }
+
+      p {
+        margin: 0;
+        font-family: var(--zen-font-flavor);
+        font-size: var(--zen-text-sm);
+        color: var(--zen-ink);
+        line-height: 1.4;
+      }
+    }
+
+    // Empty state hint
+    .tqw-bio-empty {
+      font-size: var(--zen-text-sm);
+      color: var(--zen-ink-soft);
+      font-style: italic;
+      margin: 0;
+    }
+
+    // ── Launch button — ink-on-parchment, no radius, mirrors tqw-v2__btn--primary ──
+    .tqw-sheet-button {
+      width: 100%;
+      background: var(--zen-ink);
+      color: var(--zen-surface);
+      border: var(--zen-bold-border);
+      border-radius: 0;
+      padding: var(--zen-space-2) var(--zen-space-3);
+      font-family: var(--zen-font-body);
+      font-size: var(--zen-text-sm);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: background var(--zen-duration-fast) var(--zen-easing-out);
+      margin-top: auto;
+
+      i {
+        opacity: 0.85;
+      }
+
+      &:hover {
+        background: #3a2e1b;
+      }
+    }
+  }
+}

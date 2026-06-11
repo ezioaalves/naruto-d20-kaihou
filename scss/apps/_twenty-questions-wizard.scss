@@ -12,6 +12,7 @@
 
 @use "../tokens" as *;
 @use "../components/index" as *;
+@use "bio-section";
 
 .tqw-v2 {
   background: var(--zen-surface);

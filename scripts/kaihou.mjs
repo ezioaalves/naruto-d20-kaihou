@@ -15,6 +15,7 @@
  */
 
 import TwentyQuestionsWizard from "./apps/wizard/twenty-questions-wizard.mjs";
+import { QUESTION_DEFINITIONS } from "./apps/wizard/question-definitions.mjs";
 import { registerSchoolAutoApply } from "./grants/school-apply.mjs";
 import {
   registerOccupationAutoApply,
@@ -73,32 +74,51 @@ Hooks.once("ready", () => {
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 });
 
-// Inject "20 Questions" section into PF1e character sheet Biography tab.
+// § 5.1 — two-column Biography tab: the player's bio editor on the left,
+// the 20 Questions answers + launch button on the right. Answers read from
+// module flags (never from the bio field).
 Hooks.on("renderActorSheetPFCharacter", (app, html, _data) => {
   const bioTab = html.find('.tab[data-tab="biography"]');
-  if (bioTab.length === 0) return;
+  if (bioTab.length === 0 || bioTab.find(".tqw-bio-grid").length > 0) return;
 
   const actor = app.actor;
-  const wizardItemCount = Array.from(actor.items ?? []).filter(
+  const narratives = actor.flags?.["naruto-d20-kaihou"]?.wizard?.narratives ?? {};
+  const grantCount = Array.from(actor.items ?? []).filter(
     (i) => i.flags?.["naruto-d20-kaihou"]?.wizard
   ).length;
 
-  const summary = wizardItemCount > 0
-    ? `<p class="tqw-bio-summary hint">${wizardItemCount} mechanic grant(s) applied by the 20 Questions wizard.</p>`
+  const escape = (text) =>
+    foundry.utils.escapeHTML
+      ? foundry.utils.escapeHTML(text)
+      : text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+  const answerRows = QUESTION_DEFINITIONS.map((q) => {
+    const text = narratives[q.id];
+    if (!text || !text.trim()) return "";
+    return `<div class="tqw-bio-answer">
+      <span class="tqw-bio-q">${q.id.toUpperCase()} · ${q.sidebarLabel}</span>
+      <p>${escape(text).replace(/\n/g, "<br>")}</p>
+    </div>`;
+  }).join("");
+
+  const summary = grantCount > 0
+    ? `<p class="tqw-bio-summary hint">${grantCount} mechanic grant(s) applied by the wizard.</p>`
     : `<p class="tqw-bio-summary hint">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
 
-  const section = $(`<div class="tqw-bio-section flexcol">
+  const right = $(`<aside class="tqw-bio-right">
     <h3 class="tqw-bio-header">20 Questions</h3>
     ${summary}
+    <div class="tqw-bio-answers">${answerRows || '<p class="hint tqw-bio-empty">No answers recorded yet.</p>'}</div>
     <button type="button" class="tqw-sheet-button">
       <i class="fas fa-scroll"></i> Open 20 Questions Wizard
     </button>
-  </div>`);
+  </aside>`);
 
-  section.find(".tqw-sheet-button").on("click", () => {
+  right.find(".tqw-sheet-button").on("click", () => {
     const wizard = new TwentyQuestionsWizard(actor);
     wizard.render(true);
   });
 
-  bioTab.prepend(section);
+  const left = $('<div class="tqw-bio-left"></div>').append(bioTab.children());
+  bioTab.append($('<div class="tqw-bio-grid"></div>').append(left, right));
 });
