@@ -12,13 +12,15 @@
 
 @use "../tokens" as *;
 @use "../components/index" as *;
+@use "bio-section";
 
 .tqw-v2 {
   background: var(--zen-surface);
   border: var(--zen-bold-border-heavy);
   box-shadow: 0 4px 12px rgba(94, 67, 39, 0.3),
               inset 0 0 12px rgba(195, 165, 130, 0.2);
-  position: relative;
+  // NOTE: never set `position` here — this class sits on the ApplicationV2
+  // root next to core's .application, whose fixed positioning must win.
   font-family: var(--zen-font-body);
   color: var(--zen-ink);
   // Stack header / progress / content / footer; let content take the

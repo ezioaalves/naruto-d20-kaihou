@@ -15,11 +15,13 @@
  */
 
 import TwentyQuestionsWizard from "./apps/wizard/twenty-questions-wizard.mjs";
+import { buildAnswerRows } from "./apps/wizard/answer-summary.mjs";
 import { registerSchoolAutoApply } from "./grants/school-apply.mjs";
 import {
   registerOccupationAutoApply,
   registerOccupationAutoRevert,
 } from "./grants/occupation-apply.mjs";
+import { registerQuestionFeatEffects } from "./grants/question-effects.mjs";
 
 // Theme layer — registers its own Hooks.once("init", ...) so must be loaded
 // at module-import time, before any Hooks.once events fire. Pure side-effect
@@ -68,35 +70,72 @@ Hooks.once("ready", () => {
   registerSchoolAutoApply();
   registerOccupationAutoApply();
   registerOccupationAutoRevert();
+  registerQuestionFeatEffects();
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 });
 
-// Inject "20 Questions" section into PF1e character sheet Biography tab.
-Hooks.on("renderActorSheetPFCharacter", (app, html, _data) => {
+// § 5.1 — two-column Biography tab: the player's bio editor on the left,
+// the 20 Questions answers + launch button on the right.
+//
+// Fires on the generic renderActorSheet hook so NPC sheets are also covered
+// (PF1e's character and NPC sheets both descend from ActorSheet).
+// Answers are read from module flags first; actors completed by older module
+// versions may store answers in the bio HTML instead (the legacy fallback).
+Hooks.on("renderActorSheet", (app, html, _data) => {
+  if (!["character", "npc"].includes(app.actor?.type)) return;
+
   const bioTab = html.find('.tab[data-tab="biography"]');
-  if (bioTab.length === 0) return;
+  if (bioTab.length === 0 || bioTab.find(".tqw-bio-grid").length > 0) return;
 
   const actor = app.actor;
-  const wizardItemCount = Array.from(actor.items ?? []).filter(
+
+  const grantCount = Array.from(actor.items ?? []).filter(
     (i) => i.flags?.["naruto-d20-kaihou"]?.wizard
   ).length;
 
-  const summary = wizardItemCount > 0
-    ? `<p class="tqw-bio-summary hint">${wizardItemCount} mechanic grant(s) applied by the 20 Questions wizard.</p>`
-    : `<p class="tqw-bio-summary hint">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
+  const escape = (text) =>
+    foundry.utils.escapeHTML
+      ? foundry.utils.escapeHTML(text)
+      : text.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-  const section = $(`<div class="tqw-bio-section flexcol">
-    <h3 class="tqw-bio-header">20 Questions</h3>
+  // Narrative-first: the question text + the player's written answer lead;
+  // the mechanical pick is a muted footnote (GM ruling 2026-06-11).
+  const rows = buildAnswerRows(actor);
+  const answerRows = rows.map((row) => `
+  <div class="tqw-bio-answer">
+    <span class="tqw-bio-q">${row.qid.toUpperCase()}</span>
+    <span class="tqw-bio-question">${escape(row.question)}</span>
+    ${row.narrative ? `<p>${escape(row.narrative).replace(/\n/g, "<br>")}</p>` : ""}
+    ${row.mechanical ? `<p class="tqw-bio-mech">${escape(row.mechanical)}</p>` : ""}
+  </div>`).join("");
+
+  // No borrowed `hint` class here: PF1e/core style .hint with
+  // `flex: 0 0 100%` inside sheets, which makes it consume the whole flex
+  // column and collapse the answers list to zero height.
+  const summary = grantCount > 0
+    ? `<p class="tqw-bio-summary">${grantCount} mechanic grant(s) applied by the wizard.</p>`
+    : `<p class="tqw-bio-summary">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
+
+  const right = $(`<aside class="tqw-bio-right">
+    <div class="tqw-bio-header-row">
+      <h3 class="tqw-bio-header">20 Questions</h3>
+      <button type="button" class="tqw-sheet-button" title="Open 20 Questions Wizard" aria-label="Open 20 Questions Wizard">
+        <i class="fas fa-scroll"></i>
+      </button>
+    </div>
     ${summary}
-    <button type="button" class="tqw-sheet-button">
-      <i class="fas fa-scroll"></i> Open 20 Questions Wizard
-    </button>
-  </div>`);
+    <div class="tqw-bio-answers">${answerRows || '<p class="tqw-bio-empty">No answers recorded yet.</p>'}</div>
+  </aside>`);
 
-  section.find(".tqw-sheet-button").on("click", () => {
+  right.find(".tqw-sheet-button").on("click", () => {
     const wizard = new TwentyQuestionsWizard(actor);
     wizard.render(true);
   });
 
-  bioTab.prepend(section);
+  const left = $('<div class="tqw-bio-left"></div>').append(bioTab.children());
+  const grid = $('<div class="tqw-bio-grid"></div>').append(left, right);
+  // Container wrapper enables the @container query that stacks the two
+  // columns on narrow sheets (inline-size containment on our own element
+  // only — never on PF1e's tab).
+  bioTab.append($('<div class="tqw-bio-container"></div>').append(grid));
 });

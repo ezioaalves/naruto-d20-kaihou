@@ -3,6 +3,7 @@ import {
   HERITAGE_OUTCOMES,
   getOutcomeByRoll,
   extractModifierDeltas,
+  heritageFeatName,
 } from "../../scripts/apps/wizard/heritage-table.mjs";
 
 describe("HERITAGE_OUTCOMES", () => {
@@ -63,6 +64,17 @@ describe("extractModifierDeltas", () => {
 
   it("returns zero deltas for unparseable string (defensive)", () => {
     expect(extractModifierDeltas("Some unrelated text")).toEqual({ deltaRep: 0, deltaAP: 0 });
+  });
+});
+
+describe("heritageFeatName", () => {
+  it("maps roll → generated pack feat name", () => {
+    expect(heritageFeatName(1)).toBe("Namesake: Famous Deed");
+    expect(heritageFeatName(9)).toBe("Namesake: Imperial Heritage");
+  });
+
+  it("returns null for an invalid roll", () => {
+    expect(heritageFeatName(11)).toBeNull();
   });
 });
 

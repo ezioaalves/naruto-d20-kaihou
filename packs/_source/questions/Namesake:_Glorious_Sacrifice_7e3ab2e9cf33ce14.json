@@ -1,0 +1,28 @@
+{
+  "_id": "7e3ab2e9cf33ce14",
+  "_key": "!items!7e3ab2e9cf33ce14",
+  "name": "Namesake: Glorious Sacrifice",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>You were named for a glorious sacrifice. (Heritage roll 2) <p><b>Modifier:</b> +2 Action Points, +2 Reputation.</p> <p><b>Other effects (apply manually):</b> A lost family heirloom (d10 item type as Famous Deed) exists somewhere in the world.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": 2,
+        "actionPoints": 2
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-glorious-sacrifice"
+    }
+  }
+}

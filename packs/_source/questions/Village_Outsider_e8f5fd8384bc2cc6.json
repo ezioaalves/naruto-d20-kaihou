@@ -14,5 +14,10 @@
     ],
     "changes": []
   },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q07-relationship-outsider"
+    }
+  },
   "img": "icons/svg/downgrade.svg"
 }

@@ -1,13 +1,14 @@
 {{!-- Radio chips — Q4 affinity, etc. --}}
 <div class="zen-card zen-card--bold tqw-v2__pick tqw-v2__pick--radio">
   <div class="zen-card__label">{{current.sidebarLabel}}</div>
-  <div class="zen-pick-grid">
+  <div class="zen-pick-grid" data-qid="{{current.id}}">
     {{#each current.options}}
       <button type="button"
-              class="zen-chip zen-chip--bold{{#if (eq value ../current.value)}} zen-chip--selected{{/if}}"
+              class="zen-chip zen-chip--bold{{#if icon}} zen-chip--icon{{/if}}{{#if (eq value ../current.value)}} zen-chip--selected{{/if}}"
               data-action="tqw-radio-select"
               data-qid="{{../current.id}}"
               data-value="{{value}}">
+        {{#if icon}}<img class="zen-chip__icon" src="{{icon}}" alt="">{{/if}}
         {{label}}
       </button>
     {{/each}}

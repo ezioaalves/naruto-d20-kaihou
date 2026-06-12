@@ -1,0 +1,28 @@
+{
+  "_id": "276e14c21ae33e6a",
+  "_key": "!items!276e14c21ae33e6a",
+  "name": "Parental Influence",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your parents' lessons left their mark. They tried to teach you something you may have ignored \u2014 a skill you never bothered to practice until now. <p><b>Grants:</b> 1 bonus skill rank to allocate freely (GM oversight).</p></p>"
+    },
+    "tags": [
+      "20 Questions Q17",
+      "Parental Influence"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "bonusSkillRank": 1
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q17-parental-influence"
+    }
+  },
+  "img": "icons/svg/book.svg"
+}

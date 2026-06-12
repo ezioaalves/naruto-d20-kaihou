@@ -18,6 +18,9 @@
  */
 export function defaultState() {
   return {
+    // Navigation depends on currentId being initialized; without it,
+    // _onNext resolves findIndex to -1 and the first click re-lands on q1.
+    currentId: "q1",
     q1_village_uuid: null,
     q2_occupation_uuid: null,
     q3_school_uuid: null,
@@ -177,11 +180,6 @@ export function loadFromActor(actor) {
   const q8ScepticItem = findItemByMarker(actor, "q8Sceptic");
   if (q8ScepticItem) {
     state.q8_code = "sceptic";
-    // Load the subskill snapshot
-    const scepticSkill = getWizardFlag(actor, "q8ScepticSubskill");
-    if (scepticSkill) {
-      state.q8_sceptic_subskill = scepticSkill;
-    }
   }
 
   // Q9 — Level 1 Feat (marker flag q9Level1Feat)
@@ -200,8 +198,8 @@ export function loadFromActor(actor) {
     state.q10_bonus_feat_uuid = q10BonusFeatItem._id;
   }
 
-  // Q13 — Mentor Technique + Class Skill (marker flag q13MentorTechnique)
-  const q13Item = findItemByMarker(actor, "q13MentorTechnique");
+  // Q13 — Mentor Technique + Class Skill (marker flag q13Mentor)
+  const q13Item = findItemByMarker(actor, "q13Mentor");
   if (q13Item) {
     state.q13_mentor_technique_uuid = q13Item._id;
     // Load the class skill snapshot
@@ -231,10 +229,17 @@ export function loadFromActor(actor) {
     }
   }
 
-  // Parse narratives from biography HTML
-  const biographyHtml = actor?.system?.details?.biography?.value || "";
-  const parsedNarratives = parseNarratives(biographyHtml);
-  Object.assign(state.narratives, parsedNarratives);
+  // Narratives: module flags are canonical (§ 5.1); biography HTML parsing
+  // remains as a fallback for actors written by pre-contract versions.
+  const flagNarratives = actor?.flags?.["naruto-d20-kaihou"]?.wizard?.narratives;
+  if (flagNarratives && typeof flagNarratives === "object") {
+    for (const [k, v] of Object.entries(flagNarratives)) {
+      if (typeof v === "string" && k in state.narratives) state.narratives[k] = v;
+    }
+  } else {
+    const biographyHtml = actor?.system?.details?.biography?.value || "";
+    Object.assign(state.narratives, parseNarratives(biographyHtml));
+  }
 
   return state;
 }

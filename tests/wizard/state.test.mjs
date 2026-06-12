@@ -2,6 +2,10 @@ import { describe, it, expect } from "vitest";
 import { defaultState, loadFromActor, diffStates, validate, canJumpTo, jumpTo } from "../../scripts/apps/wizard/wizard-state.mjs";
 
 describe("defaultState", () => {
+  it("initializes currentId to q1 (first Next must advance, not re-land)", () => {
+    expect(defaultState().currentId).toBe("q1");
+  });
+
   it("returns null for all mechanical fields", () => {
     const s = defaultState();
     expect(s.q1_village_uuid).toBeNull();
@@ -113,6 +117,39 @@ describe("loadFromActor", () => {
     const s = loadFromActor(actor);
     expect(s.q18_heritage_roll).toBe(9);
     expect(s.q18_heritage_locked_modifier).toEqual({ deltaRep: 0, deltaAP: 3 });
+  });
+
+  it("loads q13_mentor_technique_uuid from item with q13Mentor marker (applier round-trip)", () => {
+    const actor = mockActor({
+      items: [
+        { _id: "tech1", flags: { "naruto-d20-kaihou": { wizard: { q13Mentor: true } } } },
+      ],
+      flags: { "naruto-d20-kaihou": { wizard: { q13ClassSkill: "gen" } } },
+    });
+    const s = loadFromActor(actor);
+    expect(s.q13_mentor_technique_uuid).toBe("tech1");
+    expect(s.q13_class_skill).toBe("gen");
+  });
+
+  it("prefers narratives from module flags over biography HTML", () => {
+    const actor = mockActor({
+      flags: { "naruto-d20-kaihou": { wizard: { narratives: { q5: "From flags." } } } },
+      system: {
+        details: { biography: { value: '<h3 data-q="5">Q5</h3><p>From bio.</p>' } },
+        skills: {},
+      },
+    });
+    expect(loadFromActor(actor).narratives.q5).toBe("From flags.");
+  });
+
+  it("falls back to biography parsing when the narratives flag is absent", () => {
+    const actor = mockActor({
+      system: {
+        details: { biography: { value: '<h3 data-q="5">Q5</h3><p>From bio.</p>' } },
+        skills: {},
+      },
+    });
+    expect(loadFromActor(actor).narratives.q5).toBe("From bio.");
   });
 
   it("parses narratives from biography <h3 data-q='N'><p>…</p> blocks", () => {

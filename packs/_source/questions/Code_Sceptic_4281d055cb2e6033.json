@@ -12,7 +12,17 @@
       "20 Questions Q8",
       "Shinobi Code"
     ],
-    "changes": []
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "bonusSkillRank": 1
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q08-code-sceptic"
+    }
   },
   "img": "icons/svg/book.svg"
 }

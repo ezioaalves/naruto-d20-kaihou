@@ -1,0 +1,27 @@
+{
+  "_id": "2e4c4c5eab11d475",
+  "_key": "!items!2e4c4c5eab11d475",
+  "name": "Namesake: Discovery",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>You were named for a discovery. (Heritage roll 5) <p><b>Modifier:</b> +1 Reputation.</p> <p><b>Other effects (apply manually):</b> Pick a Knowledge skill \u2014 it becomes a class skill; pick an untrained Perform subskill and gain +1 rank (OR +1 trait bonus if already a class skill).</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": 1
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-discovery"
+    }
+  }
+}

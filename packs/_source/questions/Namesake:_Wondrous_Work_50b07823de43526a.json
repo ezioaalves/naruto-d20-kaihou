@@ -1,0 +1,27 @@
+{
+  "_id": "50b07823de43526a",
+  "_key": "!items!50b07823de43526a",
+  "name": "Namesake: Wondrous Work",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>You were named for a wondrous work. (Heritage roll 3) <p><b>Modifier:</b> +2 Reputation.</p> <p><b>Other effects (apply manually):</b> Perform is a class skill; pick an untrained Perform subskill and gain +1 rank in it.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": 2
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-wondrous-work"
+    }
+  }
+}

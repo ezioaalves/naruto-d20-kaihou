@@ -114,6 +114,28 @@ export function parse(html) {
 }
 
 /**
+ * Remove the wizard region (markers included) from a biography.
+ * Returns the input unchanged when no region exists. Since the § 5.1
+ * biography-tab section, wizard answers live in module flags; this strips
+ * regions written by older module versions so the bio field belongs to the
+ * player again.
+ * @param {string} currentBiography - The current biography HTML
+ * @returns {string} Biography without the 20Q region
+ */
+export function strip(currentBiography) {
+  const startMarker = "<!-- 20Q:START -->";
+  const endMarker = "<!-- 20Q:END -->";
+  const startIdx = currentBiography.indexOf(startMarker);
+  const endIdx = currentBiography.indexOf(endMarker);
+  if (startIdx === -1 || endIdx === -1) return currentBiography;
+  const afterEnd = endIdx + endMarker.length;
+  // Swallow an optional newline immediately after the end marker so we don't
+  // leave a stray blank line when the region was the only content.
+  const skip = currentBiography[afterEnd] === "\n" ? afterEnd + 1 : afterEnd;
+  return currentBiography.substring(0, startIdx) + currentBiography.substring(skip);
+}
+
+/**
  * Splice a newly-rendered wizard region into an actor biography.
  * Preserves text before <!-- 20Q:START --> and after <!-- 20Q:END -->.
  * @param {string} currentBiography - The current biography HTML

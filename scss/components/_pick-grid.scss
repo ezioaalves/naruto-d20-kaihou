@@ -21,3 +21,12 @@
   flex: 1;
   min-width: 0;
 }
+
+// Q4 nature affinity — five ring glyphs on a single row.
+.tqw-v2 .zen-pick-grid[data-qid="q4"] {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  flex-wrap: unset;
+}
+
+// Icon sizing moved to .zen-chip--icon in _chip.scss (owns icon sizing).

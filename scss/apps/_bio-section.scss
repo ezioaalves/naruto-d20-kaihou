@@ -1,0 +1,224 @@
+/**
+ * § 5.1 Biography-tab two-column section (PF1e character sheet).
+ * Left column: PF1e's own biography editor (player notes, untouched).
+ * Right column: the 20 Questions answers summary + wizard launch button.
+ *
+ * Design: bold sumi-e — the right column is a companion scroll panel.
+ * The column divider is a heavy ink stroke (--zen-bold-border).
+ * Answer entries use the card-bold motif: no radius, accent left-rule.
+ * Header matches the wizard's display-font treatment.
+ * Button is ink-on-parchment (mirrors .tqw-v2__btn--primary).
+ * A subtle grain overlay ties the panel visually to the wizard.
+ */
+@use "../tokens" as *;
+
+.tab[data-tab="biography"] .tqw-bio-container {
+  container-type: inline-size;
+  height: 100%;
+  min-height: 0;
+}
+
+.tab[data-tab="biography"] .tqw-bio-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(220px, 2fr);
+  gap: 0;
+  height: 100%;
+
+  .tqw-bio-left {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding-right: var(--zen-space-3);
+  }
+
+  .tqw-bio-right {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--zen-space-2);
+    padding: var(--zen-space-3) var(--zen-space-3) var(--zen-space-3) var(--zen-space-4);
+    // Heavy ink stroke as divider — the sumi-e brush-stroke column separator.
+    border-left: var(--zen-bold-border);
+    overflow-y: auto;
+    // Grain texture matching the wizard backdrop.
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: var(--zen-bold-grain);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    // ── Header row: title left, icon button right ─────────────────────────
+    // flex: 0 0 auto on the fixed parts is load-bearing: PF1e/core sheet CSS
+    // styles utility classes (e.g. .hint) with flex-basis 100%, and any
+    // borrowed class on these children would otherwise swallow the column.
+    .tqw-bio-header-row {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: baseline;
+      gap: var(--zen-space-2);
+      border-bottom: var(--zen-bold-accent-rule);
+      padding-bottom: var(--zen-space-1);
+      margin-bottom: var(--zen-space-1);
+      // Prevent the row itself from overflowing narrow columns
+      min-width: 0;
+    }
+
+    .tqw-bio-header {
+      font-family: var(--zen-font-display);
+      font-size: var(--zen-text-xl);
+      color: var(--zen-ink);
+      letter-spacing: 0.5px;
+      margin: 0;
+      padding: 0;
+      border: none;  // border moves up to .tqw-bio-header-row
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    // ── Status summary ────────────────────────────────────────────────────
+    .tqw-bio-summary {
+      flex: 0 0 auto;
+      font-size: var(--zen-text-xs);
+      color: var(--zen-ink-mute);
+      margin: 0;
+      font-style: italic;
+    }
+
+    // ── Answers scroll area ───────────────────────────────────────────────
+    // min-height: 0 is load-bearing: without it a flex child refuses to
+    // shrink below content height and the overflow scroll silently breaks.
+    .tqw-bio-answers {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--zen-space-2);
+    }
+
+    // Each answer entry — card-bold motif: no radius, accent left-border.
+    .tqw-bio-answer {
+      background: var(--zen-bold-card-bg);
+      border: var(--zen-border-hair) solid var(--zen-border);
+      border-left: var(--zen-bold-accent-rule);
+      padding: var(--zen-space-2) var(--zen-space-3);
+      box-shadow: var(--zen-elevation-card);
+
+      // Q-number chip: compressed uppercase accent, inline before the question
+      .tqw-bio-q {
+        font-family: var(--zen-font-body);
+        font-weight: 700;
+        font-size: var(--zen-text-xs);
+        color: var(--zen-ink-accent);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-right: var(--zen-space-1);
+      }
+
+      // The question text itself — narrative-first layout leads with it.
+      .tqw-bio-question {
+        font-family: var(--zen-font-body);
+        font-weight: 600;
+        font-size: var(--zen-text-sm);
+        color: var(--zen-ink);
+        line-height: 1.3;
+      }
+
+      // The player's written answer — the star of the row.
+      p {
+        margin: var(--zen-space-1) 0 0;
+        font-family: var(--zen-font-flavor);
+        font-size: var(--zen-text-sm);
+        color: var(--zen-ink);
+        line-height: 1.4;
+      }
+
+      // Mechanical pick — muted footnote under the narrative.
+      .tqw-bio-mech {
+        margin: var(--zen-space-1) 0 0;
+        font-family: var(--zen-font-body);
+        font-weight: 400;
+        font-style: italic;
+        font-size: var(--zen-text-xs);
+        color: var(--zen-ink-soft);
+        line-height: 1.3;
+      }
+    }
+
+    // Empty state hint
+    .tqw-bio-empty {
+      font-size: var(--zen-text-sm);
+      color: var(--zen-ink-soft);
+      font-style: italic;
+      margin: 0;
+    }
+
+    // ── Launch button — compact icon-only, ink-on-parchment, sits in header row ──
+    // No radius, no width:100%, no margin-top:auto. Square ~30px touch target.
+    .tqw-sheet-button {
+      flex-shrink: 0;
+      align-self: center;
+      width: 30px;
+      height: 30px;
+      background: var(--zen-ink);
+      color: var(--zen-surface);
+      border: var(--zen-bold-border);
+      border-radius: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--zen-duration-fast) var(--zen-easing-out);
+      // Ensure the button never adds width that overflows narrow columns
+      min-width: 0;
+
+      i {
+        font-size: var(--zen-text-sm);
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      &:hover {
+        background: #3a2e1b;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--zen-ink-accent);
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+// Narrow sheets: stack the panel under the player notes instead of
+// squeezing two columns. Queries the module-owned container only.
+@container (max-width: 560px) {
+  .tab[data-tab="biography"] .tqw-bio-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+
+    .tqw-bio-left {
+      padding-right: 0;
+    }
+
+    .tqw-bio-right {
+      border-left: none;
+      border-top: var(--zen-bold-border);
+      padding-left: var(--zen-space-3);
+    }
+  }
+}

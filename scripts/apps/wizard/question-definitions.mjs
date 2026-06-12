@@ -28,32 +28,34 @@ const Q1_VILLAGE_OPTIONS = [
   {value: "bf4e2f24f90bb464", label: "Tsurugakure (Crane)"},
 ];
 
-// Q4 — Affinity options
+// Q4 — Affinity options. Values stay English (the naruto-d20 nature flag
+// and its consumers key on them); labels are the Japanese release names.
+// Icons: zen theme ring set (assets/theme/icons/rings/) — wind uses air.svg.
 const Q4_AFFINITY_OPTIONS = [
   {
     value: "Fire",
-    label: "Fire (Katon)",
-    icon: "modules/naruto-d20-kaihou/assets/questions/elements/fire.svg",
+    label: "Katon",
+    icon: "modules/naruto-d20-kaihou/assets/theme/icons/rings/fire.svg",
   },
   {
     value: "Water",
-    label: "Water (Suiton)",
-    icon: "modules/naruto-d20-kaihou/assets/questions/elements/water.svg",
+    label: "Suiton",
+    icon: "modules/naruto-d20-kaihou/assets/theme/icons/rings/water.svg",
   },
   {
     value: "Earth",
-    label: "Earth (Doton)",
-    icon: "modules/naruto-d20-kaihou/assets/questions/elements/earth.svg",
+    label: "Doton",
+    icon: "modules/naruto-d20-kaihou/assets/theme/icons/rings/earth.svg",
   },
   {
     value: "Wind",
-    label: "Wind (Fuuton)",
-    icon: "modules/naruto-d20-kaihou/assets/questions/elements/wind.svg",
+    label: "Fuuton",
+    icon: "modules/naruto-d20-kaihou/assets/theme/icons/rings/air.svg",
   },
   {
     value: "Lightning",
-    label: "Lightning (Raiton)",
-    icon: "modules/naruto-d20-kaihou/assets/questions/elements/lightning.png",
+    label: "Raiton",
+    icon: "modules/naruto-d20-kaihou/assets/theme/icons/rings/lightning.png",
   },
 ];
 
@@ -139,17 +141,15 @@ const Q7_RELATIONSHIP_OPTIONS = [
   },
 ];
 
-// Q8 Adherent/Sceptic options
+// Q8 Adherent/Sceptic options — text-only chips (GM ruling 2026-06-11)
 const Q8_CODE_OPTIONS = [
   {
     value: "adherent",
     label: "Code Adherent (Conviction)",
-    icon: "icons/svg/holy-shield.svg",
   },
   {
     value: "sceptic",
     label: "Code Sceptic (Pragmatism)",
-    icon: "icons/svg/book.svg",
   },
 ];
 
@@ -272,7 +272,7 @@ export const QUESTION_DEFINITIONS = [
     pickType: "drag-drop",
     stateField: "q3_school_uuid",
     required: false,
-    questionText: "What is your biggest talent?",
+    questionText: "Where did you study?",
     sidebarLabel: "Talent",
     narrativePrompt: "",
     markerFlag: "q3School",

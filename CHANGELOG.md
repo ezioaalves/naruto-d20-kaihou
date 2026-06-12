@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.3 — 2026-06-11
+
+### Added
+- **Q1–Q20 application contract (spec § 5)**: question feats are generated from vault YAML sources and carry their reputation / action-point / bonus-skill-rank payloads as PF1e dictionary flags; a new grants-side effects engine (`scripts/grants/question-effects.mjs`) applies them when a feat lands on an actor and reverts them on deletion — manual compendium drags work identically to the wizard.
+- 12 new question feats: Parental Influence (Q17), Mentor's Lesson (Q13), and the ten `Namesake:` heritage outcomes (Q18), all vault-sourced with deterministic UUIDs.
+- **Two-column Biography tab (spec § 5.1)**: player notes left, a zen-styled "20 Questions" panel right showing every answer narrative-first (question text + written answer, mechanical pick as a muted footnote) with an icon-only wizard launch button; stacks vertically on narrow sheets; shown on character and NPC sheets.
+- Generator: `minor_benefits` lists, `bonus_skill_rank` kind, `questionFeat` marker flag.
+
+### Changed
+- Wizard narratives moved from the biography field into module flags; finishing strips the legacy `<!-- 20Q -->` bio region so the bio field belongs to the player.
+- Re-answering a question replaces the previous grant instead of stacking (revert-on-change in the finish orchestrator).
+- Q3 reads "Where did you study?"; Q4 uses Japanese nature names with ring icons on a single row; Q8 chips are text-only.
+- Free-text answers are persisted before any item operation, and stale-id deletions no longer abort the finish flow.
+
+### Fixed
+- Q13 marker mismatch that prevented a finished Q13 from reloading into wizard state.
+- First Next click on a fresh wizard not advancing (uninitialized `currentId`).
+- Wizard window opening glued to the right edge: a `position: relative` on the ApplicationV2 root class overrode core window positioning.
+- Biography panel rendering empty: the borrowed PF1e `.hint` class carries `flex-basis: 100%` in sheet context, collapsing the answers list to zero height.
+- Flaky `pack:all` (`LEVEL_ITERATOR_NOT_OPEN`): compiled packs are wiped before packing; fvtt CLI upgraded 1.1.0 → 3.0.3.
+
 ## v2.0.0 — 2026-06-08
 
 ### Breaking

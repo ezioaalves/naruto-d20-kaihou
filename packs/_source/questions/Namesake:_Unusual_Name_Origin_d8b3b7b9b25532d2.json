@@ -1,0 +1,27 @@
+{
+  "_id": "d8b3b7b9b25532d2",
+  "_key": "!items!d8b3b7b9b25532d2",
+  "name": "Namesake: Unusual Name Origin",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Your name has an unusual origin. (Heritage roll 10) <p><b>Modifier:</b> -1 Reputation.</p> <p><b>Other effects (apply manually):</b> Reduce one ability score by 2 and increase another by 2; OR start with one mastercraft +1 item.</p></p>"
+    },
+    "tags": [
+      "20 Questions Q18",
+      "Namesake Heritage"
+    ],
+    "changes": [],
+    "flags": {
+      "dictionary": {
+        "reputation": -1
+      }
+    }
+  },
+  "flags": {
+    "naruto-d20-kaihou": {
+      "questionFeat": "q18-namesake-unusual-name-origin"
+    }
+  }
+}
