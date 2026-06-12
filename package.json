@@ -1,6 +1,6 @@
 {
   "name": "naruto-d20-kaihou",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Kaihou-specific identity content module for Foundry VTT (Naruto D20).",
   "private": true,
   "type": "module",

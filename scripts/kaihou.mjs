@@ -114,11 +114,14 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
     ${row.mechanical ? `<p class="tqw-bio-mech">${escape(row.mechanical)}</p>` : ""}
   </div>`).join("");
 
+  // No borrowed `hint` class here: PF1e/core style .hint with
+  // `flex: 0 0 100%` inside sheets, which makes it consume the whole flex
+  // column and collapse the answers list to zero height.
   // TEMP DIAGNOSTIC (remove before merge): rows count + build tag visible in
   // the summary line, so a screenshot alone tells us what this client ran.
   const summary = grantCount > 0
-    ? `<p class="tqw-bio-summary hint">${grantCount} mechanic grant(s) · ${rows.length} answer(s) · v2.1.2</p>`
-    : `<p class="tqw-bio-summary hint">Complete the 20 Questions wizard to apply character creation mechanics. · v2.1.2</p>`;
+    ? `<p class="tqw-bio-summary">${grantCount} mechanic grant(s) · ${rows.length} answer(s) · v2.1.3</p>`
+    : `<p class="tqw-bio-summary">Complete the 20 Questions wizard to apply character creation mechanics. · v2.1.3</p>`;
 
   const right = $(`<aside class="tqw-bio-right">
     <div class="tqw-bio-header-row">
@@ -128,7 +131,7 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
       </button>
     </div>
     ${summary}
-    <div class="tqw-bio-answers">${answerRows || '<p class="hint tqw-bio-empty">No answers recorded yet.</p>'}</div>
+    <div class="tqw-bio-answers">${answerRows || '<p class="tqw-bio-empty">No answers recorded yet.</p>'}</div>
   </aside>`);
 
   right.find(".tqw-sheet-button").on("click", () => {
@@ -137,5 +140,9 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
   });
 
   const left = $('<div class="tqw-bio-left"></div>').append(bioTab.children());
-  bioTab.append($('<div class="tqw-bio-grid"></div>').append(left, right));
+  const grid = $('<div class="tqw-bio-grid"></div>').append(left, right);
+  // Container wrapper enables the @container query that stacks the two
+  // columns on narrow sheets (inline-size containment on our own element
+  // only — never on PF1e's tab).
+  bioTab.append($('<div class="tqw-bio-container"></div>').append(grid));
 });
