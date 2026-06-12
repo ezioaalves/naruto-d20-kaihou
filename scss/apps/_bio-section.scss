@@ -87,8 +87,11 @@
     }
 
     // ── Answers scroll area ───────────────────────────────────────────────
+    // min-height: 0 is load-bearing: without it a flex child refuses to
+    // shrink below content height and the overflow scroll silently breaks.
     .tqw-bio-answers {
-      flex: 1;
+      flex: 1 1 auto;
+      min-height: 0;
       overflow-y: auto;
       display: flex;
       flex-direction: column;

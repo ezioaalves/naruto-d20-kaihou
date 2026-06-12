@@ -101,7 +101,7 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
   // Narrative-first: the question text + the player's written answer lead;
   // the mechanical pick is a muted footnote (GM ruling 2026-06-11).
   const rows = buildAnswerRows(actor);
-  console.debug(
+  console.log(
     `${MODULE_ID} | bio panel: actor="${actor.name}" isToken=${!!actor.isToken} ` +
     `grants=${grantCount} rows=${rows.length} ` +
     `narrativesFlag=${JSON.stringify(actor.flags?.["naruto-d20-kaihou"]?.wizard?.narratives ?? null)}`
@@ -114,9 +114,11 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
     ${row.mechanical ? `<p class="tqw-bio-mech">${escape(row.mechanical)}</p>` : ""}
   </div>`).join("");
 
+  // TEMP DIAGNOSTIC (remove before merge): rows count + build tag visible in
+  // the summary line, so a screenshot alone tells us what this client ran.
   const summary = grantCount > 0
-    ? `<p class="tqw-bio-summary hint">${grantCount} mechanic grant(s) applied by the wizard.</p>`
-    : `<p class="tqw-bio-summary hint">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
+    ? `<p class="tqw-bio-summary hint">${grantCount} mechanic grant(s) · ${rows.length} answer(s) · v2.1.2</p>`
+    : `<p class="tqw-bio-summary hint">Complete the 20 Questions wizard to apply character creation mechanics. · v2.1.2</p>`;
 
   const right = $(`<aside class="tqw-bio-right">
     <div class="tqw-bio-header-row">
