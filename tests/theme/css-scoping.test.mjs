@@ -6,10 +6,7 @@ import { describe, it, expect } from "vitest";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const CSS_PATH = resolve(here, "../../styles/theme/zen.css");
-
-function readCss() {
-  return readFileSync(CSS_PATH, "utf8");
-}
+const css = readFileSync(CSS_PATH, "utf8");
 
 // A selector list ends at the next "{". Split the file into the selector text
 // that precedes each rule block so we can inspect selectors in isolation.
@@ -25,7 +22,6 @@ function selectorTexts(css) {
 
 describe("compiled zen.css scoping", () => {
   it("contains no stray '&' parent selectors (those are invalid CSS the browser drops)", () => {
-    const css = readCss();
     // A literal '&' followed by a class/element char means a partial's `&.foo`
     // rule was emitted without a parent — i.e. the scoping wrapper is missing.
     const leaks = [...css.matchAll(/&[a-zA-Z.#:[]/g)].map((x) => x[0]);
@@ -33,13 +29,13 @@ describe("compiled zen.css scoping", () => {
   });
 
   it("scopes every .tab.chakra rule under body.naruto-zen .naruto-zen-target", () => {
-    const offenders = selectorTexts(readCss())
+    const offenders = selectorTexts(css)
       .filter((sel) => sel.includes(".tab.chakra"))
       .filter((sel) =>
-        // every selector in the (possibly comma-separated) list must carry the scope
+        // any unscoped part in a comma-separated selector list flags the whole block
         sel.split(",").some(
           (one) => one.includes(".tab.chakra") &&
-            !one.includes("body.naruto-zen") &&
+            !one.includes("body.naruto-zen") ||
             !one.includes(".naruto-zen-target"),
         ),
       );
