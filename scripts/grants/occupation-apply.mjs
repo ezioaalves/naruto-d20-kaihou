@@ -253,13 +253,15 @@ async function promptOccupationSelections(
         callback: () => null,
       },
     ],
-    render: (_event, html) => {
-      wireOccupationDialogConstraints(html, {
+    render: (_event, dialog) => {
+      // DialogV2 invokes render as render(event, dialog) — the second arg is the
+      // DialogV2 instance, not an element. Use dialog.element for DOM work.
+      wireOccupationDialogConstraints(dialog.element, {
         skillSelectCount,
         requireFeat: featOptions.length > 1,
         requireTechnique: techniqueOptions.length > 1,
       });
-      centerDialogElement(html, 520);
+      centerOccupationDialog(dialog, 520);
     },
     rejectClose: false,
   });
@@ -311,23 +313,25 @@ export function renderOccupationSelectionContent({ classSkillOptions, skillSelec
   `;
 }
 
-// DialogV2 renders into a native <dialog> element. Our theme CSS clears the
-// UA inset anchors (`dialog.application { inset: unset }`) so Foundry's JS can
-// position it — but DialogV2.wait() never sets an explicit left/top, so with
-// the anchors gone the element falls to the static top-left corner ("pinned").
-// Mirror TwentyQuestionsWizard's _onRender centering: pin the width, then
-// centre once layout has settled so the measured height is accurate.
-function centerDialogElement(root, width) {
-  const dialogEl = root?.matches?.("dialog") ? root : root?.closest?.("dialog");
-  if (!dialogEl) return;
+// DialogV2.wait() never sets an explicit left/top, so the positioned <dialog>
+// renders at the top-left corner ("pinned") once our theme CSS clears the UA
+// inset anchors (`dialog.application { inset: unset }`). Centre it through the
+// ApplicationV2 position API — this keeps the app's position state in sync so
+// the title-bar drag still works. Width/left can be set immediately; the height
+// is only known after the content lays out at the new width, so centre the top
+// edge on the next frame.
+function centerOccupationDialog(dialog, width) {
+  if (!dialog?.setPosition) return;
 
-  dialogEl.style.width = `${width}px`;
-  dialogEl.style.left = `${Math.max(0, Math.round((window.innerWidth - width) / 2))}px`;
+  dialog.setPosition({
+    width,
+    left: Math.max(0, Math.round((window.innerWidth - width) / 2)),
+  });
 
-  // Height depends on the now-applied width, so read it after reflow.
   requestAnimationFrame(() => {
-    const height = dialogEl.getBoundingClientRect().height || dialogEl.offsetHeight || 0;
-    dialogEl.style.top = `${Math.max(0, Math.round((window.innerHeight - height) / 2))}px`;
+    const height = dialog.element?.getBoundingClientRect?.().height || 0;
+    if (!height) return;
+    dialog.setPosition({ top: Math.max(0, Math.round((window.innerHeight - height) / 2)) });
   });
 }
 
