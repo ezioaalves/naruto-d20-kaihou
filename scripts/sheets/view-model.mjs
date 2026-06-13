@@ -1,0 +1,71 @@
+// scripts/sheets/view-model.mjs
+//
+// Pure actor → databook view-model. No Foundry globals — unit-tested in node.
+// Reads PF1e ability/skill data + naruto-d20 nature flags + Kaihou lore flags;
+// writes nothing.
+
+const ND = "naruto-d20";
+const KH = "naruto-d20-kaihou";
+
+export const ABILITY_AXES = ["str", "dex", "con", "int", "wis", "cha"];
+
+export const DISCIPLINE_AXES = [
+  { key: "nin", label: "Ninjutsu" },
+  { key: "fui", label: "Fūinjutsu" },
+  { key: "ckc", label: "Chakra Control" },
+  { key: "tai", label: "Taijutsu" },
+  { key: "gnj", label: "Genjutsu" },
+];
+
+export const BASIC_NATURES = [
+  { key: "fire", kanji: "火" },
+  { key: "water", kanji: "水" },
+  { key: "wind", kanji: "風" },
+  { key: "earth", kanji: "土" },
+  { key: "lightning", kanji: "雷" },
+];
+
+export const MISSION_RANKS = ["D", "C", "B", "A", "S"];
+
+const num = (v) => (Number.isFinite(Number(v)) ? Number(v) : 0);
+const int = (v) => {
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) ? n : 0;
+};
+
+function buildMissions(m = {}) {
+  const counts = Object.fromEntries(MISSION_RANKS.map((r) => [r, int(m?.[r])]));
+  const total = MISSION_RANKS.reduce((s, r) => s + counts[r], 0);
+  return { counts, total };
+}
+
+function buildNatures(nd = {}, kh = {}) {
+  const nature = nd?.chakra?.nature ?? {};
+  const owned = new Set(
+    [nature.primary, ...(Array.isArray(nature.secondary) ? nature.secondary : [])]
+      .filter(Boolean)
+      .map((s) => String(s).toLowerCase()),
+  );
+  const basic = BASIC_NATURES.map((n) => ({ ...n, on: owned.has(n.key) }));
+  const adv = kh?.advancedNature ?? null;
+  return { basic, advanced: adv && adv.kanji ? { kanji: adv.kanji, label: adv.label ?? "" } : null };
+}
+
+export function buildKaihouViewModel(actor) {
+  const sys = actor?.system ?? {};
+  const flags = actor?.flags ?? {};
+  const kh = flags[KH] ?? {};
+  const nd = flags[ND] ?? {};
+  return {
+    identity: {
+      alias: kh.alias ?? "",
+      allegiance: kh.allegiance ?? "",
+      missions: buildMissions(kh.missions),
+    },
+    radars: {
+      abilities: ABILITY_AXES.map((k) => ({ key: k, label: k.toUpperCase(), value: num(sys.abilities?.[k]?.total) })),
+      disciplines: DISCIPLINE_AXES.map((a) => ({ ...a, value: num(sys.skills?.[a.key]?.rank) })),
+    },
+    natures: buildNatures(nd, kh),
+  };
+}
