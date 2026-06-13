@@ -32,14 +32,27 @@ describe("databook component classes", () => {
 });
 
 describe("kaihou sheet scoping", () => {
-  it("scopes every .kaihou-databook rule under body.naruto-zen .naruto-zen-target", () => {
+  // The bespoke sheet is scoped by its own guaranteed form class
+  // (.kaihou-databook-form), NOT the theme's runtime-tagged .naruto-zen-target —
+  // so it lays out correctly regardless of the zen-theme toggle. These
+  // sheet-surface classes must therefore never appear unscoped (they'd leak onto
+  // every actor sheet); every rule that styles one must include
+  // .kaihou-databook-form in that comma-segment of its selector.
+  const SHEET_SURFACE_CLASSES = [
+    ".db-frontmatter",
+    ".db-identity-edit",
+    ".db-radars",
+    ".db-row2",
+    ".db-missions",
+    ".tab.identity",
+  ];
+
+  it("scopes every sheet-surface rule under .kaihou-databook-form", () => {
     const offenders = selectorTexts(css)
-      .filter((sel) => sel.includes(".kaihou-databook"))
-      .filter((sel) =>
-        sel.split(",").some(
-          (one) => one.includes(".kaihou-databook") && !one.includes(".naruto-zen-target"),
-        ),
-      );
+      .flatMap((sel) => sel.split(","))
+      .map((one) => one.trim())
+      .filter((one) => SHEET_SURFACE_CLASSES.some((c) => one.includes(c)))
+      .filter((one) => !one.includes(".kaihou-databook-form"));
     expect(offenders).toEqual([]);
   });
 });

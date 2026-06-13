@@ -22,6 +22,13 @@
 @use "databook-tokens";
 @use "components/index";
 
+// The bespoke databook character sheet is GLOBAL, scoped only by its own
+// guaranteed form class (.kaihou-databook-form, hardcoded in the template) — NOT
+// by the theme's body.naruto-zen / .naruto-zen-target tagging. Choosing the
+// Kaihou sheet must lay it out correctly regardless of the zen-theme toggle, so
+// its structural CSS can never depend on the theme render-hook tagging.
+@import "theme/kaihou-character-sheet";
+
 body.naruto-zen {
     @import "theme/fonts";
     @import "theme/global";
@@ -34,7 +41,6 @@ body.naruto-zen {
     @import "theme/occupation-selector";
 
     .naruto-zen-target {
-        @import "theme/kaihou-character-sheet";
         @import "theme/pf1-sheets";
         @import "theme/naruto-module";
         @import "theme/natures";

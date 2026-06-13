@@ -1,8 +1,12 @@
 // scss/theme/_kaihou-character-sheet.scss
 //
-// Bespoke databook character sheet (own-template build). Resolves under
-// body.naruto-zen .naruto-zen-target { … }; `&` = .naruto-zen-target.
-// Qualify with .kaihou-databook so only our sheet is affected.
+// Bespoke databook character sheet (own-template build). GLOBAL, scoped only by
+// `.kaihou-databook-form` — the class hardcoded on the <form> in our template
+// (templates/actor/kaihou-character-sheet.hbs). This is deliberately INDEPENDENT
+// of the theme's body.naruto-zen / .naruto-zen-target render-hook tagging: the
+// sheet's own structure must lay out correctly whether or not the zen theme is
+// enabled, and the form class is guaranteed present (it's in the template HTML),
+// unlike the runtime-tagged target class.
 //
 // Layout note: PF1e renders the form as `display:flex; flex-flow:column; height:
 // 100%` with `.sheet-navigation{flex:0}` and `.primary-body{flex:1; overflow:
@@ -11,7 +15,7 @@
 // PF1e's functional tabs (summary/combat/skills/…) — they keep their native
 // look; the databook identity is the band + Identity tab + the red tab strip.
 
-&.kaihou-databook {
+.kaihou-databook-form {
   // --- Header band: flex child above the tab strip, never steals tab height ---
   .db-band { flex: 0 0 auto; }
   .db-band__id { flex: 1; min-width: 0; }
