@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.4 — 2026-06-13
+
+### Changed
+- Theme SCSS now scopes every partial under `body.naruto-zen` / `.naruto-zen-target`, mirroring the original zen-theme architecture. This gives the chakra tab and all PF1e surfaces a stable, leak-free foundation.
+- Chakra tab reset to the zen baseline (soft borders, auto-fit resource grid) while keeping Kaihou's six discipline colour accents.
+- Added a CSS regression guard that fails the build if a `.tab.chakra` rule escapes the `body.naruto-zen .naruto-zen-target` scope.
+
+### Fixed
+- Occupation grant dialog opened pinned to the top-left at full width. It now centres itself through the ApplicationV2 position API, stays draggable, caps at 65vh with scroll, and has comfortable padding. Root cause: `DialogV2`'s render callback receives the dialog *instance*, not an element, so the earlier positioning code silently no-op'd.
+- Native `<dialog>` windows pinned to the top-left because the user-agent inset anchors fired before Foundry's positioning (`dialog.application { inset: unset }`).
+- Dark `<select>`/input contrast inside dialogs (e.g. Create Actor) against the parchment background.
+- Compendium pack popout windows (v13 `.application.compendium-directory.sidebar-popout`) rendered on Foundry's default dark background instead of parchment.
+
 ## v2.1.3 — 2026-06-11
 
 ### Added

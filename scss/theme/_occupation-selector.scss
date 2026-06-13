@@ -25,6 +25,7 @@
   .window-content {
     max-height: 65vh;
     overflow-y: auto;
+    padding: var(--zen-space-3) var(--zen-space-4);
   }
 }
 
