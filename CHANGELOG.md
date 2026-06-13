@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.6 — 2026-06-13
+
+### Added
+- Bespoke Kaihou Databook character sheet (`KaihouCharacterSheet`) — a campaign-specific actor sheet extending PF1e's base class.
+- Databook header band with portrait, kanji name, alias 「」, village/rank/allegiance badges, and natures row (5 basic + void/KKG slot).
+- Two auto-derived SVG radars: Ability Scores hexagon (red) and Disciplines pentagon (purple), appearing on the Identity tab (compact) and on the Combat/Skills tabs (full).
+- Mission Record panel with per-rank (D/C/B/A/S) editable inputs and derived total.
+- Origin & Path panel (village, school, occupation, bloodline, flaw from Kaihou-granted items).
+- Editable alias and allegiance fields persisted via Foundry actor flags.
+- Databook design-system foundation: `--db-*` CSS tokens and `.db-*` component primitives.
+- World setting "Kaihou Databook sheet as default" (`kaihouSheetDefault`).
+- Cross-module contract doc (`docs/cross-module-contract.md`) documenting the naruto-d20 ⇄ Kaihou injection seam.
+- CSS scoping guard: all `.kaihou-databook` rules verified under `.naruto-zen-target` at build time.
+
+### Notes
+- naruto-d20's chakra tab keeps injecting on the new sheet — anchor selectors preserved.
+- Manual Foundry verification required before tagging a release (per project policy).
+
 ## v2.1.5 — 2026-06-13
 
 ### Fixed
