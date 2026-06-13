@@ -34,6 +34,7 @@ body.naruto-zen {
     @import "theme/occupation-selector";
 
     .naruto-zen-target {
+        @import "theme/kaihou-character-sheet";
         @import "theme/pf1-sheets";
         @import "theme/naruto-module";
         @import "theme/natures";

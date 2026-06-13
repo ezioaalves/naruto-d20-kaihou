@@ -30,3 +30,16 @@ describe("databook component classes", () => {
     }
   });
 });
+
+describe("kaihou sheet scoping", () => {
+  it("scopes every .kaihou-databook rule under body.naruto-zen .naruto-zen-target", () => {
+    const offenders = selectorTexts(css)
+      .filter((sel) => sel.includes(".kaihou-databook"))
+      .filter((sel) =>
+        sel.split(",").some(
+          (one) => one.includes(".kaihou-databook") && !one.includes(".naruto-zen-target"),
+        ),
+      );
+    expect(offenders).toEqual([]);
+  });
+});
