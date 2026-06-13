@@ -50,8 +50,8 @@ $discipline-color: (
 
         .info-box-header {
             background: var(--zen-card-bg);
-            border: 1px solid var(--zen-border-soft);
-            border-radius: 4px;
+            border: var(--zen-border-hair) solid var(--zen-border);
+            border-radius: var(--zen-radius-md);
             padding: 0.25rem 0.5rem;
 
             h3 {
@@ -62,7 +62,7 @@ $discipline-color: (
 
             .info-box-joined {
                 background: transparent;
-                border-top: 1px solid var(--zen-border-soft);
+                border-top: var(--zen-border-hair) solid var(--zen-border);
                 padding-top: 0.25rem;
             }
 
@@ -141,8 +141,8 @@ $discipline-color: (
         isolation: isolate;   // stacking context so ::before z-index: -1 stays inside card
         overflow: hidden;
         background: var(--zen-card-bg);
-        border: 1px solid var(--zen-border-soft);
-        border-left: 3px solid var(--zen-ink-mute);
+        border: var(--zen-border-hair) solid var(--zen-border);
+        border-left: var(--zen-border-thick) solid var(--zen-ink-mute);
         border-radius: 4px;
         padding: 0.4rem 0.5rem;
 
@@ -254,27 +254,23 @@ $discipline-color: (
             }
         }
 
-        // Icon-only discipline chips — hide text, show SVG mask icon.
-        // "ALL" and "OTHER" (no data-disc) keep their text labels.
-        // rem units required because font-size:0 makes em resolve to 0.
-        .technique-filter[data-disc] {
-            font-size: 0;
-            padding: 0.2rem 0.35rem;
-
-            &::before {
-                content: "";
-                display: inline-block;
-                width: 1.1rem;
-                height: 1.1rem;
-                background-color: currentColor;
-                vertical-align: middle;
-            }
-        }
-
+        // Icon-only discipline chips (per-key only — "all" and "other" keep their text).
+        // rem units required because font-size:0 makes em resolve to 0 on ::before.
         @each $key, $color in $discipline-color {
-            .technique-filter[data-disc="#{$key}"]::before {
-                mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
-                -webkit-mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
+            .technique-filter[data-disc="#{$key}"] {
+                font-size: 0;
+                padding: 0.2rem 0.35rem;
+
+                &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 1.1rem;
+                    height: 1.1rem;
+                    background-color: currentColor;
+                    vertical-align: middle;
+                    mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
+                    -webkit-mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
+                }
             }
         }
     }

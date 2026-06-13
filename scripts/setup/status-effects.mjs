@@ -10,7 +10,8 @@ const CONDITION_ICON_MAP = {
   paralyzed:   `${MODULE_BASE}incapacitated.webp`,
   entangled:   `${MODULE_BASE}immobilized.webp`,
   prone:       `${MODULE_BASE}prone.webp`,
-  bleeding:    `${MODULE_BASE}bleeding.webp`,
+  bleed:       `${MODULE_BASE}bleeding.webp`,    // PF1e standard ID
+  bleeding:    `${MODULE_BASE}bleeding.webp`,    // fallback variant
   burning:     `${MODULE_BASE}burning.webp`,
   silenced:    `${MODULE_BASE}silenced.webp`,
 };
@@ -23,9 +24,10 @@ export function remapStatusEffectIcons(statusEffects) {
 }
 
 export function registerStatusEffects() {
-  // "setup" fires after all init hooks complete, so PF1e has already set
-  // CONFIG.statusEffects = pf1.utils.init.getConditions() before we patch it.
-  Hooks.once("setup", () => {
+  // "ready" fires after all init/setup hooks and PF1e's condition registry is
+  // stable. Patching here guarantees we run after pf1.utils.init.getConditions()
+  // has fully populated CONFIG.statusEffects.
+  Hooks.once("ready", () => {
     CONFIG.statusEffects = remapStatusEffectIcons(CONFIG.statusEffects ?? []);
   });
 }
