@@ -7,7 +7,7 @@
 // section.primary-body) are never removed, so the chakra tab keeps injecting.
 
 import { buildKaihouViewModel } from "./view-model.mjs";
-import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
+import { esc, headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
 
@@ -83,15 +83,15 @@ export function getKaihouCharacterSheetClass() {
         ["Bloodline", this._kaihouItemName("bloodline")],
         ["Flaw", this._kaihouItemName("flaw")],
       ]
-        .map(([k, v]) => `<div class="db-line"><span>${k}</span><span>${v ? String(v) : "—"}</span></div>`)
+        .map(([k, v]) => `<div class="db-line"><span>${k}</span><span>${v ? esc(String(v)) : "—"}</span></div>`)
         .join("");
 
       inject(
         "summary",
         `<div class="db-frontmatter">
            <div class="db-identity-edit">
-             <label>Alias <input type="text" name="flags.naruto-d20-kaihou.alias" value="${vm.identity.alias}"></label>
-             <label>Allegiance <input type="text" name="flags.naruto-d20-kaihou.allegiance" value="${vm.identity.allegiance}"></label>
+             <label>Alias <input type="text" name="flags.naruto-d20-kaihou.alias" value="${esc(vm.identity.alias)}"></label>
+             <label>Allegiance <input type="text" name="flags.naruto-d20-kaihou.allegiance" value="${esc(vm.identity.allegiance)}"></label>
            </div>
            <div class="db-radars">
              <div class="db-panel"><h4 class="db-panel__h">Ability Scores</h4>${ability}</div>
