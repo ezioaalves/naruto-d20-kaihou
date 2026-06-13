@@ -259,6 +259,7 @@ async function promptOccupationSelections(
         requireFeat: featOptions.length > 1,
         requireTechnique: techniqueOptions.length > 1,
       });
+      centerDialogElement(html, 520);
     },
     rejectClose: false,
   });
@@ -308,6 +309,26 @@ export function renderOccupationSelectionContent({ classSkillOptions, skillSelec
       }
     </form>
   `;
+}
+
+// DialogV2 renders into a native <dialog> element. Our theme CSS clears the
+// UA inset anchors (`dialog.application { inset: unset }`) so Foundry's JS can
+// position it — but DialogV2.wait() never sets an explicit left/top, so with
+// the anchors gone the element falls to the static top-left corner ("pinned").
+// Mirror TwentyQuestionsWizard's _onRender centering: pin the width, then
+// centre once layout has settled so the measured height is accurate.
+function centerDialogElement(root, width) {
+  const dialogEl = root?.matches?.("dialog") ? root : root?.closest?.("dialog");
+  if (!dialogEl) return;
+
+  dialogEl.style.width = `${width}px`;
+  dialogEl.style.left = `${Math.max(0, Math.round((window.innerWidth - width) / 2))}px`;
+
+  // Height depends on the now-applied width, so read it after reflow.
+  requestAnimationFrame(() => {
+    const height = dialogEl.getBoundingClientRect().height || dialogEl.offsetHeight || 0;
+    dialogEl.style.top = `${Math.max(0, Math.round((window.innerHeight - height) / 2))}px`;
+  });
 }
 
 function wireOccupationDialogConstraints(root, { skillSelectCount, requireFeat, requireTechnique }) {
