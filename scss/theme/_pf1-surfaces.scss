@@ -38,6 +38,20 @@
     --pf1-sheet-background: var(--zen-surface-image);
 }
 
+// ─── Compendium pack window (v13 popout) ─────────────────────────────────────
+// The v13 Compendium app renders as `.application.compendium-directory.sidebar-popout`
+// — a native ApplicationV2 window that does NOT match `.window-app.compendium`,
+// so it never receives `.naruto-zen-target` and misses the parchment surface the
+// per-app rules give sheets. Paint its content here at the chrome level so the
+// entry list reads against parchment instead of Foundry's default dark window.
+.compendium-directory.sidebar-popout .window-content {
+    background-color: var(--zen-surface);
+    background-image: var(--zen-surface-image);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+}
+
 // ─── Compendium directory entries ────────────────────────────────────────────
 .compendium-directory,
 .compendium .directory-list {
