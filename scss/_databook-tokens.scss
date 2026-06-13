@@ -1,0 +1,33 @@
+// scss/_databook-tokens.scss
+// Databook design tokens for character sheet UI.
+//
+// Token prefix: --db-* (distinct from --zen-* to avoid collision with theme
+// surface tokens; used primarily by the character databook component).
+//
+// Declared on :root (unscoped) so the databook surface stays available even
+// if the theme is partially disabled or remixed.
+
+:root {
+  // Palette
+  --db-red: #b23a2e;
+  --db-red-deep: #8a2b22;
+  --db-ink: #2e271d;
+  --db-cream: #efe9d8;
+  --db-panel: #f4efe0;
+  --db-border: #cdbf99;
+  --db-border-soft: #ddd0ab;
+  --db-muted: #8a7c5c;
+  --db-void: #6a3d8f;
+
+  // Typography (Rotis = vendored; system sans/serif fallbacks)
+  --db-font-name: "RotisSemiSans", "Trebuchet MS", system-ui, sans-serif;
+  --db-font-label: "RotisSemiSans", system-ui, sans-serif;
+  --db-font-body: "RotisSemiSerif", "Hiroshige", Georgia, serif;
+
+  // Radar
+  --db-radar-grid: #cbbd97;
+  --db-radar-ability-fill: rgba(178, 58, 46, 0.26);
+  --db-radar-ability-stroke: #b23a2e;
+  --db-radar-discipline-fill: rgba(106, 61, 143, 0.20);
+  --db-radar-discipline-stroke: #6a3d8f;
+}
