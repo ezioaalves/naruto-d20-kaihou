@@ -223,6 +223,7 @@ async function promptOccupationSelections(
 
   const result = await foundry.applications.api.DialogV2.wait({
     window: { title: `${occupationItem.name}: Select Occupation Grants` },
+    position: { width: 520 },
     content,
     buttons: [
       {
