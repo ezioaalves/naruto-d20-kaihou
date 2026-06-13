@@ -80,12 +80,47 @@ jobs:
         run: |
           zip -r module.zip \
             module.json \
+            scripts \
+            styles \
+            templates \
             lang \
             packs \
             assets \
             README.md \
             LICENSE \
             -x "packs/_source/*"
+
+      - name: Verify zip contains every file module.json references
+        run: |
+          node - <<'EOF'
+          const { execSync } = require("child_process");
+          const fs = require("fs");
+
+          const m = JSON.parse(fs.readFileSync("module.json", "utf8"));
+          const refs = [
+            ...(m.esmodules ?? []),
+            ...(m.styles ?? []),
+            ...(m.languages ?? []).map((l) => l.path),
+            ...(m.packs ?? []).map((p) => p.path),
+            ...(m.preloadTemplates ?? []),
+          ].filter(Boolean);
+
+          const entries = new Set(
+            execSync("unzip -Z1 module.zip", { encoding: "utf8" }).split("\n").map((s) => s.trim()),
+          );
+
+          // Pack paths are directories in the zip; match by prefix. Files match exactly.
+          const missing = refs.filter(
+            (ref) => !entries.has(ref) && ![...entries].some((e) => e.startsWith(ref + "/")),
+          );
+
+          if (missing.length) {
+            console.error("module.zip is missing files referenced by module.json:");
+            for (const ref of missing) console.error(`  - ${ref}`);
+            process.exit(1);
+          }
+          console.log(`Verified ${refs.length} referenced paths are present in module.zip.`);
+          EOF
 
       - name: Extract release notes from CHANGELOG.md
         env:

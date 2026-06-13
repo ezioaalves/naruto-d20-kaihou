@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.5 — 2026-06-13
+
+### Fixed
+- Release packaging omitted `scripts/`, `styles/`, and `templates/`, so installing v2.1.4 failed manifest validation ("scripts/kaihou.mjs … does not exist"). The release zip now bundles them. The `lang`/`packs`/`assets`-only zip step dated from the content-only 1.x line; the theme code added in 2.0.0 never shipped because 2.0.0's release failed earlier in CI.
+- Added a release-time guard that unzips `module.zip` and fails the build if any `esmodules`, `styles`, `languages`, `packs`, or `preloadTemplates` path referenced by `module.json` is missing from the archive.
+
 ## v2.1.4 — 2026-06-13
 
 ### Changed
