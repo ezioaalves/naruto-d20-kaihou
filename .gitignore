@@ -17,6 +17,9 @@ dev-notes/
 # Claude Code memory (does not belong in the module repo)
 memory/
 
+# Superpowers brainstorm visual-companion mockups (scratch, not part of the repo)
+.superpowers/
+
 # Compiled LevelDB pack output (rebuilt by npm run pack)
 packs/*/
 !packs/_source/
