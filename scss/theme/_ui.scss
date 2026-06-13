@@ -857,3 +857,22 @@ l5r5e-combo-box {
         }
     }
 }
+
+// ─── Token HUD — target action button ────────────────────────────────────────
+// Replace the FontAwesome bullseye with the kaihou target-round SVG.
+// The <i> element is hidden; the ::before pseudo renders the icon via mask.
+body.naruto-zen {
+    .token-hud .control-icon[data-action="target"] i {
+        display: none;
+    }
+
+    .token-hud .control-icon[data-action="target"]::before {
+        content: "";
+        display: block;
+        width: 1em;
+        height: 1em;
+        background-color: currentColor;
+        mask: url("../../assets/theme/imgs/target-round.svg") no-repeat center / contain;
+        -webkit-mask: url("../../assets/theme/imgs/target-round.svg") no-repeat center / contain;
+    }
+}
