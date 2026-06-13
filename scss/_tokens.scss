@@ -106,6 +106,14 @@
   --zen-village-sasori: rgb(121, 85, 72);    // Sasorigakure (Scorpion)
   --zen-village-shishi: rgb(255, 152, 0);    // Shishigakure (Lion)
   --zen-village-tsuru: rgb(158, 158, 158);   // Tsurugakure (Crane)
+
+  // ─── Discipline icons (L5R5e techs/ SVG mapping, keyed by naruto-d20 disc key) ─
+  --zen-disc-tai-icon: url("../../assets/theme/icons/techs/kata.svg");
+  --zen-disc-nin-icon: url("../../assets/theme/icons/techs/invocation.svg");
+  --zen-disc-gnj-icon: url("../../assets/theme/icons/techs/mantra.svg");
+  --zen-disc-ckc-icon: url("../../assets/theme/icons/techs/ritual.svg");
+  --zen-disc-fui-icon: url("../../assets/theme/icons/techs/shuji.svg");
+  --zen-disc-kin-icon: url("../../assets/theme/icons/techs/maho.svg");
 }
 
 // ─── PF1e variable overrides (inside body.naruto-zen scope only) ──────

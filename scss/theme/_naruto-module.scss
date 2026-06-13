@@ -19,13 +19,14 @@ $discipline-color: (
     "gnj": colors.$nzen-gnj,
     "ckc": colors.$nzen-ckc,
     "fui": colors.$nzen-fui,
+    "kin": colors.$nzen-kin,
 );
 
 // ----- Chakra tab ------------------------------------------------------------
 .tab.chakra {
     background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
     background-size: cover;
-    padding: 0.5rem;
+    padding: 0 0.5rem 0.5rem;
 
     h3 {
         font-family: var(--zen-font-display);
@@ -126,10 +127,10 @@ $discipline-color: (
         }
     }
 
-    // Learn-check cards — one per discipline.
+    // Learn-check cards — one per discipline. Force 5 columns so they never wrap.
     .defenses .combat-stats {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 0.5rem;
     }
 
@@ -185,6 +186,18 @@ $discipline-color: (
 
             .learn-check-header {
                 color: $color;
+
+                &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 1rem;
+                    height: 1rem;
+                    background-color: currentColor;
+                    mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
+                    -webkit-mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
+                    vertical-align: middle;
+                    margin-right: 0.3rem;
+                }
             }
             .learn-check-total {
                 color: $color;
@@ -227,6 +240,30 @@ $discipline-color: (
                         border-bottom-color: $color;
                     }
                 }
+            }
+        }
+
+        // Icon-only discipline chips — hide text, show SVG mask icon.
+        // "ALL" and "OTHER" (no data-disc) keep their text labels.
+        // rem units required because font-size:0 makes em resolve to 0.
+        .technique-filter[data-disc] {
+            font-size: 0;
+            padding: 0.2rem 0.35rem;
+
+            &::before {
+                content: "";
+                display: inline-block;
+                width: 1.1rem;
+                height: 1.1rem;
+                background-color: currentColor;
+                vertical-align: middle;
+            }
+        }
+
+        @each $key, $color in $discipline-color {
+            .technique-filter[data-disc="#{$key}"]::before {
+                mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
+                -webkit-mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
             }
         }
     }

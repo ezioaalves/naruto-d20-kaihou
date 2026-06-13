@@ -10,12 +10,12 @@
  */
 
 $disciplines: (
-    "tai": ("color": colors.$nzen-tai, "icon": "taijutsu"),
-    "nin": ("color": colors.$nzen-nin, "icon": "ninjutsu"),
-    "gnj": ("color": colors.$nzen-gnj, "icon": "genjutsu"),
-    "ckc": ("color": colors.$nzen-ckc, "icon": "chakra-control"),
-    "fui": ("color": colors.$nzen-fui, "icon": "fuinjutsu"),
-    "kin": ("color": colors.$nzen-kin, "icon": "kinjutsu"),
+    "tai": ("color": colors.$nzen-tai, "icon": "kata"),
+    "nin": ("color": colors.$nzen-nin, "icon": "invocation"),
+    "gnj": ("color": colors.$nzen-gnj, "icon": "mantra"),
+    "ckc": ("color": colors.$nzen-ckc, "icon": "ritual"),
+    "fui": ("color": colors.$nzen-fui, "icon": "shuji"),
+    "kin": ("color": colors.$nzen-kin, "icon": "maho"),
 );
 
 @each $key, $cfg in $disciplines {
@@ -29,7 +29,7 @@ $disciplines: (
 
     [data-discipline-icon="#{$key}"],
     i.i_discipline-#{$key} {
-        background: transparent url("../../assets/theme/icons/disciplines/#{$icon}.svg") no-repeat center / contain;
+        background: transparent url("../../assets/theme/icons/techs/#{$icon}.svg") no-repeat center / contain;
         display: inline-block;
         width: 1rem;
         height: 1rem;
