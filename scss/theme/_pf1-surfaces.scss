@@ -62,6 +62,14 @@
 }
 
 // ─── Dialogs ─────────────────────────────────────────────────────────────────
+// Reset UA <dialog> inset anchors (inset-inline-start:0 / inset-inline-end:0).
+// Without this the native <dialog> element pins to the top-left corner on first
+// render because those anchors fire before Foundry's JS left/top/width inline
+// styles land. `inset: unset` makes all four edges auto so Foundry JS wins.
+dialog.application {
+    inset: unset;
+}
+
 .window-app.dialog,
 .application.dialog {
     .window-content,
@@ -69,6 +77,28 @@
         color: var(--zen-ink);
         background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
         background-size: cover;
+    }
+
+    // Form fields inside dialogs: override Foundry's dark-theme input colors.
+    input[type="text"],
+    input[type="number"],
+    input[type="search"],
+    input:not([type]),
+    select,
+    textarea {
+        background: var(--zen-input-bg-strong);
+        border-color: var(--zen-border);
+        color: var(--zen-ink);
+
+        &::placeholder {
+            color: var(--zen-ink-mute);
+            opacity: 1;
+        }
+    }
+
+    select option {
+        background: var(--zen-surface);
+        color: var(--zen-ink);
     }
 
     .dialog-buttons,
