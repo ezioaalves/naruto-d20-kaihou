@@ -56,7 +56,10 @@ export function naturesRow(natures) {
 
 export function missionRecord(missions) {
   const cells = ["D", "C", "B", "A", "S"]
-    .map((r) => `<div><b>${missions.counts[r] || 0}</b><small>${r}</small></div>`)
+    .map(
+      (r) =>
+        `<div><input type="number" class="db-mission" name="flags.naruto-d20-kaihou.missions.${r}" value="${missions.counts[r] || 0}" min="0"><small>${r}</small></div>`,
+    )
     .join("");
   return `<div class="db-panel"><h4 class="db-panel__h">Mission Record</h4><div class="db-missions">${cells}<div><b>${missions.total}</b><small>Total</small></div></div></div>`;
 }

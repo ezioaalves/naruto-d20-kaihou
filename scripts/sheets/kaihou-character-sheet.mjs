@@ -76,19 +76,41 @@ export function getKaihouCharacterSheetClass() {
       const ability = radarSvg(vm.radars.abilities, { max: 20, variant: "ability" });
       const discipline = radarSvg(vm.radars.disciplines, { max: 10, variant: "discipline" });
 
+      const originRows = [
+        ["Village", this.actor.flags?.["naruto-d20-kaihou"]?.village],
+        ["School", this._kaihouItemName("school")],
+        ["Occupation", this._kaihouItemName("occupation")],
+        ["Bloodline", this._kaihouItemName("bloodline")],
+        ["Flaw", this._kaihouItemName("flaw")],
+      ]
+        .map(([k, v]) => `<div class="db-line"><span>${k}</span><span>${v ? String(v) : "—"}</span></div>`)
+        .join("");
+
       inject(
         "summary",
         `<div class="db-frontmatter">
+           <div class="db-identity-edit">
+             <label>Alias <input type="text" name="flags.naruto-d20-kaihou.alias" value="${vm.identity.alias}"></label>
+             <label>Allegiance <input type="text" name="flags.naruto-d20-kaihou.allegiance" value="${vm.identity.allegiance}"></label>
+           </div>
            <div class="db-radars">
              <div class="db-panel"><h4 class="db-panel__h">Ability Scores</h4>${ability}</div>
              <div class="db-panel"><h4 class="db-panel__h">Disciplines</h4>${discipline}</div>
            </div>
-           ${missionRecord(vm.identity.missions)}
+           <div class="db-row2">
+             ${missionRecord(vm.identity.missions)}
+             <div class="db-panel"><h4 class="db-panel__h">Origin &amp; Path</h4>${originRows}</div>
+           </div>
          </div>`,
         "db-mount-identity",
       );
       inject("combat", `<div class="db-panel"><h4 class="db-panel__h">Ability Scores</h4>${ability}</div>`, "db-mount-combat");
       inject("skills", `<div class="db-panel"><h4 class="db-panel__h">Disciplines</h4>${discipline}</div>`, "db-mount-skills");
+    }
+
+    _kaihouItemName(kind) {
+      const item = this.actor.items?.find?.((i) => i.flags?.["naruto-d20-kaihou"]?.kind === kind);
+      return item?.name ?? "";
     }
   };
 }

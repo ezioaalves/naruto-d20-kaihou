@@ -39,7 +39,8 @@ describe("naturesRow", () => {
 
 describe("missionRecord & headerBand", () => {
   it("renders all five rank cells + total and escapes identity text", () => {
-    expect(missionRecord(vm.identity.missions)).toContain(">41<");
+    expect(missionRecord(vm.identity.missions)).toContain('name="flags.naruto-d20-kaihou.missions.C"');
+    expect(missionRecord(vm.identity.missions)).toContain(">41<"); // total still rendered as static
     const band = headerBand(vm, { name: "Uchiha <b>Takeshi</b>", img: "p.png", village: "Konoha", rank: "Chūnin" });
     expect(band).toContain("Crimson Mirage");
     expect(band).toContain("13th Tantō");
