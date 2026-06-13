@@ -22,3 +22,11 @@ describe("databook tokens", () => {
     }
   });
 });
+
+describe("databook component classes", () => {
+  it("emits the component primitives", () => {
+    for (const c of [".db-band", ".db-badge", ".db-pip", ".db-radar", ".db-panel", ".db-nat"]) {
+      expect(css).toContain(c);
+    }
+  });
+});

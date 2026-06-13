@@ -1,0 +1,97 @@
+// scss/components/_databook.scss
+//
+// Databook component primitives. Theme-agnostic class names (.db-*) consumed by
+// the bespoke character sheet. Visual identity authored databook-native.
+
+.db-band {
+  display: flex;
+  gap: var(--zen-space-3);
+  padding: var(--zen-space-3) var(--zen-space-4);
+  background: var(--db-panel);
+  border-bottom: 2px solid var(--db-red);
+}
+
+.db-band__port {
+  width: 96px;
+  height: 120px;
+  flex: 0 0 auto;
+  border: 2px solid var(--db-ink);
+  border-radius: 2px;
+  object-fit: cover;
+  background: #ded2b2;
+}
+
+.db-band__name {
+  font-family: var(--db-font-name);
+  font-size: var(--zen-text-2xl);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--db-ink);
+}
+
+.db-band__kanji { font-size: var(--zen-text-sm); letter-spacing: 0.12em; color: var(--db-muted); }
+.db-band__alias { font-style: italic; color: var(--db-red); }
+.db-band__alias::before { content: "「"; }
+.db-band__alias::after { content: "」"; }
+
+.db-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-family: var(--db-font-label);
+  font-size: var(--zen-text-xs);
+  background: #e7dcbf;
+  border: 1px solid var(--db-border);
+  border-radius: var(--zen-radius-sm);
+}
+.db-badge--rank { background: var(--db-red); color: #fff; border-color: var(--db-red); font-weight: 700; }
+.db-badge--allegiance { background: var(--db-ink); color: var(--db-cream); border-color: var(--db-ink); }
+
+.db-pip {
+  min-width: 66px;
+  padding: 3px 9px;
+  text-align: center;
+  background: #e7dcbf;
+  border: 1px solid var(--db-border);
+  border-radius: var(--zen-radius-sm);
+}
+.db-pip b { display: block; font-size: var(--zen-text-lg); }
+.db-pip small { font-size: var(--zen-text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--db-muted); }
+
+.db-nat {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--db-border);
+  border-radius: var(--zen-radius-round);
+  background: #efe6cf;
+}
+.db-nat--on { border-color: var(--db-ink); background: #fff7e6; }
+.db-nat--void { border: 3px double var(--db-void); color: var(--db-void); font-weight: 700; background: #f0e9f5; }
+.db-nat--void.db-nat--locked { border-color: var(--db-border); color: var(--db-border); background: var(--db-cream); }
+
+.db-panel {
+  padding: var(--zen-space-2);
+  background: var(--db-panel);
+  border: 1px solid var(--db-border);
+  border-radius: var(--zen-radius-sm);
+}
+.db-panel__h {
+  margin: 0 0 var(--zen-space-1);
+  padding-bottom: 3px;
+  font-family: var(--db-font-label);
+  font-size: var(--zen-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--db-red);
+  border-bottom: 1px solid var(--db-border-soft);
+}
+
+.db-radar { width: 100%; max-width: 185px; display: block; margin: 0 auto; }
+.db-radar__grid { fill: none; stroke: var(--db-radar-grid); stroke-width: 1; }
+.db-radar__axis { font-size: 7.5px; fill: #5a4d36; font-family: var(--db-font-label); }
+.db-radar__plot--ability { fill: var(--db-radar-ability-fill); stroke: var(--db-radar-ability-stroke); stroke-width: 1.5; }
+.db-radar__plot--discipline { fill: var(--db-radar-discipline-fill); stroke: var(--db-radar-discipline-stroke); stroke-width: 1.5; }
