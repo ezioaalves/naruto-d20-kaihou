@@ -7,6 +7,7 @@
 // section.primary-body) are never removed, so the chakra tab keeps injecting.
 
 import { buildKaihouViewModel } from "./view-model.mjs";
+import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
 
@@ -33,6 +34,61 @@ export function getKaihouCharacterSheetClass() {
         data.kaihou = null;
       }
       return data;
+    }
+
+    async _renderInner(...args) {
+      const $html = await super._renderInner(...args); // PF1e DOM + naruto-d20 chakra injection
+      try {
+        this._injectDatabook($html, args[0]?.kaihou);
+      } catch (e) {
+        console.error(`${MODULE_ID} | databook injection failed`, e);
+      }
+      return $html;
+    }
+
+    _injectDatabook($html, vm) {
+      if (!vm) return;
+      const root = $html[0] ?? $html;
+
+      // 1. Header band — prepend above the tab nav (anchors untouched).
+      const nav = root.querySelector("nav.sheet-navigation.tabs[data-group='primary']");
+      if (nav && !root.querySelector(".db-band")) {
+        const meta = {
+          name: this.actor.name,
+          img: this.actor.img,
+          village: this.actor.flags?.["naruto-d20-kaihou"]?.village ?? "",
+          rank: this.actor.flags?.["naruto-d20-kaihou"]?.rank ?? "",
+        };
+        nav.insertAdjacentHTML("beforebegin", headerBand(vm, meta));
+      }
+
+      // 2. Compact radars on the Identity (summary) tab; full radars on Combat/Skills.
+      const inject = (tabName, html, mountClass) => {
+        const tab = root.querySelector(`.primary-body .tab[data-tab="${tabName}"]`);
+        if (tab && !tab.querySelector(`.${mountClass}`)) {
+          const mount = document.createElement("div");
+          mount.className = mountClass;
+          mount.innerHTML = html;
+          tab.prepend(mount);
+        }
+      };
+
+      const ability = radarSvg(vm.radars.abilities, { max: 20, variant: "ability" });
+      const discipline = radarSvg(vm.radars.disciplines, { max: 10, variant: "discipline" });
+
+      inject(
+        "summary",
+        `<div class="db-frontmatter">
+           <div class="db-radars">
+             <div class="db-panel"><h4 class="db-panel__h">Ability Scores</h4>${ability}</div>
+             <div class="db-panel"><h4 class="db-panel__h">Disciplines</h4>${discipline}</div>
+           </div>
+           ${missionRecord(vm.identity.missions)}
+         </div>`,
+        "db-mount-identity",
+      );
+      inject("combat", `<div class="db-panel"><h4 class="db-panel__h">Ability Scores</h4>${ability}</div>`, "db-mount-combat");
+      inject("skills", `<div class="db-panel"><h4 class="db-panel__h">Disciplines</h4>${discipline}</div>`, "db-mount-skills");
     }
   };
 }
