@@ -52,5 +52,8 @@
       "SETTING_HINT": "Apply the sumi-e/parchment restyle to Foundry, PF1e sheets, and the naruto-d20 module. Disable to revert to vanilla Foundry chrome instantly (no reload needed).",
       "COEXISTENCE_WARN": "naruto-d20-zen-theme is active alongside naruto-d20-kaihou v2.0.0+. Disable naruto-d20-zen-theme to avoid duplicate styling — Kaihou now ships the same theme internally."
     }
-  }
+  },
+  "Kaihou.Sheet.Label": "Kaihou — Databook",
+  "Kaihou.Settings.SheetDefault.Name": "Kaihou Databook sheet as default",
+  "Kaihou.Settings.SheetDefault.Hint": "Use the Kaihou databook character sheet as the default for character actors. Individual actors can still be switched back to PF1e's sheet via their sheet config."
 }

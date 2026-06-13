@@ -23,6 +23,7 @@ import {
 } from "./grants/occupation-apply.mjs";
 import { registerQuestionFeatEffects } from "./grants/question-effects.mjs";
 import { registerStatusEffects } from "./setup/status-effects.mjs";
+import { registerKaihouCharacterSheet } from "./sheets/kaihou-character-sheet.mjs";
 
 // Theme layer — registers its own Hooks.once("init", ...) so must be loaded
 // at module-import time, before any Hooks.once events fire. Pure side-effect
@@ -63,6 +64,16 @@ Hooks.once("init", async () => {
   } else {
     console.warn(`${MODULE_ID} | no loadTemplates helper found; partials may not resolve`);
   }
+
+  game.settings.register(MODULE_ID, "kaihouSheetDefault", {
+    name: "Kaihou.Settings.SheetDefault.Name",
+    hint: "Kaihou.Settings.SheetDefault.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+  registerKaihouCharacterSheet();
 });
 
 Hooks.once("ready", () => {
