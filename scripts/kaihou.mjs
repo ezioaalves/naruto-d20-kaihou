@@ -22,6 +22,7 @@ import {
   registerOccupationAutoRevert,
 } from "./grants/occupation-apply.mjs";
 import { registerQuestionFeatEffects } from "./grants/question-effects.mjs";
+import { registerStatusEffects } from "./setup/status-effects.mjs";
 
 // Theme layer — registers its own Hooks.once("init", ...) so must be loaded
 // at module-import time, before any Hooks.once events fire. Pure side-effect
@@ -46,6 +47,8 @@ const WIZARD_PARTIALS = [
   "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-dragdrop-coupled.hbs",
   "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-rolltable.hbs",
 ];
+
+registerStatusEffects();
 
 Hooks.once("init", async () => {
   console.log(`${MODULE_ID} | init`);

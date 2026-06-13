@@ -210,7 +210,7 @@ async function resolveOccupationSelections(occupationItem, occupation) {
   });
 }
 
-function promptOccupationSelections(
+async function promptOccupationSelections(
   occupationItem,
   { classSkillOptions, skillSelectCount, featOptions, techniqueOptions },
 ) {
@@ -221,48 +221,51 @@ function promptOccupationSelections(
     techniqueOptions,
   });
 
-  return new Promise((resolve) => {
-    new Dialog({
-      title: `${occupationItem.name}: Select Occupation Grants`,
-      content,
-      buttons: {
-        apply: {
-          label: "Apply",
-          callback: (html) => {
-            const root = html[0] ?? html;
-            const selectedSkillKeys = [...root.querySelectorAll("input[name='classSkill']:checked")].map(
-              (input) => input.value,
-            );
-            const selectedFeat = root.querySelector("input[name='featOption']:checked")?.value ?? null;
-            const selectedTechnique =
-              root.querySelector("input[name='techniqueOption']:checked")?.value ?? null;
-            resolve({
-              classSkillKeys: selectedSkillKeys,
-              featName: selectedFeat ?? featOptions[0] ?? null,
-              techniqueName: selectedTechnique ?? techniqueOptions[0] ?? null,
-            });
-            return true;
-          },
-        },
-        cancel: {
-          label: "Cancel",
-          callback: () => resolve(null),
+  const result = await foundry.applications.api.DialogV2.wait({
+    window: { title: `${occupationItem.name}: Select Occupation Grants` },
+    content,
+    buttons: [
+      {
+        action: "apply",
+        label: "Apply",
+        default: true,
+        callback: (_event, _button, dialog) => {
+          const root =
+            dialog.element.querySelector(".kaihou-occupation-selector") ?? dialog.element;
+          const selectedSkillKeys = [
+            ...root.querySelectorAll("input[name='classSkill']:checked"),
+          ].map((input) => input.value);
+          const selectedFeat =
+            root.querySelector("input[name='featOption']:checked")?.value ?? null;
+          const selectedTechnique =
+            root.querySelector("input[name='techniqueOption']:checked")?.value ?? null;
+          return {
+            classSkillKeys: selectedSkillKeys,
+            featName: selectedFeat ?? featOptions[0] ?? null,
+            techniqueName: selectedTechnique ?? techniqueOptions[0] ?? null,
+          };
         },
       },
-      render: (html) => {
-        wireOccupationDialogConstraints(html[0] ?? html, {
-          skillSelectCount,
-          requireFeat: featOptions.length > 1,
-          requireTechnique: techniqueOptions.length > 1,
-        });
+      {
+        action: "cancel",
+        label: "Cancel",
+        callback: () => null,
       },
-      default: "apply",
-      close: () => resolve(null),
-    }).render(true);
+    ],
+    render: (_event, html) => {
+      wireOccupationDialogConstraints(html, {
+        skillSelectCount,
+        requireFeat: featOptions.length > 1,
+        requireTechnique: techniqueOptions.length > 1,
+      });
+    },
+    rejectClose: false,
   });
+
+  return result ?? null;
 }
 
-function renderOccupationSelectionContent({ classSkillOptions, skillSelectCount, featOptions, techniqueOptions }) {
+export function renderOccupationSelectionContent({ classSkillOptions, skillSelectCount, featOptions, techniqueOptions }) {
   const skillRows = classSkillOptions
     .map((option) => {
       const label = escapeHtml(option.label);
@@ -311,10 +314,10 @@ function wireOccupationDialogConstraints(root, { skillSelectCount, requireFeat, 
   const featRadios = [...root.querySelectorAll("input[name='featOption']")];
   const techniqueRadios = [...root.querySelectorAll("input[name='techniqueOption']")];
 
-  // Apply button lives in the dialog's footer, sibling to the .dialog-content/.window-content
+  // Apply button lives in the dialog's footer (V2: .application, data-action)
   const applyButton =
-    root.closest(".app")?.querySelector("button[data-button='apply']") ??
-    root.parentElement?.querySelector("button[data-button='apply']");
+    root.closest(".application")?.querySelector("button[data-action='apply']") ??
+    root.parentElement?.querySelector("button[data-action='apply']");
 
   const refresh = () => {
     const checked = skillBoxes.filter((cb) => cb.checked).length;
@@ -352,7 +355,10 @@ function mergedClassSkillKeys(occupation, selections) {
 }
 
 function escapeHtml(value) {
-  const div = document.createElement("div");
-  div.textContent = String(value ?? "");
-  return div.innerHTML;
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
