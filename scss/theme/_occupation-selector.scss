@@ -1,0 +1,117 @@
+/**
+ * Occupation grant picker — soft sumi-e styling.
+ *
+ * Scoped under `body.naruto-zen` so it participates in the theme toggle.
+ * Renders inside a Foundry DialogV2 window that already receives the
+ * `.naruto-zen-target` class from the theme layer's render hooks.
+ *
+ * Re-uses zen design tokens. The section containers mirror `.zen-card`
+ * (soft variant); choice labels mirror `.zen-chip` (soft variant with
+ * embedded native input for accessibility).
+ *
+ * DOM classes are authored in occupation-apply.mjs renderOccupationSelectionContent():
+ *   .kaihou-occupation-selector (form root)
+ *   .kaihou-choice-grid         (flex wrapper for options)
+ *   .kaihou-choice               (label wrapping input + text)
+ *   .kaihou-choice-disabled      (toggled by JS when selection limit reached)
+ */
+
+// Imported inside body.naruto-zen { } in kaihou.scss — no wrapper needed.
+
+// ── Constrain the hosting DialogV2 window ──────────────────────────────
+// DialogV2 uses tag:"dialog" (native <dialog> element) which does not get
+// .naruto-zen-target, so we scope via :has() on the chrome-level selector.
+.application.dialog:has(.kaihou-occupation-selector) {
+  .window-content {
+    max-height: 65vh;
+    overflow-y: auto;
+  }
+}
+
+// ── Form root ──────────────────────────────────────────────────────────
+.kaihou-occupation-selector {
+    display: flex;
+    flex-direction: column;
+    gap: var(--zen-space-4);
+    padding: var(--zen-space-2) 0;
+
+    // ── Section cards (Class Skills / Bonus Feat / Technique Link) ─────
+    section {
+      background: var(--zen-card-bg);
+      border: var(--zen-border-hair) solid var(--zen-border);
+      border-radius: var(--zen-radius-md);
+      padding: var(--zen-space-3);
+    }
+
+    h3 {
+      font-family: var(--zen-font-display);
+      font-size: var(--zen-text-lg);
+      color: var(--zen-ink);
+      margin: 0 0 var(--zen-space-1);
+      padding-bottom: var(--zen-space-1);
+      border-bottom: var(--zen-border-hair) solid var(--zen-divider);
+    }
+
+    p {
+      font-size: var(--zen-text-sm);
+      color: var(--zen-ink-mute);
+      margin: 0 0 var(--zen-space-2);
+    }
+  }
+
+// ── Choice grid (flex-wrap layout for option pills) ─────────────────
+.kaihou-choice-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--zen-space-2);
+}
+
+// ── Choice pill (label wrapping a native checkbox or radio) ─────────
+.kaihou-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zen-space-1);
+  padding: 4px 12px;
+  background: var(--zen-surface);
+  border: var(--zen-border-hair) solid var(--zen-border);
+  border-radius: var(--zen-radius-round);
+  font-size: var(--zen-text-sm);
+  color: var(--zen-ink);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--zen-duration-fast) var(--zen-easing-out),
+    border-color var(--zen-duration-fast) var(--zen-easing-out),
+    box-shadow var(--zen-duration-fast) var(--zen-easing-out),
+    opacity var(--zen-duration-fast) var(--zen-easing-out);
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: var(--zen-ink-accent);
+    margin: 0;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background: var(--zen-row-hover);
+  }
+
+  &:has(input:checked) {
+    background: var(--zen-ink-accent);
+    color: var(--zen-surface);
+    border-color: #3a2e1b;
+    box-shadow: 0 1px 3px rgba(94, 67, 39, 0.4);
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      accent-color: var(--zen-surface);
+    }
+  }
+}
+
+// ── Disabled pill (JS-toggled when skill checkbox limit reached) ────
+.kaihou-choice-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
