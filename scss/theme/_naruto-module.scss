@@ -55,7 +55,12 @@ $discipline-color: (
             padding: 0.25rem 0.5rem;
 
             h3 {
-                border-bottom: none;
+                background: transparent;
+                border: none;
+                color: var(--zen-ink);
+                text-shadow: none;
+                text-align: left;
+                border-radius: 0;
                 margin-bottom: 0.25rem;
                 font-size: 0.95rem;
             }
