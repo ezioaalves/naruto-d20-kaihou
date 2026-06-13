@@ -135,15 +135,13 @@ $nzen-wind: rgb(180, 195, 175); // pale jade (alias for the visual slot L5R call
 $nzen-air: $nzen-wind;
 $nzen-lightning: rgb(220, 195, 80); // gold-yellow, no L5R analogue
 
-// -- Naruto disciplines (visual aliases over L5R tech colors per PLAN.md §"Discipline mapping")
-// We keep the $nzen-kata/$nzen-invocations/etc variables (existing partials reference them)
-// and add discipline-named aliases so naruto-facing partials can read in domain language.
-$nzen-tai: $nzen-kata; // Taijutsu → kata (red)
-$nzen-nin: $nzen-invocations; // Ninjutsu → invocations (orange)
-$nzen-gnj: $nzen-shuji; // Genjutsu → shuji (green-cyan)
-$nzen-ckc: $nzen-ninjitsu; // Chakra Control → ninjitsu (dark gray)
-$nzen-fui: $nzen-rituals; // Fuinjutsu → rituals (blue)
-$nzen-kin: $nzen-maho; // Kinjutsu (visual only) → maho (crimson)
+// -- Naruto disciplines (Kaihou campaign palette — user-specified)
+$nzen-tai: rgb(34, 197, 94);     // Taijutsu — green
+$nzen-nin: rgb(59, 130, 246);    // Ninjutsu — blue
+$nzen-gnj: rgb(139, 92, 246);    // Genjutsu — purple
+$nzen-ckc: rgb(180, 130, 0);     // Chakra Control — dark gold/yellow
+$nzen-fui: rgb(15, 15, 15);      // Fuinjutsu — near-black (ink)
+$nzen-kin: $nzen-maho;           // Kinjutsu — crimson (keep maho)
 
 // -- Fonts
 // Used by _fonts.scss and other partials for typography.

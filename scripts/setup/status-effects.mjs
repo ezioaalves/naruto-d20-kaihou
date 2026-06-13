@@ -23,7 +23,9 @@ export function remapStatusEffectIcons(statusEffects) {
 }
 
 export function registerStatusEffects() {
-  Hooks.once("init", () => {
+  // "setup" fires after all init hooks complete, so PF1e has already set
+  // CONFIG.statusEffects = pf1.utils.init.getConditions() before we patch it.
+  Hooks.once("setup", () => {
     CONFIG.statusEffects = remapStatusEffectIcons(CONFIG.statusEffects ?? []);
   });
 }

@@ -45,6 +45,8 @@ $discipline-color: (
     // Pool / Reserve / EPS / Affinities row
     > .attributes {
         gap: 0.5rem;
+        margin: 0;
+        padding: 0;
 
         .info-box-header {
             background: var(--zen-card-bg);
@@ -135,18 +137,26 @@ $discipline-color: (
     }
 
     .learn-check-box {
+        position: relative;
+        isolation: isolate;   // stacking context so ::before z-index: -1 stays inside card
+        overflow: hidden;
         background: var(--zen-card-bg);
         border: 1px solid var(--zen-border-soft);
         border-left: 3px solid var(--zen-ink-mute);
         border-radius: 4px;
         padding: 0.4rem 0.5rem;
 
+        // Hide the default d20 dice icon — clicking the card triggers the roll
+        .learn-check-header i.fa-dice-d20 {
+            display: none;
+        }
+
         .learn-check-header {
             font-family: var(--zen-font-body);
             text-transform: uppercase;
             letter-spacing: 0.05rem;
             color: var(--zen-ink);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             border: none;
             background: transparent;
             cursor: pointer;
@@ -179,25 +189,26 @@ $discipline-color: (
         }
     }
 
-    // Per-discipline color accents on each learn-check card.
+    // Per-discipline: accent color + disc icon as large card watermark.
+    // The ::before is behind all content (z-index: -1 inside isolation: isolate).
     @each $key, $color in $discipline-color {
         .learn-check-box[data-naruto-tooltip="learn.#{$key}"] {
             border-left-color: $color;
 
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background-color: $color;
+                opacity: 0.15;
+                mask: var(--zen-disc-#{$key}-icon) no-repeat center / 75%;
+                -webkit-mask: var(--zen-disc-#{$key}-icon) no-repeat center / 75%;
+                pointer-events: none;
+                z-index: -1;
+            }
+
             .learn-check-header {
                 color: $color;
-
-                &::before {
-                    content: "";
-                    display: inline-block;
-                    width: 1rem;
-                    height: 1rem;
-                    background-color: currentColor;
-                    mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
-                    -webkit-mask: var(--zen-disc-#{$key}-icon) no-repeat center / contain;
-                    vertical-align: middle;
-                    margin-right: 0.3rem;
-                }
             }
             .learn-check-total {
                 color: $color;
