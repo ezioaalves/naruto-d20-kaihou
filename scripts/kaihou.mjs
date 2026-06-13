@@ -49,6 +49,23 @@ const WIZARD_PARTIALS = [
   "modules/naruto-d20-kaihou/templates/apps/tqw-v2/pick-rolltable.hbs",
 ];
 
+// Our bespoke character sheet template + the PF1e partials it embeds. PF1e
+// preloads its own partials at init, but we register them again (idempotent) so
+// our template never renders against an unregistered partial on load order drift.
+const SHEET_TEMPLATES = [
+  "modules/naruto-d20-kaihou/templates/actor/kaihou-character-sheet.hbs",
+  "systems/pf1/templates/actors/parts/actor-summary.hbs",
+  "systems/pf1/templates/actors/parts/actor-attributes.hbs",
+  "systems/pf1/templates/actors/parts/actor-combat.hbs",
+  "systems/pf1/templates/actors/parts/actor-inventory.hbs",
+  "systems/pf1/templates/actors/parts/actor-features.hbs",
+  "systems/pf1/templates/actors/parts/actor-skills-front.hbs",
+  "systems/pf1/templates/actors/parts/actor-buffs.hbs",
+  "systems/pf1/templates/actors/parts/actor-spellbook-front.hbs",
+  "systems/pf1/templates/actors/parts/actor-settings.hbs",
+  "systems/pf1/templates/internal/table_magic-items.hbs",
+];
+
 registerStatusEffects();
 
 Hooks.once("init", async () => {
@@ -59,8 +76,10 @@ Hooks.once("init", async () => {
 
   const loader = foundry?.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates;
   if (loader) {
-    await loader(WIZARD_PARTIALS);
-    console.log(`${MODULE_ID} | preloaded ${WIZARD_PARTIALS.length} wizard partials`);
+    await loader([...WIZARD_PARTIALS, ...SHEET_TEMPLATES]);
+    console.log(
+      `${MODULE_ID} | preloaded ${WIZARD_PARTIALS.length} wizard + ${SHEET_TEMPLATES.length} sheet templates`,
+    );
   } else {
     console.warn(`${MODULE_ID} | no loadTemplates helper found; partials may not resolve`);
   }

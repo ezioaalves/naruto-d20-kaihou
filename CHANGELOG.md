@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.7 — 2026-06-13
+
+### Changed
+- **Reworked the databook character sheet from DOM injection to an own template.** v2.1.6 appended databook nodes onto PF1e's live sheet, which fought PF1e's `height:100%` / `overflow:hidden` tab layout (clipped content) and overlaid two clashing visual systems. The sheet now renders its own top-level template (`templates/actor/kaihou-character-sheet.hbs`) that embeds each PF1e partial verbatim, so all PF1e mechanics keep working, and adds a real **Identity** dossier tab (alias/allegiance, both radars, mission record, origin) plus the header band as a first-class region — no more clipping.
+- Identity is now the default landing tab; the databook surface (band + Identity tab + red tab strip) is styled without repainting PF1e's functional tabs, which keep their native look.
+- Preserved the naruto-d20 chakra-tab injection contract (anchors `nav.sheet-navigation.tabs[data-group='primary']` and `section.primary-body` kept) and defensively preload PF1e's embedded partials.
+
+### Notes
+- The Combat/Skills full radars and header kanji/resource pips from the v2.1.6 plan are deferred follow-ups; the Identity tab carries both radars for now.
+
 ## v2.1.6 — 2026-06-13
 
 ### Added

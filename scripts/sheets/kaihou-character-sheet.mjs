@@ -2,14 +2,29 @@
 //
 // Bespoke campaign character sheet. Extends PF1e's character sheet so ALL
 // mechanics (rolls, items, listeners) — and naruto-d20's chakra-tab prototype
-// patch — are inherited. We only ADD: a view-model in getData and databook DOM
-// in _renderInner (Task 7+). Anchor selectors (nav.sheet-navigation.tabs,
-// section.primary-body) are never removed, so the chakra tab keeps injecting.
+// patch — are inherited. We swap in our OWN top-level template
+// (templates/actor/kaihou-character-sheet.hbs) which re-frames PF1e's content:
+// every functional tab embeds PF1e's partial verbatim, while we add a databook
+// header band and an Identity dossier tab. The template preserves the two
+// anchor selectors the naruto-d20 chakra patch depends on
+// (nav.sheet-navigation.tabs[data-group='primary'], section.primary-body), so
+// the Chakra tab keeps injecting. All databook view data is built, Foundry-free,
+// in view-model.mjs + databook-html.mjs and handed to the template as `kaihou.*`.
 
 import { buildKaihouViewModel } from "./view-model.mjs";
-import { esc, headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
+import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
+
+export const SHEET_TEMPLATE = `modules/${MODULE_ID}/templates/actor/kaihou-character-sheet.hbs`;
+
+const ORIGIN_ROWS = [
+  { label: "Village", kind: null }, // village is a flag, not an item
+  { label: "School", kind: "school" },
+  { label: "Occupation", kind: "occupation" },
+  { label: "Bloodline", kind: "bloodline" },
+  { label: "Flaw", kind: "flaw" },
+];
 
 export function getKaihouCharacterSheetClass() {
   const Base = pf1?.applications?.actor?.ActorSheetPFCharacter;
@@ -20,15 +35,53 @@ export function getKaihouCharacterSheetClass() {
 
   return class KaihouCharacterSheet extends Base {
     static get defaultOptions() {
-      return foundry.utils.mergeObject(super.defaultOptions, {
-        classes: [...super.defaultOptions.classes, "kaihou-databook"],
+      const options = super.defaultOptions;
+      // Make the databook Identity tab the default landing tab, leaving every
+      // other primary-group tab (and other groups) untouched.
+      const tabs = (options.tabs ?? []).map((t) =>
+        t.group === "primary" ? { ...t, initial: "identity" } : { ...t },
+      );
+      return foundry.utils.mergeObject(options, {
+        classes: [...options.classes, "kaihou-databook"],
+        tabs,
       });
+    }
+
+    /** Own template for the full sheet; defer to PF1e's limited sheet for limited users. */
+    get template() {
+      if (!game.user.isGM && this.actor.limited) {
+        return "systems/pf1/templates/actors/limited-sheet.hbs";
+      }
+      return SHEET_TEMPLATE;
     }
 
     async getData(options) {
       const data = await super.getData(options);
       try {
-        data.kaihou = buildKaihouViewModel(this.actor);
+        const vm = buildKaihouViewModel(this.actor);
+        const khFlags = this.actor.flags?.[MODULE_ID] ?? {};
+        const meta = {
+          name: this.actor.name,
+          img: this.actor.img,
+          village: khFlags.village ?? "",
+          rank: khFlags.rank ?? "",
+        };
+        // Pre-render the markup-heavy databook pieces (SVG radars, header band,
+        // mission grid) with our pure builders; the template emits them with
+        // triple-stache. The builders escape all caller text internally.
+        vm.fragments = {
+          headerBand: headerBand(vm, meta),
+          abilityRadar: radarSvg(vm.radars.abilities, { max: 20, variant: "ability" }),
+          disciplineRadar: radarSvg(vm.radars.disciplines, { max: 10, variant: "discipline" }),
+          missionRecord: missionRecord(vm.identity.missions),
+        };
+        // Origin & Path rows: village from a flag, the rest from Kaihou-granted
+        // items. Values are emitted with double-stache (Handlebars auto-escapes).
+        vm.origin = ORIGIN_ROWS.map(({ label, kind }) => ({
+          label,
+          value: kind ? this._kaihouItemName(kind) : (khFlags.village ?? ""),
+        }));
+        data.kaihou = vm;
       } catch (e) {
         console.error(`${MODULE_ID} | view-model build failed`, e);
         data.kaihou = null;
@@ -36,80 +89,8 @@ export function getKaihouCharacterSheetClass() {
       return data;
     }
 
-    async _renderInner(...args) {
-      const $html = await super._renderInner(...args); // PF1e DOM + naruto-d20 chakra injection
-      try {
-        this._injectDatabook($html, args[0]?.kaihou);
-      } catch (e) {
-        console.error(`${MODULE_ID} | databook injection failed`, e);
-      }
-      return $html;
-    }
-
-    _injectDatabook($html, vm) {
-      if (!vm) return;
-      const root = $html[0] ?? $html;
-
-      // 1. Header band — prepend above the tab nav (anchors untouched).
-      const nav = root.querySelector("nav.sheet-navigation.tabs[data-group='primary']");
-      if (nav && !root.querySelector(".db-band")) {
-        const meta = {
-          name: this.actor.name,
-          img: this.actor.img,
-          village: this.actor.flags?.["naruto-d20-kaihou"]?.village ?? "",
-          rank: this.actor.flags?.["naruto-d20-kaihou"]?.rank ?? "",
-        };
-        nav.insertAdjacentHTML("beforebegin", headerBand(vm, meta));
-      }
-
-      // 2. Compact radars on the Identity (summary) tab; full radars on Combat/Skills.
-      const inject = (tabName, html, mountClass) => {
-        const tab = root.querySelector(`.primary-body .tab[data-tab="${tabName}"]`);
-        if (tab && !tab.querySelector(`.${mountClass}`)) {
-          const mount = document.createElement("div");
-          mount.className = mountClass;
-          mount.innerHTML = html;
-          tab.prepend(mount);
-        }
-      };
-
-      const ability = radarSvg(vm.radars.abilities, { max: 20, variant: "ability" });
-      const discipline = radarSvg(vm.radars.disciplines, { max: 10, variant: "discipline" });
-
-      const originRows = [
-        ["Village", this.actor.flags?.["naruto-d20-kaihou"]?.village],
-        ["School", this._kaihouItemName("school")],
-        ["Occupation", this._kaihouItemName("occupation")],
-        ["Bloodline", this._kaihouItemName("bloodline")],
-        ["Flaw", this._kaihouItemName("flaw")],
-      ]
-        .map(([k, v]) => `<div class="db-line"><span>${k}</span><span>${v ? esc(String(v)) : "—"}</span></div>`)
-        .join("");
-
-      inject(
-        "summary",
-        `<div class="db-frontmatter">
-           <div class="db-identity-edit">
-             <label>Alias <input type="text" name="flags.naruto-d20-kaihou.alias" value="${esc(vm.identity.alias)}"></label>
-             <label>Allegiance <input type="text" name="flags.naruto-d20-kaihou.allegiance" value="${esc(vm.identity.allegiance)}"></label>
-           </div>
-           <div class="db-radars">
-             <div class="db-panel"><h4 class="db-panel__h">Ability Scores</h4>${ability}</div>
-             <div class="db-panel"><h4 class="db-panel__h">Disciplines</h4>${discipline}</div>
-           </div>
-           <div class="db-row2">
-             ${missionRecord(vm.identity.missions)}
-             <div class="db-panel"><h4 class="db-panel__h">Origin &amp; Path</h4>${originRows}</div>
-           </div>
-         </div>`,
-        "db-mount-identity",
-      );
-      inject("combat", `<div class="db-panel"><h4 class="db-panel__h">Ability Scores</h4>${ability}</div>`, "db-mount-combat");
-      inject("skills", `<div class="db-panel"><h4 class="db-panel__h">Disciplines</h4>${discipline}</div>`, "db-mount-skills");
-    }
-
     _kaihouItemName(kind) {
-      const item = this.actor.items?.find?.((i) => i.flags?.["naruto-d20-kaihou"]?.kind === kind);
+      const item = this.actor.items?.find?.((i) => i.flags?.[MODULE_ID]?.kind === kind);
       return item?.name ?? "";
     }
   };

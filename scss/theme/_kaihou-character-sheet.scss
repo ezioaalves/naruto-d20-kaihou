@@ -1,24 +1,43 @@
 // scss/theme/_kaihou-character-sheet.scss
 //
-// Bespoke databook character sheet. Resolves under
+// Bespoke databook character sheet (own-template build). Resolves under
 // body.naruto-zen .naruto-zen-target { … }; `&` = .naruto-zen-target.
 // Qualify with .kaihou-databook so only our sheet is affected.
+//
+// Layout note: PF1e renders the form as `display:flex; flex-flow:column; height:
+// 100%` with `.sheet-navigation{flex:0}` and `.primary-body{flex:1; overflow:
+// hidden}`. We add the databook band as a flex child above the nav and an
+// Identity dossier tab inside primary-body. We deliberately do NOT repaint
+// PF1e's functional tabs (summary/combat/skills/…) — they keep their native
+// look; the databook identity is the band + Identity tab + the red tab strip.
 
 &.kaihou-databook {
-  .window-content { background: var(--db-cream); color: var(--db-ink); padding: 0; }
+  // --- Header band: flex child above the tab strip, never steals tab height ---
+  .db-band { flex: 0 0 auto; }
+  .db-band__id { flex: 1; min-width: 0; }
+  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--zen-space-2); }
+  .db-natures { display: flex; gap: 6px; align-items: center; margin-top: var(--zen-space-2); }
+  .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
+
+  // --- Databook-red tab strip (PF1e nav reused) ---
+  .sheet-navigation.tabs { background: #e3d7b8; border-bottom: 2px solid var(--db-red); }
+  .sheet-navigation.tabs .item.active { background: var(--db-red); color: #fff; border-radius: 8px 8px 0 0; }
+
+  // --- Identity dossier tab: the one tab we own and fully style ---
+  .tab.identity {
+    overflow-y: auto;
+    background: var(--db-cream);
+    color: var(--db-ink);
+  }
 
   .db-frontmatter { padding: var(--zen-space-3); display: flex; flex-direction: column; gap: var(--zen-space-3); }
+
   .db-identity-edit { display: flex; gap: var(--zen-space-3); }
   .db-identity-edit label { flex: 1; font: var(--zen-text-xs)/1.4 var(--db-font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--db-muted); }
   .db-identity-edit input { width: 100%; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); padding: 2px 6px; }
 
   .db-radars { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
   .db-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
-
-  .db-band__id { flex: 1; min-width: 0; }
-  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--zen-space-2); }
-  .db-natures { display: flex; gap: 6px; align-items: center; margin-top: var(--zen-space-2); }
-  .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
 
   .db-missions { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; text-align: center; }
   .db-missions > div { background: #e7dcbf; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); padding: 3px 0; }
@@ -27,8 +46,4 @@
   .db-mission { width: 100%; text-align: center; border: none; background: transparent; font-size: var(--zen-text-base); color: var(--db-ink); }
 
   .db-line { display: flex; justify-content: space-between; font-size: var(--zen-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--db-border-soft); }
-
-  // Relabelled tab strip styled databook-red (PF1e nav reused).
-  .sheet-navigation.tabs { background: #e3d7b8; border-bottom: 2px solid var(--db-red); }
-  .sheet-navigation.tabs .item.active { background: var(--db-red); color: #fff; }
 }
