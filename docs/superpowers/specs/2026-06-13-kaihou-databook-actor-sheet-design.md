@@ -122,7 +122,13 @@ Introduce a **databook token + component layer**, reusing the existing scoping m
 - **Tokens** (`scss/tokens/_databook.scss`): registry-red `#b23a2e`, ink `#2e271d`, cream `#efe9d8`, panel `#f4efe0`, border `#cdbf99`, void-violet `#6a3d8f`; databook type scale; spacing; radar colours.
 - **Primitives** (`scss/components/`): `panel`, `badge` (+rank/allegiance variants), `pip`, `radar`, databook `tab`/`nav`, header `band`. Extend the existing `card`/`chip` family rather than duplicating.
 - **Surface** (`scss/theme/_kaihou-character-sheet.scss`): the bespoke sheet, nested under `.naruto-zen-target` like the other sheet partials.
-The databook palette becomes the module's forward visual language; the zen/parchment partials are superseded incrementally (sheet first, other surfaces in follow-on specs). **(Confirm: replace zen module-wide over time — §12.)**
+**Decision (confirmed):** the databook palette becomes the module's **module-wide** visual language; the zen/parchment partials are superseded incrementally (sheet first, other surfaces in follow-on specs). The `themeEnabled` toggle still gates the whole thing.
+
+### 10.1 L5R5E asset reuse — soft preference, licence-bounded
+The zen theme already began as a lift of L5R5E's SCSS skeleton; we keep leaning on it where it accelerates the build — **soft preference, not a hard rule; the visual identity stays Naruto databook.**
+- **Reuse (MIT — L5R5E's `system/styles/`, `lib/`, generic Foundry-glue):** SCSS architecture and generic primitives (`global`, `global-appv2`, `ui`, `nav`, `compatibility-modules`, `twenty-questions` patterns), AppV2 chrome handling, build/lint patterns. Retain the MIT copyright/attribution notice.
+- **Author fresh (databook-native):** palette, type scale, radar, header band, natures — databook is not L5R's parchment/brush look, so most *visual* assets are new regardless.
+- **Do NOT copy:** FFG/L5R-proprietary or trademarked assets (logos, `LogotypeL5r` font, L5R-branded imagery) and CC-BY-NC-SA content we'd have to relicense. Openly-licensed (OFL) fonts may be reused only if they suit databook — databook typography takes priority.
 
 ## 11. Open decisions deferred to build time
 - Exact radar normalization scales (ability vs discipline).
@@ -130,8 +136,9 @@ The databook palette becomes the module's forward visual language; the zen/parch
 - Mission counts: free-entry vs increment buttons.
 - Whether allegiance is free text or a lookup against a campaign roster.
 
-## 12. Decision needing the user's confirmation in review
-- **Aesthetic scope:** treat databook as the new module-wide visual language (zen superseded over time, sheet first) — vs databook on the actor sheet only, zen retained elsewhere. Spec currently assumes the former.
+## 12. Resolved scope decisions
+- **Aesthetic scope (resolved):** databook is the **module-wide** visual language; zen is superseded over time, sheet first. (See §10 / §10.1.)
+- **L5R5E reuse (resolved):** soft preference to reuse L5R5E's MIT-licensed engineering assets; identity stays databook; no proprietary/branded assets. (See §10.1.)
 
 ## 13. Error handling / resilience
 - naruto-d20 absent/older: sheet still renders; natures/chakra degrade gracefully (locked slots, no chakra tab) without throwing.
@@ -153,3 +160,5 @@ The databook palette becomes the module's forward visual language; the zen/parch
 - Databook aesthetic; header emphasized; class dropped; alias + allegiance + mission-by-rank added.
 - Void slot for Kekkei Genkai advanced nature.
 - Two auto-derived radars (abilities, disciplines), front matter + own tabs.
+- Databook is the module-wide visual language (zen superseded incrementally).
+- Reuse L5R5E's MIT engineering assets where they fit (soft preference); no FFG/L5R-branded assets.
