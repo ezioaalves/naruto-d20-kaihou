@@ -44,13 +44,18 @@ export function radarSvg(axes, { max, variant }) {
 }
 
 export function naturesRow(natures) {
+  // Basic natures render the vendored nature symbol (via CSS, keyed on
+  // data-nature); the kanji is kept as the tooltip/title.
   const basic = natures.basic
-    .map((n) => `<span class="db-nat${n.on ? " db-nat--on" : ""}" title="${esc(n.key)}">${esc(n.kanji)}</span>`)
+    .map(
+      (n) =>
+        `<span class="db-nat db-nat--basic${n.on ? " db-nat--on" : ""}" data-nature="${esc(n.key)}" title="${esc(n.kanji)}"></span>`,
+    )
     .join("");
   const adv = natures.advanced;
   const voidSlot = adv
     ? `<span class="db-nat db-nat--void" title="${esc(adv.label)}">${esc(adv.kanji)}</span>`
-    : `<span class="db-nat db-nat--void db-nat--locked" title="No Kekkei Genkai">—</span>`;
+    : `<span class="db-nat db-nat--void db-nat--locked" title="No Kekkei Genkai"></span>`;
   return `<div class="db-natures"><span class="db-natures__lbl">Natures</span>${basic}<span class="db-natures__lbl">KKG</span>${voidSlot}</div>`;
 }
 
@@ -81,8 +86,11 @@ export function resourcePips(resources) {
 /** vm = view-model; meta = {name,img,village,rank} pulled from the actor by the sheet. */
 export function headerBand(vm, meta) {
   const { alias, allegiance } = vm.identity;
+  const villageCrest = meta.villageCrest
+    ? `<img class="db-badge__crest" src="${esc(meta.villageCrest)}" alt="">`
+    : "";
   const badges = [
-    meta.village ? `<span class="db-badge">${esc(meta.village)}</span>` : "",
+    meta.village ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>` : "",
     meta.rank ? `<span class="db-badge db-badge--rank">${esc(meta.rank)}</span>` : "",
     allegiance ? `<span class="db-badge db-badge--allegiance">⚔ ${esc(allegiance)}</span>` : "",
   ].join("");

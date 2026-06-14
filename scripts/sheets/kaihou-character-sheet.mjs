@@ -11,7 +11,7 @@
 // the Chakra tab keeps injecting. All databook view data is built, Foundry-free,
 // in view-model.mjs + databook-html.mjs and handed to the template as `kaihou.*`.
 
-import { buildKaihouViewModel } from "./view-model.mjs";
+import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
 import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
@@ -61,10 +61,12 @@ export function getKaihouCharacterSheetClass() {
         const vm = buildKaihouViewModel(this.actor);
         const khFlags = this.actor.flags?.[MODULE_ID] ?? {};
         const village = this._villageName();
+        const crest = villageCrest(village);
         const meta = {
           name: this.actor.name,
           img: this.actor.img,
           village,
+          villageCrest: crest ? `modules/${MODULE_ID}/assets/theme/icons/villages/${crest}.svg` : "",
           rank: khFlags.rank ?? "",
         };
         // Pre-render the markup-heavy databook pieces (SVG radars, header band,

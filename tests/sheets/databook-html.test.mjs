@@ -26,10 +26,11 @@ describe("radarSvg", () => {
 });
 
 describe("naturesRow", () => {
-  it("marks owned natures --on and renders the void slot when KKG present", () => {
+  it("marks owned natures --on, tags data-nature, and renders the void slot when KKG present", () => {
     const html = naturesRow(vm.natures);
     expect(html).toContain("db-nat--void");
-    expect(html).toContain("木");
+    expect(html).toContain("木"); // advanced/KKG kanji still shown
+    expect(html).toContain('data-nature="fire"'); // basic natures keyed for CSS icons
     expect((html.match(/db-nat--on/g) || []).length).toBe(2); // fire + lightning
   });
   it("locks the void slot when no advanced nature", () => {
@@ -42,9 +43,11 @@ describe("missionRecord & headerBand", () => {
   it("renders all five rank cells + total and escapes identity text", () => {
     expect(missionRecord(vm.identity.missions)).toContain('name="flags.naruto-d20-kaihou.missions.C"');
     expect(missionRecord(vm.identity.missions)).toContain(">41<"); // total still rendered as static
-    const band = headerBand(vm, { name: "Uchiha <b>Takeshi</b>", img: "p.png", village: "Konoha", rank: "Chūnin" });
+    const band = headerBand(vm, { name: "Uchiha <b>Takeshi</b>", img: "p.png", village: "Kanigakure", villageCrest: "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg", rank: "Chūnin" });
     expect(band).toContain("Crimson Mirage");
     expect(band).toContain("13th Tantō");
+    expect(band).toContain('class="db-badge__crest"'); // village crest image rendered
+    expect(band).toContain("villages/crab.svg");
     expect(band).toContain("Uchiha &lt;b&gt;Takeshi&lt;/b&gt;"); // escaped, no raw tag injection
     expect(band).not.toContain("<b>Takeshi</b>");
   });

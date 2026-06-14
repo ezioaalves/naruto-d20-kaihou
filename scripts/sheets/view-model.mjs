@@ -27,6 +27,28 @@ export const BASIC_NATURES = [
 
 export const MISSION_RANKS = ["D", "C", "B", "A", "S"];
 
+// Animal-themed villages → crest basename (assets/theme/icons/villages/<x>.svg).
+// Hisuigakure is the capital → imperial mon. Matched by name prefix.
+export const VILLAGE_CRESTS = {
+  hisui: "imperial",
+  houoh: "phoenix",
+  kani: "crab",
+  kirin: "unicorn",
+  ryuu: "dragon",
+  sasori: "scorpion",
+  shishi: "lion",
+  tsuru: "crane",
+};
+
+/** Crest basename for a village name, or null if none maps. */
+export function villageCrest(villageName) {
+  const n = String(villageName ?? "").toLowerCase();
+  for (const [key, crest] of Object.entries(VILLAGE_CRESTS)) {
+    if (n.startsWith(key)) return crest;
+  }
+  return null;
+}
+
 const num = (v) => (Number.isFinite(Number(v)) ? Number(v) : 0);
 const int = (v) => {
   const n = parseInt(v, 10);

@@ -1,6 +1,6 @@
 // tests/sheets/view-model.test.mjs
 import { describe, it, expect } from "vitest";
-import { buildKaihouViewModel, ABILITY_AXES, DISCIPLINE_AXES, MISSION_RANKS } from "../../scripts/sheets/view-model.mjs";
+import { buildKaihouViewModel, villageCrest, ABILITY_AXES, DISCIPLINE_AXES, MISSION_RANKS } from "../../scripts/sheets/view-model.mjs";
 
 const actor = {
   system: {
@@ -42,6 +42,15 @@ describe("buildKaihouViewModel", () => {
     expect(vm.resources.hp).toEqual({ value: 42, max: 50 });
     expect(vm.resources.ac).toBe(18);
     expect(vm.resources.chakra).toEqual({ value: 30, max: 40 });
+  });
+
+  it("maps animal villages to crest basenames; Hisuigakure (capital) → imperial", () => {
+    expect(villageCrest("Kanigakure")).toBe("crab");
+    expect(villageCrest("Hisuigakure")).toBe("imperial");
+    expect(villageCrest("Kiringakure")).toBe("unicorn");
+    expect(villageCrest("Tsurugakure")).toBe("crane");
+    expect(villageCrest("Konohagakure")).toBeNull(); // canon village, no mapped mon
+    expect(villageCrest("")).toBeNull();
   });
 
   it("flags only owned basic natures, case-insensitively", () => {
