@@ -1,0 +1,117 @@
+<style>
+  .db { background:#efe9d8; border:1px solid #c9bd9c; border-radius:4px; color:#2e271d; font-size:12px; max-width:700px; margin:0 auto; box-shadow:0 4px 18px rgba(0,0,0,.22); overflow:hidden; }
+  .db .strip { height:5px; background:repeating-linear-gradient(90deg,#b23a2e 0 18px,#8a2b22 18px 36px); }
+  .band { display:flex; gap:12px; padding:12px 14px; background:#f4efe0; border-bottom:1px solid #d8cca8; }
+  .port { width:96px; height:120px; background:#ded2b2; border:2px solid #2e271d; border-radius:2px; display:flex; align-items:center; justify-content:center; color:#8a7c5c; font-size:9px; flex:0 0 auto; position:relative; }
+  .port::after{ content:"No.012"; position:absolute; bottom:-1px; left:-1px; background:#2e271d; color:#efe9d8; font-size:8px; padding:1px 4px; letter-spacing:.05em; }
+  .idcol { flex:1; min-width:0; }
+  .kanji { font-size:13px; color:#7a6a52; letter-spacing:.12em; }
+  .name { font-size:23px; font-weight:800; font-family:'Trebuchet MS',sans-serif; line-height:1.05; }
+  .alias { font-size:12px; font-style:italic; color:#b23a2e; margin-top:1px; }
+  .alias::before{ content:"「"; } .alias::after{ content:"」"; }
+  .reg { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .crest{ width:18px;height:18px;border-radius:50%;background:#2e271d;color:#efe9d8;display:inline-flex;align-items:center;justify-content:center;font-size:9px; }
+  .badge{ background:#e7dcbf;border:1px solid #cdbf99;border-radius:3px;padding:2px 8px;font-size:10px;display:inline-flex;align-items:center;gap:4px; }
+  .badge.rank{ background:#b23a2e;color:#fff;border-color:#b23a2e;font-weight:700; }
+  .natures{ display:flex;gap:6px;align-items:center;margin-top:10px; }
+  .natures .lbl{ font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#8a7c5c; }
+  .nat{ width:26px;height:26px;border-radius:50%;border:2px solid #c2b48f;display:flex;align-items:center;justify-content:center;font-size:12px;background:#efe6cf; }
+  .nat.on{ border-color:#2e271d;background:#fff7e6; }
+  .nat.void{ border-style:double;border-width:3px;border-color:#6a3d8f;background:#f0e9f5;color:#6a3d8f;font-weight:700; }
+  .nat.void.locked{ border-color:#cbbf9f;color:#cbbf9f;background:#efe9d8; }
+  .res{ display:flex;flex-direction:column;gap:5px;flex:0 0 auto; }
+  .pip{ background:#e7dcbf;border:1px solid #cdbf99;border-radius:3px;padding:3px 9px;text-align:center;min-width:66px; }
+  .pip b{ display:block;font-size:15px; } .pip small{ font-size:8px;text-transform:uppercase;letter-spacing:.05em;color:#8a7c5c; }
+  .tabs{ display:flex;background:#e3d7b8;border-bottom:2px solid #b23a2e;padding:0 8px; }
+  .tabs span{ padding:6px 11px;font-size:10px;text-transform:uppercase;letter-spacing:.04em; }
+  .tabs span.on{ background:#b23a2e;color:#fff; }
+  .tabs span.inj{ font-style:italic; } .tabs span.inj::after{ content:" ⟵nd20";font-size:7px;opacity:.55;font-style:normal; }
+  .body{ padding:12px;display:grid;grid-template-columns:210px 1fr;gap:12px; }
+  .panel{ background:#f4efe0;border:1px solid #d3c6a2;border-radius:3px;padding:8px; }
+  .panel h4{ margin:0 0 6px;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#b23a2e;border-bottom:1px solid #ddd0ab;padding-bottom:3px; }
+  .line{ font-size:10px;padding:2px 0;border-bottom:1px dotted #e0d4b0;display:flex;justify-content:space-between; }
+  .total{ text-align:center;font-size:10px;margin-top:6px; } .total b{ font-size:16px;color:#b23a2e; }
+  .miss{ display:grid;grid-template-columns:repeat(6,1fr);gap:3px;text-align:center;margin-top:2px; }
+  .miss div{ background:#e7dcbf;border:1px solid #cdbf99;border-radius:2px;padding:3px 0; }
+  .miss b{ display:block;font-size:13px; } .miss small{ font-size:8px;color:#8a7c5c; }
+  .axis{ font-size:8px;fill:#5a4d36; } .grid{ fill:none;stroke:#cbbd97;stroke-width:1; }
+  .plot{ fill:rgba(178,58,46,.28);stroke:#b23a2e;stroke-width:1.5; }
+</style>
+
+<h2>Databook direction — is this the look you want?</h2>
+<p class="subtitle">Header emphasised, class dropped, alias added, void/KKG nature slot, mission record by rank, and the signature <b>8-parameter radar</b>. React to the feel + the radar.</p>
+
+<div class="db">
+  <div class="strip"></div>
+  <div class="band">
+    <div class="port">portrait</div>
+    <div class="idcol">
+      <div class="kanji">うちは タケシ</div>
+      <div class="name">Uchiha Takeshi</div>
+      <div class="alias">Crimson Mirage</div>
+      <div class="reg">
+        <span class="badge"><span class="crest">木</span>Konohagakure</span>
+        <span class="badge rank">Chūnin</span>
+        <span class="badge">Reg. #012</span>
+      </div>
+      <div class="natures">
+        <span class="lbl">Natures</span>
+        <span class="nat on">火</span><span class="nat on">雷</span><span class="nat">水</span><span class="nat">風</span><span class="nat">土</span>
+        <span class="lbl" style="margin-left:6px">KKG</span>
+        <span class="nat void">木</span>
+      </div>
+    </div>
+    <div class="res">
+      <div class="pip"><b>42</b><small>HP</small></div>
+      <div class="pip"><b>18</b><small>AC</small></div>
+      <div class="pip"><b>30</b><small>Chakra</small></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <span class="on">Identity</span><span class="inj">Chakra</span><span>Combat</span><span>Skills</span><span>Inventory</span><span>Features</span><span>Bio</span>
+  </div>
+
+  <div class="body">
+    <div class="panel" style="text-align:center">
+      <h4>Parameters</h4>
+      <svg viewBox="0 0 200 200" width="100%" style="max-width:185px">
+        <polygon class="grid" points="100,30 149.5,50.5 170,100 149.5,149.5 100,170 50.5,149.5 30,100 50.5,50.5"/>
+        <polygon class="grid" points="100,65 124.75,75.25 135,100 124.75,124.75 100,135 75.25,124.75 65,100 75.25,75.25"/>
+        <line class="grid" x1="100" y1="100" x2="100" y2="30"/><line class="grid" x1="100" y1="100" x2="170" y2="100"/>
+        <line class="grid" x1="100" y1="100" x2="100" y2="170"/><line class="grid" x1="100" y1="100" x2="30" y2="100"/>
+        <polygon class="plot" points="100,30 144.5,55.5 156,100 149.5,149.5 100,149 55.5,144.5 44,100 50.5,50.5"/>
+        <text class="axis" x="100" y="24" text-anchor="middle">忍 Nin</text>
+        <text class="axis" x="174" y="52" text-anchor="start">体 Tai</text>
+        <text class="axis" x="178" y="103" text-anchor="start">幻 Gen</text>
+        <text class="axis" x="174" y="156" text-anchor="start">知 Int</text>
+        <text class="axis" x="100" y="186" text-anchor="middle">力 Str</text>
+        <text class="axis" x="26" y="156" text-anchor="end">速 Spd</text>
+        <text class="axis" x="22" y="103" text-anchor="end">精 Sta</text>
+        <text class="axis" x="26" y="52" text-anchor="end">印 Seal</text>
+      </svg>
+      <div class="total">Total <b>35.5</b></div>
+    </div>
+
+    <div>
+      <div class="panel" style="margin-bottom:10px">
+        <h4>Mission Record</h4>
+        <div class="miss">
+          <div><b>—</b><small>D</small></div><div><b>24</b><small>C</small></div><div><b>11</b><small>B</small></div>
+          <div><b>5</b><small>A</small></div><div><b>1</b><small>S</small></div><div><b>41</b><small>Total</small></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h4>Origin &amp; Path</h4>
+        <div class="line"><span>Village</span><span>Konohagakure</span></div>
+        <div class="line"><span>School</span><span>Genin Corps</span></div>
+        <div class="line"><span>Occupation</span><span>Bounty Hunter</span></div>
+        <div class="line"><span>Bloodline</span><span>Sharingan · Mokuton</span></div>
+        <div class="line"><span>Flaw</span><span>Vengeful</span></div>
+        <div style="text-align:right;margin-top:5px"><span class="badge">✎ Re-run 20Q</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:12px">Terminal: (1) Is this the databook feel? (2) The <b>radar</b> — keep it? and is it <b>auto-derived</b> from PF1e stats or a <b>GM/player display field</b>? (3) Should the databook aesthetic replace the zen/parchment theme <b>module-wide</b>, or just on the sheet?</p>

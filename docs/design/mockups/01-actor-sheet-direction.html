@@ -1,0 +1,82 @@
+<style>
+  .wf { background:#f4ecd8; border:1px solid #b8a888; border-radius:4px; padding:6px; font-size:9px; color:#3a2f25; line-height:1.25; }
+  .wf .bar { background:#6b1f2e; color:#f0e6d2; padding:2px 4px; border-radius:2px; font-weight:600; letter-spacing:.03em; }
+  .wf .tabs { display:flex; gap:2px; margin:4px 0; flex-wrap:wrap; }
+  .wf .tabs span { background:#e3d6bb; border:1px solid #c4b48f; border-radius:2px; padding:1px 4px; font-size:8px; }
+  .wf .tabs span.on { background:#6b1f2e; color:#f0e6d2; }
+  .wf .row { display:flex; gap:4px; margin:3px 0; }
+  .wf .box { background:#e9ddc2; border:1px solid #cbbb95; border-radius:2px; padding:3px; flex:1; text-align:center; }
+  .wf .box.tall { min-height:34px; }
+  .wf .port { width:34px; height:34px; background:#d9c9a3; border:1px solid #b09; border-color:#b8a888; border-radius:2px; display:flex; align-items:center; justify-content:center; font-size:7px; }
+  .wf .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; }
+  .wf .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
+  .wf .grid6 { display:grid; grid-template-columns:repeat(6,1fr); gap:2px; }
+  .wf .ring { width:22px; height:22px; border-radius:50%; border:2px solid #6b1f2e; display:flex; align-items:center; justify-content:center; font-size:7px; background:#efe4c8; }
+  .wf .rings { display:flex; gap:4px; justify-content:center; margin:3px 0; }
+  .wf .rail { width:30%; }
+  .tag { font-size:10px; color:#7a6a52; }
+</style>
+
+<h2>Actor sheet — which structural direction?</h2>
+<p class="subtitle">All three stay a <strong>module on PF1e</strong> (your classes, naruto-d20 layer, and compendia keep working). They differ in <em>how much of the layout we own</em>. Wireframes are structure-only — not final visuals.</p>
+
+<div class="cards" data-multiselect>
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="wf">
+        <div class="bar">CHARISMATIC NINJA</div>
+        <div class="row"><div class="port">img</div><div class="box">Name / Race / Class / Level</div></div>
+        <div class="tabs"><span class="on">Summary</span><span>Attrib</span><span>Combat</span><span>Skills</span><span>Inv</span><span>Feats</span><span>Bio</span></div>
+        <div class="grid6"><div class="box">STR</div><div class="box">DEX</div><div class="box">CON</div><div class="box">INT</div><div class="box">WIS</div><div class="box">CHA</div></div>
+        <div class="row"><div class="box tall">PF1e stat grid (unchanged)</div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A · Organized reskin</h3>
+      <p><span class="label">PF1e layout, kept</span></p>
+      <p>Same DOM & tabs as today. We rewrite the <strong>CSS into a real design system</strong> — tokens → component primitives → per-surface partials — documented and tested. Fixes "simple reskin" structurally without touching layout. <span class="tag">Lowest risk · ~no JS</span></p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="wf">
+        <div class="bar">CHARISMATIC NINJA</div>
+        <div class="row">
+          <div class="rail"><div class="port" style="width:100%;height:30px">img</div><div class="box" style="margin-top:3px">Village<br>Rank</div></div>
+          <div style="flex:1">
+            <div class="box" style="margin-bottom:3px">Chakra & Natures (promoted ↑)</div>
+            <div class="grid3"><div class="box">HP</div><div class="box">AC</div><div class="box">Chakra</div></div>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Combat</span><span>Jutsu</span><span>Skills</span><span>Inv</span><span>Bio</span></div>
+        <div class="row"><div class="box tall">PF1e fields, reflowed into cards</div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B · Restructured reskin</h3>
+      <p><span class="label">CSS reflow + injected panels</span></p>
+      <p>Keep PF1e's sheet class, but use <strong>CSS grid/order + render hooks</strong> to reorder and inject panels so Naruto concepts (chakra, natures, jutsu) lead. Layout feels bespoke; PF1e logic untouched. <span class="tag">Medium risk · light JS</span></p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="wf">
+        <div class="bar">うちは · Custom header band</div>
+        <div class="row"><div class="port">img</div><div style="flex:1"><div class="box">Name · Village crest · Ninja Rank</div><div class="rings"><div class="ring">火</div><div class="ring">水</div><div class="ring">風</div><div class="ring">土</div><div class="ring">雷</div></div></div></div>
+        <div class="tabs"><span class="on">Identity</span><span>Chakra</span><span>Combat</span><span>Jutsu</span><span>Skills</span><span>Inv</span><span>20Q</span></div>
+        <div class="row"><div class="box tall">Bespoke Naruto layout</div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C · Bespoke Naruto sheet</h3>
+      <p><span class="label">Custom ActorSheet subclass</span></p>
+      <p>Register our <strong>own sheet that extends PF1e's character sheet</strong> (inherits rolls/items) with a fully custom Handlebars layout — natures row, village crest, jutsu sections. True overhaul, like L5R5E. <span class="tag">Highest effort · must track PF1e upgrades</span></p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:14px">Pick the one closest to what's in your head (or more than one if you're torn — I'll dig into the difference). Tell me in the terminal what drew you to it.</p>

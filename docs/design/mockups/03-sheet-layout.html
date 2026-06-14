@@ -1,0 +1,96 @@
+<style>
+  .sheet { background:#f4ecd8; border:1px solid #b8a888; border-radius:6px; padding:0; color:#33291f; font-size:12px; max-width:680px; margin:0 auto; box-shadow:0 4px 18px rgba(0,0,0,.25); overflow:hidden; }
+  .titlebar { background:#2a211a; color:#e9dcc0; padding:5px 10px; font-size:11px; display:flex; justify-content:space-between; letter-spacing:.04em; }
+  .titlebar .btns span { opacity:.8; margin-left:8px; }
+  .band { display:flex; gap:10px; padding:10px; background:linear-gradient(180deg,#efe4c8,#f4ecd8); border-bottom:2px solid #6b1f2e; }
+  .port { width:74px; height:74px; background:#d9c9a3; border:2px solid #6b1f2e; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:9px; color:#7a6a52; flex:0 0 auto; }
+  .idcol { flex:1; min-width:0; }
+  .name { font-size:20px; font-weight:700; font-family:Georgia,serif; border-bottom:1px dashed #b8a888; padding-bottom:2px; }
+  .meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:5px; }
+  .crest { width:18px;height:18px;border-radius:50%;background:#6b1f2e;color:#f0e6d2;display:inline-flex;align-items:center;justify-content:center;font-size:9px; }
+  .badge { background:#e3d6bb; border:1px solid #c4b48f; border-radius:10px; padding:1px 8px; font-size:10px; }
+  .badge.rank { background:#6b1f2e; color:#f0e6d2; border-color:#6b1f2e; font-weight:600; }
+  .natures { display:flex; gap:5px; margin-top:7px; align-items:center; }
+  .natures .lbl { font-size:9px; text-transform:uppercase; letter-spacing:.06em; color:#7a6a52; }
+  .nat { width:24px;height:24px;border-radius:50%;border:2px solid #b8a888;display:flex;align-items:center;justify-content:center;font-size:11px;background:#efe4c8; }
+  .nat.on { border-color:#6b1f2e; background:#f7eede; box-shadow:0 0 0 2px rgba(107,31,46,.15); }
+  .res { flex:0 0 auto; display:grid; grid-template-rows:repeat(3,1fr); gap:4px; }
+  .pip { background:#e9ddc2;border:1px solid #cbbb95;border-radius:4px;padding:3px 8px;text-align:center;min-width:62px; }
+  .pip b { display:block;font-size:15px; } .pip small{ font-size:8px;text-transform:uppercase;letter-spacing:.05em;color:#7a6a52; }
+  .tabs { display:flex; gap:0; background:#e7dabf; border-bottom:2px solid #6b1f2e; padding:0 6px; }
+  .tabs span { padding:5px 10px; font-size:10px; text-transform:uppercase; letter-spacing:.04em; border-bottom:2px solid transparent; }
+  .tabs span.on { background:#6b1f2e; color:#f0e6d2; }
+  .tabs span.inj { font-style:italic; }
+  .tabs span.inj::after { content:" ⟵nd20"; font-size:7px; opacity:.6; font-style:normal; }
+  .body { padding:10px; min-height:150px; }
+  .twocol { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .panel { background:#efe4c8; border:1px solid #cbbb95; border-radius:4px; padding:7px; }
+  .panel h4 { margin:0 0 5px; font-size:9px; text-transform:uppercase; letter-spacing:.07em; color:#6b1f2e; border-bottom:1px solid #d8c9a4; padding-bottom:3px; }
+  .panel .line { font-size:10px; padding:2px 0; border-bottom:1px dotted #ddcfac; display:flex; justify-content:space-between; }
+  .legend { font-size:10px; color:#7a6a52; margin-top:10px; text-align:center; }
+  .legend b{ color:#6b1f2e; }
+</style>
+
+<h2>Proposed bespoke PC sheet — does this match your mental model?</h2>
+<p class="subtitle">Parchment palette = feel only. Focus on: <b>header band content</b>, <b>tab set &amp; order</b>, and <b>what the Identity tab leads with</b>. Italic <em>⟵nd20</em> = injected by your friend's module (we theme, don't own).</p>
+
+<div class="sheet">
+  <div class="titlebar"><span>うちはタケシ — Uchiha Takeshi</span><span class="btns"><span>⚙ Sync</span><span>✕</span></span></div>
+
+  <div class="band">
+    <div class="port">portrait</div>
+    <div class="idcol">
+      <div class="name">Uchiha Takeshi</div>
+      <div class="meta">
+        <span class="badge"><span class="crest">木</span> Konohagakure</span>
+        <span class="badge rank">Chūnin</span>
+        <span class="badge">Charismatic Ninja 5</span>
+        <span class="badge">Uchiha bloodline</span>
+      </div>
+      <div class="natures">
+        <span class="lbl">Natures</span>
+        <span class="nat on">火</span><span class="nat on">雷</span><span class="nat">水</span><span class="nat">風</span><span class="nat">土</span>
+      </div>
+    </div>
+    <div class="res">
+      <div class="pip"><b>42/42</b><small>HP</small></div>
+      <div class="pip"><b>18</b><small>AC</small></div>
+      <div class="pip"><b>30/30</b><small>Chakra</small></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <span class="on">Identity</span>
+    <span class="inj">Chakra</span>
+    <span>Combat</span>
+    <span>Skills</span>
+    <span>Inventory</span>
+    <span>Features</span>
+    <span>Bio · 20Q</span>
+  </div>
+
+  <div class="body">
+    <div class="twocol">
+      <div class="panel">
+        <h4>Origin &amp; Path</h4>
+        <div class="line"><span>Village</span><span>Konohagakure</span></div>
+        <div class="line"><span>School</span><span>Academy → Genin Corps</span></div>
+        <div class="line"><span>Occupation</span><span>Bounty Hunter</span></div>
+        <div class="line"><span>Bloodline</span><span>Sharingan (Uchiha)</span></div>
+        <div class="line"><span>Flaw</span><span>Vengeful</span></div>
+      </div>
+      <div class="panel">
+        <h4>20 Questions — Identity</h4>
+        <div class="line"><span>Drive</span><span>Restore clan honor</span></div>
+        <div class="line"><span>Bond</span><span>Squad 7</span></div>
+        <div class="line"><span>Demeanor</span><span>Stoic</span></div>
+        <div class="line"><span>Reputation</span><span>Rising prodigy</span></div>
+        <div style="text-align:right;margin-top:4px"><span class="badge">✎ Re-run 20Q wizard</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="legend">Kaihou owns: <b>header band</b>, tab frame, Identity / Bio·20Q content, and the whole theme. <br>naruto-d20 injects: <b>Chakra tab</b> (chakra pool · natures detail · jutsu by discipline) + Sync button. Combat / Skills / Inventory / Features reuse <b>PF1e's own fields</b>, re-laid-out by us.</p>
+
+<p class="subtitle" style="margin-top:12px">Tell me in the terminal: right tabs? right order? Is "Identity-leads" what you want, or should it open on Combat/Chakra? Anything missing from the header band?</p>

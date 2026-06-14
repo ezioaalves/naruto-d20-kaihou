@@ -1,0 +1,120 @@
+<style>
+  .db{ background:#efe9d8;border:1px solid #c9bd9c;border-radius:4px;color:#2e271d;font-size:12px;max-width:720px;margin:0 auto;box-shadow:0 4px 18px rgba(0,0,0,.22);overflow:hidden; }
+  .strip{ height:5px;background:repeating-linear-gradient(90deg,#b23a2e 0 18px,#8a2b22 18px 36px); }
+  .band{ display:flex;gap:12px;padding:12px 14px;background:#f4efe0;border-bottom:1px solid #d8cca8; }
+  .port{ width:96px;height:120px;background:#ded2b2;border:2px solid #2e271d;border-radius:2px;display:flex;align-items:center;justify-content:center;color:#8a7c5c;font-size:9px;flex:0 0 auto; }
+  .idcol{ flex:1;min-width:0; }
+  .kanji{ font-size:13px;color:#7a6a52;letter-spacing:.12em; }
+  .name{ font-size:23px;font-weight:800;font-family:'Trebuchet MS',sans-serif;line-height:1.05; }
+  .alias{ font-size:12px;font-style:italic;color:#b23a2e;margin-top:1px; } .alias::before{content:"「";} .alias::after{content:"」";}
+  .reg{ display:flex;gap:6px;flex-wrap:wrap;margin-top:8px; }
+  .crest{ width:18px;height:18px;border-radius:50%;background:#2e271d;color:#efe9d8;display:inline-flex;align-items:center;justify-content:center;font-size:9px; }
+  .badge{ background:#e7dcbf;border:1px solid #cdbf99;border-radius:3px;padding:2px 8px;font-size:10px;display:inline-flex;align-items:center;gap:4px; }
+  .badge.rank{ background:#b23a2e;color:#fff;border-color:#b23a2e;font-weight:700; }
+  .badge.alleg{ background:#2e271d;color:#efe9d8;border-color:#2e271d; }
+  .natures{ display:flex;gap:6px;align-items:center;margin-top:10px; }
+  .natures .lbl{ font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#8a7c5c; }
+  .nat{ width:26px;height:26px;border-radius:50%;border:2px solid #c2b48f;display:flex;align-items:center;justify-content:center;font-size:12px;background:#efe6cf; }
+  .nat.on{ border-color:#2e271d;background:#fff7e6; }
+  .nat.void{ border-style:double;border-width:3px;border-color:#6a3d8f;background:#f0e9f5;color:#6a3d8f;font-weight:700; }
+  .res{ display:flex;flex-direction:column;gap:5px;flex:0 0 auto; }
+  .pip{ background:#e7dcbf;border:1px solid #cdbf99;border-radius:3px;padding:3px 9px;text-align:center;min-width:66px; }
+  .pip b{ display:block;font-size:15px; } .pip small{ font-size:8px;text-transform:uppercase;letter-spacing:.05em;color:#8a7c5c; }
+  .tabs{ display:flex;background:#e3d7b8;border-bottom:2px solid #b23a2e;padding:0 8px; }
+  .tabs span{ padding:6px 11px;font-size:10px;text-transform:uppercase;letter-spacing:.04em; }
+  .tabs span.on{ background:#b23a2e;color:#fff; } .tabs span.inj{font-style:italic;} .tabs span.inj::after{content:" ⟵nd20";font-size:7px;opacity:.55;font-style:normal;}
+  .body{ padding:12px; }
+  .radars{ display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px; }
+  .panel{ background:#f4efe0;border:1px solid #d3c6a2;border-radius:3px;padding:8px; }
+  .panel h4{ margin:0 0 4px;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#b23a2e;border-bottom:1px solid #ddd0ab;padding-bottom:3px;text-align:center; }
+  .row2{ display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+  .line{ font-size:10px;padding:2px 0;border-bottom:1px dotted #e0d4b0;display:flex;justify-content:space-between; }
+  .miss{ display:grid;grid-template-columns:repeat(6,1fr);gap:3px;text-align:center; }
+  .miss div{ background:#e7dcbf;border:1px solid #cdbf99;border-radius:2px;padding:3px 0; } .miss b{display:block;font-size:13px;} .miss small{font-size:8px;color:#8a7c5c;}
+  .axis{ font-size:7.5px;fill:#5a4d36; } .grid{ fill:none;stroke:#cbbd97;stroke-width:1; }
+  .plot{ fill:rgba(178,58,46,.26);stroke:#b23a2e;stroke-width:1.5; }
+  .plot2{ fill:rgba(106,61,143,.20);stroke:#6a3d8f;stroke-width:1.5; }
+</style>
+
+<h2>Final layout check — front matter (Identity), then I write the spec</h2>
+<p class="subtitle">Allegiance replaces the registry number. Two auto-derived radars on the front matter (full versions also live on the Combat &amp; Skills tabs).</p>
+
+<div class="db">
+  <div class="strip"></div>
+  <div class="band">
+    <div class="port">portrait</div>
+    <div class="idcol">
+      <div class="kanji">うちは タケシ</div>
+      <div class="name">Uchiha Takeshi</div>
+      <div class="alias">Crimson Mirage</div>
+      <div class="reg">
+        <span class="badge"><span class="crest">木</span>Konohagakure</span>
+        <span class="badge rank">Chūnin</span>
+        <span class="badge alleg">⚔ 13th Tantō</span>
+      </div>
+      <div class="natures">
+        <span class="lbl">Natures</span>
+        <span class="nat on">火</span><span class="nat on">雷</span><span class="nat">水</span><span class="nat">風</span><span class="nat">土</span>
+        <span class="lbl" style="margin-left:6px">KKG</span><span class="nat void">木</span>
+      </div>
+    </div>
+    <div class="res">
+      <div class="pip"><b>42</b><small>HP</small></div><div class="pip"><b>18</b><small>AC</small></div><div class="pip"><b>30</b><small>Chakra</small></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <span class="on">Identity</span><span class="inj">Chakra</span><span>Combat</span><span>Skills</span><span>Inventory</span><span>Features</span><span>Bio</span>
+  </div>
+
+  <div class="body">
+    <div class="radars">
+      <div class="panel">
+        <h4>Ability Scores</h4>
+        <svg viewBox="0 0 180 175" width="100%" style="max-width:170px;display:block;margin:0 auto">
+          <polygon class="grid" points="90,28 143.7,59 143.7,121 90,152 36.3,121 36.3,59"/>
+          <polygon class="grid" points="90,59 116.85,74.5 116.85,105.5 90,121 63.15,105.5 63.15,74.5"/>
+          <polygon class="plot" points="90,40.4 127.6,68.3 130.3,113.25 90,130.3 57.8,108.6 44.4,63.65"/>
+          <text class="axis" x="90" y="22" text-anchor="middle">STR</text>
+          <text class="axis" x="148" y="58" text-anchor="start">DEX</text>
+          <text class="axis" x="148" y="126" text-anchor="start">CON</text>
+          <text class="axis" x="90" y="166" text-anchor="middle">INT</text>
+          <text class="axis" x="32" y="126" text-anchor="end">WIS</text>
+          <text class="axis" x="32" y="58" text-anchor="end">CHA</text>
+        </svg>
+      </div>
+      <div class="panel">
+        <h4>Disciplines</h4>
+        <svg viewBox="0 0 180 175" width="100%" style="max-width:170px;display:block;margin:0 auto">
+          <polygon class="grid" points="90,28 149,70.8 126.5,140.2 53.5,140.2 31,70.8"/>
+          <polygon class="grid" points="90,59 119.5,80.4 108.2,115.1 71.8,115.1 60.5,80.4"/>
+          <polygon class="plot2" points="90,40.4 119.5,80.4 122.8,135.1 68.1,120.1 48.7,76.6"/>
+          <text class="axis" x="90" y="22" text-anchor="middle">Ninjutsu</text>
+          <text class="axis" x="153" y="70" text-anchor="start">Fūinjutsu</text>
+          <text class="axis" x="128" y="153" text-anchor="start">Chakra Ctrl</text>
+          <text class="axis" x="52" y="153" text-anchor="end">Taijutsu</text>
+          <text class="axis" x="27" y="70" text-anchor="end">Genjutsu</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="panel">
+        <h4 style="text-align:left">Mission Record</h4>
+        <div class="miss">
+          <div><b>—</b><small>D</small></div><div><b>24</b><small>C</small></div><div><b>11</b><small>B</small></div>
+          <div><b>5</b><small>A</small></div><div><b>1</b><small>S</small></div><div><b>41</b><small>Tot</small></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h4 style="text-align:left">Origin &amp; Path</h4>
+        <div class="line"><span>Village</span><span>Konohagakure</span></div>
+        <div class="line"><span>School</span><span>Genin Corps</span></div>
+        <div class="line"><span>Occupation</span><span>Bounty Hunter</span></div>
+        <div class="line"><span>Bloodline</span><span>Sharingan · Mokuton</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:12px">This is the layout I'll spec. If it's right, no need to click — just say so in the terminal and I'll write the design doc. (Ability radar = purple-free red; discipline radar = purple, to read as two different lenses.)</p>
