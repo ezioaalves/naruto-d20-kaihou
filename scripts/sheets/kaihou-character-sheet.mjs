@@ -60,10 +60,11 @@ export function getKaihouCharacterSheetClass() {
       try {
         const vm = buildKaihouViewModel(this.actor);
         const khFlags = this.actor.flags?.[MODULE_ID] ?? {};
+        const village = this._villageName();
         const meta = {
           name: this.actor.name,
           img: this.actor.img,
-          village: khFlags.village ?? "",
+          village,
           rank: khFlags.rank ?? "",
         };
         // Pre-render the markup-heavy databook pieces (SVG radars, header band,
@@ -79,7 +80,7 @@ export function getKaihouCharacterSheetClass() {
         // items. Values are emitted with double-stache (Handlebars auto-escapes).
         vm.origin = ORIGIN_ROWS.map(({ label, kind }) => ({
           label,
-          value: kind ? this._kaihouItemName(kind) : (khFlags.village ?? ""),
+          value: kind ? this._kaihouItemName(kind) : village,
         }));
         data.kaihou = vm;
       } catch (e) {
@@ -119,6 +120,16 @@ export function getKaihouCharacterSheetClass() {
 
     _kaihouItemName(kind) {
       const item = this.actor.items?.find?.((i) => i.flags?.[MODULE_ID]?.kind === kind);
+      return item?.name ?? "";
+    }
+
+    // The 20Q wizard stores the village as an actor item marked
+    // flags["naruto-d20-kaihou"].wizard.q1Village — not a flag string. Resolve
+    // its name (e.g. "Kanigakure") for the header badge + Origin panel.
+    _villageName() {
+      const item = this.actor.items?.find?.(
+        (i) => i.flags?.[MODULE_ID]?.wizard?.q1Village === true,
+      );
       return item?.name ?? "";
     }
   };
