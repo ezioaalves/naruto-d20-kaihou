@@ -36,6 +36,15 @@
   --pf1-item-list-hover-bg: rgba(178, 58, 46, 0.12);
   --pf1-color-text-hover: var(--db-red);
 
+  // Align the zen theme's sheet tokens to databook. These flip the zen-themed
+  // layer (skill names use --zen-ink; their hover uses --zen-ink-accent; the
+  // section headers use --zen-font-display) purely by custom-property
+  // inheritance — no specificity overrides, no fighting the zen partials.
+  --zen-ink: var(--db-ink); // calmer than zen's terracotta rgb(118,79,64)
+  --zen-ink-mute: var(--db-muted);
+  --zen-ink-accent: var(--db-red); // hover/active accent
+  --zen-font-display: var(--db-font-name); // section headers → databook sans
+
   // Flat cream base behind PF1e's mostly-translucent panels (replaces the
   // parchment image; the form fills .window-content, covering it).
   background: var(--db-cream);
