@@ -89,6 +89,18 @@
             {{/each}}
           </div>
         </div>
+
+        {{!-- Collaborative notes: private (this player) + public (whole party) --}}
+        <div class="db-row2 db-notes">
+          <div class="db-panel">
+            <h4 class="db-panel__h">My Notes <span class="db-notes__hint">private</span></h4>
+            <textarea class="db-notes__private" rows="5" placeholder="Your private notes on this character…">{{kaihou.notes.privateNote}}</textarea>
+          </div>
+          <div class="db-panel">
+            <h4 class="db-panel__h">Party Notes <span class="db-notes__hint">shared</span></h4>
+            <textarea class="db-notes__public" rows="5" placeholder="Notes the whole party can see…">{{kaihou.notes.publicNote}}</textarea>
+          </div>
+        </div>
       </div>
     </div>
 

@@ -238,4 +238,18 @@
   .db-mission { width: 100%; text-align: center; border: none; background: transparent; font-size: var(--zen-text-base); color: var(--db-ink); }
 
   .db-line { display: flex; justify-content: space-between; font-size: var(--zen-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--db-border-soft); }
+
+  // Collaborative notes (Identity tab).
+  .db-notes__hint { font-weight: 400; font-size: var(--zen-text-xs); color: var(--db-muted); text-transform: none; letter-spacing: 0; }
+  .db-notes textarea {
+    width: 100%;
+    resize: vertical;
+    background: #fff7e6;
+    border: 1px solid var(--db-border);
+    border-radius: var(--zen-radius-sm);
+    color: var(--db-ink);
+    font: var(--zen-text-xs)/1.45 var(--db-font-body);
+    padding: 5px 7px;
+  }
+  .db-notes textarea:focus { outline: 1px solid var(--db-red); }
 }
