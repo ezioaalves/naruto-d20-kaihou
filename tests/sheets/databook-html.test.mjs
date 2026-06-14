@@ -65,7 +65,7 @@ describe("missionRecord & headerBand", () => {
 
   it("renders editable HP/Chakra + AC/Level pips, tap-reserve + rest buttons", () => {
     const band = headerBand(vm, { name: "Takeshi", img: "p.png", village: "Konoha", rank: "Chūnin" });
-    expect(band).toContain("db-resources");
+    expect(band).toContain("db-band__stats");
     expect(band).toContain('name="system.attributes.hp.value" value="42"'); // HP editable
     expect(band).toContain("/50"); // HP max
     expect(band).toContain(">18<"); // AC (display)

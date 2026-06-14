@@ -51,10 +51,18 @@
   background: var(--db-cream);
   color: var(--db-ink);
 
-  // --- Header band: flex child above the tab strip, never steals tab height ---
-  .db-band { flex: 0 0 auto; }
-  .db-band__id { flex: 1; min-width: 0; }
-  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--zen-space-2); }
+  // --- Header band: a databook registry card — portrait · identity · stats ----
+  .db-band {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--zen-space-4);
+  }
+  .db-band__portrait { position: relative; flex: 0 0 auto; }
+  .db-band__id { min-width: 0; }
+  .db-band__name { line-height: 1.04; }
+  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: var(--zen-space-2); }
   .db-natures { display: flex; gap: 8px; align-items: center; margin-top: var(--zen-space-2); }
   .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
   .db-natures__void-sep { width: 1px; height: 26px; background: var(--db-border); margin: 0 2px; }
@@ -90,14 +98,15 @@
   .db-badge--village { gap: 6px; }
   .db-badge__crest { width: 22px; height: 22px; object-fit: contain; }
 
-  // Resource pips (HP · AC · Chakra · Lv) — 2×2 grid in the band right column.
-  .db-resources {
+  // Stat cluster: HP · AC · Chakra across the top, LV + Rest beneath.
+  .db-band__stats {
     flex: 0 0 auto;
-    align-self: flex-start;
+    align-self: center;
     display: grid;
-    grid-template-columns: repeat(2, auto);
-    gap: 5px;
+    grid-template-columns: repeat(3, minmax(58px, 1fr));
+    gap: 6px;
   }
+  .db-band__stats .db-pip { min-width: 0; }
   .db-pip--edit { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 3px; }
   .db-pip--edit small { flex: 0 0 100%; }
   .db-pip__val { font-size: var(--zen-text-lg); font-weight: 700; line-height: 1.1; }
@@ -114,9 +123,13 @@
   .db-pip__tap { color: var(--db-red); cursor: pointer; }
   .db-pip__tap:hover { color: var(--db-red-deep); }
 
-  // Rest button promoted into the band.
-  .db-band__actions { flex: 0 0 auto; align-self: flex-start; display: flex; flex-direction: column; gap: 5px; }
+  // Rest button — spans the second stat row beside LV.
   .db-rest {
+    grid-column: span 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     font: 700 var(--zen-text-xs)/1 var(--db-font-label);
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -130,23 +143,39 @@
   }
   .db-rest:hover { background: var(--db-red-deep); }
 
-  // The single headline nature sits inline with the badges (smaller than the
-  // 36px Identity-tab natures).
-  .db-nat--solo { width: 24px; height: 24px; }
+  // The headline nature is a seal stamped on the portrait's lower-right corner.
+  .db-band__portrait .db-nat--solo {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    width: 34px;
+    height: 34px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+    z-index: 1;
+  }
 
   // Full natures panel on the Identity tab.
   .db-panel--natures .db-natures { justify-content: center; }
 
-  // Compact Quick Actions strip beneath the header band.
+  // Compact Quick Actions strip beneath the header band — labelled so a short
+  // list still reads as intentional rather than an empty bar.
   .db-quick-strip {
     flex: 0 0 auto;
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 14px;
+    gap: 8px;
+    padding: 5px 14px;
     background: var(--db-panel);
     border-bottom: 1px solid var(--db-border);
     overflow-x: auto;
+  }
+  .db-quick-strip::before {
+    content: "Quick";
+    flex: 0 0 auto;
+    font: 700 var(--zen-text-xs)/1 var(--db-font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--db-red);
   }
   .db-quick-strip .quick-actions {
     display: flex;

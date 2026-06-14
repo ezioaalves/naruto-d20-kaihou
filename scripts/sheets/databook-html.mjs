@@ -99,11 +99,12 @@ export function resourcePips(resources) {
     `<div class="db-pip db-pip--edit"><span class="db-pip__val"><input class="db-pip__in" type="text" name="${name}" value="${esc(val)}" data-dtype="Number"><span class="db-pip__max">/${esc(max)}</span></span>${after}<small>${esc(label)}</small></div>`;
   const tap = `<a class="db-pip__tap tap-reserve-roll" title="Tap chakra reserves"><i class="fa-solid fa-hand-holding-droplet"></i></a>`;
   return [
-    `<div class="db-resources">`,
+    `<div class="db-band__stats">`,
     editable("HP", "system.attributes.hp.value", hp.value, hp.max),
     display("AC", ac),
     editable("Chakra", "flags.naruto-d20.chakra.pool.value", chakra.value, chakra.max, tap),
-    display("Lv", level),
+    display("LV", level),
+    `<button type="button" class="rest db-rest" title="Rest"><i class="fa-solid fa-bed"></i> Rest</button>`,
     `</div>`,
   ].join("");
 }
@@ -121,14 +122,16 @@ export function headerBand(vm, meta) {
   ].join("");
   return [
     `<header class="db-band">`,
+    `<div class="db-band__portrait">`,
     `<img class="db-band__port" src="${esc(meta.img)}" alt="">`,
+    headlineNature(vm.natures), // corner seal (positioned by CSS)
+    `</div>`,
     `<div class="db-band__id">`,
     `<div class="db-band__name">${esc(meta.name)}</div>`,
     alias ? `<div class="db-band__alias">${esc(alias)}</div>` : "",
-    `<div class="db-band__badges">${badges}${headlineNature(vm.natures)}</div>`,
+    `<div class="db-band__badges">${badges}</div>`,
     `</div>`,
     resourcePips(vm.resources),
-    `<div class="db-band__actions"><button type="button" class="rest db-rest" title="Rest"><i class="fa-solid fa-bed"></i> Rest</button></div>`,
     `</header>`,
   ].join("");
 }
