@@ -16,6 +16,27 @@
   {{!-- Databook header band (always visible, above the tab strip) --}}
   {{{kaihou.fragments.headerBand}}}
 
+  {{!-- Compact Quick Actions strip — reuses PF1e's quickActions context + markup,
+       so PF1e's selector-bound listeners wire these too. --}}
+  {{#if quickActions.length}}
+  <div class="db-quick-strip">
+    <ol class="quick-actions">
+      {{#each quickActions}}
+      <li class="item" data-item-id="{{id}}" data-type="{{type}}" data-tooltip="{{name}}">
+        <img src="{{img}}">
+        {{#if isCharged}}
+        <charges>
+        {{~#if recharging~}}<span class="recharge">+{{uses}}</span>
+        {{~else~}}<span class="remaining">{{uses}}</span>{{~#if max~}}<span class="delimiter">/</span><span class="max">{{max}}</span>{{~/if~}}
+        {{~/if~}}
+        </charges>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+  {{/if}}
+
   {{!-- PC Sheet Navigation — icon rail; label reveals on active/hover (after the
        icon, so the icon never shifts). Identity leads; Chakra is injected by
        naruto-d20 and normalised to this markup by the sheet class. --}}

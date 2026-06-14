@@ -137,6 +137,47 @@
   // Full natures panel on the Identity tab.
   .db-panel--natures .db-natures { justify-content: center; }
 
+  // Compact Quick Actions strip beneath the header band.
+  .db-quick-strip {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    background: var(--db-panel);
+    border-bottom: 1px solid var(--db-border);
+    overflow-x: auto;
+  }
+  .db-quick-strip .quick-actions {
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .db-quick-strip .quick-actions .item {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--db-border);
+    border-radius: var(--zen-radius-sm);
+    cursor: pointer;
+  }
+  .db-quick-strip .quick-actions .item img { width: 100%; height: 100%; object-fit: cover; border: none; border-radius: inherit; }
+  .db-quick-strip .quick-actions .item charges {
+    position: absolute;
+    right: -2px;
+    bottom: -4px;
+    font-size: var(--zen-text-xs);
+    font-weight: 700;
+    color: var(--db-ink);
+    background: var(--db-cream);
+    border: 1px solid var(--db-border);
+    border-radius: 6px;
+    padding: 0 3px;
+    line-height: 1.2;
+  }
+
   // --- Databook-red tab strip, collapsed to an icon rail --------------------
   // Each tab shows only its icon; the label expands AFTER the icon on hover or
   // when active, so the icon never shifts (no hover flicker) and 12 tabs fit
