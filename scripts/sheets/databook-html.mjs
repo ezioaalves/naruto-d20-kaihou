@@ -76,16 +76,34 @@ export function missionRecord(missions) {
   return `<div class="db-panel"><h4 class="db-panel__h">Mission Record</h4><div class="db-missions">${cells}<div><b>${missions.total}</b><small>Total</small></div></div></div>`;
 }
 
-/** Resource pips (HP / AC / Chakra) for the header band right column. */
+/** The single headline nature for the header: the void mark if the character
+ *  has a Kekkei Genkai, else their primary affinity icon. */
+export function headlineNature(natures) {
+  if (!natures) return "";
+  if (natures.advanced) {
+    return `<span class="db-nat db-nat--void db-nat--solo" title="${esc(natures.advanced.label)}">${esc(natures.advanced.kanji)}</span>`;
+  }
+  if (natures.primary) {
+    return `<span class="db-nat db-nat--basic db-nat--solo db-nat--on" data-nature="${esc(natures.primary)}" title="${esc(natures.primary)}"></span>`;
+  }
+  return "";
+}
+
+/** Resource pips for the header: HP (editable) · AC · Chakra (editable, with a
+ *  tap-reserves button reusing naruto-d20's .tap-reserve-roll) · Level. */
 export function resourcePips(resources) {
   if (!resources) return "";
-  const pip = (label, val) => `<div class="db-pip"><b>${esc(val)}</b><small>${esc(label)}</small></div>`;
-  const { hp, ac, chakra } = resources;
+  const { hp, ac, chakra, level } = resources;
+  const display = (label, val) => `<div class="db-pip"><b>${esc(val)}</b><small>${esc(label)}</small></div>`;
+  const editable = (label, name, val, max, after = "") =>
+    `<div class="db-pip db-pip--edit"><span class="db-pip__val"><input class="db-pip__in" type="text" name="${name}" value="${esc(val)}" data-dtype="Number"><span class="db-pip__max">/${esc(max)}</span></span>${after}<small>${esc(label)}</small></div>`;
+  const tap = `<a class="db-pip__tap tap-reserve-roll" title="Tap chakra reserves"><i class="fa-solid fa-hand-holding-droplet"></i></a>`;
   return [
     `<div class="db-resources">`,
-    pip("HP", `${hp.value}/${hp.max}`),
-    pip("AC", ac),
-    pip("Chakra", `${chakra.value}/${chakra.max}`),
+    editable("HP", "system.attributes.hp.value", hp.value, hp.max),
+    display("AC", ac),
+    editable("Chakra", "flags.naruto-d20.chakra.pool.value", chakra.value, chakra.max, tap),
+    display("Lv", level),
     `</div>`,
   ].join("");
 }
@@ -107,10 +125,10 @@ export function headerBand(vm, meta) {
     `<div class="db-band__id">`,
     `<div class="db-band__name">${esc(meta.name)}</div>`,
     alias ? `<div class="db-band__alias">${esc(alias)}</div>` : "",
-    `<div class="db-band__badges">${badges}</div>`,
-    naturesRow(vm.natures),
+    `<div class="db-band__badges">${badges}${headlineNature(vm.natures)}</div>`,
     `</div>`,
     resourcePips(vm.resources),
+    `<div class="db-band__actions"><button type="button" class="rest db-rest" title="Rest"><i class="fa-solid fa-bed"></i> Rest</button></div>`,
     `</header>`,
   ].join("");
 }

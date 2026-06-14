@@ -90,8 +90,52 @@
   .db-badge--village { gap: 6px; }
   .db-badge__crest { width: 22px; height: 22px; object-fit: contain; }
 
-  // Resource pips (HP / AC / Chakra) — right column of the band.
-  .db-resources { flex: 0 0 auto; display: flex; flex-direction: column; gap: 5px; align-self: flex-start; }
+  // Resource pips (HP · AC · Chakra · Lv) — 2×2 grid in the band right column.
+  .db-resources {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 5px;
+  }
+  .db-pip--edit { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 3px; }
+  .db-pip--edit small { flex: 0 0 100%; }
+  .db-pip__val { font-size: var(--zen-text-lg); font-weight: 700; line-height: 1.1; }
+  .db-pip__in {
+    width: 2.1em;
+    text-align: right;
+    border: none;
+    background: transparent;
+    font: inherit;
+    color: var(--db-ink);
+    padding: 0;
+  }
+  .db-pip__in:focus { outline: 1px solid var(--db-red); background: #fff7e6; border-radius: 2px; }
+  .db-pip__tap { color: var(--db-red); cursor: pointer; }
+  .db-pip__tap:hover { color: var(--db-red-deep); }
+
+  // Rest button promoted into the band.
+  .db-band__actions { flex: 0 0 auto; align-self: flex-start; display: flex; flex-direction: column; gap: 5px; }
+  .db-rest {
+    font: 700 var(--zen-text-xs)/1 var(--db-font-label);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--db-red);
+    color: #fff;
+    border: none;
+    border-radius: var(--zen-radius-sm);
+    padding: 7px 9px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .db-rest:hover { background: var(--db-red-deep); }
+
+  // The single headline nature sits inline with the badges (smaller than the
+  // 36px Identity-tab natures).
+  .db-nat--solo { width: 24px; height: 24px; }
+
+  // Full natures panel on the Identity tab.
+  .db-panel--natures .db-natures { justify-content: center; }
 
   // --- Databook-red tab strip, collapsed to an icon rail --------------------
   // Each tab shows only its icon; the label expands AFTER the icon on hover or

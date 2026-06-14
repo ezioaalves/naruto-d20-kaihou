@@ -6,7 +6,7 @@ const actor = {
   system: {
     abilities: { str: { total: 16 }, dex: { total: 14 }, con: { total: 15 }, int: { total: 13 }, wis: { total: 12 }, cha: { total: 17 } },
     skills: { nin: { rank: 8 }, fui: { rank: 5 }, ckc: { rank: 9 }, tai: { rank: 6 }, gnj: { rank: 7 } },
-    attributes: { hp: { value: 42, max: 50 }, ac: { normal: { total: 18 } } },
+    attributes: { hp: { value: 42, max: 50 }, ac: { normal: { total: 18 } }, hd: { total: 5 } },
   },
   flags: {
     "naruto-d20": { chakra: { pool: { value: 30, max: 40 }, nature: { primary: "Fire", secondary: ["Lightning"] } } },
@@ -37,11 +37,17 @@ describe("buildKaihouViewModel", () => {
     expect(vm.radars.disciplines[0]).toMatchObject({ key: "nin", label: "Ninjutsu", value: 8 });
   });
 
-  it("maps resources (HP/AC/Chakra) from PF1e + naruto-d20 data", () => {
+  it("maps resources (HP/AC/Chakra/Level) from PF1e + naruto-d20 data", () => {
     const vm = buildKaihouViewModel(actor);
     expect(vm.resources.hp).toEqual({ value: 42, max: 50 });
     expect(vm.resources.ac).toBe(18);
     expect(vm.resources.chakra).toEqual({ value: 30, max: 40 });
+    expect(vm.resources.level).toBe(5);
+  });
+
+  it("exposes the primary nature affinity (lowercased) for the header", () => {
+    expect(buildKaihouViewModel(actor).natures.primary).toBe("fire");
+    expect(buildKaihouViewModel({}).natures.primary).toBeNull();
   });
 
   it("maps animal villages to crest basenames; Hisuigakure (capital) → imperial", () => {

@@ -1,13 +1,13 @@
 // tests/sheets/databook-html.test.mjs
 import { describe, it, expect } from "vitest";
-import { radarSvg, naturesRow, missionRecord, headerBand } from "../../scripts/sheets/databook-html.mjs";
+import { radarSvg, naturesRow, missionRecord, headerBand, headlineNature } from "../../scripts/sheets/databook-html.mjs";
 import { buildKaihouViewModel } from "../../scripts/sheets/view-model.mjs";
 
 const vm = buildKaihouViewModel({
   system: {
     abilities: { str: { total: 16 }, dex: { total: 14 }, con: { total: 15 }, int: { total: 13 }, wis: { total: 12 }, cha: { total: 17 } },
     skills: { nin: { rank: 8 }, fui: { rank: 5 }, ckc: { rank: 9 }, tai: { rank: 6 }, gnj: { rank: 7 } },
-    attributes: { hp: { value: 42, max: 50 }, ac: { normal: { total: 18 } } },
+    attributes: { hp: { value: 42, max: 50 }, ac: { normal: { total: 18 } }, hd: { total: 5 } },
   },
   flags: {
     "naruto-d20": { chakra: { pool: { value: 30, max: 40 }, nature: { primary: "Fire", secondary: ["Lightning"] } } },
@@ -63,11 +63,31 @@ describe("missionRecord & headerBand", () => {
     expect(band).not.toContain("<b>Takeshi</b>");
   });
 
-  it("renders HP/AC/Chakra resource pips in the header band", () => {
+  it("renders editable HP/Chakra + AC/Level pips, tap-reserve + rest buttons", () => {
     const band = headerBand(vm, { name: "Takeshi", img: "p.png", village: "Konoha", rank: "Chūnin" });
     expect(band).toContain("db-resources");
-    expect(band).toContain(">42/50<"); // HP value/max
-    expect(band).toContain(">18<"); // AC
-    expect(band).toContain(">30/40<"); // Chakra value/max
+    expect(band).toContain('name="system.attributes.hp.value" value="42"'); // HP editable
+    expect(band).toContain("/50"); // HP max
+    expect(band).toContain(">18<"); // AC (display)
+    expect(band).toContain('name="flags.naruto-d20.chakra.pool.value" value="30"'); // Chakra editable
+    expect(band).toContain("tap-reserve-roll"); // reuses naruto-d20's reserve listener
+    expect(band).toContain(">5<"); // Level (display)
+    expect(band).toContain('class="rest db-rest"'); // rest button (reuses PF1e .rest)
+  });
+});
+
+describe("headlineNature", () => {
+  it("shows the void mark when the character has a Kekkei Genkai", () => {
+    expect(headlineNature(vm.natures)).toContain("db-nat--void");
+    expect(headlineNature(vm.natures)).toContain("db-nat--solo");
+  });
+  it("shows the primary affinity icon when there's no KKG", () => {
+    const html = headlineNature({ primary: "fire", advanced: null });
+    expect(html).toContain('data-nature="fire"');
+    expect(html).toContain("db-nat--solo");
+    expect(html).not.toContain("db-nat--void");
+  });
+  it("renders nothing when there's no nature data", () => {
+    expect(headlineNature({ primary: null, advanced: null })).toBe("");
   });
 });

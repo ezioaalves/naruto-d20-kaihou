@@ -12,7 +12,7 @@
 // in view-model.mjs + databook-html.mjs and handed to the template as `kaihou.*`.
 
 import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
-import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
+import { headerBand, radarSvg, missionRecord, naturesRow } from "./databook-html.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
 
@@ -38,8 +38,9 @@ export function getKaihouCharacterSheetClass() {
       const options = super.defaultOptions;
       // Make the databook Identity tab the default landing tab, leaving every
       // other primary-group tab (and other groups) untouched.
+      // Players land on Summary; Identity is the dossier (and the NPC front page).
       const tabs = (options.tabs ?? []).map((t) =>
-        t.group === "primary" ? { ...t, initial: "identity" } : { ...t },
+        t.group === "primary" ? { ...t, initial: "summary" } : { ...t },
       );
       return foundry.utils.mergeObject(options, {
         classes: [...options.classes, "kaihou-databook"],
@@ -81,6 +82,7 @@ export function getKaihouCharacterSheetClass() {
             iconBase: `modules/${MODULE_ID}/assets/theme/icons/disciplines`,
           }),
           missionRecord: missionRecord(vm.identity.missions),
+          naturesFull: naturesRow(vm.natures),
         };
         // Origin & Path rows: each resolved from its wizard-marked actor item.
         vm.origin = ORIGIN_ROWS.map(({ label, marker }) => ({

@@ -68,6 +68,7 @@ function buildResources(sys = {}, nd = {}) {
     hp: { value: num(hp.value), max: num(hp.max) },
     ac: num(sys.attributes?.ac?.normal?.total),
     chakra: { value: num(pool.value), max: num(pool.max) },
+    level: num(sys.attributes?.hd?.total),
   };
 }
 
@@ -80,7 +81,12 @@ function buildNatures(nd = {}, kh = {}) {
   );
   const basic = BASIC_NATURES.map((n) => ({ ...n, on: owned.has(n.key) }));
   const adv = kh?.advancedNature ?? null;
-  return { basic, advanced: adv && adv.kanji ? { kanji: adv.kanji, label: adv.label ?? "" } : null };
+  const primary = nature.primary ? String(nature.primary).toLowerCase() : null;
+  return {
+    basic,
+    primary,
+    advanced: adv && adv.kanji ? { kanji: adv.kanji, label: adv.label ?? "" } : null,
+  };
 }
 
 export function buildKaihouViewModel(actor) {

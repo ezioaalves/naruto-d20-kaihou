@@ -20,10 +20,10 @@
        icon, so the icon never shifts). Identity leads; Chakra is injected by
        naruto-d20 and normalised to this markup by the sheet class. --}}
   <nav class="sheet-navigation tabs" data-group="primary">
+    <a class="item" data-tab="summary" data-group="primary"><i class="fa-solid fa-user"></i><span class="db-tab-label">{{ localize "PF1.Summary" }}</span></a>
     <a class="item" data-tab="identity" data-group="primary"><i class="fa-solid fa-id-card"></i><span class="db-tab-label">Identity</span></a>
     <a class="item" data-tab="combat" data-group="primary"><i class="fa-solid fa-hand-fist"></i><span class="db-tab-label">{{ localize "PF1.Combat" }}</span></a>
     <a class="item" data-tab="skills" data-group="primary"><i class="fa-solid fa-list-check"></i><span class="db-tab-label">{{ localize "PF1.Skills" }}</span></a>
-    <a class="item" data-tab="summary" data-group="primary"><i class="fa-solid fa-user"></i><span class="db-tab-label">{{ localize "PF1.Summary" }}</span></a>
     <a class="item" data-tab="attributes" data-group="primary"><i class="fa-solid fa-dumbbell"></i><span class="db-tab-label">{{ localize "PF1.Attributes" }}</span></a>
     <a class="item" data-tab="inventory" data-group="primary"><i class="fa-solid fa-briefcase"></i><span class="db-tab-label">{{ localize "PF1.Inventory" }}</span></a>
     <a class="item" data-tab="feats" data-group="primary"><i class="fa-solid fa-star"></i><span class="db-tab-label">{{ localize "PF1.Features" }}</span></a>
@@ -47,6 +47,11 @@
           <label>Allegiance
             <input type="text" name="flags.naruto-d20-kaihou.allegiance" value="{{kaihou.identity.allegiance}}" placeholder="—">
           </label>
+        </div>
+
+        <div class="db-panel db-panel--natures">
+          <h4 class="db-panel__h">Chakra Natures</h4>
+          {{{kaihou.fragments.naturesFull}}}
         </div>
 
         <div class="db-radars">
