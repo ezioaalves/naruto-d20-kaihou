@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.9 — 2026-06-13
+
+### Added
+- **Databook palette re-skin of the functional tabs (roadmap Phase 2, option B).** The PF1e tabs (Combat, Skills, Inventory, Features, Buffs) now read databook — cream surfaces, red section headers, warm item rows, red accents — by remapping PF1e's own `--pf1-*` custom properties (and the zen theme's `--zen-*` tokens) on `.kaihou-databook-form`. PF1e's DOM, layout and mechanics are untouched, so it stays resilient across PF1e upgrades. Section headers render in databook sans; skill names in databook ink with red hover.
+- Roadmap (`docs/superpowers/roadmap-databook-overhaul.md`) and durable design mockups (`docs/design/mockups/`) for the wider databook overhaul.
+
 ## v2.1.8 — 2026-06-13
 
 ### Fixed

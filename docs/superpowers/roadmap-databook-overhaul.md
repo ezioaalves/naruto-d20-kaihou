@@ -51,7 +51,7 @@ Established by the PC sheet; copy it for NPC/item sheets:
 |---|---|---|---|
 | **0 — PC sheet foundation** | Own template, Identity tab (default), header band, dual radars, mission record, origin & path, editable alias/allegiance, scoping fix | ✅ Done (v2.1.8) | — |
 | **1 — PC sheet completeness** | See §5 | ☐ Backlog | 0 |
-| **2 — Functional-tab palette re-skin (option B)** | Remap PF1e's `--pf1-*` CSS variables under `.kaihou-databook-form` so the functional tabs read databook (cream/red) while keeping PF1e DOM + mechanics. See §6 | 🔜 In progress | 0 |
+| **2 — Functional-tab palette re-skin (option B)** | Remap PF1e's `--pf1-*` + zen's `--zen-*` vars under `.kaihou-databook-form` so the functional tabs read databook (cream/red, sans headers, ink skill names) while keeping PF1e DOM + mechanics. See §6 | ✅ Done (v2.1.9) | 0 |
 | **3 — NPC bespoke sheet** | Leaner databook dossier; reuse §3 pattern | ☐ Backlog | 0 (pattern) |
 | **4 — Bespoke item sheets** | Technique/jutsu, class, bloodline | ☐ Backlog | 0 (pattern); naruto-d20 item data |
 | **5 — Remaining chrome** | 20Q wizard, grant dialogs, compendium browser → databook palette; retire zen partials | ☐ Backlog | 2 (palette decisions) |
