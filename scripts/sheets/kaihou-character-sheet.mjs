@@ -24,8 +24,6 @@ const ORIGIN_ROWS = [
   { label: "Village", marker: "q1Village" },
   { label: "School", marker: "q3School" },
   { label: "Occupation", marker: "q2OccupationItem" },
-  { label: "Bloodline", marker: "q18HeritageFeat" },
-  { label: "Flaw", marker: "q10Flaw" },
 ];
 
 export function getKaihouCharacterSheetClass() {

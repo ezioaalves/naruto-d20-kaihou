@@ -35,16 +35,18 @@ describe("radarSvg", () => {
 });
 
 describe("naturesRow", () => {
-  it("marks owned natures --on, tags data-nature, and renders the void slot when KKG present", () => {
+  it("marks owned natures --on, tags data-nature, and renders the void slot + separator when KKG present", () => {
     const html = naturesRow(vm.natures);
     expect(html).toContain("db-nat--void");
+    expect(html).toContain("db-natures__void-sep"); // separator only with KKG
     expect(html).toContain("木"); // advanced/KKG kanji still shown
     expect(html).toContain('data-nature="fire"'); // basic natures keyed for CSS icons
     expect((html.match(/db-nat--on/g) || []).length).toBe(2); // fire + lightning
   });
-  it("locks the void slot when no advanced nature", () => {
+  it("omits the void slot AND separator when there is no advanced nature", () => {
     const html = naturesRow({ basic: vm.natures.basic, advanced: null });
-    expect(html).toContain("db-nat--locked");
+    expect(html).not.toContain("db-nat--void");
+    expect(html).not.toContain("db-natures__void-sep");
   });
 });
 

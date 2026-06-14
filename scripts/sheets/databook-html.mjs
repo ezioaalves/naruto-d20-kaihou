@@ -57,11 +57,13 @@ export function naturesRow(natures) {
         `<span class="db-nat db-nat--basic${n.on ? " db-nat--on" : ""}" data-nature="${esc(n.key)}" title="${esc(n.kanji)}"></span>`,
     )
     .join("");
+  // The separator + void slot appear only for characters with a Kekkei Genkai
+  // (advanced nature); everyone else shows just the five basic natures.
   const adv = natures.advanced;
-  const voidSlot = adv
-    ? `<span class="db-nat db-nat--void" title="${esc(adv.label)}">${esc(adv.kanji)}</span>`
-    : `<span class="db-nat db-nat--void db-nat--locked" title="No Kekkei Genkai"></span>`;
-  return `<div class="db-natures"><span class="db-natures__lbl">Natures</span>${basic}<span class="db-natures__void-sep"></span>${voidSlot}</div>`;
+  const kkg = adv
+    ? `<span class="db-natures__void-sep"></span><span class="db-nat db-nat--void" title="${esc(adv.label)}">${esc(adv.kanji)}</span>`
+    : "";
+  return `<div class="db-natures"><span class="db-natures__lbl">Natures</span>${basic}${kkg}</div>`;
 }
 
 export function missionRecord(missions) {
