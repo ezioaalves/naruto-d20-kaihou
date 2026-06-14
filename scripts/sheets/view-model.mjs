@@ -10,11 +10,11 @@ const KH = "naruto-d20-kaihou";
 export const ABILITY_AXES = ["str", "dex", "con", "int", "wis", "cha"];
 
 export const DISCIPLINE_AXES = [
-  { key: "nin", label: "Ninjutsu" },
-  { key: "fui", label: "Fūinjutsu" },
-  { key: "ckc", label: "Chakra Control" },
-  { key: "tai", label: "Taijutsu" },
-  { key: "gnj", label: "Genjutsu" },
+  { key: "nin", label: "Ninjutsu", icon: "ninjutsu" },
+  { key: "fui", label: "Fūinjutsu", icon: "fuinjutsu" },
+  { key: "ckc", label: "Chakra Control", icon: "chakra_control" },
+  { key: "tai", label: "Taijutsu", icon: "taijutsu" },
+  { key: "gnj", label: "Genjutsu", icon: "genjutsu" },
 ];
 
 export const BASIC_NATURES = [

@@ -23,6 +23,15 @@ describe("radarSvg", () => {
     expect((svg.match(/db-radar__axis/g) || []).length).toBe(6);
     expect(svg).not.toContain("NaN");
   });
+
+  it("renders discipline axis icons (with label tooltip) when iconBase is given", () => {
+    const svg = radarSvg(vm.radars.disciplines, { max: 10, variant: "discipline", iconBase: "modules/x/disc" });
+    expect(svg).toContain("db-radar__plot--discipline");
+    expect((svg.match(/<image/g) || []).length).toBe(5);
+    expect(svg).toContain("disc/ninjutsu.svg");
+    expect(svg).toContain("<title>Ninjutsu</title>");
+    expect(svg).not.toContain("db-radar__axis"); // icons replace text labels
+  });
 });
 
 describe("naturesRow", () => {

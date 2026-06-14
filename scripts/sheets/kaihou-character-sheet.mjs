@@ -18,12 +18,14 @@ export const MODULE_ID = "naruto-d20-kaihou";
 
 export const SHEET_TEMPLATE = `modules/${MODULE_ID}/templates/actor/kaihou-character-sheet.hbs`;
 
+// Origin & Path rows → the 20Q wizard item marker that grants them. The wizard
+// tags each granted item with flags["naruto-d20-kaihou"].wizard.<marker> = true.
 const ORIGIN_ROWS = [
-  { label: "Village", kind: null }, // village is a flag, not an item
-  { label: "School", kind: "school" },
-  { label: "Occupation", kind: "occupation" },
-  { label: "Bloodline", kind: "bloodline" },
-  { label: "Flaw", kind: "flaw" },
+  { label: "Village", marker: "q1Village" },
+  { label: "School", marker: "q3School" },
+  { label: "Occupation", marker: "q2OccupationItem" },
+  { label: "Bloodline", marker: "q18HeritageFeat" },
+  { label: "Flaw", marker: "q10Flaw" },
 ];
 
 export function getKaihouCharacterSheetClass() {
@@ -75,14 +77,17 @@ export function getKaihouCharacterSheetClass() {
         vm.fragments = {
           headerBand: headerBand(vm, meta),
           abilityRadar: radarSvg(vm.radars.abilities, { max: 20, variant: "ability" }),
-          disciplineRadar: radarSvg(vm.radars.disciplines, { max: 10, variant: "discipline" }),
+          disciplineRadar: radarSvg(vm.radars.disciplines, {
+            max: 10,
+            variant: "discipline",
+            iconBase: `modules/${MODULE_ID}/assets/theme/icons/disciplines`,
+          }),
           missionRecord: missionRecord(vm.identity.missions),
         };
-        // Origin & Path rows: village from a flag, the rest from Kaihou-granted
-        // items. Values are emitted with double-stache (Handlebars auto-escapes).
-        vm.origin = ORIGIN_ROWS.map(({ label, kind }) => ({
+        // Origin & Path rows: each resolved from its wizard-marked actor item.
+        vm.origin = ORIGIN_ROWS.map(({ label, marker }) => ({
           label,
-          value: kind ? this._kaihouItemName(kind) : village,
+          value: this._markedItemName(marker),
         }));
         data.kaihou = vm;
       } catch (e) {
@@ -120,19 +125,17 @@ export function getKaihouCharacterSheetClass() {
       }
     }
 
-    _kaihouItemName(kind) {
-      const item = this.actor.items?.find?.((i) => i.flags?.[MODULE_ID]?.kind === kind);
+    // Name of the actor item the 20Q wizard tagged with
+    // flags["naruto-d20-kaihou"].wizard.<marker> = true (village/school/…).
+    _markedItemName(marker) {
+      const item = this.actor.items?.find?.(
+        (i) => i.flags?.[MODULE_ID]?.wizard?.[marker] === true,
+      );
       return item?.name ?? "";
     }
 
-    // The 20Q wizard stores the village as an actor item marked
-    // flags["naruto-d20-kaihou"].wizard.q1Village — not a flag string. Resolve
-    // its name (e.g. "Kanigakure") for the header badge + Origin panel.
     _villageName() {
-      const item = this.actor.items?.find?.(
-        (i) => i.flags?.[MODULE_ID]?.wizard?.q1Village === true,
-      );
-      return item?.name ?? "";
+      return this._markedItemName("q1Village");
     }
   };
 }

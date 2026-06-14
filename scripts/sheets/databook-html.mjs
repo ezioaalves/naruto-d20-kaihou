@@ -20,25 +20,30 @@ function gridRings(count) {
   return `<polygon class="db-radar__grid" points="${outer}"/><polygon class="db-radar__grid" points="${inner}"/>`;
 }
 
-function axisLabels(axes) {
+function axisLabels(axes, iconBase) {
   const ends = axisPoints(axes.length, C, C, R + 14);
+  const S = 22; // axis icon size
   return axes
     .map((a, i) => {
       const p = ends[i];
+      if (iconBase && a.icon) {
+        return `<image class="db-radar__icon" href="${esc(iconBase)}/${esc(a.icon)}.svg" x="${Math.round(p.x - S / 2)}" y="${Math.round(p.y - S / 2)}" width="${S}" height="${S}"><title>${esc(a.label)}</title></image>`;
+      }
       const anchor = p.x < C - 1 ? "end" : p.x > C + 1 ? "start" : "middle";
       return `<text class="db-radar__axis" x="${Math.round(p.x)}" y="${Math.round(p.y)}" text-anchor="${anchor}">${esc(a.label)}</text>`;
     })
     .join("");
 }
 
-/** axes: [{label,value}]; opts: {max, variant:"ability"|"discipline"}. */
-export function radarSvg(axes, { max, variant }) {
+/** axes: [{label,value,icon?}]; opts: {max, variant, iconBase?}. With iconBase
+ *  the axis labels render as discipline icons (tooltip = label) instead of text. */
+export function radarSvg(axes, { max, variant, iconBase } = {}) {
   const plot = pointsAttr(valuePoints(axes.map((a) => a.value), max, C, C, R));
   return [
     `<svg class="db-radar" viewBox="0 0 200 210" role="img" aria-label="${esc(variant)} radar">`,
     gridRings(axes.length),
     `<polygon class="db-radar__plot--${esc(variant)}" points="${plot}"/>`,
-    axisLabels(axes),
+    axisLabels(axes, iconBase),
     `</svg>`,
   ].join("");
 }
@@ -56,7 +61,7 @@ export function naturesRow(natures) {
   const voidSlot = adv
     ? `<span class="db-nat db-nat--void" title="${esc(adv.label)}">${esc(adv.kanji)}</span>`
     : `<span class="db-nat db-nat--void db-nat--locked" title="No Kekkei Genkai"></span>`;
-  return `<div class="db-natures"><span class="db-natures__lbl">Natures</span>${basic}<span class="db-natures__lbl">KKG</span>${voidSlot}</div>`;
+  return `<div class="db-natures"><span class="db-natures__lbl">Natures</span>${basic}<span class="db-natures__void-sep"></span>${voidSlot}</div>`;
 }
 
 export function missionRecord(missions) {

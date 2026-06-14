@@ -55,15 +55,19 @@
   .db-band { flex: 0 0 auto; }
   .db-band__id { flex: 1; min-width: 0; }
   .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--zen-space-2); }
-  .db-natures { display: flex; gap: 6px; align-items: center; margin-top: var(--zen-space-2); }
+  .db-natures { display: flex; gap: 8px; align-items: center; margin-top: var(--zen-space-2); }
   .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
+  .db-natures__void-sep { width: 1px; height: 26px; background: var(--db-border); margin: 0 2px; }
+
+  // Natures + KKG slot are larger than the base 26px chip for legibility.
+  .db-nat { width: 36px; height: 36px; }
 
   // Basic natures: vendored nature symbols (assets/theme/icons/natures/).
   // Unowned natures are faded; owned keep the highlighted .db-nat--on ring.
   .db-nat--basic {
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 62% auto;
+    background-size: 66% auto;
   }
   .db-nat--basic[data-nature="fire"] { background-image: url("../../assets/theme/icons/natures/fire.svg"); }
   .db-nat--basic[data-nature="water"] { background-image: url("../../assets/theme/icons/natures/water.svg"); }
@@ -78,13 +82,13 @@
     background-image: url("../../assets/theme/icons/rings/void.svg");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 88%;
   }
-  .db-nat--void.db-nat--locked { opacity: 0.4; }
+  .db-nat--void.db-nat--locked { opacity: 0.5; }
 
   // Village crest in the header badge.
-  .db-badge--village { gap: 5px; }
-  .db-badge__crest { width: 16px; height: 16px; object-fit: contain; }
+  .db-badge--village { gap: 6px; }
+  .db-badge__crest { width: 22px; height: 22px; object-fit: contain; }
 
   // Resource pips (HP / AC / Chakra) — right column of the band.
   .db-resources { flex: 0 0 auto; display: flex; flex-direction: column; gap: 5px; align-self: flex-start; }
