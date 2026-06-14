@@ -64,6 +64,20 @@ export function missionRecord(missions) {
   return `<div class="db-panel"><h4 class="db-panel__h">Mission Record</h4><div class="db-missions">${cells}<div><b>${missions.total}</b><small>Total</small></div></div></div>`;
 }
 
+/** Resource pips (HP / AC / Chakra) for the header band right column. */
+export function resourcePips(resources) {
+  if (!resources) return "";
+  const pip = (label, val) => `<div class="db-pip"><b>${esc(val)}</b><small>${esc(label)}</small></div>`;
+  const { hp, ac, chakra } = resources;
+  return [
+    `<div class="db-resources">`,
+    pip("HP", `${hp.value}/${hp.max}`),
+    pip("AC", ac),
+    pip("Chakra", `${chakra.value}/${chakra.max}`),
+    `</div>`,
+  ].join("");
+}
+
 /** vm = view-model; meta = {name,img,village,rank} pulled from the actor by the sheet. */
 export function headerBand(vm, meta) {
   const { alias, allegiance } = vm.identity;
@@ -81,6 +95,7 @@ export function headerBand(vm, meta) {
     `<div class="db-band__badges">${badges}</div>`,
     naturesRow(vm.natures),
     `</div>`,
+    resourcePips(vm.resources),
     `</header>`,
   ].join("");
 }

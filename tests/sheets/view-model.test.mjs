@@ -6,9 +6,10 @@ const actor = {
   system: {
     abilities: { str: { total: 16 }, dex: { total: 14 }, con: { total: 15 }, int: { total: 13 }, wis: { total: 12 }, cha: { total: 17 } },
     skills: { nin: { rank: 8 }, fui: { rank: 5 }, ckc: { rank: 9 }, tai: { rank: 6 }, gnj: { rank: 7 } },
+    attributes: { hp: { value: 42, max: 50 }, ac: { normal: { total: 18 } } },
   },
   flags: {
-    "naruto-d20": { chakra: { nature: { primary: "Fire", secondary: ["Lightning"] } } },
+    "naruto-d20": { chakra: { pool: { value: 30, max: 40 }, nature: { primary: "Fire", secondary: ["Lightning"] } } },
     "naruto-d20-kaihou": {
       alias: "Crimson Mirage",
       allegiance: "13th Tantō",
@@ -36,6 +37,13 @@ describe("buildKaihouViewModel", () => {
     expect(vm.radars.disciplines[0]).toMatchObject({ key: "nin", label: "Ninjutsu", value: 8 });
   });
 
+  it("maps resources (HP/AC/Chakra) from PF1e + naruto-d20 data", () => {
+    const vm = buildKaihouViewModel(actor);
+    expect(vm.resources.hp).toEqual({ value: 42, max: 50 });
+    expect(vm.resources.ac).toBe(18);
+    expect(vm.resources.chakra).toEqual({ value: 30, max: 40 });
+  });
+
   it("flags only owned basic natures, case-insensitively", () => {
     const vm = buildKaihouViewModel(actor);
     const on = vm.natures.basic.filter((n) => n.on).map((n) => n.key);
@@ -49,6 +57,9 @@ describe("buildKaihouViewModel", () => {
     expect(vm.radars.abilities).toHaveLength(ABILITY_AXES.length);
     expect(vm.radars.abilities.every((a) => a.value === 0)).toBe(true);
     expect(vm.natures.advanced).toBeNull();
+    expect(vm.resources.hp).toEqual({ value: 0, max: 0 });
+    expect(vm.resources.ac).toBe(0);
+    expect(vm.resources.chakra).toEqual({ value: 0, max: 0 });
     expect(MISSION_RANKS).toHaveLength(5);
   });
 });

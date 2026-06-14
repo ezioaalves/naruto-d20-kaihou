@@ -44,6 +44,7 @@
   --zen-ink-mute: var(--db-muted);
   --zen-ink-accent: var(--db-red); // hover/active accent
   --zen-font-display: var(--db-font-name); // section headers → databook sans
+  --zen-font-body: var(--db-font-body); // body/table text → databook serif (was PatrickHand)
 
   // Flat cream base behind PF1e's mostly-translucent panels (replaces the
   // parchment image; the form fills .window-content, covering it).
@@ -56,6 +57,9 @@
   .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--zen-space-2); }
   .db-natures { display: flex; gap: 6px; align-items: center; margin-top: var(--zen-space-2); }
   .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
+
+  // Resource pips (HP / AC / Chakra) — right column of the band.
+  .db-resources { flex: 0 0 auto; display: flex; flex-direction: column; gap: 5px; align-self: flex-start; }
 
   // --- Databook-red tab strip (PF1e nav reused) ---
   .sheet-navigation.tabs { background: #e3d7b8; border-bottom: 2px solid var(--db-red); }

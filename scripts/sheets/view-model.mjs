@@ -39,6 +39,16 @@ function buildMissions(m = {}) {
   return { counts, total };
 }
 
+function buildResources(sys = {}, nd = {}) {
+  const hp = sys.attributes?.hp ?? {};
+  const pool = nd?.chakra?.pool ?? {};
+  return {
+    hp: { value: num(hp.value), max: num(hp.max) },
+    ac: num(sys.attributes?.ac?.normal?.total),
+    chakra: { value: num(pool.value), max: num(pool.max) },
+  };
+}
+
 function buildNatures(nd = {}, kh = {}) {
   const nature = nd?.chakra?.nature ?? {};
   const owned = new Set(
@@ -67,5 +77,6 @@ export function buildKaihouViewModel(actor) {
       disciplines: DISCIPLINE_AXES.map((a) => ({ ...a, value: num(sys.skills?.[a.key]?.rank) })),
     },
     natures: buildNatures(nd, kh),
+    resources: buildResources(sys, nd),
   };
 }
