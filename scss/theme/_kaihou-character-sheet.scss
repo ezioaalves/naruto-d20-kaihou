@@ -61,8 +61,41 @@
   // Resource pips (HP / AC / Chakra) — right column of the band.
   .db-resources { flex: 0 0 auto; display: flex; flex-direction: column; gap: 5px; align-self: flex-start; }
 
-  // --- Databook-red tab strip (PF1e nav reused) ---
-  .sheet-navigation.tabs { background: #e3d7b8; border-bottom: 2px solid var(--db-red); }
+  // --- Databook-red tab strip, collapsed to an icon rail --------------------
+  // Each tab shows only its icon; the label expands AFTER the icon on hover or
+  // when active, so the icon never shifts (no hover flicker) and 12 tabs fit
+  // without overflowing. PF1e stretches items with flex:1 — we size to content.
+  .sheet-navigation.tabs {
+    background: #e3d7b8;
+    border-bottom: 2px solid var(--db-red);
+    flex-wrap: nowrap;
+    column-gap: 2px;
+  }
+  .sheet-navigation.tabs .item {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 9px;
+  }
+  .sheet-navigation.tabs .item > i {
+    font-size: 15px;
+    line-height: var(--pf1-nav-height);
+  }
+  .sheet-navigation.tabs .item .db-tab-label {
+    display: inline-block;
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+    transition: max-width 0.18s ease, opacity 0.18s ease, margin-left 0.18s ease;
+  }
+  .sheet-navigation.tabs .item.active .db-tab-label,
+  .sheet-navigation.tabs .item:hover .db-tab-label {
+    max-width: 14ch;
+    opacity: 1;
+    margin-left: 7px;
+  }
   .sheet-navigation.tabs .item.active { background: var(--db-red); color: #fff; border-radius: 8px 8px 0 0; }
 
   // --- Identity dossier tab: the one tab we own and fully style ---

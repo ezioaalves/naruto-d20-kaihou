@@ -89,6 +89,34 @@ export function getKaihouCharacterSheetClass() {
       return data;
     }
 
+    async _renderInner(...args) {
+      const $html = await super._renderInner(...args); // PF1e + naruto-d20 chakra tab
+      try {
+        this._normalizeInjectedTabs($html);
+      } catch (e) {
+        console.error(`${MODULE_ID} | tab normalization failed`, e);
+      }
+      return $html;
+    }
+
+    // naruto-d20 injects the Chakra tab as a plain `<a>Chakra</a>`. Re-shape it to
+    // our icon-rail markup (icon + .db-tab-label) so the nav styling is uniform.
+    // Idempotent: skips a tab that already carries an icon.
+    _normalizeInjectedTabs($html) {
+      const root = $html?.[0] ?? $html;
+      const ICONS = { chakra: "fa-yin-yang" };
+      for (const [tab, icon] of Object.entries(ICONS)) {
+        const a = root.querySelector(`nav.sheet-navigation.tabs .item[data-tab="${tab}"]`);
+        if (!a || a.querySelector("i")) continue;
+        const label = a.textContent.trim();
+        a.textContent = "";
+        a.insertAdjacentHTML(
+          "afterbegin",
+          `<i class="fa-solid ${icon}"></i><span class="db-tab-label">${label}</span>`,
+        );
+      }
+    }
+
     _kaihouItemName(kind) {
       const item = this.actor.items?.find?.((i) => i.flags?.[MODULE_ID]?.kind === kind);
       return item?.name ?? "";
