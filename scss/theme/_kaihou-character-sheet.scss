@@ -16,6 +16,31 @@
 // look; the databook identity is the band + Identity tab + the red tab strip.
 
 .kaihou-databook-form {
+  // --- Phase 2 (option B): functional-tab palette re-skin ----------------------
+  // Remap PF1e's OWN custom properties so its existing markup (skills tables,
+  // item lists, section headers, controls) repaints databook with zero per-rule
+  // overrides. These inherit to every PF1e element inside the form; PF1e keeps
+  // all its DOM/layout/mechanics, so this stays resilient across PF1e upgrades.
+  --pf1-sheet-background: var(--db-cream);
+  --pf1-header-background: var(--db-red);
+  --pf1-header-text: #fff;
+  --pf1-header-shadow: none;
+  --pf1-olive: var(--db-ink); // control glyph colour
+  --pf1-control-color: var(--db-red);
+  --pf1-tan: var(--db-border);
+  --pf1-beige: var(--db-border);
+  --pf1-faint: var(--db-border-soft);
+  --pf1-border-groove: 2px groove var(--db-border);
+  --pf1-item-list-bg: #ece3c7;
+  --pf1-item-list-bg-alt: #f4eed9;
+  --pf1-item-list-hover-bg: rgba(178, 58, 46, 0.12);
+  --pf1-color-text-hover: var(--db-red);
+
+  // Flat cream base behind PF1e's mostly-translucent panels (replaces the
+  // parchment image; the form fills .window-content, covering it).
+  background: var(--db-cream);
+  color: var(--db-ink);
+
   // --- Header band: flex child above the tab strip, never steals tab height ---
   .db-band { flex: 0 0 auto; }
   .db-band__id { flex: 1; min-width: 0; }

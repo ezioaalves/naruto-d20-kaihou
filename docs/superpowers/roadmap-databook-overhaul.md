@@ -51,7 +51,7 @@ Established by the PC sheet; copy it for NPC/item sheets:
 |---|---|---|---|
 | **0 — PC sheet foundation** | Own template, Identity tab (default), header band, dual radars, mission record, origin & path, editable alias/allegiance, scoping fix | ✅ Done (v2.1.8) | — |
 | **1 — PC sheet completeness** | See §5 | ☐ Backlog | 0 |
-| **2 — Functional-tab depth decision + execution** | How databook Combat/Skills/Inventory/Features/Buffs become (native → re-skin → re-compose). See §6 | 🔜 **Next (decide first)** | 0; mockups |
+| **2 — Functional-tab palette re-skin (option B)** | Remap PF1e's `--pf1-*` CSS variables under `.kaihou-databook-form` so the functional tabs read databook (cream/red) while keeping PF1e DOM + mechanics. See §6 | 🔜 In progress | 0 |
 | **3 — NPC bespoke sheet** | Leaner databook dossier; reuse §3 pattern | ☐ Backlog | 0 (pattern) |
 | **4 — Bespoke item sheets** | Technique/jutsu, class, bloodline | ☐ Backlog | 0 (pattern); naruto-d20 item data |
 | **5 — Remaining chrome** | 20Q wizard, grant dialogs, compendium browser → databook palette; retire zen partials | ☐ Backlog | 2 (palette decisions) |
@@ -75,7 +75,12 @@ Established by the PC sheet; copy it for NPC/item sheets:
 - **B. Palette re-skin (CSS-only):** recolor/typeset PF1e's functional tabs with `--db-*` via scoped CSS; keep PF1e DOM/layout. Medium cost, no template churn, upgrade-safe.
 - **C. Full re-compose:** restructure PF1e's per-tab content into databook panels (move nodes / custom layout). Most bespoke; highest build + maintenance cost; most exposed to PF1e upgrades.
 
-Decide this before Phase 1 polish, because it sets the visual target for the whole sheet (and informs Phases 3–5). Needs visual exploration → add mockups to `docs/design/mockups/`.
+**Decision (2026-06-13): B chosen.** Implemented by remapping PF1e's own
+`--pf1-*` custom properties (sheet background, header bg/text, control/accent
+colour, item-list row tones, borders) on `.kaihou-databook-form`; because those
+properties inherit, every PF1e element inside the form repaints databook with no
+per-rule overrides and no exposure to PF1e DOM changes. C remains available
+per-tab later if a specific tab warrants it.
 
 ## 7. Coordination items for naruto-d20 (general-purpose, not Kaihou-specific)
 
