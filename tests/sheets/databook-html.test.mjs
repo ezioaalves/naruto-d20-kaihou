@@ -78,7 +78,7 @@ describe("missionRecord & headerBand", () => {
     expect(band).toContain('class="db-badge__crest"'); // village crest image rendered
     expect(band).toContain("villages/crab.svg");
     expect(band).toContain('class="db-seal"'); // wax authentication seal rendered
-    expect(band).toContain("--db-seal-crest:url('modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg')");
+    expect(band).toContain('class="db-seal__crest" src="modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg"');
     expect(band).toContain('data-edit="img"');
     expect(band).toContain("Uchiha &lt;b&gt;Takeshi&lt;/b&gt;"); // escaped, no raw tag injection
     expect(band).not.toContain("<b>Takeshi</b>");

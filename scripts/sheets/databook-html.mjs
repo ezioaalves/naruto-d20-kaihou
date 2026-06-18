@@ -129,7 +129,7 @@ export function headerBand(vm, meta) {
   const sealCrest = meta.villageCrest || "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg";
   const seal =
     `<div class="db-seal" title="${esc(meta.village ?? "")}" aria-hidden="true">`
-    + `<span class="db-seal__crest" style="--db-seal-crest:url('${esc(sealCrest)}')"></span>`
+    + `<img class="db-seal__crest" src="${esc(sealCrest)}" alt="">`
     + `</div>`;
   const badges = [
     meta.village ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>` : "",
