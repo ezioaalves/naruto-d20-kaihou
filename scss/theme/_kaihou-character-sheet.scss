@@ -273,29 +273,23 @@
     scrollbar-width: thin;
   }
   > .sheet-navigation.tabs[data-group="primary"] .item {
-    flex: 1 1 58px;
-    min-width: 58px;
+    flex: 1 1 0;
+    min-width: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px;
+    padding: 0 3px;
     min-height: 26px;
+    overflow: hidden;
   }
   > .sheet-navigation.tabs[data-group="primary"] .item .db-tab-label {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-family: var(--k-font-util);
-    font-size: 0.66rem;
+    font-size: 0.62rem;
     line-height: 1;
-    opacity: 0.7;
-    transition: opacity 0.18s ease;
   }
-  > .sheet-navigation.tabs[data-group="primary"] .item.active,
-  > .sheet-navigation.tabs[data-group="primary"] .item:hover {
-    flex: 2 0 max-content;
-    min-width: max-content;
-  }
-  > .sheet-navigation.tabs[data-group="primary"] .item.active .db-tab-label,
-  > .sheet-navigation.tabs[data-group="primary"] .item:hover .db-tab-label { opacity: 1; }
   > .sheet-navigation.tabs[data-group="primary"] .item.active { background: var(--k-seal); color: #fff; border-radius: 8px 8px 0 0; }
 
   // --- Identity dossier tab: the one tab we own and fully style ---
@@ -455,13 +449,10 @@
     font-size: var(--k-text-xs);
   }
 
+  // All skill rows — same single border-bottom regardless of origin (compendium vs naruto-d20 custom)
   .tab.skills ul.skills-list li.skill {
     border-bottom: 1px solid var(--k-rule-soft) !important;
-  }
-  .tab.skills ul.skills-list li.skill.custom,
-  .tab.skills ul.skills-list li.skill:not(.compendium),
-  .tab.skills ul.skills-list li.skill + li.skill {
-    border-top: 1px solid rgba(205, 191, 153, 0.45);
+    border-top: none !important;
   }
   .tab.skills .controls.skills,
   .tab.skills .controls.skills .control,
@@ -476,5 +467,145 @@
     flex: 0 0 auto;
     border-top: 2px solid var(--k-seal);
     background: var(--k-paper-raised);
+  }
+
+  // ─── Quick Actions strip (above footer, every tab) ─────────────────────────
+  .db-quick-actions-strip {
+    flex: 0 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--k-space-2);
+    padding: var(--k-space-1) var(--k-space-3);
+    border-top: 1px solid var(--k-rule);
+    background: var(--k-paper-raised);
+
+    > h3 {
+      font-family: var(--k-font-util);
+      font-size: var(--k-text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--k-track-label);
+      color: var(--k-ink-mute);
+      margin: 0;
+      flex: 0 0 auto;
+    }
+
+    > ol.quick-actions {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--k-space-1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--k-rule);
+        border-radius: var(--k-radius-sm);
+        overflow: hidden;
+        cursor: pointer;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        &:hover {
+          border-color: var(--k-seal);
+          box-shadow: var(--k-glow);
+        }
+      }
+    }
+  }
+
+  // ─── Typography — kill hardcoded PF1e drop-shadows ─────────────────────────
+  // PF1e hardcodes text-shadow with literal colors on several headers/cells;
+  // the remap block neutralizes --color-shadow-dark + --pf1-header-shadow but
+  // not these which bypass the variable system entirely.
+
+  // Attributes tab: ability-scores link-group heading
+  .tab.settings .ability-scores > .links > div h3 {
+    color: var(--k-ink);
+    text-shadow: none;
+    font-family: var(--k-font-body);
+  }
+
+  // Summary tab: pseudo-table section headers (e.g. "Speed", "Defenses" labels)
+  .tab.summary .pseudo-table .header,
+  .tab.summary .pseudo-table .sub-header {
+    color: var(--k-ink-mute);
+    text-shadow: none;
+  }
+
+  // Generic table th (PF1e uses white text + black shadow on dark bg)
+  table tbody th {
+    text-shadow: none;
+    color: var(--k-ink-mute);
+  }
+
+  // Buffs tab: active condition (PF1e: 0 0 8px red)
+  .tab.buffs .condition.active {
+    text-shadow: none;
+    font-weight: 600;
+  }
+
+  // ─── Combat tab: note fields full-width ────────────────────────────────────
+  // PF1e centers note labels and constrains textarea width; override to fill row.
+  .tab.combat .combat-defenses .notes,
+  .tab.combat .combat-defenses .attribute-notes,
+  .tab.combat .attribute-notes {
+    width: 100%;
+    text-align: left;
+
+    label, h4 {
+      text-align: left;
+      font-family: var(--k-font-util);
+      font-size: var(--k-text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--k-track-label);
+      color: var(--k-ink-mute);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 2.5rem;
+      resize: vertical;
+      text-align: left;
+    }
+  }
+
+  // ─── Buffs tab: compact conditions grid ────────────────────────────────────
+  .tab.buffs {
+    .conditions {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 2px;
+    }
+
+    .condition {
+      border-radius: var(--k-radius-sm);
+
+      a.checkbox {
+        gap: 3px;
+        padding: 2px 3px;
+
+        > img {
+          width: 20px;
+          height: 20px;
+          flex: 0 0 20px;
+        }
+
+        .name {
+          font-size: var(--k-text-xs);
+          line-height: 1.2;
+        }
+
+        > .details > .sources {
+          font-size: 0.6rem;
+        }
+      }
+    }
   }
 }

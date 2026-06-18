@@ -13,7 +13,6 @@
 
 import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
 import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
-import { getPublicNote, setPublicNote } from "../notes-relay.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
 
@@ -86,10 +85,6 @@ export function getKaihouCharacterSheetClass() {
           label,
           value: this._markedItemName(marker),
         }));
-        // Collaborative notes: private (this user) + public (party, GM-relayed).
-        vm.notes = {
-          publicNote: getPublicNote(this.actor),
-        };
         vm.isOwner = this.actor.isOwner;
         data.kaihou = vm;
       } catch (e) {
@@ -102,9 +97,6 @@ export function getKaihouCharacterSheetClass() {
     activateListeners(html) {
       super.activateListeners(html);
       const root = html?.[0] ?? html;
-      // Shared notes are NOT a PF1e form field (relayed via socket for non-owners).
-      const pub = root?.querySelector?.(".db-notes__public");
-      if (pub) pub.addEventListener("change", (e) => setPublicNote(this.actor, e.target.value));
       const actorName = root?.querySelector?.("[data-kaihou-actor-name]");
       if (actorName) {
         actorName.addEventListener("change", (e) => this._onKaihouActorNameChange(e));
@@ -185,6 +177,22 @@ export function getKaihouCharacterSheetClass() {
       summary.querySelector(".summary-header .character-summary .alignment")?.remove();
       summary.querySelector(".summary-header .race.item")?.remove();
       summary.querySelector(".summary-header .actor-quick-actions")?.remove();
+
+      // Move Quick Actions out of Summary and into a persistent strip above the footer.
+      const footer = root?.querySelector?.("footer.db-footer");
+      if (!footer) return;
+      // Idempotent: skip if strip already built this render.
+      if (root.querySelector(".db-quick-actions-strip")) return;
+      const qaOl = summary.querySelector("ol.quick-actions");
+      if (!qaOl) return;
+      const qaH3 = qaOl.previousElementSibling?.tagName?.toLowerCase() === "h3"
+        ? qaOl.previousElementSibling
+        : null;
+      const strip = document.createElement("div");
+      strip.className = "db-quick-actions-strip";
+      if (qaH3) { strip.appendChild(qaH3); }
+      strip.appendChild(qaOl);
+      footer.parentNode.insertBefore(strip, footer);
     }
 
     _normalizeCombatTab($html) {
