@@ -30,11 +30,24 @@
   --pf1-tan: var(--db-border);
   --pf1-beige: var(--db-border);
   --pf1-faint: var(--db-border-soft);
-  --pf1-border-groove: 2px groove var(--db-border);
-  --pf1-item-list-bg: #ece3c7;
-  --pf1-item-list-bg-alt: #f4eed9;
-  --pf1-item-list-hover-bg: rgba(178, 58, 46, 0.12);
-  --pf1-color-text-hover: var(--db-red);
+  --pf1-item-list-bg: var(--k-stripe-odd);
+  --pf1-item-list-bg-alt: var(--k-stripe-even);
+  --pf1-item-list-hover-bg: var(--k-row-hover);
+  --pf1-color-text-hover: var(--k-seal);
+
+  // Inner summary tables (Hit Points / Speed / Defenses / Hero Statistics /
+  // Classes) are PF1e `.info-box`-derived and read Foundry-CORE vars the block
+  // above never set — which is why they stayed vanilla gold-trimmed parchment.
+  // Repointing these repaints all of them at once, by inheritance, no new
+  // selectors (scoped to the form, so the blast radius is our sheet only).
+  --color-border-dark-3: var(--k-ink);       // info-box edge → sumi
+  --pf1-bg-dark-3: var(--k-crab);            // header band → crab indigo-dusk
+  --color-text-light-highlight: #f6efdc;     // header text → light parchment
+  --color-shadow-dark: transparent;          // kill the black header drop-shadow
+  --pf1-bg-dark-0: var(--k-paper-sunken);    // number-input wells
+  --pf1-bg-dark-1: rgba(44, 38, 28, 0.06);
+  --pf1-bg-dark-2: rgba(44, 38, 28, 0.1);
+  --pf1-border-groove: 1px solid var(--k-rule); // flatten gold 3-D groove → flat rule
 
   // Align the zen theme's sheet tokens to databook. These flip the zen-themed
   // layer (skill names use --zen-ink; their hover uses --zen-ink-accent; the
