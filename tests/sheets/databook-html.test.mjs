@@ -94,7 +94,8 @@ describe("missionRecord & headerBand", () => {
     expect(band).toContain("tap-reserve-roll"); // reuses naruto-d20's reserve listener
     expect(band).toContain(">5<"); // Level (display)
     expect(band).toContain('class="rest db-rest"'); // rest button (reuses PF1e .rest)
-    expect(band).not.toContain('class="db-seal"'); // no crest → no wax seal
+    expect(band).toContain('class="db-seal"'); // seal always renders…
+    expect(band).toContain("villages/crab.svg"); // …defaulting to crab when no village crest
   });
 });
 

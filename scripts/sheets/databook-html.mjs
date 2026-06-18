@@ -122,14 +122,15 @@ export function headerBand(vm, meta) {
   const villageCrest = meta.villageCrest
     ? `<img class="db-badge__crest" src="${esc(meta.villageCrest)}" alt="">`
     : "";
-  // Signature: a vermilion wax authentication seal wrapping the village crest,
-  // stamped on the portrait. The ring frame is fixed; the crest (masked, tinted)
-  // fills its transparent centre. Omitted when the actor has no village crest.
-  const seal = meta.villageCrest
-    ? `<div class="db-seal" title="${esc(meta.village ?? "")}" aria-hidden="true">`
-      + `<span class="db-seal__crest" style="--db-seal-crest:url('${esc(meta.villageCrest)}')"></span>`
-      + `</div>`
-    : "";
+  // Signature: a vermilion wax authentication seal stamped on the portrait. The
+  // ring frame is fixed; the crest (masked, tinted) fills its transparent centre.
+  // Wraps the actor's village crest, falling back to the crab (the Kaihou /
+  // Kanigakure emblem) so every record is sealed even before a village is set.
+  const sealCrest = meta.villageCrest || "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg";
+  const seal =
+    `<div class="db-seal" title="${esc(meta.village ?? "")}" aria-hidden="true">`
+    + `<span class="db-seal__crest" style="--db-seal-crest:url('${esc(sealCrest)}')"></span>`
+    + `</div>`;
   const badges = [
     meta.village ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>` : "",
     (rank ?? meta.rank) ? `<span class="db-badge db-badge--rank">${esc(rank ?? meta.rank)}</span>` : "",

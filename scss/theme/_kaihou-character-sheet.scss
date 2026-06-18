@@ -59,9 +59,13 @@
   --zen-font-display: var(--db-font-name); // section headers → databook sans
   --zen-font-body: var(--db-font-body); // body/table text → databook serif (was PatrickHand)
 
-  // Flat cream base behind PF1e's mostly-translucent panels (replaces the
-  // parchment image; the form fills .window-content, covering it).
-  background: var(--db-cream);
+  // Washed-parchment base behind PF1e's mostly-translucent panels. The form
+  // fills .window-content and covers it, so the texture must live HERE or it
+  // only peeks through the scrollbar gutter. Washed (66% cream) for legibility.
+  background-color: var(--db-cream);
+  background-image: var(--k-surface-washed);
+  background-size: cover;
+  background-position: center;
   color: var(--db-ink);
 
   // --- Header band: a databook registry card — portrait · identity · stats ----
