@@ -79,16 +79,23 @@
   // CSS loads after pf1.css so these win the specificity tie by source order.
   // Bands are DARK → text must be LIGHT (set explicitly, never rely on a PF1e
   // var that may resolve dark). Cells are LIGHT → text stays sumi.
+  // Info-box TITLES (Hit Points / Speed / Chakra Pool …) are compact band
+  // headers, NOT page sections — bold-sans uppercase, not the big serif. The
+  // theme's `.tab.summary h3` rule (specificity 0,5,2) otherwise colours these
+  // dark (invisible on the sumi band) and serifs them, so !important on the
+  // three contested properties is the decisive, consistent override (summary
+  // AND chakra tabs alike).
   .info-box-header > h3 {
     display: flex;            // vertically centre the title (was sitting high)
     align-items: center;
     justify-content: center;
     gap: 0.3em;
-    font-family: var(--k-font-display);
-    font-size: var(--k-type-title);
-    font-weight: var(--k-weight-title);
-    letter-spacing: 0.01em;
-    color: var(--k-on-dark);
+    font-family: var(--k-font-body) !important;
+    font-size: var(--k-type-body) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--k-on-dark) !important;
     text-shadow: none;
   }
   .info-box > h5 {
