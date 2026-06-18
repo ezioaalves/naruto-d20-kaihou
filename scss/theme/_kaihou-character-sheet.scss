@@ -287,8 +287,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: var(--k-font-util);
-    font-size: 0.62rem;
+    font-size: 0.66rem;
     line-height: 1;
+    opacity: 0.7;
+  }
+  > .sheet-navigation.tabs[data-group="primary"] .item:hover .db-tab-label,
+  > .sheet-navigation.tabs[data-group="primary"] .item.active .db-tab-label {
+    opacity: 1;
   }
   > .sheet-navigation.tabs[data-group="primary"] .item.active { background: var(--k-seal); color: #fff; border-radius: 8px 8px 0 0; }
 
@@ -476,7 +481,7 @@
     flex-flow: row wrap;
     align-items: center;
     gap: var(--k-space-2);
-    padding: var(--k-space-1) var(--k-space-3);
+    padding: 0;
     border-top: 1px solid var(--k-rule);
     background: var(--k-paper-raised);
 
@@ -552,27 +557,26 @@
   }
 
   // ─── Combat tab: note fields full-width ────────────────────────────────────
-  // PF1e centers note labels and constrains textarea width; override to fill row.
-  .tab.combat .combat-defenses .notes,
-  .tab.combat .combat-defenses .attribute-notes,
-  .tab.combat .attribute-notes {
-    width: 100%;
-    text-align: left;
-
-    label, h4 {
-      text-align: left;
-      font-family: var(--k-font-util);
-      font-size: var(--k-text-xs);
-      text-transform: uppercase;
-      letter-spacing: var(--k-track-label);
-      color: var(--k-ink-mute);
+  // After _normalizeCombatTab, each .defense-notes .flexrow is wrapped in a
+  // <details> element (h3 becomes <summary>). The .flexrow then contains only
+  // <textarea class="context-text">. Force the row to stack vertically so the
+  // textarea expands to fill the full container width.
+  .tab.combat .defense-notes {
+    details {
+      width: 100%;
     }
 
-    textarea {
+    .flexrow {
+      flex-flow: column nowrap;
       width: 100%;
-      min-height: 2.5rem;
-      resize: vertical;
-      text-align: left;
+
+      textarea.context-text {
+        width: 100% !important;
+        min-height: 3rem;
+        resize: vertical;
+        text-align: left;
+        box-sizing: border-box;
+      }
     }
   }
 
