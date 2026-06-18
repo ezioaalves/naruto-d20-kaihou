@@ -478,13 +478,55 @@
     border-top: 2px solid var(--k-seal);
     background: var(--k-paper-raised);
 
-    // Hero Statistics relocated here by the renderActorSheetPF hook.
-    // Neutralize the naruto-d20 bottom-margin and divider line.
+    // Hero Statistics relocated here by the §5.2 renderActorSheetPF hook.
+    // naruto-d20 appends it with its own h3 heading, hr, and full-width
+    // info-box layout. We suppress the chrome and integrate the three cells
+    // as a compact secondary row matching the footer's visual tone.
     #naruto-hero-statistics {
-      margin-bottom: 0;
+      border-top: 1px solid var(--k-rule);
+      margin: 0;
+      padding: 2px var(--k-space-3) 4px;
 
-      .naruto-summary-divider {
-        display: none;
+      h3 { display: none; }
+      .naruto-summary-divider { display: none; }
+
+      .naruto-summary-stats {
+        gap: var(--k-space-2);
+
+        .info-box {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0 var(--k-space-2);
+          text-align: center;
+
+          &:not(:last-child) {
+            border-right: 1px solid var(--k-rule);
+          }
+
+          h5 {
+            font: var(--k-text-xs)/1 var(--k-font-util);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--k-ink-mute);
+            text-shadow: none;
+            margin-bottom: 2px;
+
+            a { color: inherit; text-decoration: none; }
+            a:hover { color: var(--k-seal); }
+          }
+
+          input.value {
+            font: 600 var(--k-text-sm)/1 var(--k-font-body);
+            color: var(--k-ink);
+            background: transparent;
+            border: none;
+            text-align: center;
+            padding: 0;
+            width: 100%;
+          }
+        }
       }
     }
   }

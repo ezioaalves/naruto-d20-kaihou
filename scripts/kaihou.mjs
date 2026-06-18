@@ -122,7 +122,7 @@ Hooks.once("ready", () => {
     await new Promise((r) => setTimeout(r, 0));
     const heroStats = $html.find("#naruto-hero-statistics");
     if (!heroStats.length) return;
-    footer.prepend(heroStats);
+    footer.append(heroStats);
   });
 });
 
