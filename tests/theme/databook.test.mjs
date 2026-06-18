@@ -16,8 +16,13 @@ function selectorTexts(src) {
 }
 
 describe("databook tokens", () => {
-  it("publishes the core --db-* tokens", () => {
-    for (const t of ["--db-red", "--db-ink", "--db-cream", "--db-panel", "--db-void"]) {
+  it("publishes the radar --db-* tokens and canonical --k-* palette", () => {
+    // Phase 6: --db-* aliases were dropped; only radar tokens remain in _databook-tokens.scss.
+    for (const t of ["--db-radar-grid", "--db-radar-ability-fill", "--db-radar-discipline-stroke"]) {
+      expect(css).toContain(t);
+    }
+    // Canonical layer must be present.
+    for (const t of ["--k-seal", "--k-crab", "--k-paper", "--k-ink"]) {
       expect(css).toContain(t);
     }
   });

@@ -1,78 +1,11 @@
-// scss/_databook-tokens.scss
-// Legacy --db-* databook tokens — now ALIASES into the canonical --k-* layer
-// (scss/_kaihou-tokens.scss, "The Shinobi Record").
+// scss/_databook-tokens.scss — Databook-specific real-value tokens.
 //
-// The databook character sheet still references --db-* heavily; each base token
-// resolves THROUGH a --k-* canonical value, and the semantic --db-color-* roles
-// reference those base tokens so they follow automatically. Consumers migrate to
-// --k-* directly in the PC-sheet phase; this file then trims to the radar
-// remnants (which have dedicated --k-* peers too).
+// All --db-* aliases into --k-* have been removed (Phase 6 cleanup).
+// Only the radar fill/stroke tokens remain — they have no --k-* peer and are
+// consumed by scss/components/_databook.scss for the SVG polygon styling.
 
 :root {
-  // Core palette → canonical
-  --db-red: var(--k-seal);
-  --db-red-deep: var(--k-seal-deep);
-  --db-ink: var(--k-ink);
-  --db-cream: var(--k-paper);
-  --db-panel: var(--k-paper-raised);
-  --db-border: var(--k-rule);
-  --db-border-soft: var(--k-rule-soft);
-  --db-muted: var(--k-ink-mute);
-  --db-void: var(--k-void);
-
-  // Semantic colour roles (track the base tokens above)
-  --db-color-ink: var(--db-ink);
-  --db-color-ink-muted: var(--db-muted);
-  --db-color-accent: var(--db-red);
-  --db-color-accent-strong: var(--db-red-deep);
-  --db-color-surface: var(--db-cream);
-  --db-color-panel: var(--db-panel);
-  --db-color-panel-raised: var(--k-paper-raised);
-  --db-color-border: var(--db-border);
-  --db-color-border-soft: var(--db-border-soft);
-  --db-color-rule: var(--k-rule-ink);
-  --db-color-stamp: var(--k-paper-stamp);
-  --db-color-danger: var(--db-red-deep);
-  --db-color-void: var(--db-void);
-
-  // Typography → canonical (Rotis Record)
-  --db-font-name: var(--k-font-util);
-  --db-font-label: var(--k-font-util);
-  --db-font-body: var(--k-font-body);
-
-  // Type scale → canonical
-  --db-type-display: var(--k-type-display);
-  --db-type-heading: var(--k-type-heading);
-  --db-type-body: var(--k-type-body);
-  --db-type-label: var(--k-type-label);
-  --db-type-numeric: var(--k-type-numeric);
-  --db-type-caption: var(--k-type-caption);
-  --db-line-tight: var(--k-line-tight);
-  --db-line-heading: var(--k-line-heading);
-  --db-line-body: var(--k-line-body);
-  --db-track-label: var(--k-track-label);
-  --db-track-kanji: var(--k-track-kanji);
-
-  // Spacing scale → canonical
-  --db-space-0: var(--k-space-0);
-  --db-space-1: var(--k-space-1);
-  --db-space-2: var(--k-space-2);
-  --db-space-3: var(--k-space-3);
-  --db-space-4: var(--k-space-4);
-  --db-space-5: var(--k-space-5);
-  --db-space-6: var(--k-space-6);
-  --db-space-8: var(--k-space-8);
-  --db-space-10: var(--k-space-10);
-
-  // Shape and rules → canonical
-  --db-radius-sm: var(--k-radius-sm);
-  --db-radius-md: var(--k-radius-md);
-  --db-rule-hair: 1px solid var(--db-color-border-soft);
-  --db-rule-base: 1px solid var(--db-color-border);
-  --db-rule-accent: 2px solid var(--db-color-accent);
-  --db-shadow-stamp: var(--k-shadow-stamp);
-
-  // Radar — real values; strokes track the canonical accents
+  // ─── Radar SVG (real values; strokes track canonical accents) ─────────────
   --db-radar-grid: #cbbd97;
   --db-radar-ability-fill: rgba(178, 58, 46, 0.26);
   --db-radar-ability-stroke: var(--k-seal);
