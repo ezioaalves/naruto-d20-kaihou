@@ -45,9 +45,13 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       "tqw-finish":            TwentyQuestionsWizard._onFinish,
       "tqw-progress-jump":     TwentyQuestionsWizard._onProgressJump,
       "tqw-radio-select":      TwentyQuestionsWizard._onRadioSelect,
-      "tqw-select-change":     TwentyQuestionsWizard._onSelectChange,
-      "tqw-subpicker-change":  TwentyQuestionsWizard._onSubpickerChange,
-      "tqw-narrative-change":  TwentyQuestionsWizard._onNarrativeChange,
+      // NOTE: the tqw-*-change handlers are deliberately NOT registered here.
+      // ApplicationV2 dispatches `actions` on CLICK — and a native <select>
+      // emits a click when it is opened. Registering the change handlers as
+      // click actions made opening the dropdown re-render the app, destroying
+      // the <select> and snapping the native popup shut before the user could
+      // pick. They are wired on the `change` event instead — see
+      // _wireChangeActions().
       "tqw-clear-drop":        TwentyQuestionsWizard._onClearDrop,
       "tqw-browse":            TwentyQuestionsWizard._onBrowse,
       "tqw-roll":              TwentyQuestionsWizard._onRoll,
