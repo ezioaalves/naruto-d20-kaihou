@@ -170,4 +170,18 @@ aside#sidebar {
     .settings h1, .settings h2, .settings h3 {
         color: rgb(224, 208, 170);
     }
+
+    // System-info block at top of Settings panel: game title, version string,
+    // and the Build Version / System / Active Modules label-value pairs.
+    // All sit on the dark sidebar chrome → use light text.
+    .settings {
+        p, .notes,
+        dl, dt, dd,
+        ol, ol li,
+        ul:not(.context-items) li,
+        span.label, span.value, span.count,
+        label:not([for]) {
+            color: rgb(224, 208, 170);
+        }
+    }
 }

@@ -141,30 +141,39 @@ dialog.application {
 }
 
 // ─── Context menus (right-click roll menu, etc.) ─────────────────────────────
+// Foundry's own dark context-menu styles win on specificity even inside
+// body.naruto-zen — !important is required here to force parchment over dark chrome.
 #context-menu,
 .context-menu {
-    background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
-    background-size: cover;
-    color: var(--k-ink);
-    border: 1px solid var(--k-rule);
+    background-color: var(--k-paper) !important;
+    background-image: var(--k-surface-image) !important; // grain only, fully opaque
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    color: var(--k-ink) !important;
+    border: 1px solid var(--k-rule) !important;
 
     .context-item,
     .context-items li {
-        color: var(--k-ink);
+        color: var(--k-ink) !important;
         font-family: var(--k-font-body);
 
         &:hover {
-            background: var(--k-row-hover);
-            color: var(--k-seal);
+            background: var(--k-row-hover) !important;
+            color: var(--k-seal) !important;
         }
     }
 }
 
 // ─── Tooltips ────────────────────────────────────────────────────────────────
+// Solid parchment — tooltips float above any dark surface so --k-surface-washed
+// (66% opaque gradient) would bleed whatever is beneath through. Use the grain
+// directly over a solid #k-paper base.
 #tooltip,
 .locked-tooltip {
-    background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
-    background-size: cover;
+    background-color: var(--k-paper) !important;
+    background-image: var(--k-surface-image) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
     color: var(--k-ink);
     border: 1px solid var(--k-rule);
     font-family: var(--k-font-body);
@@ -181,7 +190,10 @@ dialog.application {
 // We cover both so the theme survives an upstream system update.
 #tooltip.pf1,
 aside[role="tooltip"].pf1 {
-    background: var(--k-paper) var(--k-surface-washed) no-repeat center / cover;
+    background-color: var(--k-paper) !important;
+    background-image: var(--k-surface-image) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
     color: var(--k-ink);
     border: 1px solid var(--k-rule);
     outline-color: var(--k-rule-soft);
