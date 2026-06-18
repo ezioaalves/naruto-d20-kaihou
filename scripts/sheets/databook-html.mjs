@@ -122,6 +122,14 @@ export function headerBand(vm, meta) {
   const villageCrest = meta.villageCrest
     ? `<img class="db-badge__crest" src="${esc(meta.villageCrest)}" alt="">`
     : "";
+  // Signature: a vermilion wax authentication seal wrapping the village crest,
+  // stamped on the portrait. The ring frame is fixed; the crest (masked, tinted)
+  // fills its transparent centre. Omitted when the actor has no village crest.
+  const seal = meta.villageCrest
+    ? `<div class="db-seal" title="${esc(meta.village ?? "")}" aria-hidden="true">`
+      + `<span class="db-seal__crest" style="--db-seal-crest:url('${esc(meta.villageCrest)}')"></span>`
+      + `</div>`
+    : "";
   const badges = [
     meta.village ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>` : "",
     (rank ?? meta.rank) ? `<span class="db-badge db-badge--rank">${esc(rank ?? meta.rank)}</span>` : "",
@@ -130,7 +138,8 @@ export function headerBand(vm, meta) {
     `<header class="db-band">`,
     `<div class="db-band__portrait">`,
     `<img class="db-band__port" src="${esc(meta.img)}" alt="" data-edit="img">`,
-    headlineNature(vm.natures), // corner seal (positioned by CSS)
+    headlineNature(vm.natures), // nature seal — portrait lower-right (CSS)
+    seal, // village wax seal — portrait upper-right (CSS)
     `</div>`,
     `<div class="db-band__id">`,
     `<div class="db-band__name">${esc(meta.name)}</div>`,

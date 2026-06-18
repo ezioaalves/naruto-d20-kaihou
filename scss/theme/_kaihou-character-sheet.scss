@@ -130,6 +130,11 @@
     align-items: stretch;
     border-bottom: none;
     padding: var(--zen-space-3) var(--zen-space-4);
+    // Aged-parchment wash — texture washed with cream so dense data stays legible.
+    background:
+      linear-gradient(rgba(236, 228, 210, 0.8), rgba(236, 228, 210, 0.8)),
+      var(--k-surface-image) center / cover;
+    border-top: 2px solid var(--k-seal);
   }
   .db-footer .db-band__portrait { align-self: stretch; }
   .db-footer .db-band__port {
@@ -193,6 +198,31 @@
     height: 34px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
     z-index: 1;
+  }
+
+  // Signature — vermilion wax authentication seal on the portrait's upper-right.
+  // The fixed ring frame (transparent centre) wraps the village crest, which is
+  // masked and tinted seal-deep so it reads as pressed into the wax.
+  .db-band__portrait .db-seal {
+    position: absolute;
+    top: -12px;
+    right: -14px;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    background: center / contain no-repeat var(--k-seal-ring);
+    filter: drop-shadow(0 1px 2px rgba(46, 39, 29, 0.4));
+    pointer-events: none;
+    z-index: 2;
+  }
+  .db-band__portrait .db-seal__crest {
+    width: 52%;
+    height: 52%;
+    background-color: var(--k-seal-deep);
+    opacity: 0.92;
+    -webkit-mask: var(--db-seal-crest) center / contain no-repeat;
+    mask: var(--db-seal-crest) center / contain no-repeat;
   }
 
   // --- Databook-red tab strip — equal-width, labels only, no icons -----------
