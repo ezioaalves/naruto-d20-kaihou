@@ -67,6 +67,10 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
 
   _renderLock = false;
 
+  // Inline validation stays hidden until the user tries to advance without
+  // answering the current question. Set in _onNext, cleared on navigation.
+  _showValidation = false;
+
   constructor(actor, options = {}) {
     super(options);
     this.actor = actor;
@@ -92,7 +96,9 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
 
     const validationResult = validate(this.wizardState);
     const blockingError = this._errorForQuestion(validationResult, currentId);
-    const validationError = blockingError ? this._messageForError(blockingError) : null;
+    // Only surface the inline error once the user has tried to skip ahead.
+    const validationError =
+      this._showValidation && blockingError ? this._messageForError(blockingError) : null;
 
     return {
       currentId,
@@ -208,6 +214,7 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
     try {
       const currentIdx = questions.findIndex((q) => q.id === this.wizardState.currentId);
       if (currentIdx <= 0) return;
+      this._showValidation = false;
       this.wizardState = { ...this.wizardState, currentId: questions[currentIdx - 1].id };
       await this.render();
     } finally {
@@ -225,11 +232,13 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       const validationResult = validate(this.wizardState);
       const blockingError = this._errorForQuestion(validationResult, this.wizardState.currentId);
       if (blockingError) {
-        ui.notifications?.warn(this._messageForError(blockingError));
+        // Reveal the inline error now — the user tried to skip without answering.
+        this._showValidation = true;
         await this.render();
         return;
       }
 
+      this._showValidation = false;
       this.wizardState = { ...this.wizardState, currentId: questions[currentIdx + 1].id };
       await this.render();
     } finally {
@@ -251,11 +260,12 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
 
   /** Translate a {field, code} validation error into a user-facing string. */
   _messageForError(error) {
-    switch (error.code) {
-      case "REQUIRED":     return `${error.field} is required.`;
-      case "SUB_REQUIRED": return `Please answer the sub-question for ${error.field}.`;
-      case "Q10_COUPLED":  return "Please select both flaw and bonus feat (or neither).";
-      default:             return "Please fill in all required fields.";
+    const L = (key) => game.i18n.localize(`NARUTO_D20_KAIHOU.WIZARD.${key}`);
+    switch (error?.code) {
+      case "REQUIRED":     return L("VALIDATION_REQUIRED");
+      case "SUB_REQUIRED": return L("VALIDATION_SUB_REQUIRED");
+      case "Q10_COUPLED":  return L("VALIDATION_COUPLED");
+      default:             return L("VALIDATION_DEFAULT");
     }
   }
 
@@ -300,6 +310,7 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       const qid = target?.dataset?.qid;
       if (!qid) return;
       if (!canJumpTo(this.wizardState, qid)) return;
+      this._showValidation = false;
       this.wizardState = jumpTo(this.wizardState, qid);
       await this.render();
     } finally {

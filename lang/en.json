@@ -45,7 +45,11 @@
       "FINISH_BLOCKED": "Some required questions are not yet answered.",
       "FINISH_ERR": "Failed to apply 20 Questions",
       "DROP_TYPE_REJECTED": "Only items can be dropped here.",
-      "DROP_WRONG_TYPE": "Wrong item type — expected {expected}, got {got}."
+      "DROP_WRONG_TYPE": "Wrong item type — expected {expected}, got {got}.",
+      "VALIDATION_REQUIRED": "Please make a selection before continuing.",
+      "VALIDATION_SUB_REQUIRED": "Please answer the sub-question before continuing.",
+      "VALIDATION_COUPLED": "Please select both the flaw and the bonus feat, or neither.",
+      "VALIDATION_DEFAULT": "Please complete this question before continuing."
     },
     "THEME": {
       "SETTING_NAME": "Zen Scroll Theme — Enabled",

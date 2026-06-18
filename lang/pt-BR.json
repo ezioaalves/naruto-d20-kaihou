@@ -45,7 +45,11 @@
       "FINISH_BLOCKED": "Some required questions are not yet answered.",
       "FINISH_ERR": "Failed to apply 20 Questions",
       "DROP_TYPE_REJECTED": "Only items can be dropped here.",
-      "DROP_WRONG_TYPE": "Wrong item type — expected {expected}, got {got}."
+      "DROP_WRONG_TYPE": "Wrong item type — expected {expected}, got {got}.",
+      "VALIDATION_REQUIRED": "Por favor, faça uma seleção antes de continuar.",
+      "VALIDATION_SUB_REQUIRED": "Por favor, responda a subpergunta antes de continuar.",
+      "VALIDATION_COUPLED": "Selecione tanto a falha quanto o talento bônus, ou nenhum dos dois.",
+      "VALIDATION_DEFAULT": "Por favor, complete esta pergunta antes de continuar."
     },
     "THEME": {
       "SETTING_NAME": "Zen Scroll Theme — Enabled",
