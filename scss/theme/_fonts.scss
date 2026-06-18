@@ -49,13 +49,13 @@
 //   2. PF1e + naruto-d20 set their own `font-family` on container classes
 //      (`.pf1 { font-family: ... }`), which beats our generic `body` rule.
 //
-// Fix: force `var(--zen-font-body)` on every text-bearing element inside our
+// Fix: force `var(--k-font-body)` on every text-bearing element inside our
 // scope. FA icons, code blocks, and prose-mirror editors stay on their own
 // fonts (excluded via `:not(...)`).
 & {
-    font: 16px var(--zen-font-body);
+    font: 16px var(--k-font-body);
     letter-spacing: 0.05rem;
-    color: var(--zen-ink);
+    color: var(--k-ink);
 }
 
 // Default font on form controls + text containers.
@@ -80,14 +80,14 @@ optgroup,
 option,
 fieldset,
 legend {
-    font-family: var(--zen-font-body);
+    font-family: var(--k-font-body);
 }
 
 // Headings — Rotis SemiSerif Bold display, except h5 (small-caps label).
 :is(h1, h2, h3) {
-    font-family: var(--zen-font-display);
+    font-family: var(--k-font-display);
     font-weight: 700;
-    color: var(--zen-ink);
+    color: var(--k-ink);
     letter-spacing: 0.03rem;
 }
 h1 {
@@ -102,18 +102,18 @@ h3 {
     font-size: 1.2rem;
 }
 h4 {
-    font-family: var(--zen-font-body);
+    font-family: var(--k-font-body);
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.05rem;
-    color: var(--zen-ink);
+    color: var(--k-ink);
 }
 h5 {
-    font-family: var(--zen-font-body);
+    font-family: var(--k-font-body);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.06rem;
-    color: var(--zen-ink-mute);
+    color: var(--k-ink-mute);
 }
 
 i.i_strife,

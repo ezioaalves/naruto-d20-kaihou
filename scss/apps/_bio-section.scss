@@ -28,17 +28,17 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    padding-right: var(--zen-space-3);
+    padding-right: var(--k-space-3);
   }
 
   .tqw-bio-right {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--zen-space-2);
-    padding: var(--zen-space-3) var(--zen-space-3) var(--zen-space-3) var(--zen-space-4);
+    gap: var(--k-space-2);
+    padding: var(--k-space-3) var(--k-space-3) var(--k-space-3) var(--k-space-4);
     // Heavy ink stroke as divider — the sumi-e brush-stroke column separator.
-    border-left: var(--zen-bold-border);
+    border-left: var(--k-bold-border);
     overflow-y: auto;
     // Grain texture matching the wizard backdrop.
     position: relative;
@@ -47,7 +47,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background-image: var(--zen-bold-grain);
+      background-image: var(--k-bold-grain);
       pointer-events: none;
       z-index: 0;
     }
@@ -65,18 +65,18 @@
       flex: 0 0 auto;
       display: flex;
       align-items: baseline;
-      gap: var(--zen-space-2);
-      border-bottom: var(--zen-bold-accent-rule);
-      padding-bottom: var(--zen-space-1);
-      margin-bottom: var(--zen-space-1);
+      gap: var(--k-space-2);
+      border-bottom: var(--k-bold-accent-rule);
+      padding-bottom: var(--k-space-1);
+      margin-bottom: var(--k-space-1);
       // Prevent the row itself from overflowing narrow columns
       min-width: 0;
     }
 
     .tqw-bio-header {
-      font-family: var(--zen-font-display);
-      font-size: var(--zen-text-xl);
-      color: var(--zen-ink);
+      font-family: var(--k-font-display);
+      font-size: var(--k-text-xl);
+      color: var(--k-ink);
       letter-spacing: 0.5px;
       margin: 0;
       padding: 0;
@@ -91,8 +91,8 @@
     // ── Status summary ────────────────────────────────────────────────────
     .tqw-bio-summary {
       flex: 0 0 auto;
-      font-size: var(--zen-text-xs);
-      color: var(--zen-ink-mute);
+      font-size: var(--k-text-xs);
+      color: var(--k-ink-mute);
       margin: 0;
       font-style: italic;
     }
@@ -106,62 +106,62 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: var(--zen-space-2);
+      gap: var(--k-space-2);
     }
 
     // Each answer entry — card-bold motif: no radius, accent left-border.
     .tqw-bio-answer {
-      background: var(--zen-bold-card-bg);
-      border: var(--zen-border-hair) solid var(--zen-border);
-      border-left: var(--zen-bold-accent-rule);
-      padding: var(--zen-space-2) var(--zen-space-3);
-      box-shadow: var(--zen-elevation-card);
+      background: var(--k-bold-card-bg);
+      border: var(--k-border-hair) solid var(--k-rule);
+      border-left: var(--k-bold-accent-rule);
+      padding: var(--k-space-2) var(--k-space-3);
+      box-shadow: var(--k-elevation-card);
 
       // Q-number chip: compressed uppercase accent, inline before the question
       .tqw-bio-q {
-        font-family: var(--zen-font-body);
+        font-family: var(--k-font-body);
         font-weight: 700;
-        font-size: var(--zen-text-xs);
-        color: var(--zen-ink-accent);
+        font-size: var(--k-text-xs);
+        color: var(--k-seal);
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        margin-right: var(--zen-space-1);
+        margin-right: var(--k-space-1);
       }
 
       // The question text itself — narrative-first layout leads with it.
       .tqw-bio-question {
-        font-family: var(--zen-font-body);
+        font-family: var(--k-font-body);
         font-weight: 600;
-        font-size: var(--zen-text-sm);
-        color: var(--zen-ink);
+        font-size: var(--k-text-sm);
+        color: var(--k-ink);
         line-height: 1.3;
       }
 
       // The player's written answer — the star of the row.
       p {
-        margin: var(--zen-space-1) 0 0;
-        font-family: var(--zen-font-flavor);
-        font-size: var(--zen-text-sm);
-        color: var(--zen-ink);
+        margin: var(--k-space-1) 0 0;
+        font-family: var(--k-font-stamp);
+        font-size: var(--k-text-sm);
+        color: var(--k-ink);
         line-height: 1.4;
       }
 
       // Mechanical pick — muted footnote under the narrative.
       .tqw-bio-mech {
-        margin: var(--zen-space-1) 0 0;
-        font-family: var(--zen-font-body);
+        margin: var(--k-space-1) 0 0;
+        font-family: var(--k-font-body);
         font-weight: 400;
         font-style: italic;
-        font-size: var(--zen-text-xs);
-        color: var(--zen-ink-soft);
+        font-size: var(--k-text-xs);
+        color: var(--k-ink-soft);
         line-height: 1.3;
       }
     }
 
     // Empty state hint
     .tqw-bio-empty {
-      font-size: var(--zen-text-sm);
-      color: var(--zen-ink-soft);
+      font-size: var(--k-text-sm);
+      color: var(--k-ink-soft);
       font-style: italic;
       margin: 0;
     }
@@ -173,21 +173,21 @@
       align-self: center;
       width: 30px;
       height: 30px;
-      background: var(--zen-ink);
-      color: var(--zen-surface);
-      border: var(--zen-bold-border);
+      background: var(--k-ink);
+      color: var(--k-paper);
+      border: var(--k-bold-border);
       border-radius: 0;
       padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background var(--zen-duration-fast) var(--zen-easing-out);
+      transition: background var(--k-duration-fast) var(--k-easing-out);
       // Ensure the button never adds width that overflows narrow columns
       min-width: 0;
 
       i {
-        font-size: var(--zen-text-sm);
+        font-size: var(--k-text-sm);
         opacity: 0.9;
         pointer-events: none;
       }
@@ -197,7 +197,7 @@
       }
 
       &:focus-visible {
-        outline: 2px solid var(--zen-ink-accent);
+        outline: 2px solid var(--k-seal);
         outline-offset: 2px;
       }
     }
@@ -217,8 +217,8 @@
 
     .tqw-bio-right {
       border-left: none;
-      border-top: var(--zen-bold-border);
-      padding-left: var(--zen-space-3);
+      border-top: var(--k-bold-border);
+      padding-left: var(--k-space-3);
     }
   }
 }

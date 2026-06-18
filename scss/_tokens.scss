@@ -126,19 +126,17 @@ body.naruto-zen {
   --color-text-dark-secondary: var(--k-ink-mute);
 }
 
-// ─── Bold sumi-e tokens — consumed only by the wizard (.tqw-v2 root). ──
-// Other Kaihou surfaces stick to the soft defaults declared above. These
-// reference --k-* directly so the wizard tracks the canonical palette.
+// ─── Bold sumi-e aliases — now backed by canonical --k-bold-* layer. ──
+// Consumers have been migrated to --k-bold-*; this block stays until Phase 6
+// confirms zero --zen-bold-* consumers remain outside the token definition files.
 :root {
-  --zen-bold-border: 2px solid var(--k-ink);
-  --zen-bold-border-heavy: 3px solid var(--k-ink);
-  --zen-bold-header-bg: linear-gradient(180deg, var(--k-ink) 0%, #3a2e1b 100%);
-  --zen-bold-header-text: var(--k-paper);
-  --zen-bold-card-bg: rgba(244, 238, 217, 0.85);
-  --zen-bold-card-shadow: 0 4px 12px rgba(94, 67, 39, 0.3),
-                          inset 0 0 12px rgba(195, 165, 130, 0.2);
-  --zen-bold-divider: 2px solid var(--k-rule);
-  --zen-bold-accent-rule: 2px solid var(--k-seal);
-  --zen-bold-grain: radial-gradient(circle at 20% 30%, rgba(195, 165, 130, 0.15) 0%, transparent 40%),
-                    radial-gradient(circle at 80% 70%, rgba(94, 67, 39, 0.08) 0%, transparent 40%);
+  --zen-bold-border: var(--k-bold-border);
+  --zen-bold-border-heavy: var(--k-bold-border-heavy);
+  --zen-bold-header-bg: var(--k-bold-header-bg);
+  --zen-bold-header-text: var(--k-bold-header-text);
+  --zen-bold-card-bg: var(--k-bold-card-bg);
+  --zen-bold-card-shadow: var(--k-bold-card-shadow);
+  --zen-bold-divider: var(--k-bold-divider);
+  --zen-bold-accent-rule: var(--k-bold-accent-rule);
+  --zen-bold-grain: var(--k-bold-grain);
 }

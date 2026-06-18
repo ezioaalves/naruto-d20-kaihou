@@ -24,18 +24,18 @@
 // any PF1e sheet inside our scope. This is the safety net.
 .pf1 .window-content,
 .pf1.sheet .window-content {
-    background-color: var(--zen-surface);
-    background-image: var(--zen-surface-image);
+    background-color: var(--k-paper);
+    background-image: var(--k-surface-washed);
     background-repeat: no-repeat;
     background-size: cover;
-    color: var(--zen-ink);
+    color: var(--k-ink);
 }
 
 // Also redirect PF1e's own variable so every other consumer of
 // `--pf1-sheet-background` (attack dialogs, etc., per pf1.css lines 634/764/1744)
 // uses our image instead of parchment.jpg.
 & {
-    --pf1-sheet-background: var(--zen-surface-image);
+    --pf1-sheet-background: var(--k-surface-washed);
 }
 
 // ─── Compendium pack window (v13 popout) ─────────────────────────────────────
@@ -45,8 +45,8 @@
 // per-app rules give sheets. Paint its content here at the chrome level so the
 // entry list reads against parchment instead of Foundry's default dark window.
 .compendium-directory.sidebar-popout .window-content {
-    background-color: var(--zen-surface);
-    background-image: var(--zen-surface-image);
+    background-color: var(--k-paper);
+    background-image: var(--k-surface-washed);
     background-repeat: no-repeat;
     background-position: top center;
     background-size: cover;
@@ -55,22 +55,22 @@
 // ─── Compendium directory entries ────────────────────────────────────────────
 .compendium-directory,
 .compendium .directory-list {
-    color: var(--zen-ink);
+    color: var(--k-ink);
 
     .directory-header {
-        font-family: var(--zen-font-display);
-        color: var(--zen-ink);
-        border-bottom: 1px solid var(--zen-border);
+        font-family: var(--k-font-display);
+        color: var(--k-ink);
+        border-bottom: 1px solid var(--k-rule);
     }
 
     .directory-item,
     .directory-list li {
-        color: var(--zen-ink);
+        color: var(--k-ink);
         background: transparent;
-        border-bottom: 1px solid var(--zen-border-soft);
+        border-bottom: 1px solid var(--k-rule-soft);
 
         &:hover {
-            background: var(--zen-row-hover);
+            background: var(--k-row-hover);
         }
     }
 }
@@ -88,8 +88,8 @@ dialog.application {
 .application.dialog {
     .window-content,
     .dialog-content {
-        color: var(--zen-ink);
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
+        color: var(--k-ink);
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat; background-position: top center;
         background-size: cover;
     }
 
@@ -100,62 +100,62 @@ dialog.application {
     input:not([type]),
     select,
     textarea {
-        background: var(--zen-input-bg-strong);
-        border-color: var(--zen-border);
-        color: var(--zen-ink);
+        background: var(--k-input-bg-strong);
+        border-color: var(--k-rule);
+        color: var(--k-ink);
 
         &::placeholder {
-            color: var(--zen-ink-mute);
+            color: var(--k-ink-mute);
             opacity: 1;
         }
     }
 
     select option {
-        background: var(--zen-surface);
-        color: var(--zen-ink);
+        background: var(--k-paper);
+        color: var(--k-ink);
     }
 
     .dialog-buttons,
     .form-footer {
         button {
-            font-family: var(--zen-font-body);
-            color: var(--zen-ink);
-            background: var(--zen-card-bg);
-            border: 1px solid var(--zen-border);
+            font-family: var(--k-font-body);
+            color: var(--k-ink);
+            background: var(--k-card-bg);
+            border: 1px solid var(--k-rule);
             border-radius: 3px;
 
             &:hover {
-                background: var(--zen-row-hover);
-                color: var(--zen-ink-accent);
-                border-color: var(--zen-ink-accent);
-                text-shadow: var(--zen-ink-glow);
+                background: var(--k-row-hover);
+                color: var(--k-seal);
+                border-color: var(--k-seal);
+                text-shadow: var(--k-glow);
             }
         }
     }
 
     label,
     .form-group label {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
     }
 }
 
 // ─── Context menus (right-click roll menu, etc.) ─────────────────────────────
 #context-menu,
 .context-menu {
-    background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+    background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
     background-size: cover;
-    color: var(--zen-ink);
-    border: 1px solid var(--zen-border);
+    color: var(--k-ink);
+    border: 1px solid var(--k-rule);
 
     .context-item,
     .context-items li {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
 
         &:hover {
-            background: var(--zen-row-hover);
-            color: var(--zen-ink-accent);
+            background: var(--k-row-hover);
+            color: var(--k-seal);
         }
     }
 }
@@ -163,11 +163,11 @@ dialog.application {
 // ─── Tooltips ────────────────────────────────────────────────────────────────
 #tooltip,
 .locked-tooltip {
-    background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+    background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
     background-size: cover;
-    color: var(--zen-ink);
-    border: 1px solid var(--zen-border);
-    font-family: var(--zen-font-body);
+    color: var(--k-ink);
+    border: 1px solid var(--k-rule);
+    font-family: var(--k-font-body);
 }
 
 // PF1e extended / source-breakdown tooltips (the "@attributes.ac.normal.total
@@ -181,24 +181,24 @@ dialog.application {
 // We cover both so the theme survives an upstream system update.
 #tooltip.pf1,
 aside[role="tooltip"].pf1 {
-    background: var(--zen-surface) var(--zen-surface-image) no-repeat center / cover;
-    color: var(--zen-ink);
-    border: 1px solid var(--zen-border);
-    outline-color: var(--zen-border-soft);
+    background: var(--k-paper) var(--k-surface-washed) no-repeat center / cover;
+    color: var(--k-ink);
+    border: 1px solid var(--k-rule);
+    outline-color: var(--k-rule-soft);
 
     &.locked-tooltip {
         outline-color: transparent;
-        border-color: var(--zen-border);
+        border-color: var(--k-rule);
     }
 
     :is(h1, h2, h3, h4, h5, h6) {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-display);
+        color: var(--k-ink);
+        font-family: var(--k-font-display);
     }
 
     code {
-        color: var(--zen-ink);
-        background: var(--zen-card-bg);
+        color: var(--k-ink);
+        background: var(--k-card-bg);
     }
 }
 
@@ -211,29 +211,29 @@ aside[role="tooltip"].pf1.source-breakdown {
     > .value.untyped,
     > .value.has-unit,
     > .value.left {
-        color: var(--zen-ink-accent) !important;
+        color: var(--k-seal) !important;
     }
 
     > .unit {
-        color: var(--zen-ink-accent) !important;
+        color: var(--k-seal) !important;
     }
 
     > .type {
-        color: var(--zen-ink-mute) !important;
+        color: var(--k-ink-mute) !important;
     }
 
     .item-type {
-        color: var(--zen-ink-mute) !important;
+        color: var(--k-ink-mute) !important;
     }
 
     .notes .content-link,
     .notes .inline-preroll.inline-formula {
-        background-color: var(--zen-card-bg);
-        border-color: var(--zen-border-soft);
-        color: var(--zen-ink);
+        background-color: var(--k-card-bg);
+        border-color: var(--k-rule-soft);
+        color: var(--k-ink);
 
         i.fa-dice-d20 {
-            color: var(--zen-ink-accent);
+            color: var(--k-seal);
         }
     }
 }
@@ -245,34 +245,34 @@ aside[role="tooltip"].pf1.source-breakdown {
 .window-app.client-settings,
 .window-app.settings {
     .window-content {
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
         background-size: cover;
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     .form-group label,
     .notes {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
     }
 
     input,
     select,
     textarea {
-        background: var(--zen-input-bg);
-        color: var(--zen-ink);
-        border-color: var(--zen-border);
+        background: var(--k-input-bg);
+        color: var(--k-ink);
+        border-color: var(--k-rule);
     }
 
     button {
-        font-family: var(--zen-font-body);
-        background: var(--zen-card-bg);
-        color: var(--zen-ink);
-        border: 1px solid var(--zen-border);
+        font-family: var(--k-font-body);
+        background: var(--k-card-bg);
+        color: var(--k-ink);
+        border: 1px solid var(--k-rule);
 
         &:hover {
-            background: var(--zen-row-hover);
-            color: var(--zen-ink-accent);
+            background: var(--k-row-hover);
+            color: var(--k-seal);
         }
     }
 }
@@ -282,24 +282,24 @@ aside[role="tooltip"].pf1.source-breakdown {
 // chat-texture.webp is a subtle rice-paper grain; we composite it over the
 // card-bg token so light/dark mode both pick up tinting automatically.
 #chat-log {
-    color: var(--zen-ink);
+    color: var(--k-ink);
 
     .message {
-        color: var(--zen-ink);
-        background-color: var(--zen-card-bg);
+        color: var(--k-ink);
+        background-color: var(--k-card-bg);
         background-image: url("../../assets/theme/ui/chat-texture.webp");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
         background-blend-mode: multiply;
-        border: 1px solid var(--zen-border-soft);
+        border: 1px solid var(--k-rule-soft);
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
         .message-header,
         .message-sender,
         .message-metadata {
-            color: var(--zen-ink-mute);
-            font-family: var(--zen-font-body);
+            color: var(--k-ink-mute);
+            font-family: var(--k-font-body);
         }
     }
 }
@@ -329,9 +329,9 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet .item-list-header,
 .pf1.sheet .item-list-header h3,
 .pf1.sheet .item-list-header h4 {
-    color: var(--zen-ink);
-    font-family: var(--zen-font-display);
-    border-bottom: 1px solid var(--zen-border-soft);
+    color: var(--k-ink);
+    font-family: var(--k-font-display);
+    border-bottom: 1px solid var(--k-rule-soft);
 }
 
 // Column header icons + labels inside item-list-headers ("Attacks", "Damage",
@@ -339,7 +339,7 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet .item-list-header .item-detail,
 .pf1.sheet .item-list-header .item-detail i,
 .pf1.sheet .item-list-header .item-name {
-    color: var(--zen-ink-mute);
+    color: var(--k-ink-mute);
 }
 
 // ─── Inventory / feature filter chips ───────────────────────────────────────
@@ -347,16 +347,16 @@ aside[role="tooltip"].pf1.source-breakdown {
 // the top of inventory/features/spells. PF1e defines border + hover only,
 // text color is inherited (often invisible on dark).
 .pf1.sheet .filter-list .filter-rule {
-    color: var(--zen-ink);
-    font-family: var(--zen-font-body);
+    color: var(--k-ink);
+    font-family: var(--k-font-body);
 
     &:hover {
-        color: var(--zen-ink-accent);
+        color: var(--k-seal);
     }
 
     &.active {
-        color: var(--zen-ink-accent);
-        border-bottom-color: var(--zen-ink-accent);
+        color: var(--k-seal);
+        border-bottom-color: var(--k-seal);
     }
 }
 
@@ -366,8 +366,8 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet .summary-header .character-summary label,
 .pf1.sheet .character-classes h2,
 .pf1.sheet .character-classes h3 {
-    color: var(--zen-ink);
-    font-family: var(--zen-font-display);
+    color: var(--k-ink);
+    font-family: var(--k-font-display);
 }
 
 // ─── Class-list entries on Summary tab ──────────────────────────────────────
@@ -377,19 +377,19 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet .classes-summary .class-row,
 .pf1.sheet .summary-header .classes,
 .pf1.sheet .summary-header .classes .class {
-    color: var(--zen-ink);
+    color: var(--k-ink);
 
     .class-name,
     h4 {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
     }
 
     .class-type,
     .class-level,
     .class-action,
     td {
-        color: var(--zen-ink-mute);
+        color: var(--k-ink-mute);
     }
 }
 
@@ -402,8 +402,8 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet .save-name,
 .pf1.sheet .summary-header h2,
 .pf1.sheet .summary-header h3 {
-    color: var(--zen-ink);
-    font-family: var(--zen-font-display);
+    color: var(--k-ink);
+    font-family: var(--k-font-display);
 }
 
 // ─── PF1e .sheet-navigation tab nav (primary + every sub-nav) ──────────────
@@ -425,23 +425,23 @@ aside[role="tooltip"].pf1.source-breakdown {
     .damage span,
     .drain span,
     .penalty span {
-        font-family: var(--zen-font-display);
+        font-family: var(--k-font-display);
         font-size: 1.2rem;
         font-weight: bold;
-        color: var(--zen-ink);
+        color: var(--k-ink);
         text-align: center;
     }
 
     // Modifier in accent so the sign+number reads as the actionable number.
     .modifier {
-        color: var(--zen-ink-accent);
+        color: var(--k-seal);
     }
 
     // Damage / drain / penalty are negative impact — accent for emphasis.
     .damage span,
     .drain span,
     .penalty span {
-        color: var(--zen-ink-accent);
+        color: var(--k-seal);
     }
 }
 
@@ -454,27 +454,27 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet .inventory-filters .info-box-joined,
 .pf1.sheet .inventory-filters .info-box-joined .info-box {
     background: rgba(155, 130, 90, 0.22);
-    border: 1px solid var(--zen-border-soft);
+    border: 1px solid var(--k-rule-soft);
     border-radius: 3px;
-    color: var(--zen-ink);
+    color: var(--k-ink);
 
     h5,
     h5 a,
     h5.rollable,
     h5 a.rollable {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
         text-transform: uppercase;
         letter-spacing: 0.04rem;
     }
 
     .value {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-display);
+        color: var(--k-ink);
+        font-family: var(--k-font-display);
     }
 
     .unit {
-        color: var(--zen-ink-mute);
+        color: var(--k-ink-mute);
     }
 
     &:hover {
@@ -486,11 +486,11 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet .sheet-navigation,
 .pf1.sheet nav.sheet-navigation {
     background: transparent;
-    border-bottom: 1px solid var(--zen-border);
+    border-bottom: 1px solid var(--k-rule);
 
     .item {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
         font-size: 0.95rem;
         text-transform: uppercase;
         letter-spacing: 0.02rem;
@@ -502,17 +502,17 @@ aside[role="tooltip"].pf1.source-breakdown {
         // (slight fade at top/bottom) so it reads like a hand-drawn line
         // rather than a hard CSS rule.
         & + .item {
-            border-left: 1px solid var(--zen-border-soft);
+            border-left: 1px solid var(--k-rule-soft);
         }
 
         &:hover {
-            background-color: var(--zen-row-hover) !important;
-            color: var(--zen-ink-accent);
-            text-shadow: var(--zen-ink-glow);
+            background-color: var(--k-row-hover) !important;
+            color: var(--k-seal);
+            text-shadow: var(--k-glow);
         }
 
         &.active {
-            background-color: var(--zen-ink-accent) !important;
+            background-color: var(--k-seal) !important;
             background-image: url("../../assets/theme/textures/watercolor.webp") !important;
             background-size: cover !important;
             background-position: center !important;
@@ -522,7 +522,7 @@ aside[role="tooltip"].pf1.source-breakdown {
             text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
 
             &:hover {
-                background-color: var(--zen-ink-accent) !important;
+                background-color: var(--k-seal) !important;
                 color: rgb(252, 245, 225) !important;
             }
         }
@@ -535,18 +535,18 @@ aside[role="tooltip"].pf1.source-breakdown {
 .pf1.sheet nav.tabs:not(.sheet-navigation),
 .pf1.sheet .tabs[data-group]:not([data-group="primary"]) {
     .item {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
         text-transform: uppercase;
         letter-spacing: 0.04rem;
 
         &:hover {
-            color: var(--zen-ink-accent);
+            color: var(--k-seal);
         }
 
         &.active {
-            color: var(--zen-ink-accent);
-            text-shadow: var(--zen-ink-glow);
+            color: var(--k-seal);
+            text-shadow: var(--k-glow);
         }
     }
 }
@@ -592,22 +592,22 @@ aside[role="tooltip"].pf1.source-breakdown {
 }
 
 .pf1.sheet ul.skills-list li.skill {
-    color: var(--zen-ink);
-    border-bottom: 1px solid var(--zen-border-soft);
+    color: var(--k-ink);
+    border-bottom: 1px solid var(--k-rule-soft);
 
     &:hover {
-        background-color: var(--zen-row-hover) !important;
+        background-color: var(--k-row-hover) !important;
     }
 
     .skill-name,
     .skill-name h4 {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
     }
 
     &.untrained .skill-name,
     &.untrained .skill-name h4 {
-        color: var(--zen-ink-mute);
+        color: var(--k-ink-mute);
     }
 
     &.untrained .action.roll > i {
@@ -619,20 +619,20 @@ aside[role="tooltip"].pf1.source-breakdown {
     &:hover {
         .skill-name,
         .skill-name h4 {
-            color: var(--zen-ink-accent);
+            color: var(--k-seal);
         }
     }
 
     // Mod / rank readouts — make them bright cream on dark.
     .skill-mod,
     .skill-rank {
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     // Custom skills (Naruto disciplines + user-added) — `.custom` only adds
     // italic styling in PF1e. We accept the italic but keep the text bright.
     &.custom .skill-name {
-        color: var(--zen-ink);
+        color: var(--k-ink);
         font-style: italic;
     }
 }
@@ -642,7 +642,7 @@ aside[role="tooltip"].pf1.source-breakdown {
 // affordance on both so Ninjutsu / Fuinjutsu / Chakra Control read as rows.
 .pf1.sheet ul.skills-list li.skill.custom,
 .pf1.sheet ul.skills-list li.skill:not(.compendium) {
-    border-bottom: 1px solid var(--zen-border-soft);
+    border-bottom: 1px solid var(--k-rule-soft);
 }
 
 // The Kaihou campaign does not use PF1e coin currency. The PF1 inventory
@@ -653,11 +653,11 @@ aside[role="tooltip"].pf1.source-breakdown {
 
 // ─── PF1e item list rows everywhere (inventory, buffs, features…) ────────────
 .pf1.sheet .item-list .item {
-    color: var(--zen-ink);
+    color: var(--k-ink);
 
     .item-name,
     .item-name h4 {
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 }
 
@@ -667,10 +667,10 @@ aside[role="tooltip"].pf1.source-breakdown {
 input,
 select,
 textarea {
-    color: var(--zen-ink);
+    color: var(--k-ink);
 
     &::placeholder {
-        color: var(--zen-ink-soft);
+        color: var(--k-ink-soft);
     }
 }
 
@@ -678,7 +678,7 @@ textarea {
 // Across dark mode, PF1e renders dozens of labels (biography fields, buff
 // names, form labels, section captions, dropdown options, search filters)
 // inheriting `var(--color-text-dark-secondary)` which we redirect to
-// `var(--zen-ink-mute)`. Even with the bumped 0.88 alpha, the parade of
+// `var(--k-ink-mute)`. Even with the bumped 0.88 alpha, the parade of
 // muted text reads as low-contrast at a glance. Pin the high-value classes
 // to full `--zen-ink` so the eye lands on labels first.
 .pf1.sheet,
@@ -694,8 +694,8 @@ textarea {
     .summary-header label,
     .summary-header .character-summary label,
     .form-fields > label {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
     }
 
     // Filter chips / section heads on Combat tab ("Weapon Attacks, Natural
@@ -712,8 +712,8 @@ textarea {
     .table-header,
     .table-header h3,
     .table-header h4 {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
     }
 
     // Item list row text — class names, buff names, condition names,
@@ -733,7 +733,7 @@ textarea {
     .buff-name,
     .buffs .item-name,
     .conditions .item-name {
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     // Right-side readouts ("None" values on the biography tab, raw numbers
@@ -745,7 +745,7 @@ textarea {
     .item-info,
     .info-value,
     .feature-count {
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     // Spellbook level dividers ("Cantrip/Orison, 1st Level, 2nd Level…")
@@ -755,7 +755,7 @@ textarea {
     .spellbook-header,
     .spellbook-header h3,
     .spellbook-header h4 {
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     // Empty "no items here" placeholders and italic hints.
@@ -763,7 +763,7 @@ textarea {
     .empty,
     .hint,
     .notes {
-        color: var(--zen-ink-mute);
+        color: var(--k-ink-mute);
     }
 }
 
@@ -774,12 +774,12 @@ textarea {
 .pf1.sheet input[type="search"],
 .pf1.sheet input.search-filter,
 .pf1.sheet .filter-list input {
-    color: var(--zen-ink);
-    background: var(--zen-input-bg-strong);
-    border: 1px solid var(--zen-border-soft);
+    color: var(--k-ink);
+    background: var(--k-input-bg-strong);
+    border: 1px solid var(--k-rule-soft);
 
     &::placeholder {
-        color: var(--zen-ink-mute);
+        color: var(--k-ink-mute);
         font-style: italic;
     }
 }
@@ -792,7 +792,7 @@ textarea {
 .pf1.sheet select,
 .pf1.sheet option,
 select.chakra-nature-select {
-    color: var(--zen-ink);
-    background-color: var(--zen-surface);
+    color: var(--k-ink);
+    background-color: var(--k-paper);
 }
 

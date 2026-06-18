@@ -9,29 +9,29 @@
  */
 
 .zen-card {
-  background: var(--zen-card-bg);
-  border: var(--zen-border-hair) solid var(--zen-border);
-  border-radius: var(--zen-radius-md);
-  padding: var(--zen-space-3);
+  background: var(--k-card-bg);
+  border: var(--k-border-hair) solid var(--k-rule);
+  border-radius: var(--k-radius-md);
+  padding: var(--k-space-3);
 }
 
 .zen-card__label {
-  font-size: var(--zen-text-xs);
+  font-size: var(--k-text-xs);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--zen-ink-accent);
+  color: var(--k-seal);
   font-weight: 600;
-  margin-bottom: var(--zen-space-2);
+  margin-bottom: var(--k-space-2);
 }
 
 .zen-card--bold {
-  background: var(--zen-bold-card-bg);
-  border: var(--zen-bold-border);
+  background: var(--k-bold-card-bg);
+  border: var(--k-bold-border);
   border-radius: 0;
-  padding: var(--zen-space-3);
-  box-shadow: var(--zen-bold-card-shadow);
+  padding: var(--k-space-3);
+  box-shadow: var(--k-bold-card-shadow);
   position: relative;
-  margin-bottom: var(--zen-space-2);
+  margin-bottom: var(--k-space-2);
 }
 
 .zen-card--bold::before {

@@ -21,15 +21,15 @@
   // item lists, section headers, controls) repaints databook with zero per-rule
   // overrides. These inherit to every PF1e element inside the form; PF1e keeps
   // all its DOM/layout/mechanics, so this stays resilient across PF1e upgrades.
-  --pf1-sheet-background: var(--db-cream);
-  --pf1-header-background: var(--db-red);
+  --pf1-sheet-background: var(--k-paper);
+  --pf1-header-background: var(--k-seal);
   --pf1-header-text: #fff;
   --pf1-header-shadow: none;
-  --pf1-olive: var(--db-ink); // control glyph colour
-  --pf1-control-color: var(--db-red);
-  --pf1-tan: var(--db-border);
-  --pf1-beige: var(--db-border);
-  --pf1-faint: var(--db-border-soft);
+  --pf1-olive: var(--k-ink); // control glyph colour
+  --pf1-control-color: var(--k-seal);
+  --pf1-tan: var(--k-rule);
+  --pf1-beige: var(--k-rule);
+  --pf1-faint: var(--k-rule-soft);
   --pf1-item-list-bg: var(--k-stripe-odd);
   --pf1-item-list-bg-alt: var(--k-stripe-even);
   --pf1-item-list-hover-bg: var(--k-row-hover);
@@ -57,20 +57,20 @@
   // layer (skill names use --zen-ink; their hover uses --zen-ink-accent; the
   // section headers use --zen-font-display) purely by custom-property
   // inheritance — no specificity overrides, no fighting the zen partials.
-  --zen-ink: var(--db-ink); // calmer than zen's terracotta rgb(118,79,64)
-  --zen-ink-mute: var(--db-muted);
-  --zen-ink-accent: var(--db-red); // hover/active accent
-  --zen-font-display: var(--db-font-name); // section headers → databook sans
-  --zen-font-body: var(--db-font-body); // body/table text → databook serif (was PatrickHand)
+  --zen-ink: var(--k-ink); // calmer than zen's terracotta rgb(118,79,64)
+  --zen-ink-mute: var(--k-ink-mute);
+  --zen-ink-accent: var(--k-seal); // hover/active accent
+  --zen-font-display: var(--k-font-util); // section headers → databook sans
+  --zen-font-body: var(--k-font-body); // body/table text → databook serif (was PatrickHand)
 
   // Washed-parchment base behind PF1e's mostly-translucent panels. The form
   // fills .window-content and covers it, so the texture must live HERE or it
   // only peeks through the scrollbar gutter. Washed (66% cream) for legibility.
-  background-color: var(--db-cream);
+  background-color: var(--k-paper);
   background-image: var(--k-surface-washed);
   background-size: cover;
   background-position: center;
-  color: var(--db-ink);
+  color: var(--k-ink);
 
   // --- Type-size STANDARD applied to PF1e's summary tables --------------------
   // PF1e's column labels (CURRENT/FORTITUDE…) shipped thin + over-tracked + drop-
@@ -121,7 +121,7 @@
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) minmax(280px, auto);
     align-items: center;
-    gap: var(--zen-space-4);
+    gap: var(--k-space-4);
   }
   .db-band__portrait { position: relative; flex: 0 0 auto; }
   .db-band__id { min-width: 0; }
@@ -131,10 +131,10 @@
     overflow-wrap: anywhere;
     word-break: normal;
   }
-  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: var(--zen-space-2); }
-  .db-natures { display: flex; gap: 8px; align-items: center; margin-top: var(--zen-space-2); }
-  .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
-  .db-natures__void-sep { width: 1px; height: 26px; background: var(--db-border); margin: 0 2px; }
+  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: var(--k-space-2); }
+  .db-natures { display: flex; gap: 8px; align-items: center; margin-top: var(--k-space-2); }
+  .db-natures__lbl { font: var(--k-text-xs) var(--k-font-util); text-transform: uppercase; letter-spacing: 0.07em; color: var(--k-ink-mute); }
+  .db-natures__void-sep { width: 1px; height: 26px; background: var(--k-rule); margin: 0 2px; }
 
   // Natures + KKG slot are larger than the base 26px chip for legibility.
   .db-nat { width: 36px; height: 36px; }
@@ -180,7 +180,7 @@
     grid-template-columns: 128px minmax(120px, 1fr) minmax(300px, 54%);
     align-items: stretch;
     border-bottom: none;
-    padding: var(--zen-space-3) var(--zen-space-4);
+    padding: var(--k-space-3) var(--k-space-4);
     // Aged-parchment wash — texture washed with cream so dense data stays legible.
     background:
       linear-gradient(rgba(236, 228, 210, 0.8), rgba(236, 228, 210, 0.8)),
@@ -206,19 +206,19 @@
   .db-band__stats .db-pip { min-width: 0; }
   .db-pip--edit { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 3px; }
   .db-pip--edit small { flex: 0 0 100%; }
-  .db-pip__val { font-size: var(--zen-text-lg); font-weight: 700; line-height: 1.1; }
+  .db-pip__val { font-size: var(--k-text-lg); font-weight: 700; line-height: 1.1; }
   .db-pip__in {
     width: 2.1em;
     text-align: right;
     border: none;
     background: transparent;
     font: inherit;
-    color: var(--db-ink);
+    color: var(--k-ink);
     padding: 0;
   }
-  .db-pip__in:focus { outline: 1px solid var(--db-red); background: #fff7e6; border-radius: 2px; }
-  .db-pip__tap { color: var(--db-red); cursor: pointer; }
-  .db-pip__tap:hover { color: var(--db-red-deep); }
+  .db-pip__in:focus { outline: 1px solid var(--k-seal); background: #fff7e6; border-radius: 2px; }
+  .db-pip__tap { color: var(--k-seal); cursor: pointer; }
+  .db-pip__tap:hover { color: var(--k-seal-deep); }
 
   // Rest button — spans the second stat row beside LV.
   .db-rest {
@@ -227,18 +227,18 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    font: 700 var(--zen-text-xs)/1 var(--db-font-label);
+    font: 700 var(--k-text-xs)/1 var(--k-font-util);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    background: var(--db-red);
+    background: var(--k-seal);
     color: #fff;
     border: none;
-    border-radius: var(--zen-radius-sm);
+    border-radius: var(--k-radius-sm);
     padding: 7px 9px;
     cursor: pointer;
     white-space: nowrap;
   }
-  .db-rest:hover { background: var(--db-red-deep); }
+  .db-rest:hover { background: var(--k-seal-deep); }
 
   // Village crest stamped flush on the portrait's lower-right corner (no padding,
   // no ring) — the actor's faction mark on the record photo.
@@ -265,7 +265,7 @@
     display: flex;
     align-items: stretch;
     background: #e3d7b8;
-    border-bottom: 2px solid var(--db-red);
+    border-bottom: 2px solid var(--k-seal);
     flex-wrap: nowrap;
     column-gap: 1px;
     overflow-x: auto;
@@ -283,7 +283,7 @@
   }
   > .sheet-navigation.tabs[data-group="primary"] .item .db-tab-label {
     white-space: nowrap;
-    font-family: var(--db-font-label);
+    font-family: var(--k-font-util);
     font-size: 0.66rem;
     line-height: 1;
     opacity: 0.7;
@@ -296,21 +296,21 @@
   }
   > .sheet-navigation.tabs[data-group="primary"] .item.active .db-tab-label,
   > .sheet-navigation.tabs[data-group="primary"] .item:hover .db-tab-label { opacity: 1; }
-  > .sheet-navigation.tabs[data-group="primary"] .item.active { background: var(--db-red); color: #fff; border-radius: 8px 8px 0 0; }
+  > .sheet-navigation.tabs[data-group="primary"] .item.active { background: var(--k-seal); color: #fff; border-radius: 8px 8px 0 0; }
 
   // --- Identity dossier tab: the one tab we own and fully style ---
   .tab.identity {
     overflow-y: auto;
-    background: var(--db-cream);
-    color: var(--db-ink);
+    background: var(--k-paper);
+    color: var(--k-ink);
   }
 
-  .db-frontmatter { padding: var(--zen-space-3); display: flex; flex-direction: column; gap: var(--zen-space-3); }
+  .db-frontmatter { padding: var(--k-space-3); display: flex; flex-direction: column; gap: var(--k-space-3); }
 
   .db-identity-hero {
     display: grid;
     grid-template-columns: 25% minmax(0, 1fr);
-    gap: var(--zen-space-3);
+    gap: var(--k-space-3);
     align-items: stretch;
   }
   .db-identity-portrait img {
@@ -318,8 +318,8 @@
     height: 100%;
     min-height: 150px;
     object-fit: cover;
-    border: 2px solid var(--db-ink);
-    border-radius: var(--zen-radius-sm);
+    border: 2px solid var(--k-ink);
+    border-radius: var(--k-radius-sm);
     background: #ded2b2;
   }
   .db-identity-info {
@@ -334,70 +334,70 @@
     width: 100%;
     resize: vertical;
     background: #fff7e6;
-    border: 1px solid var(--db-border);
-    border-radius: var(--zen-radius-sm);
-    color: var(--db-ink);
-    font: var(--zen-text-sm)/1.35 var(--db-font-body);
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    font: var(--k-text-sm)/1.35 var(--k-font-body);
     padding: 6px 8px;
     white-space: pre-wrap;
   }
 
-  .db-identity-edit { display: flex; gap: var(--zen-space-3); }
-  .db-identity-edit label { flex: 1; font: var(--zen-text-xs)/1.4 var(--db-font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--db-muted); }
-  .db-identity-edit input { width: 100%; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); padding: 2px 6px; }
-  .db-identity-ro { display: block; font: var(--zen-text-sm)/1.4 var(--db-font-body); color: var(--db-ink); padding: 2px 0; }
+  .db-identity-edit { display: flex; gap: var(--k-space-3); }
+  .db-identity-edit label { flex: 1; font: var(--k-text-xs)/1.4 var(--k-font-util); text-transform: uppercase; letter-spacing: 0.06em; color: var(--k-ink-mute); }
+  .db-identity-edit input { width: 100%; background: #fff7e6; border: 1px solid var(--k-rule); border-radius: var(--k-radius-sm); color: var(--k-ink); padding: 2px 6px; }
+  .db-identity-ro { display: block; font: var(--k-text-sm)/1.4 var(--k-font-body); color: var(--k-ink); padding: 2px 0; }
 
   // Compact inline input for the Clan field in the Data panel.
-  .db-data__input { width: 18ch; max-width: 60%; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); font: inherit; text-align: right; padding: 1px 4px; }
+  .db-data__input { width: 18ch; max-width: 60%; background: #fff7e6; border: 1px solid var(--k-rule); border-radius: var(--k-radius-sm); color: var(--k-ink); font: inherit; text-align: right; padding: 1px 4px; }
 
   // Slug labels beside discipline radar icons.
-  .db-radar__slug { font: 600 8px/1 var(--db-font-label); fill: var(--db-muted); }
+  .db-radar__slug { font: 600 8px/1 var(--k-font-util); fill: var(--k-ink-mute); }
 
-  .db-radars { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
-  .db-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
+  .db-radars { display: grid; grid-template-columns: 1fr 1fr; gap: var(--k-space-3); }
+  .db-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--k-space-3); }
 
   .db-missions { display: grid; grid-template-rows: repeat(6, minmax(28px, 1fr)); gap: 3px; text-align: center; }
-  .db-mission-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; min-height: 28px; background: #e7dcbf; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); padding: 2px 6px; }
-  .db-missions b { display: block; font-size: var(--zen-text-base); }
-  .db-missions small { font-size: var(--zen-text-xs); color: var(--db-muted); }
-  .db-mission { width: 100%; text-align: right; border: none; background: transparent; font-size: var(--zen-text-base); color: var(--db-ink); }
+  .db-mission-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; min-height: 28px; background: #e7dcbf; border: 1px solid var(--k-rule); border-radius: var(--k-radius-sm); padding: 2px 6px; }
+  .db-missions b { display: block; font-size: var(--k-text-base); }
+  .db-missions small { font-size: var(--k-text-xs); color: var(--k-ink-mute); }
+  .db-mission { width: 100%; text-align: right; border: none; background: transparent; font-size: var(--k-text-base); color: var(--k-ink); }
 
-  .db-line { min-height: 28px; display: flex; align-items: center; justify-content: space-between; gap: var(--zen-space-2); font-size: var(--zen-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--db-border-soft); }
+  .db-line { min-height: 28px; display: flex; align-items: center; justify-content: space-between; gap: var(--k-space-2); font-size: var(--k-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--k-rule-soft); }
 
   // Collaborative notes (Identity tab).
-  .db-notes__hint { font-weight: 400; font-size: var(--zen-text-xs); color: var(--db-muted); text-transform: none; letter-spacing: 0; }
+  .db-notes__hint { font-weight: 400; font-size: var(--k-text-xs); color: var(--k-ink-mute); text-transform: none; letter-spacing: 0; }
   .db-notes textarea {
     width: 100%;
     resize: vertical;
     background: #fff7e6;
-    border: 1px solid var(--db-border);
-    border-radius: var(--zen-radius-sm);
-    color: var(--db-ink);
-    font: var(--zen-text-xs)/1.45 var(--db-font-body);
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    font: var(--k-text-xs)/1.45 var(--k-font-body);
     padding: 5px 7px;
   }
-  .db-notes textarea:focus { outline: 1px solid var(--db-red); }
+  .db-notes textarea:focus { outline: 1px solid var(--k-seal); }
 
-  .db-biography { padding: var(--zen-space-3); display: flex; flex-direction: column; gap: var(--zen-space-3); min-height: 0; }
-  .db-bio-field { display: flex; gap: var(--zen-space-3); align-items: center; padding: 2px 0; }
-  .db-bio-field label { flex: 0 0 9rem; font: var(--zen-text-xs)/1.4 var(--db-font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--db-muted); }
+  .db-biography { padding: var(--k-space-3); display: flex; flex-direction: column; gap: var(--k-space-3); min-height: 0; }
+  .db-bio-field { display: flex; gap: var(--k-space-3); align-items: center; padding: 2px 0; }
+  .db-bio-field label { flex: 0 0 9rem; font: var(--k-text-xs)/1.4 var(--k-font-util); text-transform: uppercase; letter-spacing: 0.06em; color: var(--k-ink-mute); }
   .db-bio-field input {
     flex: 1;
     min-width: 0;
     background: #fff7e6;
-    border: 1px solid var(--db-border);
-    border-radius: var(--zen-radius-sm);
-    color: var(--db-ink);
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
     padding: 2px 6px;
   }
-  .db-bio-field span { flex: 1; min-width: 0; font: var(--zen-text-sm)/1.4 var(--db-font-body); color: var(--db-ink); }
+  .db-bio-field span { flex: 1; min-width: 0; font: var(--k-text-sm)/1.4 var(--k-font-body); color: var(--k-ink); }
   .db-bio-item {
     flex: 1;
     min-width: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--zen-space-2);
+    gap: var(--k-space-2);
     padding: 2px 0;
   }
   .db-bio-item .item-controls {
@@ -407,39 +407,39 @@
   }
   .db-bio-classes { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
   .db-bio-classes .item-name { flex: 1 1 auto; min-width: 0; }
-  .db-bio-classes .item-name h4 { margin: 0; font: var(--zen-text-sm)/1.2 var(--db-font-body); color: var(--db-ink); }
-  .db-bio-classes .class-level { flex: 0 0 44px; text-align: center; color: var(--db-muted); }
+  .db-bio-classes .item-name h4 { margin: 0; font: var(--k-text-sm)/1.2 var(--k-font-body); color: var(--k-ink); }
+  .db-bio-classes .class-level { flex: 0 0 44px; text-align: center; color: var(--k-ink-mute); }
   .db-bio-notes { min-height: 180px; display: flex; flex-direction: column; }
   .db-bio-notes .editor,
   .db-bio-notes .editor-content { flex: 1 1 auto; min-height: 140px; }
-  .db-bio-20q { margin-top: var(--db-space-3); }
+  .db-bio-20q { margin-top: var(--k-space-3); }
 
   .tab.combat details > summary {
     display: block;
     text-align: left;
     cursor: pointer;
-    font: 700 var(--db-type-label)/1 var(--db-font-label);
+    font: 700 var(--k-type-label)/1 var(--k-font-util);
     text-transform: uppercase;
-    letter-spacing: var(--db-track-label);
-    color: var(--db-color-ink-muted);
-    padding: var(--db-space-1) 0;
+    letter-spacing: var(--k-track-label);
+    color: var(--k-ink-mute);
+    padding: var(--k-space-1) 0;
   }
 
   .tab.combat {
-    font-family: var(--db-font-body);
-    font-size: var(--zen-text-sm);
+    font-family: var(--k-font-body);
+    font-size: var(--k-text-sm);
   }
   .tab.combat .item-list-header h3,
   .tab.combat .generic-defenses h3,
   .tab.combat .natural-armor h3,
   .tab.combat .combat-defenses h3 {
-    font-family: var(--db-font-label);
-    font-size: var(--zen-text-base);
+    font-family: var(--k-font-util);
+    font-size: var(--k-text-base);
     line-height: 1.1;
   }
   .tab.combat .combat-defenses > .attributes {
     align-items: center;
-    gap: var(--zen-space-2);
+    gap: var(--k-space-2);
   }
   .tab.combat .combat-defenses > .attributes > li {
     min-width: 0;
@@ -452,11 +452,11 @@
   }
   .tab.combat .combat-defenses input {
     min-width: 0;
-    font-size: var(--zen-text-xs);
+    font-size: var(--k-text-xs);
   }
 
   .tab.skills ul.skills-list li.skill {
-    border-bottom: 1px solid var(--db-border-soft) !important;
+    border-bottom: 1px solid var(--k-rule-soft) !important;
   }
   .tab.skills ul.skills-list li.skill.custom,
   .tab.skills ul.skills-list li.skill:not(.compendium),
@@ -466,15 +466,15 @@
   .tab.skills .controls.skills,
   .tab.skills .controls.skills .control,
   .tab.skills .skill-create {
-    font-family: var(--db-font-label);
-    font-size: var(--zen-text-xs);
+    font-family: var(--k-font-util);
+    font-size: var(--k-text-xs);
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   .db-footer {
     flex: 0 0 auto;
-    border-top: var(--db-rule-accent);
-    background: var(--db-color-panel);
+    border-top: 2px solid var(--k-seal);
+    background: var(--k-paper-raised);
   }
 }

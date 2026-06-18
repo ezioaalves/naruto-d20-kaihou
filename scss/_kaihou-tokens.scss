@@ -132,6 +132,20 @@
   --k-elevation-popover: 0 4px 12px rgba(0, 0, 0, 0.18), 0 2px 4px rgba(0, 0, 0, 0.08);
   --k-shadow-stamp: 0 1px 5px rgba(46, 39, 29, 0.28);
 
+  // ─── Bold sumi-e tokens (wizard / card / drop-zone accent) ────────────
+  // High-contrast variant of the ink palette used for strong UI chrome.
+  --k-bold-border: 2px solid var(--k-ink);
+  --k-bold-border-heavy: 3px solid var(--k-ink);
+  --k-bold-header-bg: linear-gradient(180deg, var(--k-ink) 0%, #3a2e1b 100%);
+  --k-bold-header-text: var(--k-paper);
+  --k-bold-card-bg: rgba(244, 238, 217, 0.85);
+  --k-bold-card-shadow: 0 4px 12px rgba(94, 67, 39, 0.3),
+                        inset 0 0 12px rgba(195, 165, 130, 0.2);
+  --k-bold-divider: 2px solid var(--k-rule);
+  --k-bold-accent-rule: 2px solid var(--k-seal);
+  --k-bold-grain: radial-gradient(circle at 20% 30%, rgba(195, 165, 130, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 80% 70%, rgba(94, 67, 39, 0.08) 0%, transparent 40%);
+
   // ─── Motion ────────────────────────────────────────────────────────────
   --k-duration-fast: 120ms;
   --k-duration-base: 200ms;

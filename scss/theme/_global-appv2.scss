@@ -29,19 +29,19 @@
     .window-content {
         table {
             background: transparent;
-            border: 1px solid var(--zen-border-soft);
+            border: 1px solid var(--k-rule-soft);
             thead {
-                background: var(--zen-border-soft);
-                color: var(--zen-ink-mute);
+                background: var(--k-rule-soft);
+                color: var(--k-ink-mute);
                 text-shadow: none;
-                border-bottom: var(--zen-border-soft);
+                border-bottom: var(--k-rule-soft);
             }
             tbody {
             }
             tr {
                 background: transparent;
                 &:hover {
-                    background: var(--zen-row-hover);
+                    background: var(--k-row-hover);
                 }
             }
         }

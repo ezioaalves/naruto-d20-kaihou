@@ -8,9 +8,9 @@
     scrollbar-width: thin;
 }
 &:not(.background) {
-    background: var(--zen-surface-body-image) no-repeat;
+    background: var(--k-surface-body-image) no-repeat;
     background-size: cover;
-    background-color: var(--zen-surface);
+    background-color: var(--k-paper);
 }
 
 .toggle-hidden {
@@ -34,14 +34,14 @@
             background-position: top;
             background-size: 100%;
             background: url("../../assets/theme/ui/bgSidebar.webp") no-repeat;
-            background-color: var(--zen-surface);
-            border: 1px solid var(--zen-border);
+            background-color: var(--k-paper);
+            border: 1px solid var(--k-rule);
             border-radius: 0;
-            color: var(--zen-ink);
+            color: var(--k-ink);
             ol {
                 padding-right: 0.25rem;
                 li {
-                    border-bottom: 1px solid var(--zen-ink)-light;
+                    border-bottom: 1px solid var(--k-ink)-light;
                 }
             }
             .directory-header {
@@ -114,7 +114,7 @@
     }
     &.twenty-questions-dialog {
         .window-content {
-            background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+            background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
             background-size: cover;
         }
     }
@@ -177,9 +177,9 @@ fieldset {
     display: flex;
     margin: 0 0.25rem;
     padding: 0.5rem;
-    border: 1px solid var(--zen-border-soft);
+    border: 1px solid var(--k-rule-soft);
     legend {
-        color: var(--zen-ink-mute);
+        color: var(--k-ink-mute);
     }
     .editor {
         height: 100%;
@@ -195,12 +195,12 @@ fieldset {
 
 table {
     background: transparent;
-    border: 1px solid var(--zen-border-soft);
+    border: 1px solid var(--k-rule-soft);
     thead {
-        background: var(--zen-border-soft);
-        color: var(--zen-ink-mute);
+        background: var(--k-rule-soft);
+        color: var(--k-ink-mute);
         text-shadow: none;
-        border-bottom: var(--zen-border-soft);
+        border-bottom: var(--k-rule-soft);
     }
     tbody {
     }
@@ -208,14 +208,14 @@ table {
         // No striping (memory: feedback_zen_theme_lists.md). Hover gets accent.
         background: transparent;
         &:hover {
-            background: var(--zen-row-hover);
+            background: var(--k-row-hover);
         }
     }
 }
 
 sub,
 sup {
-    color: var(--zen-ink);
+    color: var(--k-ink);
 }
 
 .sheet {

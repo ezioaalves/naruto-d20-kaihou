@@ -51,7 +51,7 @@ $nzen-selection-circle-svg: "../../assets/theme/icons/circle.svg";
     --nzen-chip-color: var(--color-dark-2, #222);
 
     --nzen-gm-monitor-void-icon: #{colors.$nzen-void};
-    --nzen-combat-tracker-encounter-icon: #{var(--zen-ink)};
+    --nzen-combat-tracker-encounter-icon: #{var(--k-ink)};
 }
 
 &.theme-light {
@@ -109,7 +109,7 @@ button {
                 color: var(--nzen-combat-tracker-encounter-icon);
 
                 &.encounter {
-                    border-right: 1px solid var(--zen-ink)-light;
+                    border-right: 1px solid var(--k-ink)-light;
                 }
 
                 li {

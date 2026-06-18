@@ -24,7 +24,7 @@ aside#sidebar {
         background-image: url("../../assets/theme/ui/bgSidebar.webp");
         background-repeat: no-repeat;
         background-size: cover;
-        border: 1px solid var(--zen-border);
+        border: 1px solid var(--k-rule);
     }
 
     // Tab strip on the right edge.
@@ -38,7 +38,7 @@ aside#sidebar {
         background-image: url("../../assets/theme/ui/bgSidebar.webp");
         background-size: cover;
         background-repeat: no-repeat;
-        border: 1px solid var(--zen-border);
+        border: 1px solid var(--k-rule);
         border-radius: 4px;
         padding: 0.25rem;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
@@ -52,10 +52,10 @@ aside#sidebar {
             // the icon reads as a distinct, clickable button while keeping the
             // overall L5R "ink on parchment" look.
             button.ui-control {
-                background: var(--zen-card-bg);
-                border: 1px solid var(--zen-border-soft);
+                background: var(--k-card-bg);
+                border: 1px solid var(--k-rule-soft);
                 border-radius: 4px;
-                color: var(--zen-ink);
+                color: var(--k-ink);
                 font-size: 1.1rem;
                 width: var(--control-size);
                 height: var(--control-size);
@@ -67,10 +67,10 @@ aside#sidebar {
                     box-shadow 120ms ease;
 
                 &:hover {
-                    background: var(--zen-row-hover);
-                    border-color: var(--zen-border);
-                    color: var(--zen-ink-accent);
-                    text-shadow: var(--zen-ink-glow);
+                    background: var(--k-row-hover);
+                    border-color: var(--k-rule);
+                    color: var(--k-seal);
+                    text-shadow: var(--k-glow);
                     transform: scale(1.05);
                     box-shadow: 0 0 6px rgba(155, 60, 50, 0.25);
                 }
@@ -79,19 +79,19 @@ aside#sidebar {
                 // sheet tabs. Multiply blend tints the ink-splash texture
                 // with the wine accent so it reads as a brushed stamp.
                 &[aria-pressed="true"] {
-                    background-color: var(--zen-ink-accent);
+                    background-color: var(--k-seal);
                     background-image: url("../../assets/theme/textures/watercolor.webp");
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
                     background-blend-mode: multiply;
-                    border-color: var(--zen-ink-accent);
+                    border-color: var(--k-seal);
                     color: rgb(252, 245, 225);
                     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
                     box-shadow: 0 0 8px rgba(155, 60, 50, 0.4);
 
                     &:hover {
-                        background-color: var(--zen-ink-accent);
+                        background-color: var(--k-seal);
                         color: rgb(252, 245, 225);
                     }
                 }
@@ -147,7 +147,7 @@ aside#sidebar {
 // of `.window-app`. Mirror the parchment look onto the new wrapper too.
 .application {
     &.themed {
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
         background-size: cover;
     }
 }

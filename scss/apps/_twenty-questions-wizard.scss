@@ -15,14 +15,14 @@
 @use "bio-section";
 
 .tqw-v2 {
-  background: var(--zen-surface);
-  border: var(--zen-bold-border-heavy);
+  background: var(--k-paper);
+  border: var(--k-bold-border-heavy);
   box-shadow: 0 4px 12px rgba(94, 67, 39, 0.3),
               inset 0 0 12px rgba(195, 165, 130, 0.2);
   // NOTE: never set `position` here — this class sits on the ApplicationV2
   // root next to core's .application, whose fixed positioning must win.
-  font-family: var(--zen-font-body);
-  color: var(--zen-ink);
+  font-family: var(--k-font-body);
+  color: var(--k-ink);
   // Stack header / progress / content / footer; let content take the
   // remaining space and scroll on overflow (Q18 rolltable + narrative
   // are taller than the fixed-height window).
@@ -36,7 +36,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: var(--zen-bold-grain);
+  background-image: var(--k-bold-grain);
   pointer-events: none;
   z-index: 0;
 }
@@ -47,15 +47,15 @@
 }
 
 .tqw-v2__header {
-  background: var(--zen-bold-header-bg);
-  color: var(--zen-bold-header-text);
-  border-bottom: var(--zen-bold-divider);
-  padding: var(--zen-space-2) var(--zen-space-3);
+  background: var(--k-bold-header-bg);
+  color: var(--k-bold-header-text);
+  border-bottom: var(--k-bold-divider);
+  padding: var(--k-space-2) var(--k-space-3);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--zen-font-display);
-  font-size: var(--zen-text-xl);
+  font-family: var(--k-font-display);
+  font-size: var(--k-text-xl);
   letter-spacing: 1px;
 }
 
@@ -66,27 +66,27 @@
 .tqw-v2__q-meta {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
-  font-size: var(--zen-text-xs);
+  font-size: var(--k-text-xs);
   opacity: 0.85;
   letter-spacing: 0;
 }
 
 .tqw-v2__content {
-  padding: var(--zen-space-3);
+  padding: var(--k-space-3);
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
 }
 
 .tqw-v2__question {
-  font-family: var(--zen-font-display);
+  font-family: var(--k-font-display);
   color: #3A2E1B;
-  font-size: var(--zen-text-xl);
+  font-size: var(--k-text-xl);
   letter-spacing: 0.5px;
-  border-bottom: var(--zen-bold-accent-rule);
-  padding-bottom: var(--zen-space-1);
+  border-bottom: var(--k-bold-accent-rule);
+  padding-bottom: var(--k-space-1);
   display: inline-block;
-  margin: 0 0 var(--zen-space-3) 0;
+  margin: 0 0 var(--k-space-3) 0;
 }
 
 .tqw-v2__pick {
@@ -96,18 +96,18 @@
 
 .tqw-v2__subpicker {
   background: rgba(195, 165, 130, 0.15);
-  border-left: var(--zen-bold-accent-rule);
-  padding: var(--zen-space-2);
-  margin-top: var(--zen-space-2);
+  border-left: var(--k-bold-accent-rule);
+  padding: var(--k-space-2);
+  margin-top: var(--k-space-2);
 }
 
 .tqw-v2__select {
   width: 100%;
-  padding: var(--zen-space-1) var(--zen-space-2);
-  background: var(--zen-surface);
-  border: var(--zen-border-hair) solid var(--zen-ink);
-  font-size: var(--zen-text-sm);
-  color: var(--zen-ink);
+  padding: var(--k-space-1) var(--k-space-2);
+  background: var(--k-paper);
+  border: var(--k-border-hair) solid var(--k-ink);
+  font-size: var(--k-text-sm);
+  color: var(--k-ink);
   font-family: inherit;
 }
 
@@ -117,30 +117,30 @@
 
 .tqw-v2__narrative {
   width: 100%;
-  background: var(--zen-card-bg);
-  border: var(--zen-border-hair) solid var(--zen-border);
-  padding: var(--zen-space-2);
-  font-family: var(--zen-font-flavor);
-  color: var(--zen-ink);
+  background: var(--k-card-bg);
+  border: var(--k-border-hair) solid var(--k-rule);
+  padding: var(--k-space-2);
+  font-family: var(--k-font-stamp);
+  color: var(--k-ink);
   resize: vertical;
   min-height: 80px;
 }
 
 .tqw-v2__error {
   background: rgba(150, 60, 65, 0.15);
-  border-left: var(--zen-bold-accent-rule);
-  color: var(--zen-ink-accent);
-  padding: var(--zen-space-2);
-  margin-top: var(--zen-space-2);
+  border-left: var(--k-bold-accent-rule);
+  color: var(--k-seal);
+  padding: var(--k-space-2);
+  margin-top: var(--k-space-2);
   font-weight: 600;
 }
 
 .tqw-v2__footer {
   background: linear-gradient(0deg, rgba(94, 67, 39, 0.2) 0%, transparent 100%);
-  border-top: var(--zen-bold-divider);
-  padding: var(--zen-space-2) var(--zen-space-3);
+  border-top: var(--k-bold-divider);
+  padding: var(--k-space-2) var(--k-space-3);
   display: flex;
-  gap: var(--zen-space-2);
+  gap: var(--k-space-2);
   align-items: center;
 }
 
@@ -149,11 +149,11 @@
 }
 
 .tqw-v2__btn {
-  background: var(--zen-surface);
-  border: var(--zen-bold-border);
-  color: var(--zen-ink);
-  padding: var(--zen-space-1) var(--zen-space-3);
-  font-size: var(--zen-text-sm);
+  background: var(--k-paper);
+  border: var(--k-bold-border);
+  color: var(--k-ink);
+  padding: var(--k-space-1) var(--k-space-3);
+  font-size: var(--k-text-sm);
   font-weight: 600;
   cursor: pointer;
   border-radius: 0;
@@ -161,12 +161,12 @@
 }
 
 .tqw-v2__btn:hover {
-  background: var(--zen-row-hover);
+  background: var(--k-row-hover);
 }
 
 .tqw-v2__btn--primary {
-  background: var(--zen-ink);
-  color: var(--zen-surface);
+  background: var(--k-ink);
+  color: var(--k-paper);
 }
 
 .tqw-v2__btn--primary:hover {

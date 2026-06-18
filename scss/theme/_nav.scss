@@ -9,10 +9,10 @@ nav {
         letter-spacing: -0.05rem;
         font-size: 1rem;
         border: 0 none;
-        border-bottom: 1px solid var(--zen-border-soft);
+        border-bottom: 1px solid var(--k-rule-soft);
         margin-bottom: 0;
-        background: var(--zen-ink);
-        color: var(--zen-ink);
+        background: var(--k-ink);
+        color: var(--k-ink);
         display: flex;
         flex-direction: row;
         --notchSize: 0.5rem;
@@ -30,7 +30,7 @@ nav {
     .item {
         flex: 1;
         &:hover {
-            background-color: var(--zen-ink-mute);
+            background-color: var(--k-ink-mute);
             color: colors.$white-light;
             text-shadow: none;
             clip-path: polygon(
@@ -47,10 +47,10 @@ nav {
     }
     .item.active {
         // Wine-stamp tab: filled accent bg + hardcoded near-cream text.
-        // We can't use `var(--zen-surface)` because in dark mode that flips
+        // We can't use `var(--k-paper)` because in dark mode that flips
         // to dark stone → dark-on-wine = invisible. Cream-on-wine works in
         // both modes (it's the high-contrast complement of the accent).
-        background-color: var(--zen-ink-accent);
+        background-color: var(--k-seal);
         color: rgb(252, 245, 225);
         text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
         clip-path: polygon(
@@ -65,7 +65,7 @@ nav {
         );
 
         &:hover {
-            background-color: var(--zen-ink-accent);
+            background-color: var(--k-seal);
             color: rgb(252, 245, 225);
             cursor: default;
         }
