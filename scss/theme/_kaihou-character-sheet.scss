@@ -207,12 +207,9 @@
     line-height: 1.2;
   }
 
-  // --- Databook-red tab strip — equal-width, always-labelled ------------------
-  // All 12 tabs share equal flex width; the active/hovered tab gets 2× the
-  // share so its label can breathe while inactive tabs show ellipsis.
-  // Labels are always visible (no icon-rail) — the active tab is distinguished
-  // by the red fill + white text + full-opacity label; inactive labels fade to
-  // 70% and truncate when space is tight.
+  // --- Databook-red tab strip — equal-width, labels only, no icons -----------
+  // All tabs share equal flex width; active/hovered gets 2× so the label has
+  // room to breathe without clipping. Inactive labels fade + ellipsis.
   .sheet-navigation.tabs {
     background: #e3d7b8;
     border-bottom: 2px solid var(--db-red);
@@ -228,16 +225,10 @@
     padding: 0 8px;
     overflow: hidden;
   }
-  .sheet-navigation.tabs .item > i {
-    flex: 0 0 auto;
-    font-size: 15px;
-    line-height: var(--pf1-nav-height);
-  }
   .sheet-navigation.tabs .item .db-tab-label {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-left: 5px;
     font-size: var(--zen-text-xs);
     opacity: 0.7;
     transition: opacity 0.18s ease;

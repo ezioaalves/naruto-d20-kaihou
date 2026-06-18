@@ -122,22 +122,13 @@ export function getKaihouCharacterSheetClass() {
       return $html;
     }
 
-    // naruto-d20 injects the Chakra tab as a plain `<a>Chakra</a>`. Re-shape it to
-    // our icon-rail markup (icon + .db-tab-label) so the nav styling is uniform.
-    // Idempotent: skips a tab that already carries an icon.
+    // naruto-d20 injects a Chakra nav tab after render. Remove it from the strip —
+    // the tab strip is labels-only and the Chakra content panel is reached through
+    // the Identity tab instead. Idempotent if the tab was already removed.
     _normalizeInjectedTabs($html) {
       const root = $html?.[0] ?? $html;
-      const ICONS = { chakra: "fa-yin-yang" };
-      for (const [tab, icon] of Object.entries(ICONS)) {
-        const a = root.querySelector(`nav.sheet-navigation.tabs .item[data-tab="${tab}"]`);
-        if (!a || a.querySelector("i")) continue;
-        const label = a.textContent.trim();
-        a.textContent = "";
-        a.insertAdjacentHTML(
-          "afterbegin",
-          `<i class="fa-solid ${icon}"></i><span class="db-tab-label">${label}</span>`,
-        );
-      }
+      const chakra = root.querySelector('nav.sheet-navigation.tabs .item[data-tab="chakra"]');
+      if (chakra) chakra.remove();
     }
 
     // Name of the actor item the 20Q wizard tagged with
