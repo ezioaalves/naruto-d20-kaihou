@@ -152,9 +152,19 @@ aside#sidebar {
     }
 }
 
-// NOTE: v13.351 sidebar CONTENT panels (actor directory, settings) still render
-// on Foundry's dark chrome — our parchment `.sidebar-tab` selectors don't match
-// the rebuilt DOM, so the directory/settings text is dark-on-dark. Fixing this
-// correctly needs the real v13.351 container class (Phase 3 — Foundry core
-// chrome); a blind wide-net override darkened the actor-list names, so it's
-// removed here rather than guessed. The icon strip above IS themed and stays.
+// v13.351 Game-Settings sidebar: section dividers are `h4.divider` inside
+// `section.settings.flexcol` on `#sidebar-content`, and the panel sits on
+// Foundry's DARK chrome — so the dim default gold rendered nearly invisible.
+// Per "dark surface → light text", brighten the dividers + FVTT title to a warm
+// parchment-gold. (The actor directory already uses Foundry's light text, so we
+// scope tightly to `.settings` and don't touch it.)
+#sidebar-content .settings {
+    h4.divider {
+        color: rgb(224, 208, 170);
+        border-color: rgba(224, 208, 170, 0.35);
+    }
+
+    h1, h2, h3 {
+        color: rgb(224, 208, 170);
+    }
+}
