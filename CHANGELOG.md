@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.10 — 2026-06-17
+
+### Fixed
+- **Compendium icons were broken wherever the standalone `naruto-d20-zen-theme` module was removed.** 122 village / school / occupation items still pointed at `modules/naruto-d20-zen-theme/...` for their artwork — a module that was absorbed into Kaihou in v2.0.0 and is meant to be uninstalled. Every pack icon now resolves from Kaihou's own bundled `assets/theme/icons/` tree, so the module is fully self-contained.
+- **20 Questions wizard — the dropdown picks closed the instant they opened.** The `<select>` picks (Q1 Village, the sub-pickers) were registered as ApplicationV2 *click* actions, and a native `<select>` emits a click when opened, so opening the dropdown re-rendered the wizard and snapped the popup shut. They are now driven by the `change` event only.
+- **20 Questions wizard — the validation notice showed on open and read as a raw key.** The "answer this question" notice appeared the moment the wizard opened and printed an internal field name (e.g. `q1_village_uuid is required.`). It now appears only when you try to advance past an unanswered question, with a localized message (English + Portuguese).
+- Disciplines radar: renamed the Chakra Control icon to match the sheet's reference (it was a 404 on that axis).
+
+### Added
+- **Databook character sheet status header** — editable HP / Chakra with a tap-reserves button, rest, level, and a solo nature seal; the Summary tab is the default landing.
+- **Collaborative Identity notes** — a private per-user note plus a public, GM-relayed party note.
+- **Compact Quick Actions strip** beneath the header band; discipline radar axis icons; header resource pips (HP / AC / Chakra); databook serif body font.
+
+### Changed
+- Reworked the header band into a databook registry card and collapsed the tab strip into an icon rail (labels reveal on active / hover).
+- Bundled the vendored theme assets (village crests, nature icons, void mark); the header village now resolves from the q1Village wizard item; the KKG/void separator shows only for kekkei-genkai characters.
+
 ## v2.1.9 — 2026-06-13
 
 ### Added
