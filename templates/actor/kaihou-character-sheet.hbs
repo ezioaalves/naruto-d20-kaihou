@@ -16,8 +16,8 @@
   {{!-- Databook header band (always visible, above the tab strip) --}}
   {{{kaihou.fragments.headerBand}}}
 
-  {{!-- Compact Quick Actions strip — reuses PF1e's quickActions context + markup,
-       so PF1e's selector-bound listeners wire these too. --}}
+  {{!-- Compact Quick Actions strip — owner-only (limited viewers see Identity only). --}}
+  {{#if kaihou.isOwner}}
   {{#if quickActions.length}}
   <div class="db-quick-strip">
     <ol class="quick-actions">
@@ -36,13 +36,13 @@
     </ol>
   </div>
   {{/if}}
+  {{/if}}
 
-  {{!-- PC Sheet Navigation — icon rail; label reveals on active/hover (after the
-       icon, so the icon never shifts). Identity leads; Chakra is injected by
-       naruto-d20 and normalised to this markup by the sheet class. --}}
+  {{!-- PC Sheet Navigation — limited viewers see only Identity; owners see all tabs. --}}
   <nav class="sheet-navigation tabs" data-group="primary">
-    <a class="item" data-tab="summary" data-group="primary"><i class="fa-solid fa-user"></i><span class="db-tab-label">{{ localize "PF1.Summary" }}</span></a>
+    {{#if kaihou.isOwner}}<a class="item" data-tab="summary" data-group="primary"><i class="fa-solid fa-user"></i><span class="db-tab-label">{{ localize "PF1.Summary" }}</span></a>{{/if}}
     <a class="item" data-tab="identity" data-group="primary"><i class="fa-solid fa-id-card"></i><span class="db-tab-label">Identity</span></a>
+    {{#if kaihou.isOwner}}
     <a class="item" data-tab="combat" data-group="primary"><i class="fa-solid fa-hand-fist"></i><span class="db-tab-label">{{ localize "PF1.Combat" }}</span></a>
     <a class="item" data-tab="skills" data-group="primary"><i class="fa-solid fa-list-check"></i><span class="db-tab-label">{{ localize "PF1.Skills" }}</span></a>
     <a class="item" data-tab="attributes" data-group="primary"><i class="fa-solid fa-dumbbell"></i><span class="db-tab-label">{{ localize "PF1.Attributes" }}</span></a>
@@ -53,6 +53,7 @@
     <a class="item" data-tab="biography" data-group="primary"><i class="fa-solid fa-scroll"></i><span class="db-tab-label">{{ localize "PF1.Biography" }}</span></a>
     <a class="item" data-tab="notes" data-group="primary"><i class="fa-solid fa-note-sticky"></i><span class="db-tab-label">{{ localize "PF1.Notes" }}</span></a>
     <a class="item" data-tab="settings" data-group="primary"><i class="fa-solid fa-gear"></i><span class="db-tab-label">{{ localize "PF1.Settings" }}</span></a>
+    {{/if}}
   </nav>
 
   {{!-- PC Sheet Body --}}
@@ -63,10 +64,10 @@
       <div class="db-frontmatter">
         <div class="db-identity-edit">
           <label>Alias
-            <input type="text" name="flags.naruto-d20-kaihou.alias" value="{{kaihou.identity.alias}}" placeholder="—">
+            {{#if kaihou.isOwner}}<input type="text" name="flags.naruto-d20-kaihou.alias" value="{{kaihou.identity.alias}}" placeholder="—">{{else}}<span class="db-identity-ro">{{#if kaihou.identity.alias}}{{kaihou.identity.alias}}{{else}}—{{/if}}</span>{{/if}}
           </label>
           <label>Allegiance
-            <input type="text" name="flags.naruto-d20-kaihou.allegiance" value="{{kaihou.identity.allegiance}}" placeholder="—">
+            {{#if kaihou.isOwner}}<input type="text" name="flags.naruto-d20-kaihou.allegiance" value="{{kaihou.identity.allegiance}}" placeholder="—">{{else}}<span class="db-identity-ro">{{#if kaihou.identity.allegiance}}{{kaihou.identity.allegiance}}{{else}}—{{/if}}</span>{{/if}}
           </label>
         </div>
 
@@ -104,6 +105,8 @@
       </div>
     </div>
 
+  {{!-- Owner-only tabs: all functional PF1e tabs. Limited viewers land on Identity. --}}
+  {{#if kaihou.isOwner}}
     {{!-- Details (PF1e summary) --}}
     <div class="tab summary flexcol" data-group="primary" data-tab="summary">
       {{> "systems/pf1/templates/actors/parts/actor-summary.hbs"}}
@@ -165,5 +168,6 @@
     <div class="tab settings flexcol" data-group="primary" data-tab="settings">
       {{> "systems/pf1/templates/actors/parts/actor-settings.hbs"}}
     </div>
+  {{/if}}
   </section>
 </form>

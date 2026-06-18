@@ -49,11 +49,8 @@ export function getKaihouCharacterSheetClass() {
       });
     }
 
-    /** Own template for the full sheet; defer to PF1e's limited sheet for limited users. */
+    /** Always render the databook template; tab/edit gating is done in the template. */
     get template() {
-      if (!game.user.isGM && this.actor.limited) {
-        return "systems/pf1/templates/actors/limited-sheet.hbs";
-      }
       return SHEET_TEMPLATE;
     }
 
@@ -95,6 +92,7 @@ export function getKaihouCharacterSheetClass() {
           privateNote: getPrivateNote(this.actor),
           publicNote: getPublicNote(this.actor),
         };
+        vm.isOwner = this.actor.isOwner;
         data.kaihou = vm;
       } catch (e) {
         console.error(`${MODULE_ID} | view-model build failed`, e);

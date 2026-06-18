@@ -260,6 +260,7 @@
   .db-identity-edit { display: flex; gap: var(--zen-space-3); }
   .db-identity-edit label { flex: 1; font: var(--zen-text-xs)/1.4 var(--db-font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--db-muted); }
   .db-identity-edit input { width: 100%; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); padding: 2px 6px; }
+  .db-identity-ro { display: block; font: var(--zen-text-sm)/1.4 var(--db-font-body); color: var(--db-ink); padding: 2px 0; }
 
   .db-radars { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
   .db-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
