@@ -8,7 +8,7 @@
 // if the theme is partially disabled or remixed.
 
 :root {
-  // Palette
+  // Core palette
   --db-red: #b23a2e;
   --db-red-deep: #8a2b22;
   --db-ink: #2e271d;
@@ -19,10 +19,57 @@
   --db-muted: #8a7c5c;
   --db-void: #6a3d8f;
 
+  // Semantic colour roles
+  --db-color-ink: var(--db-ink);
+  --db-color-ink-muted: var(--db-muted);
+  --db-color-accent: var(--db-red);
+  --db-color-accent-strong: var(--db-red-deep);
+  --db-color-surface: var(--db-cream);
+  --db-color-panel: var(--db-panel);
+  --db-color-panel-raised: #faf5e7;
+  --db-color-border: var(--db-border);
+  --db-color-border-soft: var(--db-border-soft);
+  --db-color-rule: rgba(46, 39, 29, 0.22);
+  --db-color-stamp: #fff7e6;
+  --db-color-danger: var(--db-red-deep);
+  --db-color-void: var(--db-void);
+
   // Typography (Rotis = vendored; system sans/serif fallbacks)
   --db-font-name: "RotisSemiSans", "Trebuchet MS", system-ui, sans-serif;
   --db-font-label: "RotisSemiSans", system-ui, sans-serif;
   --db-font-body: "RotisSemiSerif", "Hiroshige", Georgia, serif;
+
+  // Type scale
+  --db-type-display: 1.75rem;
+  --db-type-heading: 1.25rem;
+  --db-type-body: 0.9375rem;
+  --db-type-label: 0.75rem;
+  --db-type-numeric: 1.125rem;
+  --db-type-caption: 0.6875rem;
+  --db-line-tight: 1.05;
+  --db-line-heading: 1.18;
+  --db-line-body: 1.35;
+  --db-track-label: 0.08em;
+  --db-track-kanji: 0.12em;
+
+  // Spacing scale (4px base)
+  --db-space-0: 0;
+  --db-space-1: 4px;
+  --db-space-2: 8px;
+  --db-space-3: 12px;
+  --db-space-4: 16px;
+  --db-space-5: 20px;
+  --db-space-6: 24px;
+  --db-space-8: 32px;
+  --db-space-10: 40px;
+
+  // Shape and rules
+  --db-radius-sm: 2px;
+  --db-radius-md: 4px;
+  --db-rule-hair: 1px solid var(--db-color-border-soft);
+  --db-rule-base: 1px solid var(--db-color-border);
+  --db-rule-accent: 2px solid var(--db-color-accent);
+  --db-shadow-stamp: 0 1px 5px rgba(46, 39, 29, 0.28);
 
   // Radar
   --db-radar-grid: #cbbd97;

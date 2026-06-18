@@ -593,6 +593,7 @@ aside[role="tooltip"].pf1.source-breakdown {
 
 .pf1.sheet ul.skills-list li.skill {
     color: var(--zen-ink);
+    border-bottom: 1px solid var(--zen-border-soft);
 
     &:hover {
         background-color: var(--zen-row-hover) !important;
@@ -634,6 +635,20 @@ aside[role="tooltip"].pf1.source-breakdown {
         color: var(--zen-ink);
         font-style: italic;
     }
+}
+
+// PF1e's native skills usually arrive as `.compendium` rows; naruto-d20's
+// injected discipline skills arrive as `.custom` rows. Keep the same divider
+// affordance on both so Ninjutsu / Fuinjutsu / Chakra Control read as rows.
+.pf1.sheet ul.skills-list li.skill.custom,
+.pf1.sheet ul.skills-list li.skill:not(.compendium) {
+    border-bottom: 1px solid var(--zen-border-soft);
+}
+
+// The Kaihou campaign does not use PF1e coin currency. The PF1 inventory
+// template renders it as `.tab.inventory > header .currencies`.
+@at-root .kaihou-databook-form .tab.inventory > header .currencies {
+    display: none;
 }
 
 // ─── PF1e item list rows everywhere (inventory, buffs, features…) ────────────
@@ -780,5 +795,4 @@ select.chakra-nature-select {
     color: var(--zen-ink);
     background-color: var(--zen-surface);
 }
-
 
