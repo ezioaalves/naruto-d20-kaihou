@@ -26,12 +26,12 @@
         right: 0.4rem;
         width: $size;
         height: $size;
-        background-color: var(--k-crab);
-        mask: url("../../assets/theme/icons/villages/crab.svg") no-repeat center / contain;
-        -webkit-mask: url("../../assets/theme/icons/villages/crab.svg") no-repeat center / contain;
+        background-image: url("../../assets/theme/icons/villages/Crab.webp");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
         opacity: $opacity;
         pointer-events: none;
-        z-index: 0;
     }
 }
 
