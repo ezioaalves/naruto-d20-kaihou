@@ -13,6 +13,28 @@
  * Scope: imported under `body.naruto-zen .naruto-zen-target { ... }`.
  */
 
+// Crab-carapace corner mark — recurring Kaihou brand.
+// A CSS-mask of the village crab SVG tinted in --k-crab at low opacity;
+// reads as texture/watermark, not as an active icon.
+@mixin crab-corner($size: 3rem, $opacity: 0.09) {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0.4rem;
+        right: 0.4rem;
+        width: $size;
+        height: $size;
+        background-color: var(--k-crab);
+        mask: url("../../assets/theme/icons/villages/crab.svg") no-repeat center / contain;
+        -webkit-mask: url("../../assets/theme/icons/villages/crab.svg") no-repeat center / contain;
+        opacity: $opacity;
+        pointer-events: none;
+    }
+}
+
 $discipline-color: (
     "tai": colors.$nzen-tai,
     "nin": colors.$nzen-nin,
@@ -24,6 +46,7 @@ $discipline-color: (
 
 // ----- Chakra tab ------------------------------------------------------------
 .tab.chakra {
+    @include crab-corner($size: 5rem, $opacity: 0.05);
     background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat; background-position: top center;
     background-size: cover;
     padding: 0.5rem;
@@ -346,6 +369,7 @@ $discipline-color: (
     }
 
     section.sidebar {
+        @include crab-corner($size: 4rem, $opacity: 0.08);
         background: var(--k-card-bg);
         border: 1px solid var(--k-rule-soft);
         border-radius: 4px;
@@ -415,6 +439,7 @@ $discipline-color: (
 
 // ----- Hero statistics block (Summary tab injection) ------------------------
 #naruto-hero-statistics {
+    @include crab-corner($size: 3.5rem, $opacity: 0.07);
     background: var(--k-card-bg);
     border: 1px solid var(--k-rule-soft);
     border-top: 2px solid var(--k-rule);
