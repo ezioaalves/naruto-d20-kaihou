@@ -273,28 +273,24 @@
     scrollbar-width: thin;
   }
   > .sheet-navigation.tabs[data-group="primary"] .item {
-    flex: 1 1 0;
-    min-width: 0;
+    flex: 1 1 58px;
+    min-width: 58px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 3px;
+    padding: 0 4px;
     min-height: 26px;
-    overflow: hidden;
   }
   > .sheet-navigation.tabs[data-group="primary"] .item .db-tab-label {
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     font-family: var(--k-font-util);
     font-size: 0.66rem;
     line-height: 1;
     opacity: 0.7;
+    transition: opacity 0.18s ease;
   }
-  > .sheet-navigation.tabs[data-group="primary"] .item:hover .db-tab-label,
-  > .sheet-navigation.tabs[data-group="primary"] .item.active .db-tab-label {
-    opacity: 1;
-  }
+  > .sheet-navigation.tabs[data-group="primary"] .item.active .db-tab-label,
+  > .sheet-navigation.tabs[data-group="primary"] .item:hover .db-tab-label { opacity: 1; }
   > .sheet-navigation.tabs[data-group="primary"] .item.active { background: var(--k-seal); color: #fff; border-radius: 8px 8px 0 0; }
 
   // --- Identity dossier tab: the one tab we own and fully style ---
@@ -482,8 +478,10 @@
     align-items: center;
     gap: var(--k-space-2);
     padding: 0;
+    min-height: 32px;
     border-top: 1px solid var(--k-rule);
     background: var(--k-paper-raised);
+    overflow: visible;
 
     > h3 {
       font-family: var(--k-font-util);
