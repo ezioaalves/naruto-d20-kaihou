@@ -17,6 +17,9 @@ dev-notes/
 # Claude Code memory (does not belong in the module repo)
 memory/
 
+# Obsidian workspace config (editor cruft; the module dir is opened as a vault)
+.obsidian/
+
 # Superpowers brainstorm visual-companion mockups (scratch, not part of the repo)
 .superpowers/
 
