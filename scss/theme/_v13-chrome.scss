@@ -158,13 +158,16 @@ aside#sidebar {
 // Per "dark surface → light text", brighten the dividers + FVTT title to a warm
 // parchment-gold. (The actor directory already uses Foundry's light text, so we
 // scope tightly to `.settings` and don't touch it.)
-#sidebar-content .settings {
+#sidebar-content {
+    // Every section divider (PATHFINDER 1E / GAME SETTINGS / HELP AND
+    // DOCUMENTATION / GAME ACCESS) is an h4.divider — some sit outside the
+    // .settings block, so scope to #sidebar-content to catch them all.
     h4.divider {
         color: rgb(224, 208, 170);
         border-color: rgba(224, 208, 170, 0.35);
     }
 
-    h1, h2, h3 {
+    .settings h1, .settings h2, .settings h3 {
         color: rgb(224, 208, 170);
     }
 }

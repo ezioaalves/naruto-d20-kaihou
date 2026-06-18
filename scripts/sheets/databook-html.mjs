@@ -102,8 +102,13 @@ export function resourcePips(resources) {
   if (!resources) return "";
   const { hp, ac, chakra, level } = resources;
   const display = (label, val) => `<div class="db-pip"><b>${esc(val)}</b><small>${esc(label)}</small></div>`;
+  // Persist via data-field + a change listener, NOT a form `name`: the footer
+  // HP/Chakra pips duplicate fields that also live on the Summary/Chakra tabs.
+  // Two same-named inputs in one form serialize to an array — harmless for the
+  // schema'd HP path, but it corrupted the unschema'd chakra FLAG into "[0,0]"
+  // (rendered "0,0" / "5,0"). data-field keeps them out of form serialization.
   const editable = (label, name, val, max, after = "") =>
-    `<div class="db-pip db-pip--edit"><span class="db-pip__val"><input class="db-pip__in" type="text" name="${name}" value="${esc(val)}" data-dtype="Number"><span class="db-pip__max">/${esc(max)}</span></span>${after}<small>${esc(label)}</small></div>`;
+    `<div class="db-pip db-pip--edit"><span class="db-pip__val"><input class="db-pip__in" type="text" data-field="${esc(name)}" value="${esc(val)}" inputmode="numeric"><span class="db-pip__max">/${esc(max)}</span></span>${after}<small>${esc(label)}</small></div>`;
   const tap = `<a class="db-pip__tap tap-reserve-roll" title="Tap chakra reserves"><i class="fa-solid fa-hand-holding-droplet"></i></a>`;
   return [
     `<div class="db-band__stats">`,

@@ -86,10 +86,13 @@ describe("missionRecord & headerBand", () => {
   it("renders editable HP/Chakra + AC/Level pips, tap-reserve + rest buttons", () => {
     const band = headerBand(vm, { name: "Takeshi", img: "p.png", village: "Konoha", rank: "Chūnin" });
     expect(band).toContain("db-band__stats");
-    expect(band).toContain('name="system.attributes.hp.value" value="42"'); // HP editable
+    // Pips use data-field (NOT form name) to avoid duplicate-name flag corruption.
+    expect(band).toContain('data-field="system.attributes.hp.value" value="42"'); // HP editable
+    expect(band).not.toContain('name="system.attributes.hp.value"'); // never a form field
     expect(band).toContain("/50"); // HP max
     expect(band).toContain(">18<"); // AC (display)
-    expect(band).toContain('name="flags.naruto-d20.chakra.pool.value" value="30"'); // Chakra editable
+    expect(band).toContain('data-field="flags.naruto-d20.chakra.pool.value" value="30"'); // Chakra editable
+    expect(band).not.toContain('name="flags.naruto-d20.chakra.pool.value"');
     expect(band).toContain("tap-reserve-roll"); // reuses naruto-d20's reserve listener
     expect(band).toContain(">5<"); // Level (display)
     expect(band).toContain('class="rest db-rest"'); // rest button (reuses PF1e .rest)

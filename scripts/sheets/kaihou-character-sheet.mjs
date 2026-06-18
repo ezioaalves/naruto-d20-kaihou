@@ -109,6 +109,20 @@ export function getKaihouCharacterSheetClass() {
       if (actorName) {
         actorName.addEventListener("change", (e) => this._onKaihouActorNameChange(e));
       }
+      // Footer HP/Chakra pips persist via data-field (kept OUT of form
+      // serialization to avoid the duplicate-name collision with the Summary/
+      // Chakra tab inputs that corrupted the chakra flag).
+      root?.querySelectorAll?.(".db-pip__in[data-field]")?.forEach?.((el) =>
+        el.addEventListener("change", (e) => this._onKaihouPipChange(e)),
+      );
+    }
+
+    async _onKaihouPipChange(event) {
+      const el = event.currentTarget;
+      const field = el?.dataset?.field;
+      const value = Number(el?.value);
+      if (!field || !Number.isFinite(value)) return;
+      await this.actor.update({ [field]: value });
     }
 
     async _onKaihouActorNameChange(event) {
