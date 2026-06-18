@@ -400,10 +400,19 @@
     display: inline-flex;
     gap: 6px;
   }
-  .db-bio-classes { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
+  .db-bio-classes { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
   .db-bio-classes .item-name { flex: 1 1 auto; min-width: 0; }
   .db-bio-classes .item-name h4 { margin: 0; font: var(--k-text-sm)/1.2 var(--k-font-body); color: var(--k-ink); }
-  .db-bio-classes .class-level { flex: 0 0 44px; text-align: center; color: var(--k-ink-mute); }
+  .db-bio-classes .class-level { flex: 0 0 52px; text-align: center; font: var(--k-text-xs)/1 var(--k-font-util); color: var(--k-ink-mute); }
+  .db-bio-class-icon { flex: 0 0 28px; width: 28px; height: 28px; object-fit: contain; border-radius: var(--k-radius-sm); border: 1px solid var(--k-rule); }
+  .db-bio-classes-panel .db-panel__header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--k-space-2);
+    .db-panel__h { margin: 0; }
+    .db-bio-class-add { display: inline-flex; gap: 6px; }
+  }
   .db-bio-notes { min-height: 180px; display: flex; flex-direction: column; }
   .db-bio-notes .editor,
   .db-bio-notes .editor-content { flex: 1 1 auto; min-height: 140px; }

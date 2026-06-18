@@ -107,6 +107,20 @@ Hooks.once("ready", () => {
   registerQuestionFeatEffects();
   registerNotesRelay();
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
+
+  // § 5.2 — Move naruto-d20 Hero Statistics into the persistent footer.
+  // naruto-d20 registers its renderActorSheetPF injection hook during "setup",
+  // so we must register our move hook in "ready" (after setup) to guarantee
+  // ours fires second — after naruto-d20 has already inserted #naruto-hero-statistics.
+  Hooks.on("renderActorSheetPF", (app, html, _data) => {
+    if (!app.options?.classes?.includes("kaihou-databook")) return;
+    const $html = html instanceof HTMLElement ? $(html) : html;
+    const heroStats = $html.find("#naruto-hero-statistics");
+    if (!heroStats.length) return;
+    const footer = $html.find("footer.db-footer");
+    if (!footer.length) return;
+    footer.prepend(heroStats);
+  });
 });
 
 // § 5.1 — two-column Biography tab: the player's bio editor on the left,
@@ -173,19 +187,4 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
   // columns on narrow sheets (inline-size containment on our own element
   // only — never on PF1e's tab).
   bioTab.append($('<div class="tqw-bio-container"></div>').append(grid));
-});
-
-// § 5.2 — Move naruto-d20 Hero Statistics into the persistent footer.
-// naruto-d20's registerSummaryStats hook fires on renderActorSheetPF (before
-// us) and prepends #naruto-hero-statistics to .tab.summary. We register AFTER
-// naruto-d20 loads so our hook fires second; we then relocate the block to
-// footer.db-footer where it's visible on every tab.
-Hooks.on("renderActorSheetPF", (app, html, _data) => {
-  if (!app.options?.classes?.includes("kaihou-databook")) return;
-  const $html = html instanceof HTMLElement ? $(html) : html;
-  const heroStats = $html.find("#naruto-hero-statistics");
-  if (!heroStats.length) return;
-  const footer = $html.find("footer.db-footer");
-  if (!footer.length) return;
-  footer.prepend(heroStats);
 });
