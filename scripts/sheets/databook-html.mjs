@@ -77,10 +77,10 @@ export function missionRecord(missions) {
   const cells = ["D", "C", "B", "A", "S"]
     .map(
       (r) =>
-        `<div><input type="number" class="db-mission" name="flags.naruto-d20-kaihou.missions.${r}" value="${missions.counts[r] || 0}" min="0"><small>${r}</small></div>`,
+        `<div class="db-mission-row"><small>${r}</small><input type="number" class="db-mission" name="flags.naruto-d20-kaihou.missions.${r}" value="${missions.counts[r] || 0}" min="0"></div>`,
     )
     .join("");
-  return `<div class="db-panel"><h4 class="db-panel__h">Mission Record</h4><div class="db-missions">${cells}<div><b>${missions.total}</b><small>Total</small></div></div></div>`;
+  return `<div class="db-panel"><h4 class="db-panel__h">Mission Record</h4><div class="db-missions">${cells}<div class="db-mission-row db-mission-total"><small>Total</small><b>${missions.total}</b></div></div></div>`;
 }
 
 /** The single headline nature for the header: the void mark if the character
@@ -118,19 +118,18 @@ export function resourcePips(resources) {
 
 /** vm = view-model; meta = {name,img,village,rank} pulled from the actor by the sheet. */
 export function headerBand(vm, meta) {
-  const { alias, allegiance } = vm.identity;
+  const { alias, rank } = vm.identity;
   const villageCrest = meta.villageCrest
     ? `<img class="db-badge__crest" src="${esc(meta.villageCrest)}" alt="">`
     : "";
   const badges = [
     meta.village ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>` : "",
-    meta.rank ? `<span class="db-badge db-badge--rank">${esc(meta.rank)}</span>` : "",
-    allegiance ? `<span class="db-badge db-badge--allegiance">⚔ ${esc(allegiance)}</span>` : "",
+    (rank ?? meta.rank) ? `<span class="db-badge db-badge--rank">${esc(rank ?? meta.rank)}</span>` : "",
   ].join("");
   return [
     `<header class="db-band">`,
     `<div class="db-band__portrait">`,
-    `<img class="db-band__port" src="${esc(meta.img)}" alt="">`,
+    `<img class="db-band__port" src="${esc(meta.img)}" alt="" data-edit="img">`,
     headlineNature(vm.natures), // corner seal (positioned by CSS)
     `</div>`,
     `<div class="db-band__id">`,

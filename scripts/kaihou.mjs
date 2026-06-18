@@ -151,7 +151,7 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
     ? `<p class="tqw-bio-summary">${grantCount} mechanic grant(s) applied by the wizard.</p>`
     : `<p class="tqw-bio-summary">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
 
-  const right = $(`<aside class="tqw-bio-right">
+  const right = $(`<aside class="tqw-bio-right db-bio-20q">
     <div class="tqw-bio-header-row">
       <h3 class="tqw-bio-header">20 Questions</h3>
       <button type="button" class="tqw-sheet-button" title="Open 20 Questions Wizard" aria-label="Open 20 Questions Wizard">

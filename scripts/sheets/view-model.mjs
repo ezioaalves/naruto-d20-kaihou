@@ -97,14 +97,16 @@ export function buildKaihouViewModel(actor) {
   return {
     identity: {
       alias: kh.alias ?? "",
-      allegiance: kh.allegiance ?? "",
+      rank: kh.rank ?? kh.allegiance ?? "",
       clan: kh.clan ?? "",
+      info: kh.info ?? "",
       missions: buildMissions(kh.missions),
       details: {
         gender: sys.details?.gender ?? "",
         age:    sys.details?.age    ?? "",
         height: sys.details?.height ?? "",
         weight: sys.details?.weight ?? "",
+        race:   sys.details?.race   ?? "",
       },
     },
     radars: {

@@ -12,7 +12,7 @@
 // in view-model.mjs + databook-html.mjs and handed to the template as `kaihou.*`.
 
 import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
-import { headerBand, radarSvg, missionRecord, naturesRow } from "./databook-html.mjs";
+import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
 import { getPublicNote, setPublicNote } from "../notes-relay.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
@@ -24,7 +24,6 @@ export const SHEET_TEMPLATE = `modules/${MODULE_ID}/templates/actor/kaihou-chara
 const ORIGIN_ROWS = [
   { label: "Village", marker: "q1Village" },
   { label: "School", marker: "q3School" },
-  { label: "Occupation", marker: "q2OccupationItem" },
 ];
 
 export function getKaihouCharacterSheetClass() {
@@ -80,8 +79,8 @@ export function getKaihouCharacterSheetClass() {
             iconBase: `modules/${MODULE_ID}/assets/theme/icons/disciplines`,
           }),
           missionRecord: missionRecord(vm.identity.missions),
-          naturesFull: naturesRow(vm.natures),
         };
+        vm.meta = meta;
         // Origin & Path rows: each resolved from its wizard-marked actor item.
         vm.origin = ORIGIN_ROWS.map(({ label, marker }) => ({
           label,
@@ -106,12 +105,24 @@ export function getKaihouCharacterSheetClass() {
       // Shared notes are NOT a PF1e form field (relayed via socket for non-owners).
       const pub = root?.querySelector?.(".db-notes__public");
       if (pub) pub.addEventListener("change", (e) => setPublicNote(this.actor, e.target.value));
+      const actorName = root?.querySelector?.("[data-kaihou-actor-name]");
+      if (actorName) {
+        actorName.addEventListener("change", (e) => this._onKaihouActorNameChange(e));
+      }
+    }
+
+    async _onKaihouActorNameChange(event) {
+      const value = String(event.currentTarget?.value ?? "").trim();
+      if (!value || value === this.actor.name) return;
+      await this.actor.update({ name: value });
     }
 
     async _renderInner(...args) {
       const $html = await super._renderInner(...args); // PF1e + naruto-d20 chakra tab
       try {
         this._normalizeInjectedTabs($html);
+        this._normalizeSummaryTab($html);
+        this._normalizeCombatTab($html);
       } catch (e) {
         console.error(`${MODULE_ID} | tab normalization failed`, e);
       }
@@ -134,6 +145,62 @@ export function getKaihouCharacterSheetClass() {
       const label = chakra.textContent.trim();
       chakra.textContent = "";
       chakra.insertAdjacentHTML("afterbegin", `<span class="db-tab-label">${label}</span>`);
+    }
+
+    _normalizeSummaryTab($html) {
+      const root = $html?.[0] ?? $html;
+      const summary = root?.querySelector?.(".tab.summary");
+      if (!summary) return;
+
+      // These fields now live in the footer, Identity, or Biography. PF1e's
+      // summary partial stays embedded for mechanics, then we remove the moved
+      // front/back-matter copies so the sheet has a single source of UI truth.
+      summary.querySelector(".summary-header .profile")?.remove();
+      summary.querySelector(".summary-header .name-xp .char-name")?.remove();
+      summary.querySelector(".summary-header .name-xp .hd-level")?.remove();
+      ["gender", "age", "height", "weight"].forEach((key) => {
+        summary
+          .querySelector(`.summary-header .character-summary [name="system.details.${key}"]`)
+          ?.closest("div")
+          ?.remove();
+      });
+      summary
+        .querySelector('.summary-header .character-summary [name="system.details.deity"]')
+        ?.closest("div")
+        ?.remove();
+      summary.querySelector(".summary-header .character-summary .alignment")?.remove();
+      summary.querySelector(".summary-header .race.item")?.remove();
+      summary.querySelector(".summary-header .actor-quick-actions")?.remove();
+    }
+
+    _normalizeCombatTab($html) {
+      const root = $html?.[0] ?? $html;
+      const combat = root?.querySelector?.(".tab.combat");
+      if (!combat) return;
+
+      const attackMetrics = combat.querySelector(":scope > header");
+      const attackMetricsRule =
+        attackMetrics?.nextElementSibling?.tagName?.toLowerCase() === "hr"
+          ? attackMetrics.nextElementSibling
+          : null;
+      const defenses = combat.querySelector(".combat-defenses");
+      if (attackMetrics && defenses && defenses.previousElementSibling !== attackMetrics) {
+        defenses.parentNode.insertBefore(attackMetrics, defenses);
+        if (attackMetricsRule) defenses.parentNode.insertBefore(attackMetricsRule, defenses);
+      }
+
+      combat.querySelectorAll(".defense-notes > .flexrow").forEach((row) => {
+        if (row.closest("details")) return;
+        const heading = row.querySelector("h3");
+        const label = heading?.textContent?.trim() || "Notes";
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.textContent = label;
+        details.appendChild(summary);
+        row.parentNode.insertBefore(details, row);
+        heading?.remove();
+        details.appendChild(row);
+      });
     }
 
     // Name of the actor item the 20Q wizard tagged with

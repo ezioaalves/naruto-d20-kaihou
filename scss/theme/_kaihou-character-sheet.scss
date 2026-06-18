@@ -55,13 +55,18 @@
   .db-band {
     flex: 0 0 auto;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) minmax(280px, auto);
     align-items: center;
     gap: var(--zen-space-4);
   }
   .db-band__portrait { position: relative; flex: 0 0 auto; }
   .db-band__id { min-width: 0; }
-  .db-band__name { line-height: 1.04; }
+  .db-band__name {
+    line-height: 1.04;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
   .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: var(--zen-space-2); }
   .db-natures { display: flex; gap: 8px; align-items: center; margin-top: var(--zen-space-2); }
   .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
@@ -81,7 +86,7 @@
   .db-nat--basic[data-nature="water"] { background-image: url("../../assets/theme/icons/natures/water.svg"); }
   .db-nat--basic[data-nature="wind"] { background-image: url("../../assets/theme/icons/natures/wind.svg"); }
   .db-nat--basic[data-nature="earth"] { background-image: url("../../assets/theme/icons/natures/earth.svg"); }
-  .db-nat--basic[data-nature="lightning"] { background-image: url("../../assets/theme/icons/natures/lightning.png"); }
+  .db-nat--basic[data-nature="lightning"] { background-image: url("../../assets/questions/elements/lightning.png"); }
   .db-nat--basic:not(.db-nat--on) { opacity: 0.4; }
 
   // KKG / void slot: the void mark replaces the dashed double-ring.
@@ -105,6 +110,29 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(58px, 1fr));
     gap: 6px;
+  }
+  .db-footer .db-band {
+    min-height: 164px;
+    grid-template-columns: 128px minmax(120px, 1fr) minmax(300px, 54%);
+    align-items: stretch;
+    border-bottom: none;
+    padding: var(--zen-space-3) var(--zen-space-4);
+  }
+  .db-footer .db-band__portrait { align-self: stretch; }
+  .db-footer .db-band__port {
+    width: 128px;
+    height: 100%;
+    min-height: 140px;
+  }
+  .db-footer .db-band__id {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .db-footer .db-band__stats {
+    align-self: center;
+    grid-template-columns: repeat(3, minmax(72px, 1fr));
   }
   .db-band__stats .db-pip { min-width: 0; }
   .db-pip--edit { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 3px; }
@@ -154,90 +182,47 @@
     z-index: 1;
   }
 
-  // Full natures panel on the Identity tab.
-  .db-panel--natures .db-natures { justify-content: center; }
-
-  // Compact Quick Actions strip beneath the header band — labelled so a short
-  // list still reads as intentional rather than an empty bar.
-  .db-quick-strip {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 14px;
-    background: var(--db-panel);
-    border-bottom: 1px solid var(--db-border);
-    overflow-x: auto;
-  }
-  .db-quick-strip::before {
-    content: "Quick";
-    flex: 0 0 auto;
-    font: 700 var(--zen-text-xs)/1 var(--db-font-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--db-red);
-  }
-  .db-quick-strip .quick-actions {
-    display: flex;
-    gap: 6px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .db-quick-strip .quick-actions .item {
-    position: relative;
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--db-border);
-    border-radius: var(--zen-radius-sm);
-    cursor: pointer;
-  }
-  .db-quick-strip .quick-actions .item img { width: 100%; height: 100%; object-fit: cover; border: none; border-radius: inherit; }
-  .db-quick-strip .quick-actions .item charges {
-    position: absolute;
-    right: -2px;
-    bottom: -4px;
-    font-size: var(--zen-text-xs);
-    font-weight: 700;
-    color: var(--db-ink);
-    background: var(--db-cream);
-    border: 1px solid var(--db-border);
-    border-radius: 6px;
-    padding: 0 3px;
-    line-height: 1.2;
-  }
-
   // --- Databook-red tab strip — equal-width, labels only, no icons -----------
-  // All tabs share equal flex width; active/hovered gets 2× so the label has
-  // room to breathe without clipping. Inactive labels fade + ellipsis.
-  .sheet-navigation.tabs {
+  // The primary nav is a fixed-height flex child between the warning strip and
+  // the tab body, so moving the header band into the footer cannot collapse it.
+  > .sheet-navigation.tabs[data-group="primary"] {
+    flex: 0 0 28px;
+    min-height: 28px;
+    display: flex;
+    align-items: stretch;
     background: #e3d7b8;
     border-bottom: 2px solid var(--db-red);
     flex-wrap: nowrap;
-    column-gap: 2px;
+    column-gap: 1px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: thin;
   }
-  .sheet-navigation.tabs .item {
-    flex: 1;
-    min-width: 0;
+  > .sheet-navigation.tabs[data-group="primary"] .item {
+    flex: 1 1 58px;
+    min-width: 58px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 8px;
-    overflow: hidden;
+    padding: 0 4px;
+    min-height: 26px;
   }
-  .sheet-navigation.tabs .item .db-tab-label {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  > .sheet-navigation.tabs[data-group="primary"] .item .db-tab-label {
     white-space: nowrap;
-    font-size: var(--zen-text-xs);
+    font-family: var(--db-font-label);
+    font-size: 0.66rem;
+    line-height: 1;
     opacity: 0.7;
     transition: opacity 0.18s ease;
   }
-  .sheet-navigation.tabs .item.active,
-  .sheet-navigation.tabs .item:hover { flex: 2; }
-  .sheet-navigation.tabs .item.active .db-tab-label,
-  .sheet-navigation.tabs .item:hover .db-tab-label { opacity: 1; }
-  .sheet-navigation.tabs .item.active { background: var(--db-red); color: #fff; border-radius: 8px 8px 0 0; }
+  > .sheet-navigation.tabs[data-group="primary"] .item.active,
+  > .sheet-navigation.tabs[data-group="primary"] .item:hover {
+    flex: 2 0 max-content;
+    min-width: max-content;
+  }
+  > .sheet-navigation.tabs[data-group="primary"] .item.active .db-tab-label,
+  > .sheet-navigation.tabs[data-group="primary"] .item:hover .db-tab-label { opacity: 1; }
+  > .sheet-navigation.tabs[data-group="primary"] .item.active { background: var(--db-red); color: #fff; border-radius: 8px 8px 0 0; }
 
   // --- Identity dossier tab: the one tab we own and fully style ---
   .tab.identity {
@@ -248,13 +233,48 @@
 
   .db-frontmatter { padding: var(--zen-space-3); display: flex; flex-direction: column; gap: var(--zen-space-3); }
 
+  .db-identity-hero {
+    display: grid;
+    grid-template-columns: 25% minmax(0, 1fr);
+    gap: var(--zen-space-3);
+    align-items: stretch;
+  }
+  .db-identity-portrait img {
+    width: 100%;
+    height: 100%;
+    min-height: 150px;
+    object-fit: cover;
+    border: 2px solid var(--db-ink);
+    border-radius: var(--zen-radius-sm);
+    background: #ded2b2;
+  }
+  .db-identity-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .db-identity-info textarea,
+  .db-identity-info__read {
+    flex: 1 1 auto;
+    min-height: 120px;
+    width: 100%;
+    resize: vertical;
+    background: #fff7e6;
+    border: 1px solid var(--db-border);
+    border-radius: var(--zen-radius-sm);
+    color: var(--db-ink);
+    font: var(--zen-text-sm)/1.35 var(--db-font-body);
+    padding: 6px 8px;
+    white-space: pre-wrap;
+  }
+
   .db-identity-edit { display: flex; gap: var(--zen-space-3); }
   .db-identity-edit label { flex: 1; font: var(--zen-text-xs)/1.4 var(--db-font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--db-muted); }
   .db-identity-edit input { width: 100%; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); padding: 2px 6px; }
   .db-identity-ro { display: block; font: var(--zen-text-sm)/1.4 var(--db-font-body); color: var(--db-ink); padding: 2px 0; }
 
   // Compact inline input for the Clan field in the Data panel.
-  .db-data__input { width: 9ch; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); font: inherit; text-align: right; padding: 1px 4px; }
+  .db-data__input { width: 18ch; max-width: 60%; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); font: inherit; text-align: right; padding: 1px 4px; }
 
   // Slug labels beside discipline radar icons.
   .db-radar__slug { font: 600 8px/1 var(--db-font-label); fill: var(--db-muted); }
@@ -262,13 +282,13 @@
   .db-radars { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
   .db-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
 
-  .db-missions { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; text-align: center; }
-  .db-missions > div { background: #e7dcbf; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); padding: 3px 0; }
+  .db-missions { display: grid; grid-template-rows: repeat(6, minmax(28px, 1fr)); gap: 3px; text-align: center; }
+  .db-mission-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; min-height: 28px; background: #e7dcbf; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); padding: 2px 6px; }
   .db-missions b { display: block; font-size: var(--zen-text-base); }
   .db-missions small { font-size: var(--zen-text-xs); color: var(--db-muted); }
-  .db-mission { width: 100%; text-align: center; border: none; background: transparent; font-size: var(--zen-text-base); color: var(--db-ink); }
+  .db-mission { width: 100%; text-align: right; border: none; background: transparent; font-size: var(--zen-text-base); color: var(--db-ink); }
 
-  .db-line { display: flex; justify-content: space-between; font-size: var(--zen-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--db-border-soft); }
+  .db-line { min-height: 28px; display: flex; align-items: center; justify-content: space-between; gap: var(--zen-space-2); font-size: var(--zen-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--db-border-soft); }
 
   // Collaborative notes (Identity tab).
   .db-notes__hint { font-weight: 400; font-size: var(--zen-text-xs); color: var(--db-muted); text-transform: none; letter-spacing: 0; }
@@ -283,4 +303,104 @@
     padding: 5px 7px;
   }
   .db-notes textarea:focus { outline: 1px solid var(--db-red); }
+
+  .db-biography { padding: var(--zen-space-3); display: flex; flex-direction: column; gap: var(--zen-space-3); min-height: 0; }
+  .db-bio-field { display: flex; gap: var(--zen-space-3); align-items: center; padding: 2px 0; }
+  .db-bio-field label { flex: 0 0 9rem; font: var(--zen-text-xs)/1.4 var(--db-font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--db-muted); }
+  .db-bio-field input {
+    flex: 1;
+    min-width: 0;
+    background: #fff7e6;
+    border: 1px solid var(--db-border);
+    border-radius: var(--zen-radius-sm);
+    color: var(--db-ink);
+    padding: 2px 6px;
+  }
+  .db-bio-field span { flex: 1; min-width: 0; font: var(--zen-text-sm)/1.4 var(--db-font-body); color: var(--db-ink); }
+  .db-bio-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--zen-space-2);
+    padding: 2px 0;
+  }
+  .db-bio-item .item-controls {
+    flex: 0 0 auto;
+    display: inline-flex;
+    gap: 6px;
+  }
+  .db-bio-classes { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
+  .db-bio-classes .item-name { flex: 1 1 auto; min-width: 0; }
+  .db-bio-classes .item-name h4 { margin: 0; font: var(--zen-text-sm)/1.2 var(--db-font-body); color: var(--db-ink); }
+  .db-bio-classes .class-level { flex: 0 0 44px; text-align: center; color: var(--db-muted); }
+  .db-bio-notes { min-height: 180px; display: flex; flex-direction: column; }
+  .db-bio-notes .editor,
+  .db-bio-notes .editor-content { flex: 1 1 auto; min-height: 140px; }
+  .db-bio-20q { margin-top: var(--db-space-3); }
+
+  .tab.combat details > summary {
+    display: block;
+    text-align: left;
+    cursor: pointer;
+    font: 700 var(--db-type-label)/1 var(--db-font-label);
+    text-transform: uppercase;
+    letter-spacing: var(--db-track-label);
+    color: var(--db-color-ink-muted);
+    padding: var(--db-space-1) 0;
+  }
+
+  .tab.combat {
+    font-family: var(--db-font-body);
+    font-size: var(--zen-text-sm);
+  }
+  .tab.combat .item-list-header h3,
+  .tab.combat .generic-defenses h3,
+  .tab.combat .natural-armor h3,
+  .tab.combat .combat-defenses h3 {
+    font-family: var(--db-font-label);
+    font-size: var(--zen-text-base);
+    line-height: 1.1;
+  }
+  .tab.combat .combat-defenses > .attributes {
+    align-items: center;
+    gap: var(--zen-space-2);
+  }
+  .tab.combat .combat-defenses > .attributes > li {
+    min-width: 0;
+    align-items: center;
+  }
+  .tab.combat .natural-armor h3,
+  .tab.combat .combat-defenses > .attributes > li.flexrow h3 {
+    flex: 0 0 auto;
+    max-width: 12rem;
+  }
+  .tab.combat .combat-defenses input {
+    min-width: 0;
+    font-size: var(--zen-text-xs);
+  }
+
+  .tab.skills ul.skills-list li.skill {
+    border-bottom: 1px solid var(--db-border-soft) !important;
+  }
+  .tab.skills ul.skills-list li.skill.custom,
+  .tab.skills ul.skills-list li.skill:not(.compendium),
+  .tab.skills ul.skills-list li.skill + li.skill {
+    border-top: 1px solid rgba(205, 191, 153, 0.45);
+  }
+  .tab.skills .controls.skills,
+  .tab.skills .controls.skills .control,
+  .tab.skills .skill-create {
+    font-family: var(--db-font-label);
+    font-size: var(--zen-text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .db-footer {
+    flex: 0 0 auto;
+    border-top: var(--db-rule-accent);
+    background: var(--db-color-panel);
+  }
 }
