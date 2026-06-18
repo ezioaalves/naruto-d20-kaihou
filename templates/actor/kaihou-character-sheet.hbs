@@ -175,13 +175,13 @@
           <div class="db-bio-field">
             <label>Classes</label>
             <ol class="db-bio-classes item-list" data-list="classes" data-type="class">
-              {{#each classes}}
-              <li class="db-bio-item item flexrow" data-item-id="{{#if id}}{{id}}{{else}}{{_id}}{{/if}}">
+              {{#each kaihou.kaihouClasses}}
+              <li class="db-bio-item item flexrow" data-item-id="{{this.id}}">
                 <div class="item-name">
-                  <h4>{{name}}</h4>
+                  <h4>{{this.name}}</h4>
                 </div>
                 <div class="item-detail class-level">
-                  <span>{{system.level}}</span>
+                  <span>{{this.level}}</span>
                 </div>
                 <div class="item-controls">
                   {{#if @root.owner}}

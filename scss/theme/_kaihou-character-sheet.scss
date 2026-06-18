@@ -468,6 +468,16 @@
     flex: 0 0 auto;
     border-top: 2px solid var(--k-seal);
     background: var(--k-paper-raised);
+
+    // Hero Statistics relocated here by the renderActorSheetPF hook.
+    // Neutralize the naruto-d20 bottom-margin and divider line.
+    #naruto-hero-statistics {
+      margin-bottom: 0;
+
+      .naruto-summary-divider {
+        display: none;
+      }
+    }
   }
 
   // ─── Quick Actions strip (above footer, every tab) ─────────────────────────

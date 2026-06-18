@@ -86,6 +86,11 @@ export function getKaihouCharacterSheetClass() {
           value: this._markedItemName(marker),
         }));
         vm.isOwner = this.actor.isOwner;
+        // Flat class-item list for the Biography tab (PF1e's `data.classes` is
+        // an array of group-objects, not individual items).
+        vm.kaihouClasses = Array.from(this.actor.items ?? [])
+          .filter((i) => i.type === "class")
+          .map((i) => ({ id: i.id, name: i.name, level: i.system?.level ?? 0, img: i.img }));
         data.kaihou = vm;
       } catch (e) {
         console.error(`${MODULE_ID} | view-model build failed`, e);
@@ -177,6 +182,9 @@ export function getKaihouCharacterSheetClass() {
       summary.querySelector(".summary-header .character-summary .alignment")?.remove();
       summary.querySelector(".summary-header .race.item")?.remove();
       summary.querySelector(".summary-header .actor-quick-actions")?.remove();
+
+      // Classes list lives in Biography; remove the duplicate from Summary.
+      summary.querySelector(".classes-body")?.remove();
 
       // Move Quick Actions out of Summary and into a persistent strip above the footer.
       const footer = root?.querySelector?.("footer.db-footer");
