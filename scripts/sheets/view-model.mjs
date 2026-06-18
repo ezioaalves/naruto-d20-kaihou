@@ -10,11 +10,11 @@ const KH = "naruto-d20-kaihou";
 export const ABILITY_AXES = ["str", "dex", "con", "int", "wis", "cha"];
 
 export const DISCIPLINE_AXES = [
-  { key: "nin", label: "Ninjutsu", icon: "ninjutsu" },
-  { key: "fui", label: "Fūinjutsu", icon: "fuinjutsu" },
-  { key: "ckc", label: "Chakra Control", icon: "chakra_control" },
-  { key: "tai", label: "Taijutsu", icon: "taijutsu" },
-  { key: "gnj", label: "Genjutsu", icon: "genjutsu" },
+  { key: "nin", label: "Ninjutsu",      slug: "Nin",  icon: "ninjutsu"       },
+  { key: "fui", label: "Fūinjutsu",     slug: "Fūin", icon: "fuinjutsu"      },
+  { key: "ckc", label: "Chakra Control", slug: "C·C",  icon: "chakra_control" },
+  { key: "gnj", label: "Genjutsu",      slug: "Gen",  icon: "genjutsu"       },
+  { key: "tai", label: "Taijutsu",      slug: "Tai",  icon: "taijutsu"       },
 ];
 
 export const BASIC_NATURES = [
@@ -98,7 +98,14 @@ export function buildKaihouViewModel(actor) {
     identity: {
       alias: kh.alias ?? "",
       allegiance: kh.allegiance ?? "",
+      clan: kh.clan ?? "",
       missions: buildMissions(kh.missions),
+      details: {
+        gender: sys.details?.gender ?? "",
+        age:    sys.details?.age    ?? "",
+        height: sys.details?.height ?? "",
+        weight: sys.details?.weight ?? "",
+      },
     },
     radars: {
       abilities: ABILITY_AXES.map((k) => ({ key: k, label: k.toUpperCase(), value: num(sys.abilities?.[k]?.total) })),

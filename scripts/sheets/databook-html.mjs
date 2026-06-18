@@ -26,21 +26,28 @@ function axisLabels(axes, iconBase) {
   return axes
     .map((a, i) => {
       const p = ends[i];
-      if (iconBase && a.icon) {
-        return `<image class="db-radar__icon" href="${esc(iconBase)}/${esc(a.icon)}.svg" x="${Math.round(p.x - S / 2)}" y="${Math.round(p.y - S / 2)}" width="${S}" height="${S}"><title>${esc(a.label)}</title></image>`;
-      }
       const anchor = p.x < C - 1 ? "end" : p.x > C + 1 ? "start" : "middle";
+      if (iconBase && a.icon) {
+        // Place the slug text above the icon when in the upper half, below when lower.
+        const textY = p.y < C ? Math.round(p.y - S / 2 - 4) : Math.round(p.y + S / 2 + 10);
+        const slug = a.slug
+          ? `<text class="db-radar__slug" x="${Math.round(p.x)}" y="${textY}" text-anchor="${anchor}">${esc(a.slug)}</text>`
+          : "";
+        return `<image class="db-radar__icon" href="${esc(iconBase)}/${esc(a.icon)}.svg" x="${Math.round(p.x - S / 2)}" y="${Math.round(p.y - S / 2)}" width="${S}" height="${S}"><title>${esc(a.label)}</title></image>${slug}`;
+      }
       return `<text class="db-radar__axis" x="${Math.round(p.x)}" y="${Math.round(p.y)}" text-anchor="${anchor}">${esc(a.label)}</text>`;
     })
     .join("");
 }
 
-/** axes: [{label,value,icon?}]; opts: {max, variant, iconBase?}. With iconBase
- *  the axis labels render as discipline icons (tooltip = label) instead of text. */
+/** axes: [{label,value,icon?,slug?}]; opts: {max, variant, iconBase?}. With
+ *  iconBase the discipline radar renders icon + slug text beside each axis. */
 export function radarSvg(axes, { max, variant, iconBase } = {}) {
   const plot = pointsAttr(valuePoints(axes.map((a) => a.value), max, C, C, R));
+  // Extra vertical space for slug labels above/below the icons.
+  const viewBox = iconBase ? "0 -10 200 225" : "0 0 200 210";
   return [
-    `<svg class="db-radar" viewBox="0 0 200 210" role="img" aria-label="${esc(variant)} radar">`,
+    `<svg class="db-radar" viewBox="${viewBox}" role="img" aria-label="${esc(variant)} radar">`,
     gridRings(axes.length),
     `<polygon class="db-radar__plot--${esc(variant)}" points="${plot}"/>`,
     axisLabels(axes, iconBase),

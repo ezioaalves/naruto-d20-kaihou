@@ -61,17 +61,9 @@
   {{!-- PC Sheet Body --}}
   <section class="primary-body">
 
-    {{!-- Identity (databook front matter — Kaihou-owned) --}}
+    {{!-- Identity (databook front matter — visible to ≥limited viewers) --}}
     <div class="tab identity flexcol" data-group="primary" data-tab="identity">
       <div class="db-frontmatter">
-        <div class="db-identity-edit">
-          <label>Alias
-            {{#if kaihou.isOwner}}<input type="text" name="flags.naruto-d20-kaihou.alias" value="{{kaihou.identity.alias}}" placeholder="—">{{else}}<span class="db-identity-ro">{{#if kaihou.identity.alias}}{{kaihou.identity.alias}}{{else}}—{{/if}}</span>{{/if}}
-          </label>
-          <label>Allegiance
-            {{#if kaihou.isOwner}}<input type="text" name="flags.naruto-d20-kaihou.allegiance" value="{{kaihou.identity.allegiance}}" placeholder="—">{{else}}<span class="db-identity-ro">{{#if kaihou.identity.allegiance}}{{kaihou.identity.allegiance}}{{else}}—{{/if}}</span>{{/if}}
-          </label>
-        </div>
 
         <div class="db-panel db-panel--natures">
           <h4 class="db-panel__h">Chakra Natures</h4>
@@ -86,24 +78,27 @@
         <div class="db-row2">
           {{{kaihou.fragments.missionRecord}}}
           <div class="db-panel">
-            <h4 class="db-panel__h">Origin &amp; Path</h4>
+            <h4 class="db-panel__h">Data</h4>
             {{#each kaihou.origin}}
               <div class="db-line"><span>{{this.label}}</span><span>{{#if this.value}}{{this.value}}{{else}}—{{/if}}</span></div>
             {{/each}}
+            <div class="db-line">
+              <span>Clan</span>
+              {{#if kaihou.isOwner}}<input type="text" class="db-data__input" name="flags.naruto-d20-kaihou.clan" value="{{kaihou.identity.clan}}" placeholder="—">{{else}}<span>{{#if kaihou.identity.clan}}{{kaihou.identity.clan}}{{else}}—{{/if}}</span>{{/if}}
+            </div>
+            {{#if kaihou.identity.details.gender}}<div class="db-line"><span>Gender</span><span>{{kaihou.identity.details.gender}}</span></div>{{/if}}
+            {{#if kaihou.identity.details.age}}<div class="db-line"><span>Age</span><span>{{kaihou.identity.details.age}}</span></div>{{/if}}
+            {{#if kaihou.identity.details.height}}<div class="db-line"><span>Height</span><span>{{kaihou.identity.details.height}}</span></div>{{/if}}
+            {{#if kaihou.identity.details.weight}}<div class="db-line"><span>Weight</span><span>{{kaihou.identity.details.weight}}</span></div>{{/if}}
           </div>
         </div>
 
-        {{!-- Collaborative notes: private (this player) + public (whole party) --}}
-        <div class="db-row2 db-notes">
-          <div class="db-panel">
-            <h4 class="db-panel__h">My Notes <span class="db-notes__hint">private</span></h4>
-            <textarea class="db-notes__private" rows="5" placeholder="Your private notes on this character…">{{kaihou.notes.privateNote}}</textarea>
-          </div>
-          <div class="db-panel">
-            <h4 class="db-panel__h">Party Notes <span class="db-notes__hint">shared</span></h4>
-            <textarea class="db-notes__public" rows="5" placeholder="Notes the whole party can see…">{{kaihou.notes.publicNote}}</textarea>
-          </div>
+        {{!-- Shared notes: writable at ≥limited via the GM socket relay --}}
+        <div class="db-panel db-notes">
+          <h4 class="db-panel__h">Shared Notes <span class="db-notes__hint">visible to the whole party</span></h4>
+          <textarea class="db-notes__public" rows="5" placeholder="Notes the whole party can see…">{{kaihou.notes.publicNote}}</textarea>
         </div>
+
       </div>
     </div>
 

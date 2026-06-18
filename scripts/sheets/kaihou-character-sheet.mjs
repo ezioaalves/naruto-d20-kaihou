@@ -13,7 +13,7 @@
 
 import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
 import { headerBand, radarSvg, missionRecord, naturesRow } from "./databook-html.mjs";
-import { getPrivateNote, setPrivateNote, getPublicNote, setPublicNote } from "../notes-relay.mjs";
+import { getPublicNote, setPublicNote } from "../notes-relay.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
 
@@ -89,7 +89,6 @@ export function getKaihouCharacterSheetClass() {
         }));
         // Collaborative notes: private (this user) + public (party, GM-relayed).
         vm.notes = {
-          privateNote: getPrivateNote(this.actor),
           publicNote: getPublicNote(this.actor),
         };
         vm.isOwner = this.actor.isOwner;
@@ -104,10 +103,7 @@ export function getKaihouCharacterSheetClass() {
     activateListeners(html) {
       super.activateListeners(html);
       const root = html?.[0] ?? html;
-      // Notes are NOT PF1e form fields (private = user flag, public = relayed),
-      // so bind them ourselves. change fires on blur/enter — one write each.
-      const priv = root?.querySelector?.(".db-notes__private");
-      if (priv) priv.addEventListener("change", (e) => setPrivateNote(this.actor, e.target.value));
+      // Shared notes are NOT a PF1e form field (relayed via socket for non-owners).
       const pub = root?.querySelector?.(".db-notes__public");
       if (pub) pub.addEventListener("change", (e) => setPublicNote(this.actor, e.target.value));
     }

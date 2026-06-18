@@ -32,6 +32,19 @@ describe("radarSvg", () => {
     expect(svg).toContain("<title>Ninjutsu</title>");
     expect(svg).not.toContain("db-radar__axis"); // icons replace text labels
   });
+
+  it("renders slug text labels beside discipline icons; gnj precedes tai in axis order", () => {
+    const svg = radarSvg(vm.radars.disciplines, { max: 10, variant: "discipline", iconBase: "modules/x/disc" });
+    expect(svg).toContain("db-radar__slug");
+    expect(svg).toContain(">Nin<");
+    expect(svg).toContain(">Gen<");
+    expect(svg).toContain(">Tai<");
+    const gnj = svg.indexOf("disc/genjutsu.svg");
+    const tai = svg.indexOf("disc/taijutsu.svg");
+    expect(gnj).toBeLessThan(tai); // gnj rendered before tai after the swap
+    // Expanded viewBox to accommodate slug labels.
+    expect(svg).toContain('viewBox="0 -10 200 225"');
+  });
 });
 
 describe("naturesRow", () => {

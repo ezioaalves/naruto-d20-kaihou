@@ -24,9 +24,23 @@ describe("buildKaihouViewModel", () => {
     const vm = buildKaihouViewModel(actor);
     expect(vm.identity.alias).toBe("Crimson Mirage");
     expect(vm.identity.allegiance).toBe("13th Tantō");
+    expect(vm.identity.clan).toBe("");
     expect(vm.identity.missions.counts.C).toBe(24);
     expect(vm.identity.missions.total).toBe(41);
     expect(vm.natures.advanced).toEqual({ kanji: "木", label: "Mokuton" });
+  });
+
+  it("exposes clan from kaihou flags and details (gender/age/height/weight) from system", () => {
+    const actor2 = {
+      system: { details: { gender: "Male", age: "19", height: "5'10\"", weight: "160lb" } },
+      flags: { "naruto-d20-kaihou": { clan: "Uchiha" }, "naruto-d20": {} },
+    };
+    const vm = buildKaihouViewModel(actor2);
+    expect(vm.identity.clan).toBe("Uchiha");
+    expect(vm.identity.details.gender).toBe("Male");
+    expect(vm.identity.details.age).toBe("19");
+    expect(vm.identity.details.height).toBe("5'10\"");
+    expect(vm.identity.details.weight).toBe("160lb");
   });
 
   it("builds 6 ability axes and 5 discipline axes in fixed order from live data", () => {
