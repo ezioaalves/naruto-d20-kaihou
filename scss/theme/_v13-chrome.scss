@@ -151,3 +151,44 @@ aside#sidebar {
         background-size: cover;
     }
 }
+
+// v13.351 sidebar CONTENT panels (settings/chat/etc.) ship dark by default and
+// the older `.sidebar-tab` rule no longer matches their container, so headers
+// like "GAME SETTINGS" + the version readout rendered dark-on-dark (invisible).
+// Cast a wide net over the content containers and repaint parchment with sumi
+// text + parchment buttons so everything stays legible and on-theme.
+aside#sidebar {
+    color: var(--zen-ink);
+
+    .window-content,
+    .sidebar-content,
+    #sidebar-content,
+    section.tab,
+    section[data-tab] {
+        background-color: rgb(245, 230, 200);
+        background-image: url("../../assets/theme/ui/bgSidebar.webp");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: var(--zen-ink);
+    }
+
+    // Headers, section dividers, version readout, labels → sumi on parchment.
+    h1, h2, h3, h4,
+    .divider, .border, header, label, span, p, a {
+        color: var(--zen-ink);
+        border-color: var(--zen-border);
+    }
+
+    // Settings buttons get a parchment-card look so their text stays readable
+    // (they were dark cards relying on Foundry's light-on-dark text).
+    button:not(.ui-control) {
+        background: var(--zen-card-bg);
+        color: var(--zen-ink);
+        border: 1px solid var(--zen-border);
+
+        &:hover {
+            background: var(--zen-row-hover);
+            color: var(--zen-ink-accent);
+        }
+    }
+}
