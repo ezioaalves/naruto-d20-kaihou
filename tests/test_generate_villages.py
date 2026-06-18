@@ -140,14 +140,26 @@ def test_has_foundry_leveldb_key():
     assert data["_key"] == f"!items!{data['_id']}"
 
 
-def test_img_passed_through_when_present(tmp_path):
+def test_legacy_village_img_canonicalised(tmp_path):
+    """The stray assets/villages/ dir is rewritten onto the bundled theme tree."""
     fp = tmp_path / "v.yaml"
     fp.write_text(
         "name: V\nslug: v\nimg: modules/naruto-d20-kaihou/assets/villages/crab.svg\n"
         "minor_benefit:\n  kind: hp\n  value: 1\nclass_skills: []\ntags: []\n"
     )
     data = generate_villages.generate_one(fp, MAPPING_PATH)
-    assert data["img"] == "modules/naruto-d20-kaihou/assets/villages/crab.svg"
+    assert data["img"] == "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg"
+
+
+def test_nonlegacy_img_passed_through(tmp_path):
+    """Any img that isn't the legacy stray path is preserved verbatim."""
+    fp = tmp_path / "v.yaml"
+    fp.write_text(
+        "name: V\nslug: v\nimg: icons/svg/book.svg\n"
+        "minor_benefit:\n  kind: hp\n  value: 1\nclass_skills: []\ntags: []\n"
+    )
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    assert data["img"] == "icons/svg/book.svg"
 
 
 def test_img_absent_when_not_set(tmp_path):

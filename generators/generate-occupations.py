@@ -22,8 +22,10 @@ import yaml
 
 DEFAULT_VAULT_PATH = Path.home() / "Documents" / "Kaihou (Naruto D20)"
 OCCUPATIONS_SUBPATH = "Mechanics/Character_Options/Occupations"
-ZEN_ICON_BASE = "modules/naruto-d20-zen-theme/assets/icons"
-DEFAULT_ICON = f"{ZEN_ICON_BASE}/items/title.svg"
+# Kaihou bundles its own theme icons (the zen theme was absorbed in v2.0.0);
+# never reference the deprecated standalone naruto-d20-zen-theme module here.
+ICON_BASE = "modules/naruto-d20-kaihou/assets/theme/icons"
+DEFAULT_ICON = f"{ICON_BASE}/items/title.svg"
 ALL_SKILLS_TOKEN = "__all__"
 
 OLD_SKILL_SLUGS = {

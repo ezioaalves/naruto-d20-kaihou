@@ -24,15 +24,17 @@ import yaml
 
 DEFAULT_VAULT_PATH = Path.home() / "Documents" / "Kaihou (Naruto D20)"
 SCHOOLS_SUBPATH = "Mechanics/Character_Options/Schools/schools.yaml"
-ZEN_ICON_BASE = "modules/naruto-d20-zen-theme/assets/icons"
+# Kaihou bundles its own theme icons (the zen theme was absorbed in v2.0.0);
+# never reference the deprecated standalone naruto-d20-zen-theme module here.
+ICON_BASE = "modules/naruto-d20-kaihou/assets/theme/icons"
 VILLAGE_ICONS = {
-    "Houohgakure": f"{ZEN_ICON_BASE}/clans/phoenix.svg",
-    "Kanigakure": f"{ZEN_ICON_BASE}/clans/crab.svg",
-    "Kiringakure": f"{ZEN_ICON_BASE}/clans/unicorn.svg",
-    "Ryuugakure": f"{ZEN_ICON_BASE}/clans/dragon.svg",
-    "Sasorigakure": f"{ZEN_ICON_BASE}/clans/scorpion.svg",
-    "Shishigakure": f"{ZEN_ICON_BASE}/clans/lion.svg",
-    "Tsurugakure": f"{ZEN_ICON_BASE}/clans/crane.svg",
+    "Houohgakure": f"{ICON_BASE}/clans/phoenix.svg",
+    "Kanigakure": f"{ICON_BASE}/clans/crab.svg",
+    "Kiringakure": f"{ICON_BASE}/clans/unicorn.svg",
+    "Ryuugakure": f"{ICON_BASE}/clans/dragon.svg",
+    "Sasorigakure": f"{ICON_BASE}/clans/scorpion.svg",
+    "Shishigakure": f"{ICON_BASE}/clans/lion.svg",
+    "Tsurugakure": f"{ICON_BASE}/clans/crane.svg",
 }
 
 
@@ -42,14 +44,14 @@ def generate_uuid(slug: str) -> str:
 
 
 def default_icon(school: dict[str, Any]) -> str:
-    """Pick a stable icon from the local zen theme assets."""
+    """Pick a stable icon from Kaihou's bundled theme assets."""
     if school.get("village") in VILLAGE_ICONS:
         return VILLAGE_ICONS[school["village"]]
     if "Ronin" in school.get("tags", []):
-        return f"{ZEN_ICON_BASE}/clans/ronin.svg"
+        return f"{ICON_BASE}/clans/ronin.svg"
     if "Puppeteer" in school.get("tags", []):
-        return f"{ZEN_ICON_BASE}/items/technique.svg"
-    return f"{ZEN_ICON_BASE}/items/advancement.svg"
+        return f"{ICON_BASE}/items/technique.svg"
+    return f"{ICON_BASE}/items/advancement.svg"
 
 
 def _description_to_html(school: dict[str, Any]) -> str:

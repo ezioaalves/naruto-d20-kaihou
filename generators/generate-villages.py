@@ -133,7 +133,14 @@ def generate_one(yaml_path: Path, mapping_path: Path) -> dict[str, Any]:
         "system": system,
     }
     if vault.get("img"):
-        out["img"] = vault["img"]
+        # Canonicalise the legacy stray asset dir (assets/villages/ was a
+        # duplicate) onto Kaihou's bundled theme tree, matching the path the
+        # databook sheet's village crest already uses. Other img values pass
+        # through untouched.
+        out["img"] = vault["img"].replace(
+            "modules/naruto-d20-kaihou/assets/villages/",
+            "modules/naruto-d20-kaihou/assets/theme/icons/villages/",
+        )
     return out
 
 

@@ -71,7 +71,7 @@ def test_generate_one_uses_trait_item_shape_without_preselecting_all_skills():
     assert data["system"]["subType"] == "trait"
     assert data["system"]["classSkills"] == {}
     assert data["system"]["links"]["supplements"] == []
-    assert data["img"].startswith("modules/naruto-d20-zen-theme/assets/icons/")
+    assert data["img"].startswith("modules/naruto-d20-kaihou/assets/theme/icons/")
 
 
 def test_description_notes_source():

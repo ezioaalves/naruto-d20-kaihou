@@ -58,16 +58,16 @@ def test_description_lists_static_package_without_internal_notes():
     assert "Source:" not in desc
 
 
-def test_img_defaults_to_zen_theme_asset():
+def test_img_defaults_to_kaihou_theme_asset():
     data = generate_schools.generate_one(_active_fixture_school())
-    assert data["img"].startswith("modules/naruto-d20-zen-theme/assets/icons/")
+    assert data["img"].startswith("modules/naruto-d20-kaihou/assets/theme/icons/")
 
 
-def test_known_village_icon_uses_existing_zen_theme_asset():
+def test_known_village_icon_uses_existing_kaihou_theme_asset():
     school = _active_fixture_school()
     school["village"] = "Houohgakure"
     data = generate_schools.generate_one(school)
-    assert data["img"] == "modules/naruto-d20-zen-theme/assets/icons/clans/phoenix.svg"
+    assert data["img"] == "modules/naruto-d20-kaihou/assets/theme/icons/clans/phoenix.svg"
 
 
 def test_item_flag_carries_school_payload():
