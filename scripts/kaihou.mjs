@@ -109,16 +109,19 @@ Hooks.once("ready", () => {
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 
   // § 5.2 — Move naruto-d20 Hero Statistics into the persistent footer.
-  // naruto-d20 registers its renderActorSheetPF injection hook during "setup",
-  // so we must register our move hook in "ready" (after setup) to guarantee
-  // ours fires second — after naruto-d20 has already inserted #naruto-hero-statistics.
-  Hooks.on("renderActorSheetPF", (app, html, _data) => {
+  // naruto-d20's registerSummaryStats hook is async — it awaits renderTemplate
+  // before inserting #naruto-hero-statistics. Foundry's Hooks.callAll does NOT
+  // await async callbacks, so any synchronous hook we register fires before
+  // naruto-d20's await resolves. We defer with setTimeout(0) so the macrotask
+  // runs after naruto-d20's microtasks (the renderTemplate promise chain) finish.
+  Hooks.on("renderActorSheetPF", async (app, html, _data) => {
     if (!app.options?.classes?.includes("kaihou-databook")) return;
     const $html = html instanceof HTMLElement ? $(html) : html;
-    const heroStats = $html.find("#naruto-hero-statistics");
-    if (!heroStats.length) return;
     const footer = $html.find("footer.db-footer");
     if (!footer.length) return;
+    await new Promise((r) => setTimeout(r, 0));
+    const heroStats = $html.find("#naruto-hero-statistics");
+    if (!heroStats.length) return;
     footer.prepend(heroStats);
   });
 });
