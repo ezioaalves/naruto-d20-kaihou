@@ -33,9 +33,10 @@
   --k-input-bg-strong: rgba(244, 238, 217, 0.7);
 
   // ─── Ink · sumi ────────────────────────────────────────────────────────
-  --k-ink: #2c261c;            // primary text & headings
+  --k-ink: #2c261c;            // primary text on LIGHT surfaces (cells, body)
   --k-ink-soft: rgba(44, 38, 28, 0.62);
-  --k-ink-mute: #7a6f57;       // labels / hint text
+  --k-ink-mute: #7a6f57;       // labels / hint text on light
+  --k-on-dark: #f7f1e1;        // text on DARK surfaces (sumi/crab bands) — high contrast
 
   // ─── Accents ───────────────────────────────────────────────────────────
   --k-seal: #b23a2e;           // PRIMARY — wax stamp / hitai-ate / official red

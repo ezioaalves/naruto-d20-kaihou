@@ -77,11 +77,18 @@
   // shadowed and read poorly on the crab-slate bands. Re-set them to the record
   // standard: SemiSans 600, tighter tracking, no shadow, light-on-slate. Module
   // CSS loads after pf1.css so these win the specificity tie by source order.
+  // Bands are DARK → text must be LIGHT (set explicitly, never rely on a PF1e
+  // var that may resolve dark). Cells are LIGHT → text stays sumi.
   .info-box-header > h3 {
+    display: flex;            // vertically centre the title (was sitting high)
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
     font-family: var(--k-font-display);
     font-size: var(--k-type-title);
     font-weight: var(--k-weight-title);
     letter-spacing: 0.01em;
+    color: var(--k-on-dark);
     text-shadow: none;
   }
   .info-box > h5 {
@@ -90,6 +97,7 @@
     font-weight: var(--k-weight-label);
     letter-spacing: var(--k-track-label);
     text-transform: uppercase;
+    color: var(--k-on-dark);
     text-shadow: none;
   }
   .info-box .value {
