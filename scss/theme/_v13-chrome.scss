@@ -167,8 +167,13 @@ aside#sidebar {
         border-color: rgba(224, 208, 170, 0.35);
     }
 
-    .settings h1, .settings h2, .settings h3 {
-        color: rgb(224, 208, 170);
+    // Sidebar headings at any nesting level — Foundry may place the game
+    // title h1/h2 outside or inside .settings depending on the v13 build.
+    h1, h2, h3,
+    .settings h1, .settings h2, .settings h3,
+    .settings-info h1, .settings-info h2,
+    .game-title, .game-name {
+        color: rgb(224, 208, 170) !important;
     }
 
     // System-info block at top of Settings panel: game title, version string,
