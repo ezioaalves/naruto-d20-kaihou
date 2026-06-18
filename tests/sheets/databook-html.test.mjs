@@ -77,8 +77,7 @@ describe("missionRecord & headerBand", () => {
     expect(band).toContain("Chūnin");
     expect(band).toContain('class="db-badge__crest"'); // village crest image rendered
     expect(band).toContain("villages/crab.svg");
-    expect(band).toContain('class="db-seal"'); // wax authentication seal rendered
-    expect(band).toContain('class="db-seal__crest" src="modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg"');
+    expect(band).toContain('class="db-band__crest" src="modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg"'); // corner crest
     expect(band).toContain('data-edit="img"');
     expect(band).toContain("Uchiha &lt;b&gt;Takeshi&lt;/b&gt;"); // escaped, no raw tag injection
     expect(band).not.toContain("<b>Takeshi</b>");
@@ -94,7 +93,7 @@ describe("missionRecord & headerBand", () => {
     expect(band).toContain("tap-reserve-roll"); // reuses naruto-d20's reserve listener
     expect(band).toContain(">5<"); // Level (display)
     expect(band).toContain('class="rest db-rest"'); // rest button (reuses PF1e .rest)
-    expect(band).toContain('class="db-seal"'); // seal always renders…
+    expect(band).toContain('class="db-band__crest"'); // corner crest always renders…
     expect(band).toContain("villages/crab.svg"); // …defaulting to crab when no village crest
   });
 });

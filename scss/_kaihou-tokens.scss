@@ -28,7 +28,6 @@
   --k-surface-washed: linear-gradient(rgba(236, 228, 210, 0.66), rgba(236, 228, 210, 0.66)),
                       url("../../assets/theme/textures/parchment-grain.png");
   --k-surface-body-image: url("../../assets/theme/imgs/bg-table.webp");
-  --k-seal-ring: url("../../assets/theme/icons/seals/wax-seal-ring.svg");
   --k-card-bg: rgba(236, 228, 210, 0.55);
   --k-input-bg: transparent;
   --k-input-bg-strong: rgba(244, 238, 217, 0.7);
@@ -75,18 +74,32 @@
   --k-text-xl: 1.375rem;
   --k-text-2xl: 1.75rem;
 
-  // Semantic record scale (databook)
-  --k-type-display: 1.75rem;
-  --k-type-heading: 1.25rem;
-  --k-type-body: 0.9375rem;
-  --k-type-label: 0.75rem;
-  --k-type-numeric: 1.125rem;
-  --k-type-caption: 0.6875rem;
+  // ─── Type-size STANDARD ("Shinobi Record") ─────────────────────────────
+  // One documented size ramp keyed to ROLE, not ad-hoc px. Pair each size with
+  // the matching weight + font in the consuming rule (see --k-weight-* below).
+  //   display  masthead name / sheet title        SemiSerif 700
+  //   title    table titles (Hit Points), sections SemiSerif 700
+  //   numeric  data values (10, +2)                SemiSans  600 tabular
+  //   body     paragraphs, item names              SemiSans  400
+  //   label    field/column labels (CURRENT)       SemiSans  600 UPPERCASE
+  //   caption  hints, footnotes                    SemiSans  500
+  --k-type-display: 1.55rem;
+  --k-type-title: 1.15rem;
+  --k-type-heading: 1.15rem; // alias of title (legacy --db-type-heading peer)
+  --k-type-body: 0.9rem;
+  --k-type-numeric: 1.05rem;
+  --k-type-label: 0.8rem;
+  --k-type-caption: 0.72rem;
   --k-line-tight: 1.05;
   --k-line-heading: 1.18;
-  --k-line-body: 1.35;
-  --k-track-label: 0.08em;
+  --k-line-body: 1.4;
+  --k-track-label: 0.03em; // tight enough that small uppercase stays legible
   --k-track-kanji: 0.12em;
+  // Weights — name the intent so consumers don't sprinkle magic numbers.
+  --k-weight-body: 400;
+  --k-weight-label: 600;
+  --k-weight-value: 600;
+  --k-weight-title: 700;
 
   // ─── Spacing (4px scale) ───────────────────────────────────────────────
   --k-space-0: 0;
