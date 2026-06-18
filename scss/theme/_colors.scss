@@ -143,10 +143,12 @@ $nzen-ckc: rgb(180, 130, 0);     // Chakra Control — dark gold/yellow
 $nzen-fui: rgb(15, 15, 15);      // Fuinjutsu — near-black (ink)
 $nzen-kin: $nzen-maho;           // Kinjutsu — crimson (keep maho)
 
-// -- Fonts
-// Used by _fonts.scss and other partials for typography.
-$font-primary: "PatrickHand", sans-serif;
-$font-secondary: "BrushtipTexe", sans-serif;
-$font-tertiary: "Caballar", sans-serif;
-$font-quaternary: "ArchitectsDaughter", sans-serif;
-$font-logoType: "LogotypeL5r", sans-serif;
+// -- Fonts (Rotis Record — canonical "Shinobi Record" identity)
+// Used by _fonts.scss and other partials for typography. The retired
+// handwritten/brush faces (PatrickHand/Caballar/ArchitectsDaughter) are no
+// longer loaded; these vars now resolve to the Rotis spine + Brushtip signature.
+$font-primary: "RotisSemiSans", sans-serif;   // body/data
+$font-secondary: "BrushtipTexe", sans-serif;  // signature stamp (name/kanji)
+$font-tertiary: "RotisSemiSans", sans-serif;  // was Caballar
+$font-quaternary: "BrushtipTexe", sans-serif; // was ArchitectsDaughter; retired → stamp
+$font-logoType: "LogotypeL5r", sans-serif;    // glyph-icon font — MANDATORY, do not change

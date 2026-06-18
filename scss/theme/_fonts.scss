@@ -14,22 +14,29 @@
     src: url("../../assets/theme/fonts/BrushtipTexe.ttf") format("truetype");
 }
 
-// Font PatrickHand
+// Rotis Record trio (canonical "Shinobi Record" identity).
+// These OTFs ship in assets/theme/fonts/ but were never @font-face-loaded
+// before — the databook tokens named them and silently fell back to Trebuchet/
+// Georgia. Loading them here is both the typography foundation and that bugfix.
+
+// Body / data / labels — Rotis SemiSans
 @font-face {
-    font-family: "PatrickHand";
-    src: url("../../assets/theme/fonts/PatrickHand.ttf") format("truetype");
+    font-family: "RotisSemiSans";
+    src: url("../../assets/theme/fonts/RotisSemiSansStd.otf") format("opentype");
 }
 
-// Font Caballar
+// Display / headings — Rotis SemiSerif (regular + bold).
+// No SemiSerif-Bold ships, so weight 700 borrows the sibling Rotis Serif Bold —
+// visually consistent, a real bold rather than a synthesized one.
 @font-face {
-    font-family: "Caballar";
-    src: url("../../assets/theme/fonts/Caballar.ttf") format("truetype");
+    font-family: "RotisSemiSerif";
+    font-weight: 400;
+    src: url("../../assets/theme/fonts/RotisSemiSerifStd.otf") format("opentype");
 }
-
-// Font ArchitectsDaughter
 @font-face {
-    font-family: "ArchitectsDaughter";
-    src: url("../../assets/theme/fonts/ArchitectsDaughter.ttf") format("truetype");
+    font-family: "RotisSemiSerif";
+    font-weight: 700;
+    src: url("../../assets/theme/fonts/RotisSerifStd-Bold.otf") format("opentype");
 }
 
 // Font variables are defined in _colors.scss (see there for documentation).
@@ -76,9 +83,10 @@ legend {
     font-family: var(--zen-font-body);
 }
 
-// Headings — display brush, except h5 which we use as a small-caps label.
+// Headings — Rotis SemiSerif Bold display, except h5 (small-caps label).
 :is(h1, h2, h3) {
     font-family: var(--zen-font-display);
+    font-weight: 700;
     color: var(--zen-ink);
     letter-spacing: 0.03rem;
 }
