@@ -108,7 +108,10 @@ Hooks.once("ready", () => {
   registerNotesRelay();
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 
-  // § 5.2 — Move naruto-d20 Hero Statistics into the persistent footer.
+  // § 5.2 — Move naruto-d20 Hero Statistics into the footer's meta rail, where
+  // it sits beside the Level cell as the Action Points / Reputation / Wealth
+  // ledger. Relocating (not rebuilding) keeps naruto-d20's rollable Action
+  // Points and its own change handlers intact.
   // naruto-d20's registerSummaryStats hook is async — it awaits renderTemplate
   // before inserting #naruto-hero-statistics. Foundry's Hooks.callAll does NOT
   // await async callbacks, so any synchronous hook we register fires before
@@ -117,12 +120,27 @@ Hooks.once("ready", () => {
   Hooks.on("renderActorSheetPF", async (app, html, _data) => {
     if (!app.options?.classes?.includes("kaihou-databook")) return;
     const $html = html instanceof HTMLElement ? $(html) : html;
-    const footer = $html.find("footer.db-footer");
-    if (!footer.length) return;
+    const rail = $html.find("header.db-footer .db-meta-rail");
+    if (!rail.length) return;
     await new Promise((r) => setTimeout(r, 0));
     const heroStats = $html.find("#naruto-hero-statistics");
     if (!heroStats.length) return;
-    footer.append(heroStats);
+    rail.append(heroStats);
+
+    // Abbreviate the labels so they fit the thin rail. Setting the anchor's
+    // text (Action Points) preserves the rollable <a>; Reputation/Wealth are
+    // plain h5 text.
+    const ABBR = {
+      "flags.naruto-d20.actionPoints": "AP",
+      "flags.naruto-d20.reputation": "REP",
+      "flags.naruto-d20.wealth": "WLT",
+    };
+    (heroStats[0] ?? heroStats).querySelectorAll(".info-box").forEach((box) => {
+      const abbr = ABBR[box.querySelector("input[name]")?.getAttribute("name")];
+      if (!abbr) return;
+      const labelEl = box.querySelector("h5 a") ?? box.querySelector("h5");
+      if (labelEl) labelEl.textContent = abbr;
+    });
   });
 });
 

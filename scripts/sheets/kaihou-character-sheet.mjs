@@ -112,6 +112,41 @@ export function getKaihouCharacterSheetClass() {
       root?.querySelectorAll?.(".db-pip__in[data-field]")?.forEach?.((el) =>
         el.addEventListener("change", (e) => this._onKaihouPipChange(e)),
       );
+      // Footer defense strip: each cell triggers a native PF1e roll.
+      root?.querySelectorAll?.(".db-stat--roll[data-roll]")?.forEach?.((el) =>
+        el.addEventListener("click", (e) => this._onKaihouStatRoll(e)),
+      );
+      // Buffs conditions panel: toggle the collapsed state on its wrapper.
+      root?.querySelectorAll?.(".db-conditions__toggle")?.forEach?.((el) =>
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          el.closest(".db-conditions")?.classList.toggle("is-collapsed");
+        }),
+      );
+    }
+
+    /** Dispatch a footer defense-strip cell to the matching PF1e actor roll,
+     *  mirroring the calls PF1e's own _onRoll makes from the Combat tab. */
+    _onKaihouStatRoll(event) {
+      event.preventDefault();
+      const { roll, save, skill } = event.currentTarget?.dataset ?? {};
+      const token = this.token;
+      switch (roll) {
+        case "defenses":
+          return this.actor.displayDefenseCard({ token });
+        case "init":
+          return this.actor.rollInitiative({
+            createCombatants: true,
+            rerollInitiative: game.user.isGM,
+            token,
+          });
+        case "save":
+          return this.actor.rollSavingThrow(save, { token });
+        case "skill":
+          return this.actor.rollSkill(skill, { token });
+        default:
+          return undefined;
+      }
     }
 
     async _onKaihouPipChange(event) {
@@ -133,7 +168,9 @@ export function getKaihouCharacterSheetClass() {
       try {
         this._normalizeInjectedTabs($html);
         this._normalizeSummaryTab($html);
-        this._normalizeCombatTab($html);
+        this._relocateCombatToSummary($html);
+        this._normalizeBuffsTab($html);
+        this._collapseChakraLearn($html);
       } catch (e) {
         console.error(`${MODULE_ID} | tab normalization failed`, e);
       }
@@ -186,11 +223,12 @@ export function getKaihouCharacterSheetClass() {
       // Classes list lives in Biography; remove the duplicate from Summary.
       summary.querySelector(".classes-body")?.remove();
 
-      // Move Quick Actions out of Summary and into a persistent strip above the footer.
-      const footer = root?.querySelector?.("footer.db-footer");
+      // Move Quick Actions out of Summary into a persistent strip, then dock the
+      // strip + footer together so the portrait can span both at full height.
+      const footer = root?.querySelector?.("header.db-footer");
       if (!footer) return;
-      // Idempotent: skip if strip already built this render.
-      if (root.querySelector(".db-quick-actions-strip")) return;
+      // Idempotent: skip if already docked this render.
+      if (root.querySelector(".db-dock")) return;
       const qaOl = summary.querySelector("ol.quick-actions");
       if (!qaOl) return;
       const qaH3 = qaOl.previousElementSibling?.tagName?.toLowerCase() === "h3"
@@ -200,26 +238,125 @@ export function getKaihouCharacterSheetClass() {
       strip.className = "db-quick-actions-strip";
       if (qaH3) { strip.appendChild(qaH3); }
       strip.appendChild(qaOl);
-      footer.parentNode.insertBefore(strip, footer);
+
+      // Dock layout: a flex row — portrait on the left (stretched to full
+      // height) and a column wrapper holding the footer band over the
+      // quick-actions strip on the right. Flex align-items:stretch gives the
+      // portrait a definite height to fill (grid row-spanning did not).
+      const dock = document.createElement("div");
+      dock.className = "db-dock";
+      footer.parentNode.insertBefore(dock, footer);
+      const portrait = footer.querySelector(".db-band__portrait");
+      if (portrait) {
+        dock.appendChild(portrait);
+        this._fitPortraitRatio(portrait);
+      }
+      const main = document.createElement("div");
+      main.className = "db-dock__main";
+      main.appendChild(footer);
+      main.appendChild(strip);
+      dock.appendChild(main);
+
+      // Rest → small circular FAB at the end of the quick-actions strip. Keeps
+      // its `rest` class so PF1e's inherited _onRest binding still fires.
+      const rest = footer.querySelector(".db-rest");
+      if (rest) {
+        rest.classList.add("db-rest--fab");
+        strip.appendChild(rest);
+      }
     }
 
-    _normalizeCombatTab($html) {
+    // The portrait cell is stretched to the footer height; its width is derived
+    // from --db-port-ratio via CSS aspect-ratio. Set that ratio from the image's
+    // natural dimensions so the whole portrait shows (no crop) and the cell grows
+    // wider to fit. The image may already be cached (complete) or still loading.
+    _fitPortraitRatio(portrait) {
+      const img = portrait.querySelector(".db-band__port");
+      if (!img) return;
+      const apply = () => {
+        const w = img.naturalWidth;
+        const h = img.naturalHeight;
+        if (w > 0 && h > 0) portrait.style.setProperty("--db-port-ratio", `${w} / ${h}`);
+      };
+      if (img.complete && img.naturalWidth) apply();
+      else img.addEventListener("load", apply, { once: true });
+    }
+
+    // Move every Combat-tab function except the attack list onto the Summary
+    // tab, which already carries a Defenses section (the shared defenses-tables
+    // partial + a compact BAB/CMB/Init row). We relocate Combat's fuller
+    // offensive header (adds Melee/Ranged), its Natural Armor AC + Spell
+    // Resistance inputs, and the Save/AC/CMD/SR notes — then strip Combat down
+    // to its attacks so they get more room. PF1e binds all these rollables on
+    // the whole sheet HTML (not scoped to .tab.combat), and the inputs persist
+    // by `name`, so moving the nodes before activateListeners keeps them live.
+    _relocateCombatToSummary($html) {
       const root = $html?.[0] ?? $html;
       const combat = root?.querySelector?.(".tab.combat");
-      if (!combat) return;
+      const summary = root?.querySelector?.(".tab.summary");
+      if (!combat || !summary) return;
 
-      const attackMetrics = combat.querySelector(":scope > header");
-      const attackMetricsRule =
-        attackMetrics?.nextElementSibling?.tagName?.toLowerCase() === "hr"
-          ? attackMetrics.nextElementSibling
-          : null;
-      const defenses = combat.querySelector(".combat-defenses");
-      if (attackMetrics && defenses && defenses.previousElementSibling !== attackMetrics) {
-        defenses.parentNode.insertBefore(attackMetrics, defenses);
-        if (attackMetricsRule) defenses.parentNode.insertBefore(attackMetricsRule, defenses);
+      const defCol = summary.querySelector(".subdetails-body .quick-info > .flexcol");
+      if (!defCol) return;
+      // Idempotent: the Offensive heading marker is added only by this method.
+      if (defCol.querySelector(".db-offensive")) return;
+
+      // Offensive metrics: replace Summary's compact BAB/CMB/Init row with
+      // Combat's fuller header (BAB/CMB/Melee/Ranged/Init), under an "Offensive"
+      // heading that mirrors the existing "Defenses" header markup/styling. The
+      // db-offensive-row class lays its five info-boxes on a single line (CSS).
+      const offHeader = combat.querySelector(":scope > header");
+      const compactStats = defCol.querySelector(".combat-stats");
+      if (offHeader) {
+        offHeader.classList.add("db-offensive-row");
+        const offHead = document.createElement("li");
+        offHead.className = "generic-defenses flexrow db-offensive";
+        offHead.innerHTML = '<h3><i class="fa-solid fa-dice-d20"></i> Offensive</h3>';
+        const anchor = compactStats ?? null;
+        if (anchor) {
+          defCol.insertBefore(offHead, anchor);
+          defCol.insertBefore(offHeader, anchor);
+          anchor.remove();
+        } else {
+          defCol.appendChild(offHead);
+          defCol.appendChild(offHeader);
+        }
       }
 
-      combat.querySelectorAll(".defense-notes > .flexrow").forEach((row) => {
+      // Defenses header row: swap Summary's bare "Defenses" <li> for Combat's
+      // full defenses <ul.attributes> (Defenses title + Natural Armor AC + Spell
+      // Resistance) so all three share one line — PF1e's
+      // `.tab.summary .attributes{flex-flow:row}` lays it out horizontally.
+      const combatDefRow = combat.querySelector(".combat-defenses > ul.attributes");
+      combatDefRow
+        ?.querySelector('input[name="system.attributes.sr.formula"]')
+        ?.closest("li")
+        ?.classList.add("db-sr");
+      const bareDefHead = defCol.querySelector(":scope > li.generic-defenses:not(.db-offensive)");
+      if (combatDefRow && bareDefHead) {
+        defCol.replaceChild(combatDefRow, bareDefHead);
+      } else if (combatDefRow) {
+        defCol.insertBefore(combatDefRow, defCol.firstChild);
+      }
+
+      // Save/AC/CMD/SR notes → below the defenses, each row collapsible.
+      const defenseNotes = combat.querySelector(".combat-defenses .defense-notes");
+      if (defenseNotes) {
+        defCol.appendChild(defenseNotes);
+        this._collapsibleNotes(defenseNotes);
+      }
+
+      // Strip Combat to attacks: drop the emptied defenses block and the stray
+      // <hr> separators that framed it, leaving the filters + .combat-attacks.
+      combat.querySelector(".combat-defenses")?.remove();
+      combat.querySelectorAll(":scope > hr").forEach((hr) => hr.remove());
+    }
+
+    // Wrap each direct `.flexrow` of a notes container in a <details>, turning
+    // its <h3> into the <summary> toggle. Idempotent (skips rows already inside
+    // a <details>). Shared by the relocated defense notes.
+    _collapsibleNotes(container) {
+      container.querySelectorAll(":scope > .flexrow").forEach((row) => {
         if (row.closest("details")) return;
         const heading = row.querySelector("h3");
         const label = heading?.textContent?.trim() || "Notes";
@@ -231,6 +368,57 @@ export function getKaihouCharacterSheetClass() {
         heading?.remove();
         details.appendChild(row);
       });
+    }
+
+    // Buffs tab: make the conditions panel collapsible by wrapping it in a
+    // <details> with a "Conditions" summary. Idempotent.
+    // Make the conditions panel collapsible. Native <details> proved unreliable
+    // here (closed content stayed laid out as a blank band), so use a button +
+    // class toggle whose visibility is driven entirely by an explicit author
+    // `display` rule. Collapsed by default. Idempotent.
+    _normalizeBuffsTab($html) {
+      const root = $html?.[0] ?? $html;
+      const conditions = root?.querySelector?.(".tab.buffs .buffs-conditions");
+      if (!conditions || conditions.closest(".db-conditions")) return;
+      // Drop the <hr> that trailed the conditions panel — once collapsed it left
+      // a separator floating above the filter bar.
+      const sep = conditions.nextElementSibling;
+      if (sep?.tagName?.toLowerCase() === "hr") sep.remove();
+      // Remove `flexrow` so the core `.flexrow{display:flex}` can't fight our
+      // display control over the panel.
+      conditions.classList.remove("flexrow");
+      const wrap = document.createElement("div");
+      wrap.className = "db-conditions is-collapsed";
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "db-conditions__toggle";
+      toggle.textContent = "Conditions";
+      conditions.parentNode.insertBefore(wrap, conditions);
+      wrap.appendChild(toggle);
+      wrap.appendChild(conditions);
+    }
+
+    // Chakra tab (injected by naruto-d20 inside the awaited super render): make
+    // the Shinobi Learn Checks block collapsible — its <h3> becomes the toggle.
+    // Skips gracefully if the chakra body isn't present. Idempotent. (Distinct
+    // from the rejected chakra "nature strip"; styling lives in the theme file.)
+    _collapseChakraLearn($html) {
+      const root = $html?.[0] ?? $html;
+      const chakra = root?.querySelector?.(".tab.chakra");
+      if (!chakra) return;
+      const learnBox = chakra.querySelector(".learn-check-box");
+      const learn = learnBox?.closest(".defenses");
+      if (!learn || learn.closest("details")) return;
+      const heading = learn.querySelector(":scope > h3");
+      const label = heading?.textContent?.trim() || "Learn";
+      const details = document.createElement("details");
+      details.className = "db-learn-toggle";
+      const summary = document.createElement("summary");
+      summary.textContent = label;
+      details.appendChild(summary);
+      learn.parentNode.insertBefore(details, learn);
+      heading?.remove();
+      details.appendChild(learn);
     }
 
     // Name of the actor item the 20Q wizard tagged with

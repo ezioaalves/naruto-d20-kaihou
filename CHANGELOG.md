@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.13 — 2026-06-19
+
+### Changed
+- **Combat consolidated into Summary.** The offensive metrics, defenses, Natural Armor AC / Spell Resistance, and the Save/AC/CMD/Spell Resistance notes all moved onto the Summary tab; the Combat tab now shows only the attack list, giving attacks more room.
+- Summary defenses now read on one line (Defenses · Natural Armor AC · Spell Resistance), and the offensive metrics show BAB · CMB · Initiative on the first row with Melee · Ranged beneath them.
+- The databook nameplate (portrait, name/alias, HP/Chakra/Reserve gauges, defense strip, meta rail) moved from the bottom footer to a **header at the top of the sheet**, above the tab strip, with the quick-actions bar relocated to the bottom of the header.
+
+### Added
+- Collapsible panels: the Summary defense notes, the Buffs **Conditions** panel, and the Chakra **Shinobi Learn Checks** block now collapse (Conditions collapsed by default with a compact, scrollable grid when open).
+- Biography tab now scrolls when its content overflows.
+
 ## v2.1.12 — 2026-06-18
 
 ### Added

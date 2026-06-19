@@ -96,34 +96,86 @@ export function headlineNature(natures) {
   return "";
 }
 
-/** Resource pips for the header: HP (editable) · AC · Chakra (editable, with a
- *  tap-reserves button reusing naruto-d20's .tap-reserve-roll) · Level. */
-export function resourcePips(resources) {
-  if (!resources) return "";
-  const { hp, ac, chakra, level } = resources;
-  const display = (label, val) => `<div class="db-pip"><b>${esc(val)}</b><small>${esc(label)}</small></div>`;
-  // Persist via data-field + a change listener, NOT a form `name`: the footer
-  // HP/Chakra pips duplicate fields that also live on the Summary/Chakra tabs.
-  // Two same-named inputs in one form serialize to an array — harmless for the
-  // schema'd HP path, but it corrupted the unschema'd chakra FLAG into "[0,0]"
-  // (rendered "0,0" / "5,0"). data-field keeps them out of form serialization.
-  const editable = (label, name, val, max, after = "") =>
-    `<div class="db-pip db-pip--edit"><span class="db-pip__val"><input class="db-pip__in" type="text" data-field="${esc(name)}" value="${esc(val)}" inputmode="numeric"><span class="db-pip__max">/${esc(max)}</span></span>${after}<small>${esc(label)}</small></div>`;
-  const tap = `<a class="db-pip__tap tap-reserve-roll" title="Tap chakra reserves"><i class="fa-solid fa-hand-holding-droplet"></i></a>`;
+// Percent fill for a resource gauge, clamped to [0, 100].
+const fillPct = (v, m) => (m > 0 ? Math.max(0, Math.min(100, (v / m) * 100)) : 0);
+// Modifier formatting for the defense strip: +4 / -1 / +0.
+const signed = (n) => (Number(n) >= 0 ? `+${n}` : `${n}`);
+
+/** An editable resource gauge bar (HP, Chakra). The value persists via
+ *  data-field + change listener, NOT a form `name`: these footer fields
+ *  duplicate inputs on the Summary/Chakra tabs, and two same-named inputs in
+ *  one form serialize to an array — harmless for the schema'd HP path, but it
+ *  corrupted the unschema'd chakra FLAG into "[0,0]". data-field keeps them out
+ *  of form serialization. The fill width reflects value/max and is recomputed
+ *  on every render (PF1e re-renders the sheet after a data-field change). */
+function gauge(variant, label, name, val, max, after = "") {
   return [
-    `<div class="db-band__stats">`,
-    editable("HP", "system.attributes.hp.value", hp.value, hp.max),
-    display("AC", ac),
-    editable("Chakra", "flags.naruto-d20.chakra.pool.value", chakra.value, chakra.max, tap),
-    display("LV", level),
-    `<button type="button" class="rest db-rest" title="Rest"><i class="fa-solid fa-bed"></i> Rest</button>`,
+    `<div class="db-bar db-bar--${variant}">`,
+    `<span class="db-bar__fill" style="width:${fillPct(val, max)}%"></span>`,
+    `<span class="db-bar__label">${esc(label)}</span>`,
+    `<span class="db-bar__readout">`,
+    `<input class="db-bar__in db-pip__in" type="text" data-field="${esc(name)}" value="${esc(val)}" inputmode="numeric">`,
+    `<span class="db-bar__max">/${esc(max)}</span>`,
+    after,
+    `</span>`,
+    `</div>`,
+  ].join("");
+}
+
+/** One rollable cell in the defense strip. The whole cell is a button that
+ *  triggers a native PF1e roll (handled by _onKaihouStatRoll in the sheet).
+ *  `roll` selects the action; `extra` carries data-save / data-skill. */
+function statRoll(label, val, roll, extra = "") {
+  return [
+    `<button type="button" class="db-stat db-stat--roll" data-roll="${esc(roll)}"${extra ? " " + extra : ""}>`,
+    `<b class="db-stat__v">${esc(val)}</b><small class="db-stat__k">${esc(label)}</small>`,
+    `</button>`,
+  ].join("");
+}
+
+/** The right-hand vitals panel: HP / Chakra / Chakra-Reserve gauges over a
+ *  6-cell rollable defense strip (AC · Init · Fort · Ref · Will · Per). */
+export function vitalsPanel(resources) {
+  if (!resources) return "";
+  const { hp, ac, chakra, reserve = {}, init, saves = {}, per } = resources;
+  const tap = `<a class="db-bar__tap tap-reserve-roll" title="Tap chakra reserves"><i class="fa-solid fa-hand-holding-droplet"></i></a>`;
+  return [
+    `<div class="db-band__vitals">`,
+    `<div class="db-vitals__bars">`,
+    gauge("hp", "Hit Points", "system.attributes.hp.value", hp.value, hp.max),
+    gauge("chakra", "Chakra", "flags.naruto-d20.chakra.pool.value", chakra.value, chakra.max, tap),
+    gauge("reserve", "Reserve", "flags.naruto-d20.chakra.reserve.value", reserve.value, reserve.max),
+    `</div>`,
+    `<div class="db-vitals__strip">`,
+    statRoll("AC", ac, "defenses"),
+    statRoll("Init", signed(init), "init"),
+    statRoll("Fort", signed(saves.fort), "save", `data-save="fort"`),
+    statRoll("Ref", signed(saves.ref), "save", `data-save="ref"`),
+    statRoll("Will", signed(saves.will), "save", `data-save="will"`),
+    statRoll("Per", signed(per), "skill", `data-skill="per"`),
+    `</div>`,
+    `</div>`,
+  ].join("");
+}
+
+/** The meta rail — a far-right column holding the Level cell. naruto-d20's
+ *  Action Points / Reputation / Wealth block (#naruto-hero-statistics) is
+ *  relocated beneath it by the renderActorSheetPF hook in kaihou.mjs,
+ *  preserving its rollable Action Points and its own change handlers. */
+export function metaRail(resources) {
+  if (!resources) return "";
+  return [
+    `<div class="db-meta-rail">`,
+    `<div class="db-meta__cell db-meta__cell--level">`,
+    `<b class="db-meta__v">${esc(resources.level)}</b><small class="db-meta__k">LVL</small>`,
+    `</div>`,
     `</div>`,
   ].join("");
 }
 
 /** vm = view-model; meta = {name,img,village,rank} pulled from the actor by the sheet. */
 export function headerBand(vm, meta) {
-  const { alias, rank } = vm.identity;
+  const { alias } = vm.identity;
   const villageCrest = meta.villageCrest
     ? `<img class="db-badge__crest" src="${esc(meta.villageCrest)}" alt="">`
     : "";
@@ -131,22 +183,32 @@ export function headerBand(vm, meta) {
   // back to the crab (Kaihou / Kanigakure emblem) when no village is set.
   const cornerCrest = meta.villageCrest || "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg";
   const crest = `<img class="db-band__crest" src="${esc(cornerCrest)}" alt="" title="${esc(meta.village ?? "")}">`;
-  const badges = [
-    meta.village ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>` : "",
-    (rank ?? meta.rank) ? `<span class="db-badge db-badge--rank">${esc(rank ?? meta.rank)}</span>` : "",
-  ].join("");
+  // Rank badge removed per design iteration 2 — only the village badge remains
+  // (and only when a village is set).
+  const badges = meta.village
+    ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>`
+    : "";
+  // Keep the `rest` class so PF1e's inherited _onRest binding still fires; the
+  // sheet relocates this button into the quick-actions strip as a circular FAB.
+  const rest = `<button type="button" class="rest db-rest" title="Rest"><i class="fa-solid fa-bed"></i></button>`;
+  // Layout: the band is a vertical stack — title (name, alias under it, village
+  // badge) over the vitals. The portrait and Rest button are relocated by the
+  // sheet (portrait → dock left column; Rest → quick-actions strip); both are
+  // emitted here so they exist for tests and as a graceful no-JS fallback.
   return [
-    `<header class="db-band">`,
+    `<header class="db-band db-band--vitals">`,
     `<div class="db-band__portrait">`,
     `<img class="db-band__port" src="${esc(meta.img)}" alt="" data-edit="img">`,
     crest, // village crest — portrait lower-right corner (CSS)
     `</div>`,
-    `<div class="db-band__id">`,
+    `<div class="db-band__title">`,
     `<div class="db-band__name">${esc(meta.name)}</div>`,
     alias ? `<div class="db-band__alias">${esc(alias)}</div>` : "",
-    `<div class="db-band__badges">${badges}</div>`,
+    badges ? `<div class="db-band__badges">${badges}</div>` : "",
     `</div>`,
-    resourcePips(vm.resources),
+    vitalsPanel(vm.resources),
+    rest,
     `</header>`,
+    metaRail(vm.resources),
   ].join("");
 }

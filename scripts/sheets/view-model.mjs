@@ -64,11 +64,22 @@ function buildMissions(m = {}) {
 function buildResources(sys = {}, nd = {}) {
   const hp = sys.attributes?.hp ?? {};
   const pool = nd?.chakra?.pool ?? {};
+  const reserve = nd?.chakra?.reserve ?? {};
+  const saves = sys.attributes?.savingThrows ?? {};
   return {
     hp: { value: num(hp.value), max: num(hp.max) },
     ac: num(sys.attributes?.ac?.normal?.total),
     chakra: { value: num(pool.value), max: num(pool.max) },
+    reserve: { value: num(reserve.value), max: num(reserve.max) },
     level: num(sys.attributes?.hd?.total),
+    // Defense strip (read-only, derived by PF1e's data preparation).
+    init: num(sys.attributes?.init?.total),
+    saves: {
+      fort: num(saves.fort?.total),
+      ref: num(saves.ref?.total),
+      will: num(saves.will?.total),
+    },
+    per: num(sys.skills?.per?.mod),
   };
 }
 

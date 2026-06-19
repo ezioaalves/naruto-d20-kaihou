@@ -74,7 +74,7 @@ describe("missionRecord & headerBand", () => {
     expect(missions).toContain(">41<"); // total still rendered as static
     const band = headerBand(vm, { name: "Uchiha <b>Takeshi</b>", img: "p.png", village: "Kanigakure", villageCrest: "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg", rank: "Chūnin" });
     expect(band).toContain("Crimson Mirage");
-    expect(band).toContain("Chūnin");
+    expect(band).not.toContain("db-badge--rank"); // rank badge removed (iteration 2)
     expect(band).toContain('class="db-badge__crest"'); // village crest image rendered
     expect(band).toContain("villages/crab.svg");
     expect(band).toContain('class="db-band__crest" src="modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg"'); // corner crest
@@ -83,19 +83,48 @@ describe("missionRecord & headerBand", () => {
     expect(band).not.toContain("<b>Takeshi</b>");
   });
 
-  it("renders editable HP/Chakra + AC/Level pips, tap-reserve + rest buttons", () => {
+  it("renders the title stack, HP/Chakra/Reserve gauges, rollable 6-cell strip, meta rail + rest", () => {
     const band = headerBand(vm, { name: "Takeshi", img: "p.png", village: "Konoha", rank: "Chūnin" });
-    expect(band).toContain("db-band__stats");
-    // Pips use data-field (NOT form name) to avoid duplicate-name flag corruption.
+    // Title stack: name, then alias directly under it, then the village badge.
+    expect(band).toContain("db-band__title");
+    expect(band).toContain('<div class="db-band__name">Takeshi</div>');
+    expect(band).toContain('<div class="db-band__alias">Crimson Mirage</div>'); // alias under name
+    expect(band).not.toContain("db-badge--rank"); // rank removed
+    expect(band).toContain("db-band__vitals");
+    expect(band).toContain("db-vitals__bars");
+    expect(band).toContain("db-vitals__strip");
+    // Three gauges; each uses data-field (NOT form name) to avoid flag corruption.
+    expect(band).toContain("db-bar--hp");
     expect(band).toContain('data-field="system.attributes.hp.value" value="42"'); // HP editable
     expect(band).not.toContain('name="system.attributes.hp.value"'); // never a form field
     expect(band).toContain("/50"); // HP max
-    expect(band).toContain(">18<"); // AC (display)
+    expect(band).toContain('style="width:84%"'); // HP fill 42/50
+    expect(band).toContain("db-bar--chakra");
     expect(band).toContain('data-field="flags.naruto-d20.chakra.pool.value" value="30"'); // Chakra editable
     expect(band).not.toContain('name="flags.naruto-d20.chakra.pool.value"');
+    expect(band).toContain("db-bar--reserve");
+    expect(band).toContain('data-field="flags.naruto-d20.chakra.reserve.value"'); // reserve gauge
     expect(band).toContain("tap-reserve-roll"); // reuses naruto-d20's reserve listener
-    expect(band).toContain(">5<"); // Level (display)
-    expect(band).toContain('class="rest db-rest"'); // rest button (reuses PF1e .rest)
+    // Defense strip: six rollable cells wired to native PF1e rolls.
+    expect(band).toContain("db-stat--roll");
+    expect(band).toContain(">18<"); // AC (display)
+    expect(band).toContain('data-roll="defenses"'); // AC → defenses card
+    expect(band).toContain('data-roll="init"');
+    expect(band).toContain('data-roll="save" data-save="fort"');
+    expect(band).toContain('data-roll="save" data-save="ref"');
+    expect(band).toContain('data-roll="save" data-save="will"');
+    expect(band).toContain('data-roll="skill" data-skill="per"');
+    expect(band).toContain(">+0<"); // unset modifiers render as +0
+    // Speed and CMD were dropped from the strip per the design iteration.
+    expect(band).not.toContain(">Speed<");
+    expect(band).not.toContain(">CMD<");
+    // Meta rail with abbreviated Level; AP/Rep/Wealth appended at runtime by the hook.
+    expect(band).toContain("db-meta-rail");
+    expect(band).toContain(">5<"); // Level value
+    expect(band).toContain(">LVL<"); // abbreviated label
+    expect(band).toContain("db-meta__cell--level");
+    // Rest keeps the `rest` class so PF1e's _onRest binding fires after relocation.
+    expect(band).toContain('class="rest db-rest"');
     expect(band).toContain('class="db-band__crest"'); // corner crest always renders…
     expect(band).toContain("villages/crab.svg"); // …defaulting to crab when no village crest
   });
@@ -133,8 +162,9 @@ describe("kaihou character sheet template", () => {
       "utf8",
     );
     const navIndex = template.indexOf('<nav class="sheet-navigation tabs"');
-    const footerIndex = template.indexOf('<footer class="db-footer">');
-    expect(footerIndex).toBeGreaterThan(navIndex);
+    const headerIndex = template.indexOf('<header class="db-footer">');
+    expect(headerIndex).toBeGreaterThan(-1);
+    expect(headerIndex).toBeLessThan(navIndex); // masthead sits above the tab strip
     expect(template).not.toContain("db-quick-strip");
     expect(template).not.toContain("quickActions");
     expect(template).not.toContain("{{{kaihou.fragments.naturesFull}}}");
@@ -147,14 +177,14 @@ describe("kaihou character sheet template", () => {
     );
     const navIndex = template.indexOf('<nav class="sheet-navigation tabs"');
     const bodyIndex = template.indexOf('<section class="primary-body">');
-    const footerIndex = template.indexOf('<footer class="db-footer">');
+    const headerIndex = template.indexOf('<header class="db-footer">');
     const bioIndex = template.indexOf('<div class="tab biography');
     const raceControlIndex = template.indexOf('data-create="misc.race"');
     const classControlIndex = template.indexOf('data-create="class"');
 
     expect(navIndex).toBeGreaterThan(-1);
     expect(navIndex).toBeLessThan(bodyIndex);
-    expect(navIndex).toBeLessThan(footerIndex);
+    expect(headerIndex).toBeLessThan(navIndex); // masthead above the tab strip, nav stays its own sibling
     expect(raceControlIndex).toBeGreaterThan(bioIndex);
     expect(classControlIndex).toBeGreaterThan(bioIndex);
   });

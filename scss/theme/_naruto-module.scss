@@ -37,6 +37,17 @@ $discipline-color: (
         padding-bottom: 0.15rem;
     }
 
+    // Collapsible Shinobi Learn Checks block: its <h3> becomes the <summary>
+    // toggle (see _collapseChakraLearn), so style the summary to match h3.
+    details.db-learn-toggle > summary {
+        cursor: pointer;
+        font-family: var(--k-font-display);
+        color: var(--k-ink);
+        border-bottom: 1px solid var(--k-rule);
+        margin: 0.25rem 0 0.5rem;
+        padding-bottom: 0.15rem;
+    }
+
     hr {
         border: 0;
         border-top: 1px dashed var(--k-rule);

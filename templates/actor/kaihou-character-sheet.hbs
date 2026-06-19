@@ -11,6 +11,14 @@
 --}}
 <form class="{{cssClass}} kaihou-databook-form" data-tooltip-class="pf1" autocomplete="off">
 
+  {{!-- Databook masthead (the former footer, relocated to the top). _normalizeSummaryTab
+       wraps this + the quick-actions strip into the .db-dock here. --}}
+  {{#if kaihou.isOwner}}
+  <header class="db-footer">
+    {{{kaihou.fragments.headerBand}}}
+  </header>
+  {{/if}}
+
   {{#unless hasClasses}}<span class="charactermancer warning">{{localize "PF1.Info_MissingClass"}}</span>{{/unless}}
 
   {{!-- PC Sheet Navigation — limited viewers see only Identity; owners see all tabs.
@@ -233,9 +241,4 @@
     </div>
   {{/if}}
   </section>
-  {{#if kaihou.isOwner}}
-  <footer class="db-footer">
-    {{{kaihou.fragments.headerBand}}}
-  </footer>
-  {{/if}}
 </form>
