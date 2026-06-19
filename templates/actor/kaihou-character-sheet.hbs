@@ -11,68 +11,55 @@
 --}}
 <form class="{{cssClass}} kaihou-databook-form" data-tooltip-class="pf1" autocomplete="off">
 
-  {{#unless hasClasses}}<span class="charactermancer warning">{{localize "PF1.Info_MissingClass"}}</span>{{/unless}}
-
-  {{!-- Databook header band (always visible, above the tab strip) --}}
-  {{{kaihou.fragments.headerBand}}}
-
-  {{!-- Compact Quick Actions strip — reuses PF1e's quickActions context + markup,
-       so PF1e's selector-bound listeners wire these too. --}}
-  {{#if quickActions.length}}
-  <div class="db-quick-strip">
-    <ol class="quick-actions">
-      {{#each quickActions}}
-      <li class="item" data-item-id="{{id}}" data-type="{{type}}" data-tooltip="{{name}}">
-        <img src="{{img}}">
-        {{#if isCharged}}
-        <charges>
-        {{~#if recharging~}}<span class="recharge">+{{uses}}</span>
-        {{~else~}}<span class="remaining">{{uses}}</span>{{~#if max~}}<span class="delimiter">/</span><span class="max">{{max}}</span>{{~/if~}}
-        {{~/if~}}
-        </charges>
-        {{/if}}
-      </li>
-      {{/each}}
-    </ol>
-  </div>
+  {{!-- Databook masthead (the former footer, relocated to the top). _normalizeSummaryTab
+       wraps this + the quick-actions strip into the .db-dock here. --}}
+  {{#if kaihou.isOwner}}
+  <header class="db-footer">
+    {{{kaihou.fragments.headerBand}}}
+  </header>
   {{/if}}
 
-  {{!-- PC Sheet Navigation — icon rail; label reveals on active/hover (after the
-       icon, so the icon never shifts). Identity leads; Chakra is injected by
-       naruto-d20 and normalised to this markup by the sheet class. --}}
+  {{#if isCharacter}}{{#unless hasClasses}}<span class="charactermancer warning">{{localize "PF1.Info_MissingClass"}}</span>{{/unless}}{{/if}}
+
+  {{!-- Actor Sheet Navigation — limited viewers see only Identity; owners see all tabs.
+       No icons: labels only. The naruto-d20 injected Chakra tab is removed in
+       _normalizeInjectedTabs so it never appears in the strip. --}}
   <nav class="sheet-navigation tabs" data-group="primary">
-    <a class="item" data-tab="summary" data-group="primary"><i class="fa-solid fa-user"></i><span class="db-tab-label">{{ localize "PF1.Summary" }}</span></a>
-    <a class="item" data-tab="identity" data-group="primary"><i class="fa-solid fa-id-card"></i><span class="db-tab-label">Identity</span></a>
-    <a class="item" data-tab="combat" data-group="primary"><i class="fa-solid fa-hand-fist"></i><span class="db-tab-label">{{ localize "PF1.Combat" }}</span></a>
-    <a class="item" data-tab="skills" data-group="primary"><i class="fa-solid fa-list-check"></i><span class="db-tab-label">{{ localize "PF1.Skills" }}</span></a>
-    <a class="item" data-tab="attributes" data-group="primary"><i class="fa-solid fa-dumbbell"></i><span class="db-tab-label">{{ localize "PF1.Attributes" }}</span></a>
-    <a class="item" data-tab="inventory" data-group="primary"><i class="fa-solid fa-briefcase"></i><span class="db-tab-label">{{ localize "PF1.Inventory" }}</span></a>
-    <a class="item" data-tab="feats" data-group="primary"><i class="fa-solid fa-star"></i><span class="db-tab-label">{{ localize "PF1.Features" }}</span></a>
-    {{#if usesAnySpellbook}}<a class="item" data-tab="spellbook" data-group="primary"><i class="fa-solid fa-book"></i><span class="db-tab-label">{{ localize "PF1.Spells" }}</span></a>{{/if}}
-    <a class="item" data-tab="buffs" data-group="primary"><i class="fa-solid fa-bolt"></i><span class="db-tab-label">{{ localize "PF1.Buffs" }}</span></a>
-    <a class="item" data-tab="biography" data-group="primary"><i class="fa-solid fa-scroll"></i><span class="db-tab-label">{{ localize "PF1.Biography" }}</span></a>
-    <a class="item" data-tab="notes" data-group="primary"><i class="fa-solid fa-note-sticky"></i><span class="db-tab-label">{{ localize "PF1.Notes" }}</span></a>
-    <a class="item" data-tab="settings" data-group="primary"><i class="fa-solid fa-gear"></i><span class="db-tab-label">{{ localize "PF1.Settings" }}</span></a>
+    {{#if kaihou.isOwner}}<a class="item" data-tab="summary" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Summary" }}</span></a>{{/if}}
+    <a class="item" data-tab="identity" data-group="primary"><span class="db-tab-label">Identity</span></a>
+    {{#if kaihou.isOwner}}
+    <a class="item" data-tab="combat" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Combat" }}</span></a>
+    <a class="item" data-tab="skills" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Skills" }}</span></a>
+    <a class="item" data-tab="attributes" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Attributes" }}</span></a>
+    <a class="item" data-tab="inventory" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Inventory" }}</span></a>
+    <a class="item" data-tab="feats" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Features" }}</span></a>
+    {{#if usesAnySpellbook}}<a class="item" data-tab="spellbook" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Spells" }}</span></a>{{/if}}
+    <a class="item" data-tab="buffs" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Buffs" }}</span></a>
+    <a class="item" data-tab="biography" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Biography" }}</span></a>
+    <a class="item" data-tab="notes" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Notes" }}</span></a>
+    <a class="item" data-tab="settings" data-group="primary"><span class="db-tab-label">{{ localize "PF1.Settings" }}</span></a>
+    {{/if}}
   </nav>
 
-  {{!-- PC Sheet Body --}}
+  {{!-- Actor Sheet Body --}}
   <section class="primary-body">
 
-    {{!-- Identity (databook front matter — Kaihou-owned) --}}
+    {{!-- Identity (databook front matter — visible to ≥limited viewers) --}}
     <div class="tab identity flexcol" data-group="primary" data-tab="identity">
       <div class="db-frontmatter">
-        <div class="db-identity-edit">
-          <label>Alias
-            <input type="text" name="flags.naruto-d20-kaihou.alias" value="{{kaihou.identity.alias}}" placeholder="—">
-          </label>
-          <label>Allegiance
-            <input type="text" name="flags.naruto-d20-kaihou.allegiance" value="{{kaihou.identity.allegiance}}" placeholder="—">
-          </label>
-        </div>
 
-        <div class="db-panel db-panel--natures">
-          <h4 class="db-panel__h">Chakra Natures</h4>
-          {{{kaihou.fragments.naturesFull}}}
+        <div class="db-identity-hero db-panel">
+          <div class="db-identity-portrait">
+            <img src="{{kaihou.meta.img}}" alt="" data-edit="img">
+          </div>
+          <div class="db-identity-info">
+            <h4 class="db-panel__h">Info</h4>
+            {{#if kaihou.isOwner}}
+            <textarea name="flags.naruto-d20-kaihou.info" rows="5" placeholder="Public identity notes...">{{kaihou.identity.info}}</textarea>
+            {{else}}
+            <div class="db-identity-info__read">{{#if kaihou.identity.info}}{{kaihou.identity.info}}{{else}}—{{/if}}</div>
+            {{/if}}
+          </div>
         </div>
 
         <div class="db-radars">
@@ -83,27 +70,41 @@
         <div class="db-row2">
           {{{kaihou.fragments.missionRecord}}}
           <div class="db-panel">
-            <h4 class="db-panel__h">Origin &amp; Path</h4>
+            <h4 class="db-panel__h">Data</h4>
             {{#each kaihou.origin}}
               <div class="db-line"><span>{{this.label}}</span><span>{{#if this.value}}{{this.value}}{{else}}—{{/if}}</span></div>
             {{/each}}
+            <div class="db-line"><span>Rank</span><span>{{#if kaihou.identity.rank}}{{kaihou.identity.rank}}{{else}}—{{/if}}</span></div>
+            <div class="db-line"><span>Alias</span><span>{{#if kaihou.identity.alias}}{{kaihou.identity.alias}}{{else}}—{{/if}}</span></div>
+            <div class="db-line">
+              <span>Clan</span>
+              {{#if kaihou.isOwner}}<input type="text" class="db-data__input" name="flags.naruto-d20-kaihou.clan" value="{{kaihou.identity.clan}}" placeholder="—">{{else}}<span>{{#if kaihou.identity.clan}}{{kaihou.identity.clan}}{{else}}—{{/if}}</span>{{/if}}
+            </div>
+            <div class="db-line">
+              <span>Gender</span>
+              {{#if kaihou.isOwner}}<input type="text" class="db-data__input" name="system.details.gender" value="{{kaihou.identity.details.gender}}" placeholder="—">{{else}}<span>{{#if kaihou.identity.details.gender}}{{kaihou.identity.details.gender}}{{else}}—{{/if}}</span>{{/if}}
+            </div>
+            <div class="db-line">
+              <span>Age</span>
+              {{#if kaihou.isOwner}}<input type="text" class="db-data__input" name="system.details.age" value="{{kaihou.identity.details.age}}" placeholder="—">{{else}}<span>{{#if kaihou.identity.details.age}}{{kaihou.identity.details.age}}{{else}}—{{/if}}</span>{{/if}}
+            </div>
+            <div class="db-line">
+              <span>Height</span>
+              {{#if kaihou.isOwner}}<input type="text" class="db-data__input" name="system.details.height" value="{{kaihou.identity.details.height}}" placeholder="—">{{else}}<span>{{#if kaihou.identity.details.height}}{{kaihou.identity.details.height}}{{else}}—{{/if}}</span>{{/if}}
+            </div>
+            <div class="db-line">
+              <span>Weight</span>
+              {{#if kaihou.isOwner}}<input type="text" class="db-data__input" name="system.details.weight" value="{{kaihou.identity.details.weight}}" placeholder="—">{{else}}<span>{{#if kaihou.identity.details.weight}}{{kaihou.identity.details.weight}}{{else}}—{{/if}}</span>{{/if}}
+            </div>
           </div>
         </div>
 
-        {{!-- Collaborative notes: private (this player) + public (whole party) --}}
-        <div class="db-row2 db-notes">
-          <div class="db-panel">
-            <h4 class="db-panel__h">My Notes <span class="db-notes__hint">private</span></h4>
-            <textarea class="db-notes__private" rows="5" placeholder="Your private notes on this character…">{{kaihou.notes.privateNote}}</textarea>
-          </div>
-          <div class="db-panel">
-            <h4 class="db-panel__h">Party Notes <span class="db-notes__hint">shared</span></h4>
-            <textarea class="db-notes__public" rows="5" placeholder="Notes the whole party can see…">{{kaihou.notes.publicNote}}</textarea>
-          </div>
-        </div>
+
       </div>
     </div>
 
+  {{!-- Owner-only tabs: all functional PF1e tabs. Limited viewers land on Identity. --}}
+  {{#if kaihou.isOwner}}
     {{!-- Details (PF1e summary) --}}
     <div class="tab summary flexcol" data-group="primary" data-tab="summary">
       {{> "systems/pf1/templates/actors/parts/actor-summary.hbs"}}
@@ -147,7 +148,80 @@
 
     {{!-- Biography Tab --}}
     <div class="tab biography flexcol" data-group="primary" data-tab="biography">
-      {{editor biographyHTML target="system.details.biography.value" toggle=_editorState.system.details.biography.value button=_editorState.system.details.biography.value engine="prosemirror" editable=@root.editable}}
+      <div class="db-biography">
+        <div class="db-panel">
+          <h4 class="db-panel__h">Back Matter</h4>
+          <div class="db-bio-field">
+            <label>Name</label>
+            <input type="text" class="db-bio-actor-name" data-kaihou-actor-name value="{{kaihou.meta.name}}">
+          </div>
+          <div class="db-bio-field">
+            <label>Alias</label>
+            <input type="text" name="flags.naruto-d20-kaihou.alias" value="{{kaihou.identity.alias}}">
+          </div>
+          <div class="db-bio-field">
+            <label>Rank</label>
+            <input type="text" name="flags.naruto-d20-kaihou.rank" value="{{kaihou.identity.rank}}">
+          </div>
+          <div class="db-bio-field">
+            <label>Race</label>
+            <div class="db-bio-item race item" {{#if race}}data-item-id="{{race._id}}"{{/if}}>
+              <span>{{#if race}}{{race.name}}{{else}}—{{/if}}</span>
+              <div class="item-controls">
+                {{#if @root.owner}}
+                {{#if race}}
+                <a class="item-control item-edit" data-tooltip="PF1.EditItem"><i class="fa-solid fa-edit" inert></i></a>
+                <a class="item-control item-delete" data-tooltip="PF1.DeleteItem"><i class="fa-solid fa-trash" inert></i></a>
+                {{else}}
+                <a class="item-control item-create" data-tooltip="PF1.CreateItem" data-create="misc.race"><i class="fa-solid fa-plus" inert></i></a>
+                <a data-action="browse" data-category="races" data-tooltip="PF1.BrowseRaces"><i class="fa-solid fa-folder-plus" inert></i></a>
+                {{/if}}
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="db-panel db-bio-classes-panel">
+          <div class="db-panel__header-row">
+            <h4 class="db-panel__h">Classes</h4>
+            {{#if @root.owner}}
+            <div class="item-controls db-bio-class-add">
+              <a class="item-control item-create" data-tooltip="PF1.CreateItem" data-create="class"><i class="fa-solid fa-plus" inert></i></a>
+              <a data-action="browse" data-category="classes" data-tooltip="PF1.BrowseClasses"><i class="fa-solid fa-folder-plus" inert></i></a>
+            </div>
+            {{/if}}
+          </div>
+          <ol class="db-bio-classes item-list" data-list="classes" data-type="class">
+            {{#each kaihou.kaihouClasses}}
+            <li class="db-bio-item item flexrow" data-item-id="{{this.id}}">
+              <img src="{{this.img}}" alt="" class="db-bio-class-icon">
+              <div class="item-name">
+                <h4>{{this.name}}</h4>
+              </div>
+              <div class="item-detail class-level">
+                <span>Lv {{this.level}}</span>
+              </div>
+              <div class="item-controls">
+                {{#if @root.owner}}
+                <a class="item-control item-edit" data-tooltip="PF1.EditItem"><i class="fa-solid fa-edit" inert></i></a>
+                <a class="item-control item-delete" data-tooltip="PF1.DeleteItem"><i class="fa-solid fa-trash" inert></i></a>
+                {{/if}}
+              </div>
+            </li>
+            {{else}}
+            <li class="db-bio-item item flexrow empty">
+              <div class="item-name"><h4>—</h4></div>
+            </li>
+            {{/each}}
+          </ol>
+        </div>
+
+        <div class="db-panel db-bio-notes">
+          <h4 class="db-panel__h">Player Notes</h4>
+          {{editor biographyHTML target="system.details.biography.value" toggle=_editorState.system.details.biography.value button=_editorState.system.details.biography.value engine="prosemirror" editable=@root.editable}}
+        </div>
+      </div>
     </div>
 
     {{!-- Notes Tab --}}
@@ -165,5 +239,6 @@
     <div class="tab settings flexcol" data-group="primary" data-tab="settings">
       {{> "systems/pf1/templates/actors/parts/actor-settings.hbs"}}
     </div>
+  {{/if}}
   </section>
 </form>

@@ -9,26 +9,26 @@
  */
 
 .zen-drop-zone {
-  background: var(--zen-input-bg-strong);
-  border: var(--zen-border-base) dashed var(--zen-border);
-  padding: var(--zen-space-3);
+  background: var(--k-input-bg-strong);
+  border: var(--k-border-base) dashed var(--k-rule);
+  padding: var(--k-space-3);
   text-align: center;
-  color: var(--zen-ink-mute);
+  color: var(--k-ink-mute);
   font-style: italic;
-  font-size: var(--zen-text-sm);
+  font-size: var(--k-text-sm);
   cursor: copy;
-  transition: border-color var(--zen-duration-fast) var(--zen-easing-out),
-              background var(--zen-duration-fast) var(--zen-easing-out);
+  transition: border-color var(--k-duration-fast) var(--k-easing-out),
+              background var(--k-duration-fast) var(--k-easing-out);
 }
 
 .zen-drop-zone--bold {
-  border: var(--zen-bold-border) dashed var(--zen-ink);
-  color: var(--zen-ink-mute);
-  padding: var(--zen-space-3);
+  border: var(--k-bold-border) dashed var(--k-ink);
+  color: var(--k-ink-mute);
+  padding: var(--k-space-3);
 }
 
 .zen-drop-zone--drag-over {
-  border-color: var(--zen-ink-accent);
+  border-color: var(--k-seal);
   background: rgba(150, 60, 65, 0.08);
 }
 
@@ -36,40 +36,40 @@
   border-style: solid;
   border-color: #5A6E5A;
   font-style: normal;
-  color: var(--zen-ink);
+  color: var(--k-ink);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--zen-space-2);
+  gap: var(--k-space-2);
 }
 
 .zen-drop-zone__item-name {
   font-weight: 600;
-  color: var(--zen-ink);
+  color: var(--k-ink);
 }
 
 .zen-drop-zone__clear {
-  color: var(--zen-ink-accent);
+  color: var(--k-seal);
   cursor: pointer;
-  padding: 0 var(--zen-space-1);
+  padding: 0 var(--k-space-1);
   font-weight: bold;
   background: none;
   border: none;
-  font-size: var(--zen-text-base);
+  font-size: var(--k-text-base);
 }
 
 .zen-drop-zone__browse {
-  background: var(--zen-surface);
-  border: var(--zen-bold-border);
-  color: var(--zen-ink);
-  padding: var(--zen-space-1) var(--zen-space-3);
-  font-size: var(--zen-text-sm);
+  background: var(--k-paper);
+  border: var(--k-bold-border);
+  color: var(--k-ink);
+  padding: var(--k-space-1) var(--k-space-3);
+  font-size: var(--k-text-sm);
   font-weight: 600;
-  margin-top: var(--zen-space-2);
+  margin-top: var(--k-space-2);
   cursor: pointer;
   border-radius: 0;
 }
 
 .zen-drop-zone__browse:hover {
-  background: var(--zen-row-hover);
+  background: var(--k-row-hover);
 }

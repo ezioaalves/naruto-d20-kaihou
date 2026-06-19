@@ -7,14 +7,14 @@
 
 .zen-pick-grid {
   display: flex;
-  gap: var(--zen-space-2);
+  gap: var(--k-space-2);
   flex-wrap: wrap;
 }
 
 .zen-pick-grid--coupled {
   // Two side-by-side columns (Q10 flaw + bonus feat).
   display: flex;
-  gap: var(--zen-space-2);
+  gap: var(--k-space-2);
 }
 
 .zen-pick-grid--coupled > * {

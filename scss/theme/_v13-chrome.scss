@@ -24,7 +24,7 @@ aside#sidebar {
         background-image: url("../../assets/theme/ui/bgSidebar.webp");
         background-repeat: no-repeat;
         background-size: cover;
-        border: 1px solid var(--zen-border);
+        border: 1px solid var(--k-rule);
     }
 
     // Tab strip on the right edge.
@@ -38,7 +38,7 @@ aside#sidebar {
         background-image: url("../../assets/theme/ui/bgSidebar.webp");
         background-size: cover;
         background-repeat: no-repeat;
-        border: 1px solid var(--zen-border);
+        border: 1px solid var(--k-rule);
         border-radius: 4px;
         padding: 0.25rem;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
@@ -52,10 +52,10 @@ aside#sidebar {
             // the icon reads as a distinct, clickable button while keeping the
             // overall L5R "ink on parchment" look.
             button.ui-control {
-                background: var(--zen-card-bg);
-                border: 1px solid var(--zen-border-soft);
+                background: var(--k-card-bg);
+                border: 1px solid var(--k-rule-soft);
                 border-radius: 4px;
-                color: var(--zen-ink);
+                color: var(--k-ink);
                 font-size: 1.1rem;
                 width: var(--control-size);
                 height: var(--control-size);
@@ -67,10 +67,10 @@ aside#sidebar {
                     box-shadow 120ms ease;
 
                 &:hover {
-                    background: var(--zen-row-hover);
-                    border-color: var(--zen-border);
-                    color: var(--zen-ink-accent);
-                    text-shadow: var(--zen-ink-glow);
+                    background: var(--k-row-hover);
+                    border-color: var(--k-rule);
+                    color: var(--k-seal);
+                    text-shadow: var(--k-glow);
                     transform: scale(1.05);
                     box-shadow: 0 0 6px rgba(155, 60, 50, 0.25);
                 }
@@ -79,19 +79,19 @@ aside#sidebar {
                 // sheet tabs. Multiply blend tints the ink-splash texture
                 // with the wine accent so it reads as a brushed stamp.
                 &[aria-pressed="true"] {
-                    background-color: var(--zen-ink-accent);
+                    background-color: var(--k-seal);
                     background-image: url("../../assets/theme/textures/watercolor.webp");
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
                     background-blend-mode: multiply;
-                    border-color: var(--zen-ink-accent);
+                    border-color: var(--k-seal);
                     color: rgb(252, 245, 225);
                     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
                     box-shadow: 0 0 8px rgba(155, 60, 50, 0.4);
 
                     &:hover {
-                        background-color: var(--zen-ink-accent);
+                        background-color: var(--k-seal);
                         color: rgb(252, 245, 225);
                     }
                 }
@@ -147,7 +147,46 @@ aside#sidebar {
 // of `.window-app`. Mirror the parchment look onto the new wrapper too.
 .application {
     &.themed {
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
         background-size: cover;
+    }
+}
+
+// v13.351 Game-Settings sidebar: section dividers are `h4.divider` inside
+// `section.settings.flexcol` on `#sidebar-content`, and the panel sits on
+// Foundry's DARK chrome — so the dim default gold rendered nearly invisible.
+// Per "dark surface → light text", brighten the dividers + FVTT title to a warm
+// parchment-gold. (The actor directory already uses Foundry's light text, so we
+// scope tightly to `.settings` and don't touch it.)
+#sidebar-content {
+    // Every section divider (PATHFINDER 1E / GAME SETTINGS / HELP AND
+    // DOCUMENTATION / GAME ACCESS) is an h4.divider — some sit outside the
+    // .settings block, so scope to #sidebar-content to catch them all.
+    h4.divider {
+        color: rgb(185, 170, 135);
+        border-color: rgba(185, 170, 135, 0.35);
+    }
+
+    // Sidebar headings at any nesting level — Foundry may place the game
+    // title h1/h2 outside or inside .settings depending on the v13 build.
+    h1, h2, h3,
+    .settings h1, .settings h2, .settings h3,
+    .settings-info h1, .settings-info h2,
+    .game-title, .game-name {
+        color: rgb(185, 170, 135) !important;
+    }
+
+    // System-info block at top of Settings panel: game title, version string,
+    // and the Build Version / System / Active Modules label-value pairs.
+    // All sit on the dark sidebar chrome → use light text.
+    .settings {
+        p, .notes,
+        dl, dt, dd,
+        ol, ol li,
+        ul:not(.context-items) li,
+        span.label, span.value, span.count,
+        label:not([for]) {
+            color: rgb(185, 170, 135);
+        }
     }
 }

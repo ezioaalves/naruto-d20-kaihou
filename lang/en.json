@@ -59,5 +59,5 @@
   },
   "Kaihou.Sheet.Label": "Kaihou — Databook",
   "Kaihou.Settings.SheetDefault.Name": "Kaihou Databook sheet as default",
-  "Kaihou.Settings.SheetDefault.Hint": "Use the Kaihou databook character sheet as the default for character actors. Individual actors can still be switched back to PF1e's sheet via their sheet config."
+  "Kaihou.Settings.SheetDefault.Hint": "Use the Kaihou databook character sheet as the default for character and NPC actors. Individual actors can still be switched back to PF1e's sheet via their sheet config."
 }

@@ -1,113 +1,33 @@
 /**
- * Design tokens for naruto-d20-kaihou.
+ * scss/_tokens.scss — Naruto-specific real-value tokens.
  *
- * Declared on :root (unscoped) so apps that don't use the theme — like the
- * 20 Questions wizard when body.naruto-zen is disabled — still resolve to
- * coherent values.
+ * All --zen-* aliases into --k-* have been removed (Phase 6 cleanup).
+ * This file now holds only:
+ *   1. Nature, village, and discipline palettes (no --k-* peer).
+ *   2. body.naruto-zen PF1e variable overrides.
  *
- * Token prefix: --zen-* (matches the existing convention used across the
- * theme partials; renaming to --nzen-* would be a multi-file churn for no
- * functional benefit since theme rules are already body-class-scoped).
- *
- * Phase 1 publishes the full token surface (colors, typography, spacing,
- * radius, elevation, border weights, motion) so Phase 2's wizard restyle
- * can consume tokens with no token-churn cost.
+ * Discipline icons use the naruto-d20 disc key (tai / nin / gnj / ckc / fui / kin).
  */
 
 :root {
-  // ─── Surface & background ──────────────────────────────────────────────
-  --zen-surface: rgb(255, 250, 230);
-  --zen-surface-image: url("../../assets/theme/imgs/bg-scroll.webp");
-  --zen-surface-body-image: url("../../assets/theme/imgs/bg-table.webp");
-  --zen-card-bg: rgba(255, 250, 230, 0.55);
-  --zen-input-bg: transparent;
-  --zen-input-bg-strong: rgba(255, 250, 230, 0.65);
-
-  // ─── Ink (text) ────────────────────────────────────────────────────────
-  --zen-ink: rgb(118, 79, 64);          // primary text & headings
-  --zen-ink-mute: rgb(90, 110, 90);     // labels / hint text
-  --zen-ink-accent: rgb(150, 60, 65);   // active state / emphatic
-  --zen-ink-soft: rgba(118, 79, 64, 0.6);
-
-  // ─── Lines & dividers ──────────────────────────────────────────────────
-  --zen-border: rgba(195, 165, 130, 0.85);
-  --zen-border-soft: rgba(90, 110, 90, 0.25);
-  --zen-divider: 1px solid var(--zen-border);
-
-  // ─── Table / list striping ─────────────────────────────────────────────
-  --zen-stripe-odd: rgba(255, 245, 220, 0.6);
-  --zen-stripe-even: rgba(255, 250, 230, 0.4);
-  --zen-row-hover: rgba(255, 220, 200, 0.4);
-
-  // ─── Effects ───────────────────────────────────────────────────────────
-  --zen-ink-glow: 0 0 6px rgba(255, 220, 220, 0.6);
-
-  // ─── Typography ────────────────────────────────────────────────────────
-  --zen-font-body: "PatrickHand", "Caballar", "Hiroshige", serif;
-  --zen-font-display: "BrushtipTexe", "PatrickHand", serif;
-  --zen-font-serif: "Caballar", "Hiroshige", "PatrickHand", serif;
-  --zen-font-flavor: "ArchitectsDaughter", "PatrickHand", cursive;
-  --zen-text-xs: 0.75rem;
-  --zen-text-sm: 0.875rem;
-  --zen-text-base: 1rem;
-  --zen-text-lg: 1.125rem;
-  --zen-text-xl: 1.375rem;
-  --zen-text-2xl: 1.75rem;
-
-  // ─── Spacing (4px scale) ───────────────────────────────────────────────
-  --zen-space-1: 4px;
-  --zen-space-2: 8px;
-  --zen-space-3: 12px;
-  --zen-space-4: 16px;
-  --zen-space-5: 20px;
-  --zen-space-6: 24px;
-  --zen-space-7: 28px;
-  --zen-space-8: 32px;
-  --zen-space-9: 40px;
-  --zen-space-10: 48px;
-
-  // ─── Border radius ─────────────────────────────────────────────────────
-  --zen-radius-sm: 2px;
-  --zen-radius-md: 4px;
-  --zen-radius-lg: 8px;
-  --zen-radius-round: 999px;
-
-  // ─── Border weights ────────────────────────────────────────────────────
-  --zen-border-hair: 1px;
-  --zen-border-base: 2px;
-  --zen-border-thick: 3px;
-
-  // ─── Elevation (shadows) ───────────────────────────────────────────────
-  --zen-elevation-none: none;
-  --zen-elevation-card: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --zen-elevation-popover: 0 4px 12px rgba(0, 0, 0, 0.18), 0 2px 4px rgba(0, 0, 0, 0.08);
-
-  // ─── Motion ────────────────────────────────────────────────────────────
-  --zen-duration-fast: 120ms;
-  --zen-duration-base: 200ms;
-  --zen-duration-slow: 320ms;
-  --zen-easing-in: cubic-bezier(0.4, 0, 1, 1);
-  --zen-easing-out: cubic-bezier(0, 0, 0.2, 1);
-  --zen-easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-
-  // ─── Nature palette (Naruto element affinities) ───────────────────────
+  // ─── Nature palette (Naruto element affinities) ─────────────────────────
   --zen-nature-earth: rgb(120, 90, 55);
   --zen-nature-water: rgb(95, 145, 155);
   --zen-nature-fire: rgb(175, 70, 50);
   --zen-nature-wind: rgb(180, 195, 175);
-  --zen-nature-lightning: rgb(220, 195, 80);
+  --zen-nature-lightning: rgb(150, 120, 10);
 
-  // ─── Village palette (Kaihou 8 villages, hex placeholders match Q1 IDs) ─
+  // ─── Village palette (Kaihou 8 villages) ────────────────────────────────
   --zen-village-hisui: rgb(76, 175, 80);     // Hisuigakure (Jade)
   --zen-village-houoh: rgb(244, 67, 54);     // Houohgakure (Phoenix)
   --zen-village-kani: rgb(96, 125, 139);     // Kanigakure (Iron Shell)
-  --zen-village-kirin: rgb(255, 193, 7);     // Kiringakure (Kirin)
+  --zen-village-kirin: rgb(165, 110, 0);     // Kiringakure (Kirin)
   --zen-village-ryuu: rgb(33, 150, 243);     // Ryuugakure (Dragon)
   --zen-village-sasori: rgb(121, 85, 72);    // Sasorigakure (Scorpion)
   --zen-village-shishi: rgb(255, 152, 0);    // Shishigakure (Lion)
   --zen-village-tsuru: rgb(158, 158, 158);   // Tsurugakure (Crane)
 
-  // ─── Discipline icons (L5R5e techs/ SVG mapping, keyed by naruto-d20 disc key) ─
+  // ─── Discipline icons (techs/ SVG mapping, keyed by naruto-d20 disc key) ─
   --zen-disc-tai-icon: url("../../assets/theme/icons/techs/kata.svg");
   --zen-disc-nin-icon: url("../../assets/theme/icons/techs/invocation.svg");
   --zen-disc-gnj-icon: url("../../assets/theme/icons/techs/mantra.svg");
@@ -116,32 +36,16 @@
   --zen-disc-kin-icon: url("../../assets/theme/icons/techs/maho.svg");
 }
 
-// ─── PF1e variable overrides (inside body.naruto-zen scope only) ──────
+// ─── PF1e variable overrides (inside body.naruto-zen scope only) ──────────
 // PF1e uses its own CSS custom properties for item-list backgrounds, text
 // color, and faint borders. Override them only when the theme is enabled,
 // so disabling the theme reverts PF1e to its defaults instantly.
 body.naruto-zen {
-  --pf1-item-list-bg: var(--zen-stripe-odd);
-  --pf1-item-list-bg-alt: var(--zen-stripe-even);
-  --pf1-item-list-hover-bg: var(--zen-row-hover);
-  --pf1-item-list-hover-text: var(--zen-ink-accent);
-  --pf1-faint: var(--zen-border-soft);
-  --color-text-dark-primary: var(--zen-ink);
-  --color-text-dark-secondary: var(--zen-ink-mute);
-}
-
-// ─── Bold sumi-e tokens — consumed only by the wizard (.tqw-v2 root). ──
-// Other Kaihou surfaces stick to the soft defaults declared above.
-:root {
-  --zen-bold-border: 2px solid var(--zen-ink);
-  --zen-bold-border-heavy: 3px solid var(--zen-ink);
-  --zen-bold-header-bg: linear-gradient(180deg, var(--zen-ink) 0%, #3A2E1B 100%);
-  --zen-bold-header-text: var(--zen-surface);
-  --zen-bold-card-bg: rgba(255, 251, 237, 0.85);
-  --zen-bold-card-shadow: 0 4px 12px rgba(94, 67, 39, 0.3),
-                          inset 0 0 12px rgba(195, 165, 130, 0.2);
-  --zen-bold-divider: 2px solid var(--zen-border);
-  --zen-bold-accent-rule: 2px solid var(--zen-ink-accent);
-  --zen-bold-grain: radial-gradient(circle at 20% 30%, rgba(195, 165, 130, 0.15) 0%, transparent 40%),
-                    radial-gradient(circle at 80% 70%, rgba(94, 67, 39, 0.08) 0%, transparent 40%);
+  --pf1-item-list-bg: var(--k-stripe-odd);
+  --pf1-item-list-bg-alt: var(--k-stripe-even);
+  --pf1-item-list-hover-bg: var(--k-row-hover);
+  --pf1-item-list-hover-text: var(--k-seal);
+  --pf1-faint: var(--k-rule-soft);
+  --color-text-dark-primary: var(--k-ink);
+  --color-text-dark-secondary: var(--k-ink-mute);
 }

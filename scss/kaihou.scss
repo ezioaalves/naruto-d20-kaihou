@@ -18,6 +18,7 @@
  * Sass variables; `@font-face` in _fonts bubbles to the document root.
  */
 
+@use "kaihou-tokens"; // canonical --k-* layer — MUST come first; legacy tokens alias into it
 @use "tokens";
 @use "databook-tokens";
 @use "components/index";

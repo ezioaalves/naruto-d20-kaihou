@@ -107,6 +107,41 @@ Hooks.once("ready", () => {
   registerQuestionFeatEffects();
   registerNotesRelay();
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
+
+  // § 5.2 — Move naruto-d20 Hero Statistics into the footer's meta rail, where
+  // it sits beside the Level cell as the Action Points / Reputation / Wealth
+  // ledger. Relocating (not rebuilding) keeps naruto-d20's rollable Action
+  // Points and its own change handlers intact.
+  // naruto-d20's registerSummaryStats hook is async — it awaits renderTemplate
+  // before inserting #naruto-hero-statistics. Foundry's Hooks.callAll does NOT
+  // await async callbacks, so any synchronous hook we register fires before
+  // naruto-d20's await resolves. We defer with setTimeout(0) so the macrotask
+  // runs after naruto-d20's microtasks (the renderTemplate promise chain) finish.
+  Hooks.on("renderActorSheetPF", async (app, html, _data) => {
+    if (!app.options?.classes?.includes("kaihou-databook")) return;
+    const $html = html instanceof HTMLElement ? $(html) : html;
+    const rail = $html.find("header.db-footer .db-meta-rail");
+    if (!rail.length) return;
+    await new Promise((r) => setTimeout(r, 0));
+    const heroStats = $html.find("#naruto-hero-statistics");
+    if (!heroStats.length) return;
+    rail.append(heroStats);
+
+    // Abbreviate the labels so they fit the thin rail. Setting the anchor's
+    // text (Action Points) preserves the rollable <a>; Reputation/Wealth are
+    // plain h5 text.
+    const ABBR = {
+      "flags.naruto-d20.actionPoints": "AP",
+      "flags.naruto-d20.reputation": "REP",
+      "flags.naruto-d20.wealth": "WLT",
+    };
+    (heroStats[0] ?? heroStats).querySelectorAll(".info-box").forEach((box) => {
+      const abbr = ABBR[box.querySelector("input[name]")?.getAttribute("name")];
+      if (!abbr) return;
+      const labelEl = box.querySelector("h5 a") ?? box.querySelector("h5");
+      if (labelEl) labelEl.textContent = abbr;
+    });
+  });
 });
 
 // § 5.1 — two-column Biography tab: the player's bio editor on the left,
@@ -151,7 +186,7 @@ Hooks.on("renderActorSheet", (app, html, _data) => {
     ? `<p class="tqw-bio-summary">${grantCount} mechanic grant(s) applied by the wizard.</p>`
     : `<p class="tqw-bio-summary">Complete the 20 Questions wizard to apply character creation mechanics.</p>`;
 
-  const right = $(`<aside class="tqw-bio-right">
+  const right = $(`<aside class="tqw-bio-right db-bio-20q">
     <div class="tqw-bio-header-row">
       <h3 class="tqw-bio-header">20 Questions</h3>
       <button type="button" class="tqw-sheet-button" title="Open 20 Questions Wizard" aria-label="Open 20 Questions Wizard">

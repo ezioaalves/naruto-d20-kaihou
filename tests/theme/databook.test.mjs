@@ -16,8 +16,13 @@ function selectorTexts(src) {
 }
 
 describe("databook tokens", () => {
-  it("publishes the core --db-* tokens", () => {
-    for (const t of ["--db-red", "--db-ink", "--db-cream", "--db-panel", "--db-void"]) {
+  it("publishes the radar --db-* tokens and canonical --k-* palette", () => {
+    // Phase 6: --db-* aliases were dropped; only radar tokens remain in _databook-tokens.scss.
+    for (const t of ["--db-radar-grid", "--db-radar-ability-fill", "--db-radar-discipline-stroke"]) {
+      expect(css).toContain(t);
+    }
+    // Canonical layer must be present.
+    for (const t of ["--k-seal", "--k-crab", "--k-paper", "--k-ink"]) {
       expect(css).toContain(t);
     }
   });
@@ -28,6 +33,16 @@ describe("databook component classes", () => {
     for (const c of [".db-band", ".db-badge", ".db-pip", ".db-radar", ".db-panel", ".db-nat"]) {
       expect(css).toContain(c);
     }
+  });
+
+  it("keeps low-contrast sheet and learn-result icons on the seal accent", () => {
+    expect(css).toContain("body.naruto-zen .pf1.sheet .item-list-header .item-detail i");
+    expect(css).toContain("color:var(--k-seal)");
+    expect(css).toContain("body.naruto-zen .chat-message .dice-result .dice-total");
+    expect(css).toContain("body.naruto-zen .chat-message .dice-result .dice-total>*");
+    expect(css).toContain("body.naruto-zen #chat-log .message .dice-result .dice-total");
+    expect(css).toContain("body.naruto-zen .naruto-learn-progression");
+    expect(css).toContain("color:var(--k-ink) !important");
   });
 });
 

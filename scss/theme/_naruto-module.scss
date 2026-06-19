@@ -13,6 +13,7 @@
  * Scope: imported under `body.naruto-zen .naruto-zen-target { ... }`.
  */
 
+
 $discipline-color: (
     "tai": colors.$nzen-tai,
     "nin": colors.$nzen-nin,
@@ -24,21 +25,32 @@ $discipline-color: (
 
 // ----- Chakra tab ------------------------------------------------------------
 .tab.chakra {
-    background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
+    background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat; background-position: top center;
     background-size: cover;
     padding: 0.5rem;
 
     h3 {
-        font-family: var(--zen-font-display);
-        color: var(--zen-ink);
-        border-bottom: 1px solid var(--zen-border);
+        font-family: var(--k-font-display);
+        color: var(--k-ink);
+        border-bottom: 1px solid var(--k-rule);
+        margin: 0.25rem 0 0.5rem;
+        padding-bottom: 0.15rem;
+    }
+
+    // Collapsible Shinobi Learn Checks block: its <h3> becomes the <summary>
+    // toggle (see _collapseChakraLearn), so style the summary to match h3.
+    details.db-learn-toggle > summary {
+        cursor: pointer;
+        font-family: var(--k-font-display);
+        color: var(--k-ink);
+        border-bottom: 1px solid var(--k-rule);
         margin: 0.25rem 0 0.5rem;
         padding-bottom: 0.15rem;
     }
 
     hr {
         border: 0;
-        border-top: 1px dashed var(--zen-border);
+        border-top: 1px dashed var(--k-rule);
         margin: 0.5rem 0;
     }
 
@@ -47,15 +59,15 @@ $discipline-color: (
         gap: 0.5rem;
 
         .info-box-header {
-            background: var(--zen-card-bg);
-            border: 1px solid var(--zen-border-soft);
+            background: var(--k-card-bg);
+            border: 1px solid var(--k-rule-soft);
             border-radius: 4px;
             padding: 0.25rem 0.5rem;
 
             h3 {
                 background: transparent;
                 border: none;
-                color: var(--zen-ink);
+                color: var(--k-ink);
                 text-shadow: none;
                 text-align: left;
                 border-radius: 0;
@@ -65,40 +77,40 @@ $discipline-color: (
 
             .info-box-joined {
                 background: transparent;
-                border-top: 1px solid var(--zen-border-soft);
+                border-top: 1px solid var(--k-rule-soft);
                 padding-top: 0.25rem;
             }
 
             .info-box {
                 h5 {
-                    font-family: var(--zen-font-body);
+                    font-family: var(--k-font-body);
                     text-transform: uppercase;
                     letter-spacing: 0.05rem;
-                    color: var(--zen-ink-mute);
+                    color: var(--k-ink-mute);
                     font-size: 0.7rem;
                 }
 
                 .value,
                 input.value {
-                    font-family: var(--zen-font-display);
+                    font-family: var(--k-font-display);
                     font-size: 1.4rem;
-                    color: var(--zen-ink);
+                    color: var(--k-ink);
                     background: transparent;
                     border: none;
                     text-align: center;
                 }
 
                 &.maximum .value {
-                    color: var(--zen-ink-accent);
+                    color: var(--k-seal);
                 }
             }
 
             select.chakra-nature-select {
                 background: transparent;
                 border: none;
-                border-bottom: 1px dotted var(--zen-border-soft);
-                font-family: var(--zen-font-body);
-                color: var(--zen-ink);
+                border-bottom: 1px dotted var(--k-rule-soft);
+                font-family: var(--k-font-body);
+                color: var(--k-ink);
             }
         }
 
@@ -115,7 +127,7 @@ $discipline-color: (
         .info-box-header.speed-details {
             border-left-width: 3px;
             border-left-style: solid;
-            border-left-color: var(--zen-ink-mute);
+            border-left-color: var(--k-ink-mute);
 
             @each $nature, $color in $natures-list {
                 &[data-nature="#{$nature}"] {
@@ -140,39 +152,39 @@ $discipline-color: (
     }
 
     .learn-check-box {
-        background: var(--zen-card-bg);
-        border: 1px solid var(--zen-border-soft);
-        border-left: 3px solid var(--zen-ink-mute);
+        background: var(--k-card-bg);
+        border: 1px solid var(--k-rule-soft);
+        border-left: 3px solid var(--k-ink-mute);
         border-radius: 4px;
         padding: 0.4rem 0.5rem;
 
         .learn-check-header {
-            font-family: var(--zen-font-body);
+            font-family: var(--k-font-body);
             text-transform: uppercase;
             letter-spacing: 0.05rem;
-            color: var(--zen-ink);
+            color: var(--k-ink);
             font-size: 0.95rem;
             border: none;
             background: transparent;
             cursor: pointer;
 
             &:hover {
-                color: var(--zen-ink-accent);
-                text-shadow: var(--zen-ink-glow);
+                color: var(--k-seal);
+                text-shadow: var(--k-glow);
             }
         }
 
         .learn-check-total {
-            font-family: var(--zen-font-display);
+            font-family: var(--k-font-display);
             font-size: 1.4rem;
-            color: var(--zen-ink-accent);
+            color: var(--k-seal);
         }
 
         .learn-check-misc input {
             background: transparent;
             border: none;
-            border-bottom: 1px dotted var(--zen-border-soft);
-            color: var(--zen-ink);
+            border-bottom: 1px dotted var(--k-rule-soft);
+            color: var(--k-ink);
             text-align: center;
         }
 
@@ -180,7 +192,7 @@ $discipline-color: (
             display: block;
             font-style: italic;
             font-size: 0.8rem;
-            color: var(--zen-ink-mute);
+            color: var(--k-ink-mute);
         }
     }
 
@@ -202,27 +214,27 @@ $discipline-color: (
     .technique-disc-tabs {
         gap: 0.25rem;
         padding: 0.25rem 0;
-        border-bottom: 1px solid var(--zen-border);
+        border-bottom: 1px solid var(--k-rule);
 
         .technique-filter {
-            font-family: var(--zen-font-body);
+            font-family: var(--k-font-body);
             text-transform: uppercase;
             letter-spacing: 0.05rem;
             font-size: 0.85rem;
             padding: 0.15rem 0.5rem;
-            color: var(--zen-ink);
+            color: var(--k-ink);
             border: none;
             border-bottom: 2px solid transparent;
             background: transparent;
             cursor: pointer;
 
             &:hover {
-                color: var(--zen-ink-accent);
+                color: var(--k-seal);
             }
 
             &.active {
-                color: var(--zen-ink-accent);
-                border-bottom-color: var(--zen-ink-accent);
+                color: var(--k-seal);
+                border-bottom-color: var(--k-seal);
             }
 
             @each $key, $color in $discipline-color {
@@ -240,36 +252,36 @@ $discipline-color: (
 
     // Technique list rows — striped parchment, brush-ink rank header.
     .item-list-header.spellbook-header {
-        font-family: var(--zen-font-body);
+        font-family: var(--k-font-body);
         text-transform: uppercase;
         letter-spacing: 0.05rem;
-        color: var(--zen-ink);
+        color: var(--k-ink);
         background: transparent url("../../assets/theme/imgs/brush.webp") no-repeat left center;
         background-size: 35% auto;
-        border-bottom: 1px solid var(--zen-border);
+        border-bottom: 1px solid var(--k-rule);
 
         h3 {
             border: none;
             margin: 0;
             font-size: 1rem;
-            color: var(--zen-ink-accent);
+            color: var(--k-seal);
         }
     }
 
     .technique-list .technique-row {
-        font-family: var(--zen-font-body);
-        color: var(--zen-ink);
+        font-family: var(--k-font-body);
+        color: var(--k-ink);
         background: transparent;
-        border-bottom: 1px dashed var(--zen-border-soft);
+        border-bottom: 1px dashed var(--k-rule-soft);
         border-left: 3px solid transparent;
 
         &:hover {
-            background: var(--zen-row-hover);
+            background: var(--k-row-hover);
         }
 
         .item-name h4 {
-            font-family: var(--zen-font-body);
-            color: var(--zen-ink);
+            font-family: var(--k-font-body);
+            color: var(--k-ink);
         }
 
         .technique-cost {
@@ -293,7 +305,7 @@ $discipline-color: (
 // ----- Technique item sheet --------------------------------------------------
 &.window-app.technique {
     .window-content {
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
         background-size: cover;
     }
 
@@ -305,25 +317,25 @@ $discipline-color: (
         background: transparent url("../../assets/theme/imgs/brush.webp") no-repeat left center;
         background-size: 55% auto;
         padding: 0.5rem;
-        border-bottom: 2px solid var(--zen-border);
+        border-bottom: 2px solid var(--k-rule);
 
         img.profile {
-            border: 2px solid var(--zen-border);
+            border: 2px solid var(--k-rule);
             border-radius: 4px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
         }
 
         h1.item-name input {
-            font-family: var(--zen-font-display);
+            font-family: var(--k-font-display);
             font-size: 1.6rem;
-            color: var(--zen-ink);
+            color: var(--k-ink);
             background: transparent;
             border: none;
-            border-bottom: 1px dashed var(--zen-border);
+            border-bottom: 1px dashed var(--k-rule);
 
             &:focus {
                 outline: none;
-                border-bottom-color: var(--zen-ink-accent);
+                border-bottom-color: var(--k-seal);
                 box-shadow: none;
             }
         }
@@ -338,31 +350,31 @@ $discipline-color: (
             input {
                 background: transparent;
                 border: none;
-                border-bottom: 1px dotted var(--zen-border-soft);
-                font-family: var(--zen-font-body);
-                color: var(--zen-ink);
+                border-bottom: 1px dotted var(--k-rule-soft);
+                font-family: var(--k-font-body);
+                color: var(--k-ink);
             }
         }
     }
 
     section.sidebar {
-        background: var(--zen-card-bg);
-        border: 1px solid var(--zen-border-soft);
+        background: var(--k-card-bg);
+        border: 1px solid var(--k-rule-soft);
         border-radius: 4px;
         padding: 0.5rem;
 
         h3.item-type,
         h4.discipline,
         h4.rank-line {
-            font-family: var(--zen-font-body);
+            font-family: var(--k-font-body);
             text-transform: uppercase;
             letter-spacing: 0.05rem;
-            color: var(--zen-ink);
+            color: var(--k-ink);
             margin: 0.1rem 0;
         }
 
         h4.discipline {
-            color: var(--zen-ink-accent);
+            color: var(--k-seal);
             font-size: 0.95rem;
         }
 
@@ -371,10 +383,10 @@ $discipline-color: (
             padding: 0;
 
             h5 {
-                font-family: var(--zen-font-body);
+                font-family: var(--k-font-body);
                 text-transform: uppercase;
                 letter-spacing: 0.05rem;
-                color: var(--zen-ink-mute);
+                color: var(--k-ink-mute);
                 font-size: 0.7rem;
                 margin: 0.5rem 0 0.25rem;
             }
@@ -383,11 +395,11 @@ $discipline-color: (
                 display: inline-block;
                 padding: 0.1rem 0.4rem;
                 margin: 0.1rem;
-                background: var(--zen-input-bg-strong);
-                border: 1px solid var(--zen-border);
+                background: var(--k-input-bg-strong);
+                border: 1px solid var(--k-rule);
                 border-radius: 2px;
                 font-size: 0.8rem;
-                color: var(--zen-ink);
+                color: var(--k-ink);
             }
         }
 
@@ -395,18 +407,18 @@ $discipline-color: (
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-family: var(--zen-font-body);
-            color: var(--zen-ink);
+            font-family: var(--k-font-body);
+            color: var(--k-ink);
             margin-top: 0.5rem;
 
             input {
                 width: 3rem;
                 background: transparent;
                 border: none;
-                border-bottom: 1px dotted var(--zen-border-soft);
+                border-bottom: 1px dotted var(--k-rule-soft);
                 text-align: center;
-                color: var(--zen-ink-accent);
-                font-family: var(--zen-font-display);
+                color: var(--k-seal);
+                font-family: var(--k-font-display);
                 font-size: 1.2rem;
             }
         }
@@ -415,28 +427,28 @@ $discipline-color: (
 
 // ----- Hero statistics block (Summary tab injection) ------------------------
 #naruto-hero-statistics {
-    background: var(--zen-card-bg);
-    border: 1px solid var(--zen-border-soft);
-    border-top: 2px solid var(--zen-border);
-    border-bottom: 2px solid var(--zen-border);
+    background: var(--k-card-bg);
+    border: 1px solid var(--k-rule-soft);
+    border-top: 2px solid var(--k-rule);
+    border-bottom: 2px solid var(--k-rule);
     border-radius: 4px;
     padding: 0.5rem;
-    font-family: var(--zen-font-body);
-    color: var(--zen-ink);
+    font-family: var(--k-font-body);
+    color: var(--k-ink);
 
     .naruto-summary-stats {
-        font-family: var(--zen-font-body);
+        font-family: var(--k-font-body);
 
         .stat-label {
             text-transform: uppercase;
             letter-spacing: 0.05rem;
-            color: var(--zen-ink-mute);
+            color: var(--k-ink-mute);
             font-size: 0.75rem;
         }
 
         .stat-value {
-            font-family: var(--zen-font-display);
-            color: var(--zen-ink-accent);
+            font-family: var(--k-font-display);
+            color: var(--k-seal);
             font-size: 1.2rem;
         }
     }
@@ -446,12 +458,12 @@ $discipline-color: (
 .technique-browser,
 &.window-app.compendium-browser {
     .window-content {
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
         background-size: cover;
     }
 
     h1, h2, h3 {
-        font-family: var(--zen-font-display);
-        color: var(--zen-ink);
+        font-family: var(--k-font-display);
+        color: var(--k-ink);
     }
 }

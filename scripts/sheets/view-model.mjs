@@ -10,11 +10,11 @@ const KH = "naruto-d20-kaihou";
 export const ABILITY_AXES = ["str", "dex", "con", "int", "wis", "cha"];
 
 export const DISCIPLINE_AXES = [
-  { key: "nin", label: "Ninjutsu", icon: "ninjutsu" },
-  { key: "fui", label: "Fūinjutsu", icon: "fuinjutsu" },
-  { key: "ckc", label: "Chakra Control", icon: "chakra_control" },
-  { key: "tai", label: "Taijutsu", icon: "taijutsu" },
-  { key: "gnj", label: "Genjutsu", icon: "genjutsu" },
+  { key: "nin", label: "Ninjutsu",      slug: "Nin",  icon: "ninjutsu"       },
+  { key: "fui", label: "Fūinjutsu",     slug: "Fūin", icon: "fuinjutsu"      },
+  { key: "ckc", label: "Chakra Control", slug: "C·C",  icon: "chakra_control" },
+  { key: "gnj", label: "Genjutsu",      slug: "Gen",  icon: "genjutsu"       },
+  { key: "tai", label: "Taijutsu",      slug: "Tai",  icon: "taijutsu"       },
 ];
 
 export const BASIC_NATURES = [
@@ -64,11 +64,22 @@ function buildMissions(m = {}) {
 function buildResources(sys = {}, nd = {}) {
   const hp = sys.attributes?.hp ?? {};
   const pool = nd?.chakra?.pool ?? {};
+  const reserve = nd?.chakra?.reserve ?? {};
+  const saves = sys.attributes?.savingThrows ?? {};
   return {
     hp: { value: num(hp.value), max: num(hp.max) },
     ac: num(sys.attributes?.ac?.normal?.total),
     chakra: { value: num(pool.value), max: num(pool.max) },
+    reserve: { value: num(reserve.value), max: num(reserve.max) },
     level: num(sys.attributes?.hd?.total),
+    // Defense strip (read-only, derived by PF1e's data preparation).
+    init: num(sys.attributes?.init?.total),
+    saves: {
+      fort: num(saves.fort?.total),
+      ref: num(saves.ref?.total),
+      will: num(saves.will?.total),
+    },
+    per: num(sys.skills?.per?.mod),
   };
 }
 
@@ -97,8 +108,17 @@ export function buildKaihouViewModel(actor) {
   return {
     identity: {
       alias: kh.alias ?? "",
-      allegiance: kh.allegiance ?? "",
+      rank: kh.rank ?? kh.allegiance ?? "",
+      clan: kh.clan ?? "",
+      info: kh.info ?? "",
       missions: buildMissions(kh.missions),
+      details: {
+        gender: sys.details?.gender ?? "",
+        age:    sys.details?.age    ?? "",
+        height: sys.details?.height ?? "",
+        weight: sys.details?.weight ?? "",
+        race:   sys.details?.race   ?? "",
+      },
     },
     radars: {
       abilities: ABILITY_AXES.map((k) => ({ key: k, label: k.toUpperCase(), value: num(sys.abilities?.[k]?.total) })),

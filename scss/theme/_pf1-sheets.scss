@@ -13,7 +13,7 @@
 // ----- Actor sheet (character + NPC) -----------------------------------------
 &.window-app.sheet.actor {
     .window-content {
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
         background-size: cover;
         padding: 0.25rem;
     }
@@ -22,20 +22,20 @@
     form.actor.character,
     form.actor.npc {
         background: transparent;
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     // Primary tab strip — notch the L5R way.
     .sheet-navigation.tabs {
         background: transparent;
-        border-bottom: 2px solid var(--zen-border);
+        border-bottom: 2px solid var(--k-rule);
         padding-bottom: 0.25rem;
         gap: 0.25rem;
 
         .item {
-            font-family: var(--zen-font-body);
+            font-family: var(--k-font-body);
             font-size: 0.95rem;
-            color: var(--zen-ink);
+            color: var(--k-ink);
             text-transform: uppercase;
             letter-spacing: 0.02rem;
             border: none;
@@ -45,16 +45,16 @@
             transition: color 120ms ease, border-color 120ms ease;
 
             &:hover {
-                color: var(--zen-ink-accent);
-                text-shadow: var(--zen-ink-glow);
+                color: var(--k-seal);
+                text-shadow: var(--k-glow);
             }
 
             // Active tab gets the wine "stamp" treatment in `_nav.scss`
             // (filled accent bg + cream text). Only set border + glow here so
             // we don't override the bg/text the stamp rule needs.
             &.active {
-                border-bottom-color: var(--zen-ink-accent);
-                text-shadow: var(--zen-ink-glow);
+                border-bottom-color: var(--k-seal);
+                text-shadow: var(--k-glow);
             }
         }
     }
@@ -64,10 +64,10 @@
         background: transparent;
 
         > .tab {
-            background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat; background-position: top center;
+            background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat; background-position: top center;
             background-size: cover;
             padding: 0.5rem;
-            border: 1px solid var(--zen-border-soft);
+            border: 1px solid var(--k-rule-soft);
             border-top: none;
         }
     }
@@ -79,22 +79,22 @@
         padding: 0.5rem 0;
 
         img.profile {
-            border: 2px solid var(--zen-border);
+            border: 2px solid var(--k-rule);
             border-radius: 4px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
         }
 
         h1.char-name input {
-            font-family: var(--zen-font-display);
+            font-family: var(--k-font-display);
             font-size: 1.6rem;
-            color: var(--zen-ink);
+            color: var(--k-ink);
             background: transparent;
             border: none;
-            border-bottom: 1px dashed var(--zen-border);
+            border-bottom: 1px dashed var(--k-rule);
 
             &:focus {
                 outline: none;
-                border-bottom-color: var(--zen-ink-accent);
+                border-bottom-color: var(--k-seal);
                 box-shadow: none;
             }
         }
@@ -102,13 +102,13 @@
         .character-summary input {
             background: transparent;
             border: none;
-            border-bottom: 1px dotted var(--zen-border-soft);
-            color: var(--zen-ink);
-            font-family: var(--zen-font-body);
+            border-bottom: 1px dotted var(--k-rule-soft);
+            color: var(--k-ink);
+            font-family: var(--k-font-body);
 
             &:focus {
                 outline: none;
-                border-bottom-color: var(--zen-ink-accent);
+                border-bottom-color: var(--k-seal);
                 box-shadow: none;
             }
         }
@@ -116,8 +116,8 @@
         // Race / class / level item rows — paper card.
         .race.item,
         .class.item {
-            background: var(--zen-card-bg);
-            border: 1px solid var(--zen-border-soft);
+            background: var(--k-card-bg);
+            border: 1px solid var(--k-rule-soft);
             border-radius: 4px;
         }
     }
@@ -127,8 +127,8 @@
     .tab.attributes .saving-throws,
     .tab.combat .combat-defenses,
     .tab.combat .ac-table {
-        background: var(--zen-card-bg);
-        border: 1px solid var(--zen-border-soft);
+        background: var(--k-card-bg);
+        border: 1px solid var(--k-rule-soft);
         border-radius: 4px;
         padding: 0.25rem 0.5rem;
     }
@@ -138,10 +138,10 @@
     .skills-list .skill-name,
     .ability-name,
     .save-name {
-        font-family: var(--zen-font-body);
+        font-family: var(--k-font-body);
         text-transform: uppercase;
         letter-spacing: 0.05rem;
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     // No striping on skill / item lists — user prefers flat parchment rows.
@@ -154,7 +154,7 @@
 // ----- Item sheets -----------------------------------------------------------
 &.window-app.sheet.item {
     .window-content {
-        background-color: var(--zen-surface); background-image: var(--zen-surface-image); background-repeat: no-repeat;
+        background-color: var(--k-paper); background-image: var(--k-surface-washed); background-repeat: no-repeat;
         background-size: cover;
     }
 
@@ -164,7 +164,7 @@
     form.pf1.sheet.item,
     form.pf1.sheet {
         background: transparent;
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     .sheet-header {
@@ -180,11 +180,11 @@
         .item-name h1,
         .item-name h2,
         .item-name h3 {
-            font-family: var(--zen-font-display);
-            color: var(--zen-ink);
+            font-family: var(--k-font-display);
+            color: var(--k-ink);
             background: transparent;
             border: none;
-            border-bottom: 1px dashed var(--zen-border);
+            border-bottom: 1px dashed var(--k-rule);
         }
     }
 
@@ -196,7 +196,7 @@
     .item-description,
     .editor-content,
     p {
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 
     // PF1e renders inline section labels like "BASE CLASS", "Example of...",
@@ -206,34 +206,34 @@
     h3.form-header,
     .table-name,
     legend {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-body);
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
         text-transform: uppercase;
         letter-spacing: 0.05rem;
-        border-bottom: 1px solid var(--zen-border-soft);
+        border-bottom: 1px solid var(--k-rule-soft);
     }
 
     nav.sheet-tabs.tabs,
     .tabs[data-group="primary"] {
         background: transparent;
-        border-bottom: 1px solid var(--zen-border);
+        border-bottom: 1px solid var(--k-rule);
 
         .item {
-            color: var(--zen-ink);
-            font-family: var(--zen-font-body);
+            color: var(--k-ink);
+            font-family: var(--k-font-body);
             text-transform: uppercase;
             font-size: 0.85rem;
 
             &.active {
-                color: var(--zen-ink-accent);
-                text-shadow: var(--zen-ink-glow);
+                color: var(--k-seal);
+                text-shadow: var(--k-glow);
             }
         }
     }
 
     .tab {
         background: transparent;
-        color: var(--zen-ink);
+        color: var(--k-ink);
     }
 }
 
@@ -243,7 +243,7 @@
 &.window-app .window-header,
 &.application .window-header {
     .window-title {
-        color: var(--zen-ink);
-        font-family: var(--zen-font-display);
+        color: var(--k-on-dark);
+        font-family: var(--k-font-display);
     }
 }

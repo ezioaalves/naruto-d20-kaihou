@@ -25,7 +25,7 @@
   .window-content {
     max-height: 65vh;
     overflow-y: auto;
-    padding: var(--zen-space-3) var(--zen-space-4);
+    padding: var(--k-space-3) var(--k-space-4);
   }
 }
 
@@ -33,30 +33,30 @@
 .kaihou-occupation-selector {
     display: flex;
     flex-direction: column;
-    gap: var(--zen-space-4);
-    padding: var(--zen-space-2) 0;
+    gap: var(--k-space-4);
+    padding: var(--k-space-2) 0;
 
     // ── Section cards (Class Skills / Bonus Feat / Technique Link) ─────
     section {
-      background: var(--zen-card-bg);
-      border: var(--zen-border-hair) solid var(--zen-border);
-      border-radius: var(--zen-radius-md);
-      padding: var(--zen-space-3);
+      background: var(--k-card-bg);
+      border: var(--k-border-hair) solid var(--k-rule);
+      border-radius: var(--k-radius-md);
+      padding: var(--k-space-3);
     }
 
     h3 {
-      font-family: var(--zen-font-display);
-      font-size: var(--zen-text-lg);
-      color: var(--zen-ink);
-      margin: 0 0 var(--zen-space-1);
-      padding-bottom: var(--zen-space-1);
-      border-bottom: var(--zen-border-hair) solid var(--zen-divider);
+      font-family: var(--k-font-display);
+      font-size: var(--k-text-lg);
+      color: var(--k-ink);
+      margin: 0 0 var(--k-space-1);
+      padding-bottom: var(--k-space-1);
+      border-bottom: var(--k-border-hair) solid var(--k-divider);
     }
 
     p {
-      font-size: var(--zen-text-sm);
-      color: var(--zen-ink-mute);
-      margin: 0 0 var(--zen-space-2);
+      font-size: var(--k-text-sm);
+      color: var(--k-ink-mute);
+      margin: 0 0 var(--k-space-2);
     }
   }
 
@@ -64,48 +64,48 @@
 .kaihou-choice-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--zen-space-2);
+  gap: var(--k-space-2);
 }
 
 // ── Choice pill (label wrapping a native checkbox or radio) ─────────
 .kaihou-choice {
   display: inline-flex;
   align-items: center;
-  gap: var(--zen-space-1);
+  gap: var(--k-space-1);
   padding: 4px 12px;
-  background: var(--zen-surface);
-  border: var(--zen-border-hair) solid var(--zen-border);
-  border-radius: var(--zen-radius-round);
-  font-size: var(--zen-text-sm);
-  color: var(--zen-ink);
+  background: var(--k-paper);
+  border: var(--k-border-hair) solid var(--k-rule);
+  border-radius: var(--k-radius-round);
+  font-size: var(--k-text-sm);
+  color: var(--k-ink);
   cursor: pointer;
   user-select: none;
   transition:
-    background var(--zen-duration-fast) var(--zen-easing-out),
-    border-color var(--zen-duration-fast) var(--zen-easing-out),
-    box-shadow var(--zen-duration-fast) var(--zen-easing-out),
-    opacity var(--zen-duration-fast) var(--zen-easing-out);
+    background var(--k-duration-fast) var(--k-easing-out),
+    border-color var(--k-duration-fast) var(--k-easing-out),
+    box-shadow var(--k-duration-fast) var(--k-easing-out),
+    opacity var(--k-duration-fast) var(--k-easing-out);
 
   input[type="checkbox"],
   input[type="radio"] {
-    accent-color: var(--zen-ink-accent);
+    accent-color: var(--k-seal);
     margin: 0;
     cursor: pointer;
   }
 
   &:hover {
-    background: var(--zen-row-hover);
+    background: var(--k-row-hover);
   }
 
   &:has(input:checked) {
-    background: var(--zen-ink-accent);
-    color: var(--zen-surface);
+    background: var(--k-seal);
+    color: var(--k-paper);
     border-color: #3a2e1b;
     box-shadow: 0 1px 3px rgba(94, 67, 39, 0.4);
 
     input[type="checkbox"],
     input[type="radio"] {
-      accent-color: var(--zen-surface);
+      accent-color: var(--k-paper);
     }
   }
 }

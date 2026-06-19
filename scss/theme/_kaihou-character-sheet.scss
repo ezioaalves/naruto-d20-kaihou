@@ -21,51 +21,120 @@
   // item lists, section headers, controls) repaints databook with zero per-rule
   // overrides. These inherit to every PF1e element inside the form; PF1e keeps
   // all its DOM/layout/mechanics, so this stays resilient across PF1e upgrades.
-  --pf1-sheet-background: var(--db-cream);
-  --pf1-header-background: var(--db-red);
+  --pf1-sheet-background: var(--k-paper);
+  --pf1-header-background: var(--k-seal);
   --pf1-header-text: #fff;
   --pf1-header-shadow: none;
-  --pf1-olive: var(--db-ink); // control glyph colour
-  --pf1-control-color: var(--db-red);
-  --pf1-tan: var(--db-border);
-  --pf1-beige: var(--db-border);
-  --pf1-faint: var(--db-border-soft);
-  --pf1-border-groove: 2px groove var(--db-border);
-  --pf1-item-list-bg: #ece3c7;
-  --pf1-item-list-bg-alt: #f4eed9;
-  --pf1-item-list-hover-bg: rgba(178, 58, 46, 0.12);
-  --pf1-color-text-hover: var(--db-red);
+  --pf1-olive: var(--k-ink); // control glyph colour
+  --pf1-control-color: var(--k-seal);
+  --pf1-tan: var(--k-rule);
+  --pf1-beige: var(--k-rule);
+  --pf1-faint: var(--k-rule-soft);
+  --pf1-item-list-bg: var(--k-stripe-odd);
+  --pf1-item-list-bg-alt: var(--k-stripe-even);
+  --pf1-item-list-hover-bg: var(--k-row-hover);
+  --pf1-color-text-hover: var(--k-seal);
+
+  // Inner summary tables (Hit Points / Speed / Defenses / Hero Statistics /
+  // Classes) are PF1e `.info-box`-derived and read Foundry-CORE vars the block
+  // above never set — which is why they stayed vanilla gold-trimmed parchment.
+  // Repointing these repaints all of them at once, by inheritance, no new
+  // selectors (scoped to the form, so the blast radius is our sheet only).
+  // Fewer colours, more contrast: one two-step hierarchy across every band —
+  // sumi-ink TITLE bars (h3) over crab-slate SUB-LABEL bands (h5), bright text
+  // on both, parchment cells with sumi data. Removes the leftover PF1e grays.
+  --color-border-dark-3: var(--k-ink);       // info-box edge → sumi
+  --pf1-bg-dark-4: var(--k-ink);             // TITLE bars (Hit Points, Chakra Pool) → sumi
+  --pf1-bg-dark-3: var(--k-crab);            // SUB-LABEL bands (CURRENT…) → crab indigo-dusk
+  --color-text-light-highlight: #f7f1e1;     // band text → bright parchment (high contrast)
+  --color-shadow-dark: transparent;          // kill the black header drop-shadow
+  --pf1-bg-dark-0: var(--k-paper-sunken);    // number-input wells
+  --pf1-bg-dark-1: rgba(44, 38, 28, 0.06);
+  --pf1-bg-dark-2: rgba(44, 38, 28, 0.1);
+  --pf1-border-groove: 1px solid var(--k-rule); // flatten gold 3-D groove → flat rule
 
   // Align the zen theme's sheet tokens to databook. These flip the zen-themed
   // layer (skill names use --zen-ink; their hover uses --zen-ink-accent; the
   // section headers use --zen-font-display) purely by custom-property
   // inheritance — no specificity overrides, no fighting the zen partials.
-  --zen-ink: var(--db-ink); // calmer than zen's terracotta rgb(118,79,64)
-  --zen-ink-mute: var(--db-muted);
-  --zen-ink-accent: var(--db-red); // hover/active accent
-  --zen-font-display: var(--db-font-name); // section headers → databook sans
-  --zen-font-body: var(--db-font-body); // body/table text → databook serif (was PatrickHand)
+  --zen-ink: var(--k-ink); // calmer than zen's terracotta rgb(118,79,64)
+  --zen-ink-mute: var(--k-ink-mute);
+  --zen-ink-accent: var(--k-seal); // hover/active accent
+  --zen-font-display: var(--k-font-util); // section headers → databook sans
+  --zen-font-body: var(--k-font-body); // body/table text → databook serif (was PatrickHand)
 
-  // Flat cream base behind PF1e's mostly-translucent panels (replaces the
-  // parchment image; the form fills .window-content, covering it).
-  background: var(--db-cream);
-  color: var(--db-ink);
+  // Washed-parchment base behind PF1e's mostly-translucent panels. The form
+  // fills .window-content and covers it, so the texture must live HERE or it
+  // only peeks through the scrollbar gutter. Washed (66% cream) for legibility.
+  background-color: var(--k-paper);
+  background-image: var(--k-surface-washed);
+  background-size: cover;
+  background-position: center;
+  color: var(--k-ink);
+
+  // --- Type-size STANDARD applied to PF1e's summary tables --------------------
+  // PF1e's column labels (CURRENT/FORTITUDE…) shipped thin + over-tracked + drop-
+  // shadowed and read poorly on the crab-slate bands. Re-set them to the record
+  // standard: SemiSans 600, tighter tracking, no shadow, light-on-slate. Module
+  // CSS loads after pf1.css so these win the specificity tie by source order.
+  // Bands are DARK → text must be LIGHT (set explicitly, never rely on a PF1e
+  // var that may resolve dark). Cells are LIGHT → text stays sumi.
+  // Info-box TITLES (Hit Points / Speed / Chakra Pool …) are compact band
+  // headers, NOT page sections — bold-sans uppercase, not the big serif. The
+  // theme's `.tab.summary h3` rule (specificity 0,5,2) otherwise colours these
+  // dark (invisible on the sumi band) and serifs them, so !important on the
+  // three contested properties is the decisive, consistent override (summary
+  // AND chakra tabs alike).
+  .info-box-header > h3 {
+    display: flex;            // vertically centre the title (was sitting high)
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
+    font-family: var(--k-font-body) !important;
+    font-size: var(--k-type-body) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--k-on-dark) !important;
+    text-shadow: none;
+  }
+  .info-box > h5 {
+    font-family: var(--k-font-body);
+    font-size: var(--k-type-label);
+    font-weight: var(--k-weight-label);
+    letter-spacing: var(--k-track-label);
+    text-transform: uppercase;
+    color: var(--k-on-dark);
+    text-shadow: none;
+  }
+  .info-box .value {
+    font-family: var(--k-font-body);
+    font-size: var(--k-type-numeric);
+    font-weight: var(--k-weight-value);
+    font-variant-numeric: tabular-nums;
+    color: var(--k-ink);
+  }
 
   // --- Header band: a databook registry card — portrait · identity · stats ----
   .db-band {
     flex: 0 0 auto;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) minmax(280px, auto);
     align-items: center;
-    gap: var(--zen-space-4);
+    gap: var(--k-space-4);
   }
   .db-band__portrait { position: relative; flex: 0 0 auto; }
   .db-band__id { min-width: 0; }
-  .db-band__name { line-height: 1.04; }
-  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: var(--zen-space-2); }
-  .db-natures { display: flex; gap: 8px; align-items: center; margin-top: var(--zen-space-2); }
-  .db-natures__lbl { font: var(--zen-text-xs) var(--db-font-label); text-transform: uppercase; letter-spacing: 0.07em; color: var(--db-muted); }
-  .db-natures__void-sep { width: 1px; height: 26px; background: var(--db-border); margin: 0 2px; }
+  .db-band__name {
+    line-height: 1.04;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+  .db-band__badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: var(--k-space-2); }
+  .db-natures { display: flex; gap: 8px; align-items: center; margin-top: var(--k-space-2); }
+  .db-natures__lbl { font: var(--k-text-xs) var(--k-font-util); text-transform: uppercase; letter-spacing: 0.07em; color: var(--k-ink-mute); }
+  .db-natures__void-sep { width: 1px; height: 26px; background: var(--k-rule); margin: 0 2px; }
 
   // Natures + KKG slot are larger than the base 26px chip for legibility.
   .db-nat { width: 36px; height: 36px; }
@@ -81,7 +150,7 @@
   .db-nat--basic[data-nature="water"] { background-image: url("../../assets/theme/icons/natures/water.svg"); }
   .db-nat--basic[data-nature="wind"] { background-image: url("../../assets/theme/icons/natures/wind.svg"); }
   .db-nat--basic[data-nature="earth"] { background-image: url("../../assets/theme/icons/natures/earth.svg"); }
-  .db-nat--basic[data-nature="lightning"] { background-image: url("../../assets/theme/icons/natures/lightning.png"); }
+  .db-nat--basic[data-nature="lightning"] { background-image: url("../../assets/questions/elements/lightning.png"); }
   .db-nat--basic:not(.db-nat--on) { opacity: 0.4; }
 
   // KKG / void slot: the void mark replaces the dashed double-ring.
@@ -98,187 +167,829 @@
   .db-badge--village { gap: 6px; }
   .db-badge__crest { width: 22px; height: 22px; object-fit: contain; }
 
-  // Stat cluster: HP · AC · Chakra across the top, LV + Rest beneath.
-  .db-band__stats {
-    flex: 0 0 auto;
-    align-self: center;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(58px, 1fr));
-    gap: 6px;
+  // ── Footer dock (Direction A) ─────────────────────────────────────────────
+  // The sheet relocates the portrait + a main wrapper (quick-actions strip over
+  // the footer band) into the dock. The dock's height is set by the main column;
+  // the portrait is absolutely pinned top-to-bottom so it ALWAYS fills that
+  // height (flex/grid stretch did not). main is offset by the portrait width.
+  // (Built in _normalizeSummaryTab.)
+  // Flex row: the portrait and the main column are flex siblings. align-items:
+  // stretch makes the portrait match the main column's height. The main column's
+  // content sets that height; the portrait image is taken out of flow (absolute)
+  // so it fills the cell WITHOUT ever driving the footer's height.
+  //
+  // Why flex and not display:table — a table-cell does NOT reliably establish a
+  // containing block for absolutely-positioned descendants in Chromium/Electron
+  // even with position:relative, so the fqu wrapper's inset:0 collapsed to the
+  // top. A positioned flex item is a reliable containing block.
+  .db-dock {
+    flex: 0 0 auto; // don't grow within the form's flex column
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    border-bottom: 2px solid var(--k-seal); // masthead sits above the tab strip
+    background: var(--k-paper-raised);
   }
-  .db-band__stats .db-pip { min-width: 0; }
-  .db-pip--edit { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 3px; }
-  .db-pip--edit small { flex: 0 0 100%; }
-  .db-pip__val { font-size: var(--zen-text-lg); font-weight: 700; line-height: 1.1; }
-  .db-pip__in {
-    width: 2.1em;
+  // Cell stretched to the main column's height; its WIDTH is derived from that
+  // height via aspect-ratio so the whole image shows with no cropping and the
+  // footer grows wider (not taller) for portrait/landscape art. The image is
+  // absolute (out of flow) so it never feeds back into the height. --db-port-ratio
+  // is set per-image in JS (_normalizeSummaryTab) from the file's natural size;
+  // the 3/4 fallback covers the brief moment before the image loads.
+  .db-dock > .db-band__portrait {
+    flex: 0 0 auto;
+    align-self: stretch;
+    aspect-ratio: var(--db-port-ratio, 3 / 4);
+    position: relative; // containing block for the out-of-flow image
+    overflow: hidden;
+    border-right: 1px solid var(--k-rule);
+  }
+  // The Quick-Upload module (fqu) wraps the portrait <img> in a
+  // .fqu-hover-container, so target by descendant (not direct child). The wrapper
+  // fills the cell; with the cell already matching the image ratio, cover shows
+  // the whole image edge-to-edge without cropping.
+  .db-dock > .db-band__portrait .fqu-hover-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+  }
+  .db-dock > .db-band__portrait .db-band__port {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .db-dock__main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .db-footer {
+    flex: 0 0 auto; // ignored inside the dock; covers the no-JS fallback
+    display: flex;
+    align-items: stretch;
+    background: var(--k-paper-raised);
+  }
+  // The band is a vertical stack: title (name · alias · village) over vitals.
+  .db-footer .db-band {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--k-space-1);
+    min-width: 0;
+    border-bottom: none;
+    border-top: none;
+    padding: var(--k-space-1) var(--k-space-3);
+    // Aged-parchment wash — texture washed with cream so dense data stays legible.
+    background:
+      linear-gradient(rgba(236, 228, 210, 0.8), rgba(236, 228, 210, 0.8)),
+      var(--k-surface-image) center / cover;
+  }
+  .db-band__title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .db-footer .db-band__name {
+    font-family: var(--k-font-display);
+    font-size: var(--k-text-xl);
+    font-weight: var(--k-weight-title);
+    line-height: 1.02;
+  }
+  .db-footer .db-band__badges { margin-top: 2px; }
+  // Fallback only (no-JS): if the portrait is never relocated it stays in the
+  // band — keep it from ballooning.
+  .db-footer .db-band__portrait { align-self: flex-start; }
+  .db-footer .db-band__port { width: 88px; height: auto; }
+
+  // Vitals panel — three gauges stacked over the defense strip.
+  .db-band__vitals {
+    align-self: stretch; // fill the band width so the gauges/strip don't shrink-center
+    display: flex;
+    flex-direction: column;
+    gap: var(--k-space-2);
+    min-width: 0;
+  }
+  .db-vitals__bars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--k-space-2);
+  }
+
+  // HP / Chakra / Reserve gauges — the loud element. A tinted fill behind the
+  // readout reflects value/max; the value stays inline-editable (db-pip__in).
+  .db-bar {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 36px;
+    padding: 3px 8px;
+    background: var(--k-paper-sunken);
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-md);
+  }
+  .db-bar__fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    transition: width 0.2s ease;
+  }
+  .db-bar--hp .db-bar__fill { background: rgba(178, 58, 46, 0.22); }
+  .db-bar--chakra .db-bar__fill { background: rgba(61, 83, 102, 0.24); }
+  .db-bar--reserve .db-bar__fill { background: rgba(61, 83, 102, 0.12); }
+  .db-bar__label {
+    position: relative;
+    font: var(--k-weight-label) var(--k-text-xs) / 1 var(--k-font-util);
+    text-transform: uppercase;
+    letter-spacing: var(--k-track-label);
+    color: var(--k-ink-mute);
+  }
+  .db-bar__readout {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 1px;
+    margin-top: 2px;
+    font-family: var(--k-font-display);
+    font-size: var(--k-text-lg);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--k-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .db-bar__in {
+    width: 2.2em;
     text-align: right;
     border: none;
     background: transparent;
     font: inherit;
-    color: var(--db-ink);
+    color: var(--k-ink);
     padding: 0;
   }
-  .db-pip__in:focus { outline: 1px solid var(--db-red); background: #fff7e6; border-radius: 2px; }
-  .db-pip__tap { color: var(--db-red); cursor: pointer; }
-  .db-pip__tap:hover { color: var(--db-red-deep); }
+  .db-bar__in:focus { outline: 1px solid var(--k-seal); background: var(--k-paper-stamp); border-radius: 2px; }
+  .db-bar__max { font-size: var(--k-text-sm); font-weight: 400; color: var(--k-ink-soft); }
+  .db-bar__tap { margin-left: 5px; color: var(--k-seal); cursor: pointer; align-self: center; font-size: var(--k-text-sm); }
+  .db-bar__tap:hover { color: var(--k-seal-deep); }
 
-  // Rest button — spans the second stat row beside LV.
+  // Defense strip — six rollable cells, hairline-divided. The whole cell is a
+  // button that fires a native PF1e roll (AC→defenses, Init, saves, Per).
+  .db-vitals__strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    background: var(--k-paper-stamp);
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-md);
+    overflow: hidden;
+  }
+  .db-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 2px;
+    text-align: center;
+    min-width: 0;
+  }
+  .db-stat--roll {
+    appearance: none;
+    background: transparent;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .db-stat--roll:hover { background: var(--k-row-hover); }
+  .db-stat--roll:focus-visible { outline: 2px solid var(--k-seal); outline-offset: -2px; }
+  .db-stat:not(:last-child) { border-right: 1px solid var(--k-rule); }
+  .db-stat__v {
+    font-family: var(--k-font-display);
+    font-size: var(--k-text-base);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--k-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .db-stat--roll:hover .db-stat__v { color: var(--k-seal); }
+  .db-stat__k {
+    margin-top: 3px;
+    font: var(--k-weight-label) var(--k-text-xs) / 1 var(--k-font-util);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--k-ink-mute);
+  }
+
+  // Rest button — relocated to the end of the quick-actions strip as a small
+  // circular icon FAB (db-rest--fab added by the sheet).
   .db-rest {
-    grid-column: span 2;
+    align-self: center;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    font: 700 var(--zen-text-xs)/1 var(--db-font-label);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    background: var(--db-red);
+    background: var(--k-seal);
     color: #fff;
     border: none;
-    border-radius: var(--zen-radius-sm);
-    padding: 7px 9px;
     cursor: pointer;
     white-space: nowrap;
   }
-  .db-rest:hover { background: var(--db-red-deep); }
-
-  // The headline nature is a seal stamped on the portrait's lower-right corner.
-  .db-band__portrait .db-nat--solo {
-    position: absolute;
-    right: -10px;
-    bottom: -10px;
-    width: 34px;
-    height: 34px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
-    z-index: 1;
-  }
-
-  // Full natures panel on the Identity tab.
-  .db-panel--natures .db-natures { justify-content: center; }
-
-  // Compact Quick Actions strip beneath the header band — labelled so a short
-  // list still reads as intentional rather than an empty bar.
-  .db-quick-strip {
+  .db-rest:hover { background: var(--k-seal-deep); }
+  .db-rest--fab {
     flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 14px;
-    background: var(--db-panel);
-    border-bottom: 1px solid var(--db-border);
-    overflow-x: auto;
-  }
-  .db-quick-strip::before {
-    content: "Quick";
-    flex: 0 0 auto;
-    font: 700 var(--zen-text-xs)/1 var(--db-font-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--db-red);
-  }
-  .db-quick-strip .quick-actions {
-    display: flex;
-    gap: 6px;
-    margin: 0;
+    width: 24px;
+    height: 24px;
     padding: 0;
-    list-style: none;
+    border-radius: 50%;
+    font-size: var(--k-text-xs);
   }
-  .db-quick-strip .quick-actions .item {
-    position: relative;
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--db-border);
-    border-radius: var(--zen-radius-sm);
-    cursor: pointer;
-  }
-  .db-quick-strip .quick-actions .item img { width: 100%; height: 100%; object-fit: cover; border: none; border-radius: inherit; }
-  .db-quick-strip .quick-actions .item charges {
+  .db-rest--fab i { margin: 0; }
+
+  // Village crest stamped flush on the portrait's lower-right corner (no padding,
+  // no ring) — the actor's faction mark on the record photo.
+  .db-band__portrait .db-band__crest {
     position: absolute;
-    right: -2px;
-    bottom: -4px;
-    font-size: var(--zen-text-xs);
-    font-weight: 700;
-    color: var(--db-ink);
-    background: var(--db-cream);
-    border: 1px solid var(--db-border);
-    border-radius: 6px;
-    padding: 0 3px;
-    line-height: 1.2;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border: none; // PF1e gives sheet <img>s a frame; the crest takes none
+    background: none;
+    filter: drop-shadow(0 1px 2px rgba(46, 39, 29, 0.45));
+    pointer-events: none;
+    z-index: 2;
   }
 
-  // --- Databook-red tab strip, collapsed to an icon rail --------------------
-  // Each tab shows only its icon; the label expands AFTER the icon on hover or
-  // when active, so the icon never shifts (no hover flicker) and 12 tabs fit
-  // without overflowing. PF1e stretches items with flex:1 — we size to content.
-  .sheet-navigation.tabs {
+  // --- Databook-red tab strip — equal-width, labels only, no icons -----------
+  // The primary nav is a fixed-height flex child between the warning strip and
+  // the tab body, so moving the header band into the footer cannot collapse it.
+  > .sheet-navigation.tabs[data-group="primary"] {
+    flex: 0 0 28px;
+    min-height: 28px;
+    display: flex;
+    align-items: stretch;
     background: #e3d7b8;
-    border-bottom: 2px solid var(--db-red);
+    border-bottom: 2px solid var(--k-seal);
     flex-wrap: nowrap;
-    column-gap: 2px;
+    column-gap: 1px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: thin;
   }
-  .sheet-navigation.tabs .item {
-    flex: 0 0 auto;
+  > .sheet-navigation.tabs[data-group="primary"] .item {
+    flex: 1 1 58px;
+    min-width: 58px;
     display: inline-flex;
     align-items: center;
-    padding: 0 9px;
+    justify-content: center;
+    padding: 0 4px;
+    min-height: 26px;
   }
-  .sheet-navigation.tabs .item > i {
-    font-size: 15px;
-    line-height: var(--pf1-nav-height);
-  }
-  .sheet-navigation.tabs .item .db-tab-label {
-    display: inline-block;
-    max-width: 0;
-    overflow: hidden;
-    opacity: 0;
+  > .sheet-navigation.tabs[data-group="primary"] .item .db-tab-label {
     white-space: nowrap;
-    vertical-align: middle;
-    transition: max-width 0.18s ease, opacity 0.18s ease, margin-left 0.18s ease;
+    font-family: var(--k-font-util);
+    font-size: 0.66rem;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.18s ease;
   }
-  .sheet-navigation.tabs .item.active .db-tab-label,
-  .sheet-navigation.tabs .item:hover .db-tab-label {
-    max-width: 14ch;
-    opacity: 1;
-    margin-left: 7px;
-  }
-  .sheet-navigation.tabs .item.active { background: var(--db-red); color: #fff; border-radius: 8px 8px 0 0; }
+  > .sheet-navigation.tabs[data-group="primary"] .item.active .db-tab-label,
+  > .sheet-navigation.tabs[data-group="primary"] .item:hover .db-tab-label { opacity: 1; }
+  > .sheet-navigation.tabs[data-group="primary"] .item.active { background: var(--k-seal); color: #fff; border-radius: 8px 8px 0 0; }
 
   // --- Identity dossier tab: the one tab we own and fully style ---
   .tab.identity {
     overflow-y: auto;
-    background: var(--db-cream);
-    color: var(--db-ink);
+    background: var(--k-paper);
+    color: var(--k-ink);
   }
 
-  .db-frontmatter { padding: var(--zen-space-3); display: flex; flex-direction: column; gap: var(--zen-space-3); }
+  .db-frontmatter { padding: var(--k-space-3); display: flex; flex-direction: column; gap: var(--k-space-3); }
 
-  .db-identity-edit { display: flex; gap: var(--zen-space-3); }
-  .db-identity-edit label { flex: 1; font: var(--zen-text-xs)/1.4 var(--db-font-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--db-muted); }
-  .db-identity-edit input { width: 100%; background: #fff7e6; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); color: var(--db-ink); padding: 2px 6px; }
+  .db-identity-hero {
+    display: grid;
+    grid-template-columns: 25% minmax(0, 1fr);
+    gap: var(--k-space-3);
+    align-items: stretch;
+  }
+  .db-identity-portrait img {
+    width: 100%;
+    height: 100%;
+    min-height: 150px;
+    object-fit: cover;
+    border: 2px solid var(--k-ink);
+    border-radius: var(--k-radius-sm);
+    background: #ded2b2;
+  }
+  .db-identity-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .db-identity-info textarea,
+  .db-identity-info__read {
+    flex: 1 1 auto;
+    min-height: 120px;
+    width: 100%;
+    resize: vertical;
+    background: #fff7e6;
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    font: var(--k-text-sm)/1.35 var(--k-font-body);
+    padding: 6px 8px;
+    white-space: pre-wrap;
+  }
 
-  .db-radars { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
-  .db-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--zen-space-3); }
+  .db-identity-edit { display: flex; gap: var(--k-space-3); }
+  .db-identity-edit label { flex: 1; font: var(--k-text-xs)/1.4 var(--k-font-util); text-transform: uppercase; letter-spacing: 0.06em; color: var(--k-ink-mute); }
+  .db-identity-edit input { width: 100%; background: #fff7e6; border: 1px solid var(--k-rule); border-radius: var(--k-radius-sm); color: var(--k-ink); padding: 2px 6px; }
+  .db-identity-ro { display: block; font: var(--k-text-sm)/1.4 var(--k-font-body); color: var(--k-ink); padding: 2px 0; }
 
-  .db-missions { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; text-align: center; }
-  .db-missions > div { background: #e7dcbf; border: 1px solid var(--db-border); border-radius: var(--zen-radius-sm); padding: 3px 0; }
-  .db-missions b { display: block; font-size: var(--zen-text-base); }
-  .db-missions small { font-size: var(--zen-text-xs); color: var(--db-muted); }
-  .db-mission { width: 100%; text-align: center; border: none; background: transparent; font-size: var(--zen-text-base); color: var(--db-ink); }
+  // Compact inline input for the Clan field in the Data panel.
+  .db-data__input { width: 18ch; max-width: 60%; background: #fff7e6; border: 1px solid var(--k-rule); border-radius: var(--k-radius-sm); color: var(--k-ink); font: inherit; text-align: right; padding: 1px 4px; }
 
-  .db-line { display: flex; justify-content: space-between; font-size: var(--zen-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--db-border-soft); }
+  // Slug labels beside discipline radar icons.
+  .db-radar__slug { font: 600 8px/1 var(--k-font-util); fill: var(--k-ink-mute); }
+
+  .db-radars { display: grid; grid-template-columns: 1fr 1fr; gap: var(--k-space-3); }
+  .db-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--k-space-3); }
+
+  .db-missions { display: grid; grid-template-rows: repeat(6, minmax(28px, 1fr)); gap: 3px; text-align: center; }
+  .db-mission-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; min-height: 28px; background: #e7dcbf; border: 1px solid var(--k-rule); border-radius: var(--k-radius-sm); padding: 2px 6px; }
+  .db-missions b { display: block; font-size: var(--k-text-base); }
+  .db-missions small { font-size: var(--k-text-xs); color: var(--k-ink-mute); }
+  .db-mission { width: 100%; text-align: right; border: none; background: transparent; font-size: var(--k-text-base); color: var(--k-ink); }
+
+  .db-line { min-height: 28px; display: flex; align-items: center; justify-content: space-between; gap: var(--k-space-2); font-size: var(--k-text-xs); padding: 2px 0; border-bottom: 1px dotted var(--k-rule-soft); }
 
   // Collaborative notes (Identity tab).
-  .db-notes__hint { font-weight: 400; font-size: var(--zen-text-xs); color: var(--db-muted); text-transform: none; letter-spacing: 0; }
+  .db-notes__hint { font-weight: 400; font-size: var(--k-text-xs); color: var(--k-ink-mute); text-transform: none; letter-spacing: 0; }
   .db-notes textarea {
     width: 100%;
     resize: vertical;
     background: #fff7e6;
-    border: 1px solid var(--db-border);
-    border-radius: var(--zen-radius-sm);
-    color: var(--db-ink);
-    font: var(--zen-text-xs)/1.45 var(--db-font-body);
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    font: var(--k-text-xs)/1.45 var(--k-font-body);
     padding: 5px 7px;
   }
-  .db-notes textarea:focus { outline: 1px solid var(--db-red); }
+  .db-notes textarea:focus { outline: 1px solid var(--k-seal); }
+
+  .db-biography { padding: var(--k-space-3); display: flex; flex-direction: column; gap: var(--k-space-3); min-height: 0; }
+  .db-bio-field { display: flex; gap: var(--k-space-3); align-items: center; padding: 2px 0; }
+  .db-bio-field label { flex: 0 0 9rem; font: var(--k-text-xs)/1.4 var(--k-font-util); text-transform: uppercase; letter-spacing: 0.06em; color: var(--k-ink-mute); }
+  .db-bio-field input {
+    flex: 1;
+    min-width: 0;
+    background: #fff7e6;
+    border: 1px solid var(--k-rule);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    padding: 2px 6px;
+  }
+  .db-bio-field span { flex: 1; min-width: 0; font: var(--k-text-sm)/1.4 var(--k-font-body); color: var(--k-ink); }
+  .db-bio-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--k-space-2);
+    padding: 2px 0;
+  }
+  .db-bio-item .item-controls {
+    flex: 0 0 auto;
+    display: inline-flex;
+    gap: 6px;
+  }
+  .db-bio-classes { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; }
+  .db-bio-classes .item-name { flex: 1 1 auto; min-width: 0; }
+  .db-bio-classes .item-name h4 { margin: 0; font: var(--k-text-sm)/1.2 var(--k-font-body); color: var(--k-ink); }
+  .db-bio-classes .class-level { flex: 0 0 52px; text-align: center; font: var(--k-text-xs)/1 var(--k-font-util); color: var(--k-ink-mute); }
+  .db-bio-class-icon { flex: 0 0 28px; width: 28px; height: 28px; object-fit: contain; border-radius: var(--k-radius-sm); border: 1px solid var(--k-rule); }
+  .db-bio-classes-panel .db-panel__header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--k-space-2);
+    .db-panel__h { margin: 0; }
+    .db-bio-class-add { display: inline-flex; gap: 6px; }
+  }
+  .db-bio-notes { min-height: 180px; display: flex; flex-direction: column; }
+  .db-bio-notes .editor,
+  .db-bio-notes .editor-content { flex: 1 1 auto; min-height: 140px; }
+  .db-bio-20q { margin-top: var(--k-space-3); }
+
+  // Collapsible toggle for the relocated Summary defense notes. (The Buffs
+  // conditions toggle is a button — styled below; the Chakra Learn toggle is
+  // themed in _naruto-module.scss, scoped under the naruto-zen target.)
+  .tab.summary .defense-notes details > summary {
+    display: block;
+    text-align: left;
+    cursor: pointer;
+    font: 700 var(--k-type-label)/1 var(--k-font-util);
+    text-transform: uppercase;
+    letter-spacing: var(--k-track-label);
+    color: var(--k-ink-mute);
+    padding: var(--k-space-1) 0;
+  }
+
+  .tab.combat {
+    font-family: var(--k-font-body);
+    font-size: var(--k-text-sm);
+  }
+  .tab.combat .item-list-header h3 {
+    font-family: var(--k-font-util);
+    font-size: var(--k-text-base);
+    line-height: 1.1;
+  }
+
+  // Relocated combat content now lives in Summary's defenses column. The
+  // Defenses header row carries the title + Natural Armor AC + Spell Resistance
+  // inline; PF1e's `.tab.summary .attributes{flex-flow:row}` makes the <ul> a
+  // row, and these rules keep each label/input compact so all three fit.
+  .tab.summary ul.attributes > li.generic-defenses {
+    flex: 0 0 auto;
+  }
+  // Each row keeps its label beside its field (flexrow can get flipped to a
+  // column when the <li> is narrow, so pin the direction explicitly).
+  .tab.summary ul.attributes > li.natural-armor,
+  .tab.summary ul.attributes > li.db-sr {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: var(--k-space-1);
+    min-width: 0;
+  }
+  .tab.summary ul.attributes > li.natural-armor h3,
+  .tab.summary ul.attributes > li.db-sr h3,
+  .tab.summary .defense-notes h3 {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-family: var(--k-font-util);
+    font-size: var(--k-text-base);
+    line-height: 1.1;
+  }
+  .tab.summary ul.attributes > li.natural-armor input,
+  .tab.summary ul.attributes > li.db-sr input {
+    flex: 1 1 4rem;
+    min-width: 2.5rem;
+    font-size: var(--k-text-xs);
+  }
+
+  // Offensive metrics: BAB / CMB / Initiative on the first row, with Melee /
+  // Ranged dropped to a full-width second row beneath them. CSS `order` keeps
+  // Initiative ahead of the melee+ranged wrapper despite DOM order.
+  .tab.summary .db-offensive-row {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 3px;
+    align-items: stretch;
+    margin: 0;
+
+    > .info-box.bab { order: 1; }
+    > .info-box.cmb { order: 2; }
+    > .info-box.initiative { order: 3; }
+    > .info-box.bab,
+    > .info-box.cmb,
+    > .info-box.initiative {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    > .info-box-joined.generic-attacks {
+      order: 4;
+      flex: 0 0 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 3px;
+
+      > .info-box {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+    }
+  }
+
+  // Defense notes: when several are expanded at once, cap the block and let it
+  // scroll instead of pushing the footer off-screen.
+  .tab.summary .defense-notes {
+    max-height: 11rem;
+    overflow-y: auto;
+  }
+
+  // All skill rows — same single border-bottom regardless of origin (compendium vs naruto-d20 custom)
+  .tab.skills ul.skills-list li.skill {
+    border-bottom: 1px solid var(--k-rule-soft) !important;
+    border-top: none !important;
+  }
+  .tab.skills .controls.skills,
+  .tab.skills .controls.skills .control,
+  .tab.skills .skill-create {
+    font-family: var(--k-font-util);
+    font-size: var(--k-text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  // ── Meta rail: a quiet ledger COLUMN at the far right of the footer ────────
+  // Holds the Level cell plus naruto-d20's Action Points / Reputation / Wealth
+  // block (#naruto-hero-statistics), relocated here by the renderActorSheetPF
+  // hook. Cells stack vertically, value over label, hairline-divided.
+  .db-meta-rail {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 56px; // ~1/4 of the previous width; labels are abbreviated to fit
+    border-left: 1px solid var(--k-rule);
+    background: var(--k-paper-raised);
+  }
+  .db-meta__cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2px var(--k-space-1);
+    text-align: center;
+    border-bottom: 1px solid var(--k-rule);
+    min-width: 0;
+  }
+  .db-meta__v {
+    font-family: var(--k-font-display);
+    font-size: var(--k-text-base);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--k-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .db-meta__k {
+    margin-top: 3px;
+    font: var(--k-weight-label) var(--k-text-xs) / 1.05 var(--k-font-util);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--k-ink-mute);
+  }
+
+  // naruto-d20 appends #naruto-hero-statistics with its own h3 + hr + flexrow
+  // info-box layout. We suppress that chrome and stack its three cells as the
+  // remaining rail rows, value-over-label to match the Level cell. The crab
+  // sub-label band (--pf1-bg-dark-3) is reset to transparent so the labels
+  // read as plain captions, not dark pills.
+  .db-meta-rail #naruto-hero-statistics {
+    flex: 3;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+
+    h3 { display: none; }
+    .naruto-summary-divider { display: none; }
+
+    .naruto-summary-stats {
+      flex: 1;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      margin: 0;
+
+      .info-box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--k-rule);
+        border-radius: 0;
+        box-shadow: none;
+        padding: 2px var(--k-space-1);
+        text-align: center;
+        min-width: 0;
+
+        &:last-child { border-bottom: none; }
+
+        h5 {
+          order: 2;
+          margin: 3px 0 0;
+          background: transparent; // reset the inherited crab sub-label band
+          font: var(--k-weight-label) var(--k-text-xs) / 1.05 var(--k-font-util);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          color: var(--k-ink-mute);
+          text-shadow: none;
+
+          a { color: inherit; text-decoration: none; }
+          a:hover { color: var(--k-seal); }
+        }
+
+        input.value {
+          order: 1;
+          font-family: var(--k-font-display);
+          font-size: var(--k-text-base);
+          font-weight: 700;
+          line-height: 1;
+          color: var(--k-ink);
+          background: transparent;
+          border: none;
+          text-align: center;
+          padding: 0;
+          width: 100%;
+          min-height: 0;
+          font-variant-numeric: tabular-nums;
+        }
+      }
+    }
+  }
+
+  // ─── Quick Actions strip (dock right column, row 1) ────────────────────────
+  .db-quick-actions-strip {
+    flex: 0 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--k-space-2);
+    padding: 2px var(--k-space-3);
+    min-height: 32px;
+    border-top: 1px solid var(--k-rule); // divider up to the band above it
+    background: var(--k-paper-raised);
+    overflow: visible;
+
+    > h3 {
+      font-family: var(--k-font-util);
+      font-size: var(--k-text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--k-track-label);
+      color: var(--k-ink-mute);
+      margin: 0;
+      flex: 0 0 auto;
+    }
+
+    > ol.quick-actions {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--k-space-1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        border: 1px solid var(--k-rule);
+        border-radius: var(--k-radius-sm);
+        cursor: pointer;
+
+        &:hover {
+          border-color: var(--k-seal);
+          box-shadow: var(--k-glow);
+        }
+      }
+    }
+  }
+
+  // ─── Typography — kill hardcoded PF1e drop-shadows ─────────────────────────
+  // PF1e hardcodes text-shadow with literal colors on several headers/cells;
+  // the remap block neutralizes --color-shadow-dark + --pf1-header-shadow but
+  // not these which bypass the variable system entirely.
+
+  // Attributes tab: ability-scores link-group heading
+  .tab.settings .ability-scores > .links > div h3 {
+    color: var(--k-ink);
+    text-shadow: none;
+    font-family: var(--k-font-body);
+  }
+
+  // Summary tab: pseudo-table section headers (e.g. "Speed", "Defenses" labels)
+  .tab.summary .pseudo-table .header,
+  .tab.summary .pseudo-table .sub-header {
+    color: var(--k-ink-mute);
+    text-shadow: none;
+  }
+
+  // Generic table th (PF1e uses white text + black shadow on dark bg)
+  table tbody th {
+    text-shadow: none;
+    color: var(--k-ink-mute);
+  }
+
+  // Buffs tab: active condition (PF1e: 0 0 8px red)
+  .tab.buffs .condition.active {
+    text-shadow: none;
+    font-weight: 600;
+  }
+
+  // ─── Combat tab: note fields full-width ────────────────────────────────────
+  // The defense notes were relocated to Summary, where _collapsibleNotes wraps
+  // each .flexrow in a <details> (h3 becomes <summary>). The .flexrow then
+  // holds only <textarea class="context-text">. Stack the row vertically so the
+  // textarea fills the full container width.
+  .tab.summary .defense-notes {
+    // .defense-notes also carries PF1e's `.attributes` class, whose Summary
+    // rule (.tab.summary .attributes{flex-flow:row}) would lay the four note
+    // rows out horizontally. Force the column stack the notes need.
+    flex-flow: column nowrap !important;
+
+    details {
+      width: 100%;
+    }
+
+    .flexrow {
+      flex-flow: column nowrap;
+      width: 100%;
+
+      textarea.context-text {
+        width: 100% !important;
+        min-height: 3rem;
+        resize: vertical;
+        text-align: left;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  // Biography tab: let its content scroll within the fixed sheet height rather
+  // than overflowing (the tab is the flex child of .primary-body{overflow:hidden}).
+  .tab.biography {
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  // ─── Buffs tab: compact, collapsible conditions panel ──────────────────────
+  .tab.buffs {
+    // Pin the wrapper to its content height. Without this it flex-grows to a
+    // fixed slot, leaving the toggle on top of empty space when collapsed (the
+    // blank band) instead of shrinking to just the header.
+    .db-conditions {
+      flex: 0 0 auto;
+    }
+    // Button-driven collapse (native <details> was unreliable for this panel).
+    // The collapsed class fully controls the panel's display, so it genuinely
+    // reclaims its space when closed.
+    .db-conditions__toggle {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      font: 700 var(--k-type-label)/1 var(--k-font-util);
+      text-transform: uppercase;
+      letter-spacing: var(--k-track-label);
+      color: var(--k-ink-mute);
+      padding: var(--k-space-1) 0;
+
+      &::before {
+        content: "▾ ";
+        font-size: 0.85em;
+      }
+    }
+    .db-conditions.is-collapsed .db-conditions__toggle::before {
+      content: "▸ ";
+    }
+    .db-conditions.is-collapsed .buffs-conditions {
+      display: none;
+    }
+    .db-conditions:not(.is-collapsed) .buffs-conditions {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 2px;
+      max-height: 180px;
+      overflow-y: auto;
+      margin-top: var(--k-space-1);
+    }
+
+    .condition {
+      border-radius: var(--k-radius-sm);
+
+      a.checkbox {
+        gap: 3px;
+        padding: 2px 3px;
+
+        > img {
+          width: 20px;
+          height: 20px;
+          flex: 0 0 20px;
+        }
+
+        .name {
+          font-size: var(--k-text-xs);
+          line-height: 1.2;
+        }
+
+        > .details > .sources {
+          font-size: 0.6rem;
+        }
+      }
+    }
+  }
 }

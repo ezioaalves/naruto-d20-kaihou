@@ -8,20 +8,20 @@
  */
 
 .zen-rolltable {
-  background: var(--zen-stripe-even);
-  border: var(--zen-border-hair) solid var(--zen-border);
-  margin-bottom: var(--zen-space-2);
+  background: var(--k-stripe-even);
+  border: var(--k-border-hair) solid var(--k-rule);
+  margin-bottom: var(--k-space-2);
 }
 
 .zen-rolltable--bold {
-  border: var(--zen-bold-border);
+  border: var(--k-bold-border);
 }
 
 .zen-rolltable__row {
   display: flex;
-  padding: var(--zen-space-1) var(--zen-space-2);
-  border-bottom: var(--zen-border-hair) solid var(--zen-border-soft);
-  font-size: var(--zen-text-sm);
+  padding: var(--k-space-1) var(--k-space-2);
+  border-bottom: var(--k-border-hair) solid var(--k-rule-soft);
+  font-size: var(--k-text-sm);
 }
 
 .zen-rolltable__row:last-child {
@@ -30,51 +30,51 @@
 
 .zen-rolltable__row--rolled {
   background: rgba(150, 60, 65, 0.15);
-  border-left: var(--zen-border-thick) solid var(--zen-ink-accent);
+  border-left: var(--k-border-thick) solid var(--k-seal);
   font-weight: 600;
 }
 
 .zen-rolltable__roll {
   width: 32px;
   font-weight: 700;
-  color: var(--zen-ink-accent);
+  color: var(--k-seal);
 }
 
 .zen-rolltable__outcome {
   flex: 1;
-  color: var(--zen-ink);
+  color: var(--k-ink);
 }
 
 .zen-rolltable__result {
   background: rgba(150, 60, 65, 0.1);
-  border: var(--zen-bold-border);
-  padding: var(--zen-space-2);
-  margin-top: var(--zen-space-2);
+  border: var(--k-bold-border);
+  padding: var(--k-space-2);
+  margin-top: var(--k-space-2);
   text-align: center;
-  font-size: var(--zen-text-base);
+  font-size: var(--k-text-base);
 }
 
 .zen-rolltable__die {
   display: inline-block;
-  background: var(--zen-ink-accent);
-  color: var(--zen-surface);
+  background: var(--k-seal);
+  color: var(--k-paper);
   width: 28px;
   height: 28px;
-  border-radius: var(--zen-radius-md);
+  border-radius: var(--k-radius-md);
   line-height: 28px;
   font-weight: 700;
-  margin-right: var(--zen-space-2);
+  margin-right: var(--k-space-2);
 }
 
 .zen-rolltable__roll-button {
-  background: var(--zen-ink);
-  color: var(--zen-surface);
-  border: var(--zen-bold-border);
-  padding: var(--zen-space-2) var(--zen-space-4);
-  font-family: var(--zen-font-display);
-  font-size: var(--zen-text-lg);
+  background: var(--k-ink);
+  color: var(--k-paper);
+  border: var(--k-bold-border);
+  padding: var(--k-space-2) var(--k-space-4);
+  font-family: var(--k-font-display);
+  font-size: var(--k-text-lg);
   letter-spacing: 1px;
   cursor: pointer;
-  margin-top: var(--zen-space-2);
+  margin-top: var(--k-space-2);
   border-radius: 0;
 }

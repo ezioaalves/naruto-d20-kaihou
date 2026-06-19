@@ -13,6 +13,7 @@ const actor = {
     "naruto-d20-kaihou": {
       alias: "Crimson Mirage",
       allegiance: "13th Tantō",
+      info: "Known to the squad as a reliable scout.",
       missions: { D: 0, C: 24, B: 11, A: 5, S: 1 },
       advancedNature: { kanji: "木", label: "Mokuton" },
     },
@@ -23,10 +24,35 @@ describe("buildKaihouViewModel", () => {
   it("maps identity, missions (with derived total), and KKG nature", () => {
     const vm = buildKaihouViewModel(actor);
     expect(vm.identity.alias).toBe("Crimson Mirage");
-    expect(vm.identity.allegiance).toBe("13th Tantō");
+    expect(vm.identity.rank).toBe("13th Tantō");
+    expect(vm.identity.clan).toBe("");
+    expect(vm.identity.info).toBe("Known to the squad as a reliable scout.");
     expect(vm.identity.missions.counts.C).toBe(24);
     expect(vm.identity.missions.total).toBe(41);
     expect(vm.natures.advanced).toEqual({ kanji: "木", label: "Mokuton" });
+  });
+
+  it("exposes clan from kaihou flags and details (gender/age/height/weight/race) from system", () => {
+    const actor2 = {
+      system: { details: { gender: "Male", age: "19", height: "5'10\"", weight: "160lb", race: "Human" } },
+      flags: { "naruto-d20-kaihou": { clan: "Uchiha" }, "naruto-d20": {} },
+    };
+    const vm = buildKaihouViewModel(actor2);
+    expect(vm.identity.clan).toBe("Uchiha");
+    expect(vm.identity.details.gender).toBe("Male");
+    expect(vm.identity.details.age).toBe("19");
+    expect(vm.identity.details.height).toBe("5'10\"");
+    expect(vm.identity.details.weight).toBe("160lb");
+    expect(vm.identity.details.race).toBe("Human");
+  });
+
+  it("prefers rank from kaihou flags and falls back to old allegiance data", () => {
+    expect(buildKaihouViewModel({
+      flags: { "naruto-d20-kaihou": { rank: "Jounin", allegiance: "Legacy Unit" } },
+    }).identity.rank).toBe("Jounin");
+    expect(buildKaihouViewModel({
+      flags: { "naruto-d20-kaihou": { allegiance: "13th Tantō" } },
+    }).identity.rank).toBe("13th Tantō");
   });
 
   it("builds 6 ability axes and 5 discipline axes in fixed order from live data", () => {

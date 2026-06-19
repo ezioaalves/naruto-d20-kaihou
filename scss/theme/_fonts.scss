@@ -14,22 +14,29 @@
     src: url("../../assets/theme/fonts/BrushtipTexe.ttf") format("truetype");
 }
 
-// Font PatrickHand
+// Rotis Record trio (canonical "Shinobi Record" identity).
+// These OTFs ship in assets/theme/fonts/ but were never @font-face-loaded
+// before — the databook tokens named them and silently fell back to Trebuchet/
+// Georgia. Loading them here is both the typography foundation and that bugfix.
+
+// Body / data / labels — Rotis SemiSans
 @font-face {
-    font-family: "PatrickHand";
-    src: url("../../assets/theme/fonts/PatrickHand.ttf") format("truetype");
+    font-family: "RotisSemiSans";
+    src: url("../../assets/theme/fonts/RotisSemiSansStd.otf") format("opentype");
 }
 
-// Font Caballar
+// Display / headings — Rotis SemiSerif (regular + bold).
+// No SemiSerif-Bold ships, so weight 700 borrows the sibling Rotis Serif Bold —
+// visually consistent, a real bold rather than a synthesized one.
 @font-face {
-    font-family: "Caballar";
-    src: url("../../assets/theme/fonts/Caballar.ttf") format("truetype");
+    font-family: "RotisSemiSerif";
+    font-weight: 400;
+    src: url("../../assets/theme/fonts/RotisSemiSerifStd.otf") format("opentype");
 }
-
-// Font ArchitectsDaughter
 @font-face {
-    font-family: "ArchitectsDaughter";
-    src: url("../../assets/theme/fonts/ArchitectsDaughter.ttf") format("truetype");
+    font-family: "RotisSemiSerif";
+    font-weight: 700;
+    src: url("../../assets/theme/fonts/RotisSerifStd-Bold.otf") format("opentype");
 }
 
 // Font variables are defined in _colors.scss (see there for documentation).
@@ -42,13 +49,13 @@
 //   2. PF1e + naruto-d20 set their own `font-family` on container classes
 //      (`.pf1 { font-family: ... }`), which beats our generic `body` rule.
 //
-// Fix: force `var(--zen-font-body)` on every text-bearing element inside our
+// Fix: force `var(--k-font-body)` on every text-bearing element inside our
 // scope. FA icons, code blocks, and prose-mirror editors stay on their own
 // fonts (excluded via `:not(...)`).
 & {
-    font: 16px var(--zen-font-body);
+    font: 16px var(--k-font-body);
     letter-spacing: 0.05rem;
-    color: var(--zen-ink);
+    color: var(--k-ink);
 }
 
 // Default font on form controls + text containers.
@@ -73,13 +80,14 @@ optgroup,
 option,
 fieldset,
 legend {
-    font-family: var(--zen-font-body);
+    font-family: var(--k-font-body);
 }
 
-// Headings — display brush, except h5 which we use as a small-caps label.
+// Headings — Rotis SemiSerif Bold display, except h5 (small-caps label).
 :is(h1, h2, h3) {
-    font-family: var(--zen-font-display);
-    color: var(--zen-ink);
+    font-family: var(--k-font-display);
+    font-weight: 700;
+    color: var(--k-ink);
     letter-spacing: 0.03rem;
 }
 h1 {
@@ -94,18 +102,18 @@ h3 {
     font-size: 1.2rem;
 }
 h4 {
-    font-family: var(--zen-font-body);
+    font-family: var(--k-font-body);
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.05rem;
-    color: var(--zen-ink);
+    color: var(--k-ink);
 }
 h5 {
-    font-family: var(--zen-font-body);
+    font-family: var(--k-font-body);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.06rem;
-    color: var(--zen-ink-mute);
+    color: var(--k-ink-mute);
 }
 
 i.i_strife,
