@@ -19,9 +19,9 @@
   </header>
   {{/if}}
 
-  {{#unless hasClasses}}<span class="charactermancer warning">{{localize "PF1.Info_MissingClass"}}</span>{{/unless}}
+  {{#if isCharacter}}{{#unless hasClasses}}<span class="charactermancer warning">{{localize "PF1.Info_MissingClass"}}</span>{{/unless}}{{/if}}
 
-  {{!-- PC Sheet Navigation — limited viewers see only Identity; owners see all tabs.
+  {{!-- Actor Sheet Navigation — limited viewers see only Identity; owners see all tabs.
        No icons: labels only. The naruto-d20 injected Chakra tab is removed in
        _normalizeInjectedTabs so it never appears in the strip. --}}
   <nav class="sheet-navigation tabs" data-group="primary">
@@ -41,7 +41,7 @@
     {{/if}}
   </nav>
 
-  {{!-- PC Sheet Body --}}
+  {{!-- Actor Sheet Body --}}
   <section class="primary-body">
 
     {{!-- Identity (databook front matter — visible to ≥limited viewers) --}}

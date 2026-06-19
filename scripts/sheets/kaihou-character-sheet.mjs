@@ -1,6 +1,6 @@
 // scripts/sheets/kaihou-character-sheet.mjs
 //
-// Bespoke campaign character sheet. Extends PF1e's character sheet so ALL
+// Bespoke campaign actor sheet. Extends PF1e's character/NPC sheets so ALL
 // mechanics (rolls, items, listeners) — and naruto-d20's chakra-tab prototype
 // patch — are inherited. We swap in our OWN top-level template
 // (templates/actor/kaihou-character-sheet.hbs) which re-frames PF1e's content:
@@ -25,14 +25,15 @@ const ORIGIN_ROWS = [
   { label: "School", marker: "q3School" },
 ];
 
-export function getKaihouCharacterSheetClass() {
-  const Base = pf1?.applications?.actor?.ActorSheetPFCharacter;
+function getKaihouActorSheetClass(actorType) {
+  const className = actorType === "npc" ? "ActorSheetPFNPC" : "ActorSheetPFCharacter";
+  const Base = pf1?.applications?.actor?.[className];
   if (!Base) {
-    console.error(`${MODULE_ID} | pf1 ActorSheetPFCharacter not found — sheet not registered`);
+    console.error(`${MODULE_ID} | pf1 ${className} not found — ${actorType} sheet not registered`);
     return null;
   }
 
-  return class KaihouCharacterSheet extends Base {
+  return class KaihouActorSheet extends Base {
     static get defaultOptions() {
       const options = super.defaultOptions;
       // Make the databook Identity tab the default landing tab, leaving every
@@ -65,6 +66,7 @@ export function getKaihouCharacterSheetClass() {
           village,
           villageCrest: crest ? `modules/${MODULE_ID}/assets/theme/icons/villages/${crest}.svg` : "",
           rank: khFlags.rank ?? "",
+          levelLabel: this.actor.type === "npc" ? "HD" : "LVL",
         };
         // Pre-render the markup-heavy databook pieces (SVG radars, header band,
         // mission grid) with our pure builders; the template emits them with
@@ -102,6 +104,10 @@ export function getKaihouCharacterSheetClass() {
     activateListeners(html) {
       super.activateListeners(html);
       const root = html?.[0] ?? html;
+      root?.addEventListener?.("click", (e) => this._onKaihouActionClick(e), { capture: true });
+      root?.querySelectorAll?.("details")?.forEach?.((el) => {
+        el.addEventListener("toggle", () => this._persistKaihouUiState());
+      });
       const actorName = root?.querySelector?.("[data-kaihou-actor-name]");
       if (actorName) {
         actorName.addEventListener("change", (e) => this._onKaihouActorNameChange(e));
@@ -121,8 +127,33 @@ export function getKaihouCharacterSheetClass() {
         el.addEventListener("click", (e) => {
           e.preventDefault();
           el.closest(".db-conditions")?.classList.toggle("is-collapsed");
+          this._persistKaihouUiState();
         }),
       );
+    }
+
+    _onKaihouActionClick(event) {
+      if (this._isKaihouNoRenderAction(event.target)) {
+        this._suppressKaihouUpdateRenderUntil = Date.now() + 750;
+      }
+    }
+
+    _isKaihouNoRenderAction(target) {
+      return Boolean(target?.closest?.([
+        ".db-stat--roll",
+        ".tap-reserve-roll",
+        ".shinobi-technique-learn",
+        ".shinobi-technique-use",
+        "[data-action='rollSave']",
+        "[data-action='rollInit']",
+        "[data-action='rollSkill']",
+        "[data-action='rollAbility']",
+        "[data-action='rollBAB']",
+        "[data-action='useGenericAttack']",
+        "[data-action='defensesCard']",
+        "[data-action='useItem']",
+        "[data-action='useQuickItem']",
+      ].join(",")));
     }
 
     /** Dispatch a footer defense-strip cell to the matching PF1e actor roll,
@@ -163,7 +194,31 @@ export function getKaihouCharacterSheetClass() {
       await this.actor.update({ name: value });
     }
 
+    render(options, renderOptions) {
+      if (this._shouldSkipKaihouRender(options, renderOptions)) return this;
+      return super.render(options, renderOptions);
+    }
+
+    _shouldSkipKaihouRender(options, renderOptions) {
+      const context = renderOptions ?? (typeof options === "object" ? options : null);
+      if (this._isSuppressedKaihouUpdateRender(context)) return true;
+      if (context?.renderContext !== "updateItem") return false;
+      return this._isLearningOnlyRenderData(context.renderData);
+    }
+
+    _isSuppressedKaihouUpdateRender(context) {
+      if (!context?.renderContext?.startsWith?.("update")) return false;
+      return Date.now() < (this._suppressKaihouUpdateRenderUntil ?? 0);
+    }
+
+    _isLearningOnlyRenderData(renderData = {}) {
+      const flat = foundry.utils.flattenObject(renderData ?? {});
+      const keys = Object.keys(flat);
+      return keys.length > 0 && keys.every((key) => key.startsWith("system.learning."));
+    }
+
     async _renderInner(...args) {
+      const uiState = this._captureKaihouUiState();
       const $html = await super._renderInner(...args); // PF1e + naruto-d20 chakra tab
       try {
         this._normalizeInjectedTabs($html);
@@ -171,10 +226,114 @@ export function getKaihouCharacterSheetClass() {
         this._relocateCombatToSummary($html);
         this._normalizeBuffsTab($html);
         this._collapseChakraLearn($html);
+        this._restoreKaihouUiState($html, uiState);
       } catch (e) {
         console.error(`${MODULE_ID} | tab normalization failed`, e);
       }
       return $html;
+    }
+
+    _captureKaihouUiState() {
+      const root = this.element?.[0] ?? this.element;
+      if (!root?.querySelectorAll) return null;
+      return this._kaihouUiStateFromRoot(root);
+    }
+
+    _kaihouUiStateFromRoot(root) {
+      return {
+        details: this._detailsState(root),
+        conditionsCollapsed: root.querySelector(".db-conditions")?.classList.contains("is-collapsed"),
+        scroll: this._scrollState(root),
+      };
+    }
+
+    _restoreKaihouUiState($html, state) {
+      state ??= this._loadKaihouUiState();
+      if (!state) return;
+      const root = $html?.[0] ?? $html;
+      if (!root?.querySelectorAll) return;
+
+      const details = this._detailsState(root);
+      const openKeys = new Set(state.details?.openKeys ?? []);
+      for (const el of root.querySelectorAll("details")) {
+        const key = this._detailsStateKey(el, details.indexes.get(el) ?? 0);
+        el.open = openKeys.has(key);
+      }
+
+      const conditions = root.querySelector(".db-conditions");
+      if (conditions && state.conditionsCollapsed === false) {
+        conditions.classList.remove("is-collapsed");
+      }
+
+      for (const { selector, top, left } of state.scroll ?? []) {
+        const el = root.querySelector(selector);
+        if (!el) continue;
+        el.scrollTop = top;
+        el.scrollLeft = left;
+      }
+    }
+
+    _persistKaihouUiState() {
+      const state = this._captureKaihouUiState();
+      if (!state) return;
+      try {
+        localStorage.setItem(this._kaihouUiStateKey(), JSON.stringify({
+          details: { openKeys: [...state.details.openKeys] },
+          conditionsCollapsed: state.conditionsCollapsed,
+        }));
+      } catch (e) {
+        console.warn(`${MODULE_ID} | failed to persist sheet UI state`, e);
+      }
+    }
+
+    _loadKaihouUiState() {
+      try {
+        const raw = localStorage.getItem(this._kaihouUiStateKey());
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        console.warn(`${MODULE_ID} | failed to load sheet UI state`, e);
+        return null;
+      }
+    }
+
+    _kaihouUiStateKey() {
+      const userId = game.user?.id ?? "anonymous";
+      const actorKey = this.actor?.uuid ?? this.actor?.id ?? "unknown";
+      return `${MODULE_ID}.sheetUiState.${userId}.${actorKey}`;
+    }
+
+    _detailsState(root) {
+      const indexes = new Map();
+      const counts = new Map();
+      const openKeys = new Set();
+      for (const el of root.querySelectorAll("details")) {
+        const base = this._detailsStateBase(el);
+        const index = counts.get(base) ?? 0;
+        counts.set(base, index + 1);
+        indexes.set(el, index);
+        if (el.open) openKeys.add(this._detailsStateKey(el, index));
+      }
+      return { indexes, openKeys };
+    }
+
+    _detailsStateBase(el) {
+      const tab = el.closest(".tab[data-tab]")?.dataset?.tab ?? "";
+      const classes = Array.from(el.classList).sort().join(".");
+      const label = el.querySelector(":scope > summary")?.textContent?.trim() ?? "";
+      return `${tab}|${classes}|${label}`;
+    }
+
+    _detailsStateKey(el, index) {
+      return `${this._detailsStateBase(el)}|${index}`;
+    }
+
+    _scrollState(root) {
+      return [".primary-body", ".tab.active", ".tab.chakra", ".tab.summary", ".tab.combat"]
+        .map((selector) => {
+          const el = root.querySelector(selector);
+          return el ? { selector, top: el.scrollTop, left: el.scrollLeft } : null;
+        })
+        .filter(Boolean);
     }
 
     // naruto-d20 injects a Chakra nav tab as a bare <a>Chakra</a> after render.
@@ -205,7 +364,9 @@ export function getKaihouCharacterSheetClass() {
       // front/back-matter copies so the sheet has a single source of UI truth.
       summary.querySelector(".summary-header .profile")?.remove();
       summary.querySelector(".summary-header .name-xp .char-name")?.remove();
-      summary.querySelector(".summary-header .name-xp .hd-level")?.remove();
+      if (this.actor.type === "character") {
+        summary.querySelector(".summary-header .name-xp .hd-level")?.remove();
+      }
       ["gender", "age", "height", "weight"].forEach((key) => {
         summary
           .querySelector(`.summary-header .character-summary [name="system.details.${key}"]`)
@@ -436,15 +597,36 @@ export function getKaihouCharacterSheetClass() {
   };
 }
 
+export function getKaihouCharacterSheetClass() {
+  return getKaihouActorSheetClass("character");
+}
+
+export function getKaihouNpcSheetClass() {
+  return getKaihouActorSheetClass("npc");
+}
+
 export function registerKaihouCharacterSheet() {
-  const cls = getKaihouCharacterSheetClass();
-  if (!cls) return;
+  const characterCls = getKaihouCharacterSheetClass();
+  const npcCls = getKaihouNpcSheetClass();
   const DSC = foundry.applications?.apps?.DocumentSheetConfig ?? globalThis.DocumentSheetConfig;
   const makeDefault = game.settings.get(MODULE_ID, "kaihouSheetDefault");
-  DSC.registerSheet(Actor, MODULE_ID, cls, {
-    types: ["character"],
-    label: game.i18n.localize("Kaihou.Sheet.Label"),
-    makeDefault,
-  });
-  console.log(`${MODULE_ID} | character sheet registered (default=${makeDefault})`);
+  const label = game.i18n.localize("Kaihou.Sheet.Label");
+
+  if (characterCls) {
+    DSC.registerSheet(Actor, MODULE_ID, characterCls, {
+      types: ["character"],
+      label,
+      makeDefault,
+    });
+  }
+
+  if (npcCls) {
+    DSC.registerSheet(Actor, MODULE_ID, npcCls, {
+      types: ["npc"],
+      label,
+      makeDefault,
+    });
+  }
+
+  console.log(`${MODULE_ID} | actor sheets registered (default=${makeDefault})`);
 }

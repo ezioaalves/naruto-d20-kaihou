@@ -34,6 +34,16 @@ describe("databook component classes", () => {
       expect(css).toContain(c);
     }
   });
+
+  it("keeps low-contrast sheet and learn-result icons on the seal accent", () => {
+    expect(css).toContain("body.naruto-zen .pf1.sheet .item-list-header .item-detail i");
+    expect(css).toContain("color:var(--k-seal)");
+    expect(css).toContain("body.naruto-zen .chat-message .dice-result .dice-total");
+    expect(css).toContain("body.naruto-zen .chat-message .dice-result .dice-total>*");
+    expect(css).toContain("body.naruto-zen #chat-log .message .dice-result .dice-total");
+    expect(css).toContain("body.naruto-zen .naruto-learn-progression");
+    expect(css).toContain("color:var(--k-ink) !important");
+  });
 });
 
 describe("kaihou sheet scoping", () => {

@@ -162,12 +162,12 @@ export function vitalsPanel(resources) {
  *  Action Points / Reputation / Wealth block (#naruto-hero-statistics) is
  *  relocated beneath it by the renderActorSheetPF hook in kaihou.mjs,
  *  preserving its rollable Action Points and its own change handlers. */
-export function metaRail(resources) {
+export function metaRail(resources, { levelLabel = "LVL" } = {}) {
   if (!resources) return "";
   return [
     `<div class="db-meta-rail">`,
     `<div class="db-meta__cell db-meta__cell--level">`,
-    `<b class="db-meta__v">${esc(resources.level)}</b><small class="db-meta__k">LVL</small>`,
+    `<b class="db-meta__v">${esc(resources.level)}</b><small class="db-meta__k">${esc(levelLabel)}</small>`,
     `</div>`,
     `</div>`,
   ].join("");
@@ -209,6 +209,6 @@ export function headerBand(vm, meta) {
     vitalsPanel(vm.resources),
     rest,
     `</header>`,
-    metaRail(vm.resources),
+    metaRail(vm.resources, { levelLabel: meta.levelLabel ?? "LVL" }),
   ].join("");
 }

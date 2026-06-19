@@ -354,6 +354,35 @@ aside[role="tooltip"].pf1.source-breakdown {
     color: var(--k-ink-mute);
 }
 
+.pf1.sheet .item-list-header .item-detail i,
+.pf1.sheet .item-list-header .item-detail .icon-pf {
+    color: var(--k-seal);
+}
+
+// Learn progression cards should keep their body text in the default dark ink,
+// while the roll result line can still use the seal accent.
+.naruto-learn-progression {
+    color: var(--k-ink) !important;
+
+    .property-group,
+    .property-group label,
+    .property-group .tag-list,
+    .property-group .tag-list .tag,
+    .property-group .tag {
+        color: var(--k-ink) !important;
+    }
+}
+
+.chat-message .dice-result .dice-total,
+#chat-log .message .dice-result .dice-total {
+    color: var(--k-seal) !important;
+}
+
+.chat-message .dice-result .dice-total > *,
+#chat-log .message .dice-result .dice-total > * {
+    color: var(--k-seal) !important;
+}
+
 // ─── Inventory / feature filter chips ───────────────────────────────────────
 // `.filter-rule` is the "Weapons | Armor/Shield | Equipment | …" chip row at
 // the top of inventory/features/spells. PF1e defines border + hover only,
@@ -807,4 +836,3 @@ select.chakra-nature-select {
     color: var(--k-ink);
     background-color: var(--k-paper);
 }
-

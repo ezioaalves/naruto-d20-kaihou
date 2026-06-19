@@ -128,6 +128,13 @@ describe("missionRecord & headerBand", () => {
     expect(band).toContain('class="db-band__crest"'); // corner crest always renders…
     expect(band).toContain("villages/crab.svg"); // …defaulting to crab when no village crest
   });
+
+  it("labels the masthead level cell as HD for NPCs", () => {
+    const band = headerBand(vm, { name: "Tekko", img: "p.png", village: "Kanigakure", levelLabel: "HD" });
+    expect(band).toContain(">5<");
+    expect(band).toContain(">HD<");
+    expect(band).not.toContain(">LVL<");
+  });
 });
 
 describe("headlineNature", () => {
@@ -216,7 +223,7 @@ describe("kaihou character sheet template", () => {
     expect(scss).not.toContain('assets/theme/icons/natures/lightning.png');
   });
 
-  it("normalizes the PF1e Summary tab to remove fields moved to Identity/Biography/Footer", () => {
+  it("gates character-only warnings and normalizes PF1e Summary without removing NPC CR", () => {
     const sheet = readFileSync(
       resolve(import.meta.dirname, "../../scripts/sheets/kaihou-character-sheet.mjs"),
       "utf8",
@@ -224,6 +231,7 @@ describe("kaihou character sheet template", () => {
     expect(sheet).toContain("this._normalizeSummaryTab($html)");
     expect(sheet).toContain('summary.querySelector(".summary-header .profile")?.remove()');
     expect(sheet).toContain('summary.querySelector(".summary-header .name-xp .char-name")?.remove()');
+    expect(sheet).toContain('if (this.actor.type === "character")');
     expect(sheet).toContain('summary.querySelector(".summary-header .name-xp .hd-level")?.remove()');
     expect(sheet).toContain('["gender", "age", "height", "weight"].forEach((key) => {');
     expect(sheet).toContain('[name="system.details.${key}"]');
@@ -231,6 +239,12 @@ describe("kaihou character sheet template", () => {
     expect(sheet).toContain('summary.querySelector(".summary-header .character-summary .alignment")?.remove()');
     expect(sheet).toContain('summary.querySelector(".summary-header .race.item")?.remove()');
     expect(sheet).toContain('summary.querySelector(".summary-header .actor-quick-actions")?.remove()');
+
+    const template = readFileSync(
+      resolve(import.meta.dirname, "../../templates/actor/kaihou-character-sheet.hbs"),
+      "utf8",
+    );
+    expect(template).toContain('{{#if isCharacter}}{{#unless hasClasses}}');
   });
 
   it("keeps the injected 20 Questions Biography block non-collapsible", () => {
@@ -238,6 +252,23 @@ describe("kaihou character sheet template", () => {
     expect(entry).toContain('<aside class="tqw-bio-right db-bio-20q">');
     expect(entry).toContain('<div class="tqw-bio-header-row">');
     expect(entry).not.toContain('<details class="tqw-bio-right db-bio-20q"');
+  });
+
+
+
+  it("preserves and persists Kaihou disclosure state across PF1 rerenders and reopen", () => {
+    const sheet = readFileSync(
+      resolve(import.meta.dirname, "../../scripts/sheets/kaihou-character-sheet.mjs"),
+      "utf8",
+    );
+    expect(sheet).toContain("const uiState = this._captureKaihouUiState();");
+    expect(sheet).toContain("this._restoreKaihouUiState($html, uiState);");
+    expect(sheet).toContain("state ??= this._loadKaihouUiState();");
+    expect(sheet).toContain("localStorage.setItem(this._kaihouUiStateKey()");
+    expect(sheet).toContain("localStorage.getItem(this._kaihouUiStateKey())");
+    expect(sheet).toContain('querySelectorAll?.("details")');
+    expect(sheet).toContain('state.conditionsCollapsed === false');
+    expect(sheet).toContain('".tab.chakra"');
   });
 
   it("does not inject the Chakra nature strip", () => {
