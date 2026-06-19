@@ -1,8 +1,8 @@
 {
   "id": "naruto-d20-kaihou",
-  "title": "Naruto D20 — Kaihou Campaign Content",
+  "title": "Naruto D20 \u2014 Kaihou Campaign Content",
   "description": "Kaihou-specific identity content (base classes, villages, flaws, schools, occupations, bloodlines, advanced classes) extending the public naruto-d20 module.",
-  "version": "2.1.14",
+  "version": "2.1.15",
   "esmodules": [
     "scripts/kaihou.mjs"
   ],
@@ -56,28 +56,28 @@
   "packs": [
     {
       "name": "villages",
-      "label": "Naruto D20 — Village Origins",
+      "label": "Naruto D20 \u2014 Village Origins",
       "path": "packs/villages",
       "type": "Item",
       "system": "pf1"
     },
     {
       "name": "questions",
-      "label": "Naruto D20 — 20 Questions (Q2–Q20) Grants",
+      "label": "Naruto D20 \u2014 20 Questions (Q2\u2013Q20) Grants",
       "path": "packs/questions",
       "type": "Item",
       "system": "pf1"
     },
     {
       "name": "schools",
-      "label": "Naruto D20 — Shinobi Schools",
+      "label": "Naruto D20 \u2014 Shinobi Schools",
       "path": "packs/schools",
       "type": "Item",
       "system": "pf1"
     },
     {
       "name": "occupations",
-      "label": "Naruto D20 — Starting Occupations",
+      "label": "Naruto D20 \u2014 Starting Occupations",
       "path": "packs/occupations",
       "type": "Item",
       "system": "pf1"
@@ -85,7 +85,7 @@
   ],
   "packFolders": [
     {
-      "name": "Naruto D20 — Kaihou",
+      "name": "Naruto D20 \u2014 Kaihou",
       "color": "#1f6f8b",
       "sorting": "m",
       "packs": [
@@ -104,7 +104,7 @@
     },
     {
       "lang": "pt-BR",
-      "name": "Português Brasileiro",
+      "name": "Portugu\u00eas Brasileiro",
       "path": "lang/pt-BR.json"
     }
   ],

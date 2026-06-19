@@ -163,8 +163,8 @@ aside#sidebar {
     // DOCUMENTATION / GAME ACCESS) is an h4.divider — some sit outside the
     // .settings block, so scope to #sidebar-content to catch them all.
     h4.divider {
-        color: rgb(224, 208, 170);
-        border-color: rgba(224, 208, 170, 0.35);
+        color: rgb(185, 170, 135);
+        border-color: rgba(185, 170, 135, 0.35);
     }
 
     // Sidebar headings at any nesting level — Foundry may place the game
@@ -173,7 +173,7 @@ aside#sidebar {
     .settings h1, .settings h2, .settings h3,
     .settings-info h1, .settings-info h2,
     .game-title, .game-name {
-        color: rgb(224, 208, 170) !important;
+        color: rgb(185, 170, 135) !important;
     }
 
     // System-info block at top of Settings panel: game title, version string,
@@ -186,7 +186,7 @@ aside#sidebar {
         ul:not(.context-items) li,
         span.label, span.value, span.count,
         label:not([for]) {
-            color: rgb(224, 208, 170);
+            color: rgb(185, 170, 135);
         }
     }
 }
