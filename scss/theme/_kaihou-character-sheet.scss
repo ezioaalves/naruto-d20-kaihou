@@ -197,9 +197,8 @@
   // is set per-image in JS (_normalizeSummaryTab) from the file's natural size;
   // the 3/4 fallback covers the brief moment before the image loads.
   .db-dock > .db-band__portrait {
-    flex: 0 0 auto;
+    flex: 0 0 160px;
     align-self: stretch;
-    aspect-ratio: var(--db-port-ratio, 3 / 4);
     position: relative; // containing block for the out-of-flow image
     overflow: hidden;
     border-right: 1px solid var(--k-rule);

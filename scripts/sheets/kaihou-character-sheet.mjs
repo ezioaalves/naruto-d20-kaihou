@@ -224,6 +224,7 @@ function getKaihouActorSheetClass(actorType) {
         this._normalizeInjectedTabs($html);
         this._normalizeSummaryTab($html);
         this._relocateCombatToSummary($html);
+        this._relocateHeroStats($html);
         this._normalizeBuffsTab($html);
         this._collapseChakraLearn($html);
         this._restoreKaihouUiState($html, uiState);
@@ -410,7 +411,6 @@ function getKaihouActorSheetClass(actorType) {
       const portrait = footer.querySelector(".db-band__portrait");
       if (portrait) {
         dock.appendChild(portrait);
-        this._fitPortraitRatio(portrait);
       }
       const main = document.createElement("div");
       main.className = "db-dock__main";
@@ -425,22 +425,6 @@ function getKaihouActorSheetClass(actorType) {
         rest.classList.add("db-rest--fab");
         strip.appendChild(rest);
       }
-    }
-
-    // The portrait cell is stretched to the footer height; its width is derived
-    // from --db-port-ratio via CSS aspect-ratio. Set that ratio from the image's
-    // natural dimensions so the whole portrait shows (no crop) and the cell grows
-    // wider to fit. The image may already be cached (complete) or still loading.
-    _fitPortraitRatio(portrait) {
-      const img = portrait.querySelector(".db-band__port");
-      if (!img) return;
-      const apply = () => {
-        const w = img.naturalWidth;
-        const h = img.naturalHeight;
-        if (w > 0 && h > 0) portrait.style.setProperty("--db-port-ratio", `${w} / ${h}`);
-      };
-      if (img.complete && img.naturalWidth) apply();
-      else img.addEventListener("load", apply, { once: true });
     }
 
     // Move every Combat-tab function except the attack list onto the Summary
@@ -528,6 +512,34 @@ function getKaihouActorSheetClass(actorType) {
         row.parentNode.insertBefore(details, row);
         heading?.remove();
         details.appendChild(row);
+      });
+    }
+
+    // naruto-d20 injects its Hero Statistics block (#naruto-hero-statistics) into
+    // the Summary tab inside the awaited super render (its ActorSheetPF._renderInner
+    // patch). Relocate it — pre-paint — into the masthead meta rail beside the
+    // Level cell, abbreviating the labels to fit the thin rail. Done here, not in a
+    // post-render hook, so the block never pops into Summary and then jumps to the
+    // rail after the frame paints (the cause of the masthead flicker on every
+    // update). The rollable Action Points <a> is preserved (its listener is bound
+    // post-paint by naruto-d20's registerSummaryStats). Idempotent.
+    _relocateHeroStats($html) {
+      const root = $html?.[0] ?? $html;
+      const rail = root?.querySelector?.("header.db-footer .db-meta-rail");
+      const heroStats = root?.querySelector?.("#naruto-hero-statistics");
+      if (!rail || !heroStats) return;
+      rail.appendChild(heroStats);
+
+      const ABBR = {
+        "flags.naruto-d20.actionPoints": "AP",
+        "flags.naruto-d20.reputation": "REP",
+        "flags.naruto-d20.wealth": "WLT",
+      };
+      heroStats.querySelectorAll(".info-box").forEach((box) => {
+        const abbr = ABBR[box.querySelector("input[name]")?.getAttribute("name")];
+        if (!abbr) return;
+        const labelEl = box.querySelector("h5 a") ?? box.querySelector("h5");
+        if (labelEl) labelEl.textContent = abbr;
       });
     }
 
