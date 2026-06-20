@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.16 — 2026-06-20
+
+### Fixed
+- **Masthead flicker eliminated.** The naruto-d20 Hero Statistics block is now relocated into the masthead meta rail during pre-paint (`_renderInner`) instead of via a post-paint `renderActorSheetPF` hook. This removes the visible pop where the block appeared in the Summary tab and then jumped to the masthead on every actor update.
+- **Portrait fixed at 160 px width.** Landscape character art previously produced an oversized portrait because the cell width was derived from the image's natural aspect-ratio. The portrait is now a fixed `160px` wide with `object-fit: cover`, matching server behaviour and removing the need for the dynamic `_fitPortraitRatio` helper.
+
 ## v2.1.15 — 2026-06-19
 
 ### Changed
