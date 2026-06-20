@@ -410,7 +410,6 @@ function getKaihouActorSheetClass(actorType) {
       const portrait = footer.querySelector(".db-band__portrait");
       if (portrait) {
         dock.appendChild(portrait);
-        this._fitPortraitRatio(portrait);
       }
       const main = document.createElement("div");
       main.className = "db-dock__main";
@@ -425,22 +424,6 @@ function getKaihouActorSheetClass(actorType) {
         rest.classList.add("db-rest--fab");
         strip.appendChild(rest);
       }
-    }
-
-    // The portrait cell is stretched to the footer height; its width is derived
-    // from --db-port-ratio via CSS aspect-ratio. Set that ratio from the image's
-    // natural dimensions so the whole portrait shows (no crop) and the cell grows
-    // wider to fit. The image may already be cached (complete) or still loading.
-    _fitPortraitRatio(portrait) {
-      const img = portrait.querySelector(".db-band__port");
-      if (!img) return;
-      const apply = () => {
-        const w = img.naturalWidth;
-        const h = img.naturalHeight;
-        if (w > 0 && h > 0) portrait.style.setProperty("--db-port-ratio", `${w} / ${h}`);
-      };
-      if (img.complete && img.naturalWidth) apply();
-      else img.addEventListener("load", apply, { once: true });
     }
 
     // Move every Combat-tab function except the attack list onto the Summary
