@@ -224,6 +224,7 @@ function getKaihouActorSheetClass(actorType) {
         this._normalizeInjectedTabs($html);
         this._normalizeSummaryTab($html);
         this._relocateCombatToSummary($html);
+        this._relocateHeroStats($html);
         this._normalizeBuffsTab($html);
         this._collapseChakraLearn($html);
         this._restoreKaihouUiState($html, uiState);
@@ -511,6 +512,34 @@ function getKaihouActorSheetClass(actorType) {
         row.parentNode.insertBefore(details, row);
         heading?.remove();
         details.appendChild(row);
+      });
+    }
+
+    // naruto-d20 injects its Hero Statistics block (#naruto-hero-statistics) into
+    // the Summary tab inside the awaited super render (its ActorSheetPF._renderInner
+    // patch). Relocate it — pre-paint — into the masthead meta rail beside the
+    // Level cell, abbreviating the labels to fit the thin rail. Done here, not in a
+    // post-render hook, so the block never pops into Summary and then jumps to the
+    // rail after the frame paints (the cause of the masthead flicker on every
+    // update). The rollable Action Points <a> is preserved (its listener is bound
+    // post-paint by naruto-d20's registerSummaryStats). Idempotent.
+    _relocateHeroStats($html) {
+      const root = $html?.[0] ?? $html;
+      const rail = root?.querySelector?.("header.db-footer .db-meta-rail");
+      const heroStats = root?.querySelector?.("#naruto-hero-statistics");
+      if (!rail || !heroStats) return;
+      rail.appendChild(heroStats);
+
+      const ABBR = {
+        "flags.naruto-d20.actionPoints": "AP",
+        "flags.naruto-d20.reputation": "REP",
+        "flags.naruto-d20.wealth": "WLT",
+      };
+      heroStats.querySelectorAll(".info-box").forEach((box) => {
+        const abbr = ABBR[box.querySelector("input[name]")?.getAttribute("name")];
+        if (!abbr) return;
+        const labelEl = box.querySelector("h5 a") ?? box.querySelector("h5");
+        if (labelEl) labelEl.textContent = abbr;
       });
     }
 
