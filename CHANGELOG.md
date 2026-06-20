@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.15 — 2026-06-19
+
+### Changed
+- **Visual identity overhaul.** Canonical `--k-*` design tokens introduced in a new `scss/_kaihou-tokens.scss` module replace ad-hoc values across all SCSS. The databook character sheet (`scss/theme/_kaihou-character-sheet.scss`) has been fully repainted for consistency; component and surface files follow the same token system.
+- New parchment grain texture (`assets/theme/textures/parchment-grain.png`) and wax-seal ring SVG (`assets/theme/icons/seals/wax-seal-ring.svg`) complete the databook aesthetic.
+- Foundry dark sidebar chrome text darkened (`rgb(224,208,170)` → `rgb(185,170,135)`) for better contrast without losing warmth.
+
+### Fixed
+- **Actor sheet state is now preserved across re-renders.** Active tab, scroll position, and open/closed collapsible panels survive app re-renders.
+- Kirin village color (`rgb(255,193,7)` → `rgb(165,110,0)`) and lightning nature color (`rgb(220,195,80)` → `rgb(150,120,10)`) were near-invisible on parchment backgrounds; both are now readable.
+
 ## v2.1.13 — 2026-06-19
 
 ### Changed
