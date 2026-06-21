@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.17 — 2026-06-20
+
+### Fixed
+- **Root-cause legibility fix across all ApplicationV2 windows.** Foundry v13 runs a dark color-scheme and drives every ApplicationV2 surface through core CSS variables (`--background`, `--color-*`, `--input-*`). The theme previously hand-painted `.window-content` per window type, so journals, roll tables, card stacks, scenes, macros and their tab strips/form controls rendered dark or illegible. The core chrome variables are now remapped once under `body.naruto-zen` so every surface inherits parchment + ink.
+- **Journal Entry sheets** fully themed (sheet/content surface, table-of-contents, page headings, ProseMirror editor) via a new `_journal.scss` partial, and the journal sheet is tagged for per-app styling.
+- **Core sheet tab strips** (`nav.sheet-tabs` on roll tables, card stacks, scenes, generic sheets) restyled to match the actor sheet — parchment band, ink tabs, wine-stamp active — and now cover Foundry v13 `[data-tab]` anchors.
+- **Form controls:** checkbox/radio no longer draw a stray box (native glyph rendering restored with a consistent weight); the macro/script CodeMirror editor is readable while focused (gutter, active-line, syntax palette retuned for parchment); neutral in-content buttons use a parchment card style with a muted disabled state; ProseMirror toolbar icons read on a parchment toolbar.
+- **Databook character sheet gauges** (Hit Points / Chakra / Reserve) keep their inline-editable values borderless, with the edit box appearing only on focus — the bespoke sheet is excluded from the generic input background rule.
+
 ## v2.1.16 — 2026-06-20
 
 ### Fixed
