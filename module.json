@@ -1,27 +1,18 @@
 {
   "id": "naruto-d20-kaihou",
-  "title": "Naruto D20 \u2014 Kaihou Campaign Content",
+  "title": "Naruto D20 — Kaihou Campaign Content",
   "description": "Kaihou-specific identity content (base classes, villages, flaws, schools, occupations, bloodlines, advanced classes) extending the public naruto-d20 module.",
-  "version": "2.1.17",
+  "version": "2.1.18",
   "esmodules": [
     "scripts/kaihou.mjs"
   ],
   "styles": [
-    "styles/theme/zen.css",
-    "styles/apps/twenty-questions-wizard.css"
-  ],
-  "preloadTemplates": [
-    "templates/apps/tqw-v2/header.hbs",
-    "templates/apps/tqw-v2/progress.hbs",
-    "templates/apps/tqw-v2/content.hbs",
-    "templates/apps/tqw-v2/footer.hbs",
-    "templates/apps/tqw-v2/pick-none.hbs",
-    "templates/apps/tqw-v2/pick-radio.hbs",
-    "templates/apps/tqw-v2/pick-select.hbs",
-    "templates/apps/tqw-v2/pick-nested.hbs",
-    "templates/apps/tqw-v2/pick-dragdrop.hbs",
-    "templates/apps/tqw-v2/pick-dragdrop-coupled.hbs",
-    "templates/apps/tqw-v2/pick-rolltable.hbs"
+    {
+      "src": "styles/theme/zen.css"
+    },
+    {
+      "src": "styles/apps/twenty-questions-wizard.css"
+    }
   ],
   "compatibility": {
     "minimum": "11",
@@ -50,42 +41,63 @@
   "authors": [
     {
       "name": "Ezio Alves",
-      "email": "ezioalves16@gmail.com"
+      "email": "ezioalves16@gmail.com",
+      "flags": {}
     }
   ],
   "packs": [
     {
       "name": "villages",
-      "label": "Naruto D20 \u2014 Village Origins",
+      "label": "Naruto D20 — Village Origins",
       "path": "packs/villages",
       "type": "Item",
-      "system": "pf1"
+      "system": "pf1",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "name": "questions",
-      "label": "Naruto D20 \u2014 20 Questions (Q2\u2013Q20) Grants",
+      "label": "Naruto D20 — 20 Questions (Q2–Q20) Grants",
       "path": "packs/questions",
       "type": "Item",
-      "system": "pf1"
+      "system": "pf1",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "name": "schools",
-      "label": "Naruto D20 \u2014 Shinobi Schools",
+      "label": "Naruto D20 — Shinobi Schools",
       "path": "packs/schools",
       "type": "Item",
-      "system": "pf1"
+      "system": "pf1",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     },
     {
       "name": "occupations",
-      "label": "Naruto D20 \u2014 Starting Occupations",
+      "label": "Naruto D20 — Kaihou Occupations (Homebrew & Exclusives)",
       "path": "packs/occupations",
       "type": "Item",
-      "system": "pf1"
+      "system": "pf1",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
     }
   ],
   "packFolders": [
     {
-      "name": "Naruto D20 \u2014 Kaihou",
+      "name": "Naruto D20 — Kaihou",
       "color": "#1f6f8b",
       "sorting": "m",
       "packs": [
@@ -93,21 +105,25 @@
         "questions",
         "schools",
         "occupations"
-      ]
+      ],
+      "folders": []
     }
   ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     },
     {
       "lang": "pt-BR",
-      "name": "Portugu\u00eas Brasileiro",
-      "path": "lang/pt-BR.json"
+      "name": "Português Brasileiro",
+      "path": "lang/pt-BR.json",
+      "flags": {}
     }
   ],
   "manifest": "https://github.com/ezioaalves/naruto-d20-kaihou/releases/latest/download/module.json",
-  "download": "https://github.com/ezioaalves/naruto-d20-kaihou/releases/latest/download/module.zip"
+  "download": "https://github.com/ezioaalves/naruto-d20-kaihou/releases/download/v2.1.17/module.zip",
+  "flags": {}
 }

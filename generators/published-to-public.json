@@ -1,0 +1,31 @@
+{
+  "_comment": "Occupations that now live in the public 'naruto-d20' module and must NOT be regenerated into the kaihou pack. Keyed by source category (folder); values are slugify(filename stem) slugs. Category-qualified on purpose: Kaguya Clan and Wandering Ninja exist as DISTINCT writeups in both Core and Community Compendium, and the public module only carries one variant of each (Core Kaguya, Community Wandering Ninja). Add more slugs here as further occupations are migrated to the public module.",
+  "Core": [
+    "aburame-clan",
+    "academy-student",
+    "dattoumaru-clan",
+    "kagetsuki-clan",
+    "kaguya-clan",
+    "mentored",
+    "mibu-clan",
+    "ninja-law-enforcer",
+    "samurai",
+    "uchiha-clan",
+    "yachoumaru-clan"
+  ],
+  "Community Compendium": [
+    "crane-clan",
+    "kirigakure-swordsman",
+    "lion-clan",
+    "myugan-clan",
+    "nara-clan",
+    "phoenix-clan",
+    "sarutobi-clan",
+    "scorpion-clan",
+    "seishin-clan",
+    "uzumaki-clan",
+    "wandering-ninja",
+    "yamanaka-clan",
+    "yomi-no-koujin-clan"
+  ]
+}

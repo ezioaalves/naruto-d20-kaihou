@@ -153,6 +153,13 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       enriched.droppedItem = await this._resolveDroppedItem(ref);
     }
 
+    // Normalize `browse` (single config or array) into a list the template
+    // renders one button per entry, carrying its index for _onBrowse.
+    if (question.browse) {
+      const list = Array.isArray(question.browse) ? question.browse : [question.browse];
+      enriched.browseButtons = list.map((cfg, idx) => ({ ...cfg, idx }));
+    }
+
     // Drag-drop coupled (zones array)
     if (question.pickType === "drag-drop-coupled" && Array.isArray(question.zones)) {
       enriched.zones = await Promise.all(
@@ -386,6 +393,12 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       browseCfg = question.zones?.[idx]?.browse;
     } else {
       browseCfg = question.browse;
+    }
+    if (!browseCfg) return;
+    // `browse` may be a single config or a list of targets (one button each).
+    if (Array.isArray(browseCfg)) {
+      const bIdx = parseInt(target?.dataset?.browseIdx ?? "0", 10);
+      browseCfg = browseCfg[Number.isFinite(bIdx) ? bIdx : 0];
     }
     if (!browseCfg) return;
     await openBrowse(browseCfg);

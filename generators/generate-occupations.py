@@ -22,6 +22,10 @@ import yaml
 
 DEFAULT_VAULT_PATH = Path.home() / "Documents" / "Kaihou (Naruto D20)"
 OCCUPATIONS_SUBPATH = "Mechanics/Character_Options/Occupations"
+# Occupations migrated to the public "naruto-d20" module are listed here (keyed
+# by source category) and skipped during generation so the kaihou pack only
+# carries homebrew + not-yet-migrated exclusives. See published-to-public.json.
+PUBLISHED_LIST_PATH = Path(__file__).resolve().parent / "published-to-public.json"
 # Kaihou bundles its own theme icons (the zen theme was absorbed in v2.0.0);
 # never reference the deprecated standalone naruto-d20-zen-theme module here.
 ICON_BASE = "modules/naruto-d20-kaihou/assets/theme/icons"
@@ -405,12 +409,33 @@ def parse_occupation(path: Path, occupations_dir: Path, mapper: SkillKeyMapper) 
     }
 
 
+def load_published_slugs(list_path: Path = PUBLISHED_LIST_PATH) -> set[tuple[str, str]]:
+    """Load the set of (category, slug) pairs migrated to the public naruto-d20 module."""
+    if not list_path.exists():
+        return set()
+    data = json.loads(list_path.read_text(encoding="utf-8"))
+    published: set[tuple[str, str]] = set()
+    for category, slugs in data.items():
+        if category.startswith("_") or not isinstance(slugs, list):
+            continue
+        for slug in slugs:
+            published.add((category, slug))
+    return published
+
+
+def _is_published(path: Path, occupations_dir: Path, published: set[tuple[str, str]]) -> bool:
+    category, _subcategory, _rel = _source_parts(path, occupations_dir)
+    return (category, slugify(path.stem)) in published
+
+
 def load_occupations(occupations_dir: Path, mapping_path: Path) -> list[dict[str, Any]]:
     """Load every occupation markdown file under the vault source directory."""
     mapper = SkillKeyMapper(mapping_path)
+    published = load_published_slugs()
     files = sorted(
         p for p in occupations_dir.rglob("*.md")
         if p.name != "Occupation Formula.md"
+        and not _is_published(p, occupations_dir, published)
     )
     if not files:
         raise ValueError(f"No occupation markdown files found in {occupations_dir}")

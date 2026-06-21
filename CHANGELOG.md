@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.18 — 2026-06-20
+
+### Changed
+- Occupations compendium pack in kaihou now carries only homebrew and exclusive clans (61 entries); the 24 occupations migrated to the public `naruto-d20` module (11 Core starters + 13 Community Compendium) are removed from the kaihou pack to avoid duplication.
+- 20 Questions wizard Q2 now shows three browse buttons sourcing from `naruto-d20.occupations`, `naruto-d20.occupations-community`, and `naruto-d20-kaihou.occupations` (homebrew). Drops from any of these three packs are accepted.
+- Kaihou occupations pack label renamed to "Naruto D20 — Kaihou Occupations (Homebrew & Exclusives)" to distinguish it from the public module's "Starting Occupations".
+- Generator excludes published occupations via `generators/published-to-public.json`; re-running it will never regenerate entries already shipped in the public module.
+
 ## v2.1.17 — 2026-06-20
 
 ### Fixed

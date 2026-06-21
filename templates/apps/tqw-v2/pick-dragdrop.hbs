@@ -15,14 +15,15 @@
       <em>{{localize "NARUTO_D20_KAIHOU.WIZARD.DRAG_HERE"}} {{current.sidebarLabel}}</em>
     {{/if}}
   </div>
-  {{#if current.browse}}
+  {{#each current.browseButtons}}
     <button type="button"
             class="zen-drop-zone__browse"
             data-action="tqw-browse"
-            data-qid="{{current.id}}">
-      <i class="fas fa-book-open"></i> {{current.browse.label}}
+            data-qid="{{../current.id}}"
+            data-browse-idx="{{idx}}">
+      <i class="fas fa-book-open"></i> {{label}}
     </button>
-  {{/if}}
+  {{/each}}
   {{#if current.subPicker}}
     <div class="tqw-v2__subpicker"{{#unless current.droppedItem}} hidden{{/unless}}>
       <div class="zen-card__label">{{current.subPicker.label}}</div>

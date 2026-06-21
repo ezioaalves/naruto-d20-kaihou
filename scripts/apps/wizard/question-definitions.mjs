@@ -251,7 +251,12 @@ export const QUESTION_DEFINITIONS = [
     markerFlag: "q1Village",
   },
 
-  // Q2 — Clan / Starting Occupation (drag-drop from occupations pack)
+  // Q2 — Clan / Starting Occupation (drag-drop from occupations packs)
+  //
+  // Occupations now live in the public naruto-d20 module (occupations +
+  // occupations-community); kaihou keeps only homebrew/exclusive clans. Drops
+  // are validated by dropAccepts.type alone, so any of the three packs is a
+  // valid source; the browse list surfaces all three.
   {
     id: "q2",
     pickType: "drag-drop",
@@ -260,10 +265,13 @@ export const QUESTION_DEFINITIONS = [
     questionText: "Which Clan does your character descend from? (If clanless, describe how they reached the academy.)",
     sidebarLabel: "Clan",
     narrativePrompt: "",
-    pack: "naruto-d20-kaihou.occupations",
     markerFlag: "q2OccupationItem",
     dropAccepts: {type: "feat"},
-    browse: {kind: "pack", id: "naruto-d20-kaihou.occupations", label: "Browse Occupations"},
+    browse: [
+      {kind: "pack", id: "naruto-d20.occupations", label: "Browse Clans"},
+      {kind: "pack", id: "naruto-d20.occupations-community", label: "Browse Community Clans"},
+      {kind: "pack", id: "naruto-d20-kaihou.occupations", label: "Browse Homebrew Clans"},
+    ],
   },
 
   // Q3 — Biggest Talent / Human Bonus Feat (drag-drop)
