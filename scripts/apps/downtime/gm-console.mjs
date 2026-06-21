@@ -26,7 +26,7 @@ function rowFor(sub) {
     scene: sub.requestScene === true,
     note: sub.note ?? "",
     resultLabel: resultLabel(sub),
-    canRun: sub.action === "technique" && !sub.rollResult?.ok,
+    canRun: sub.action === "technique" && sub.rollResult == null,
   };
 }
 

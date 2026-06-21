@@ -121,7 +121,7 @@ async function runAndRecord(submissionId) {
     api: getTechniqueApi(),
     resolveItem: (uuid) => (typeof fromUuid === "function" ? fromUuid(uuid) : null),
   });
-  return writeRecord(recordResult(getCurrentBlockRecord() ?? current, submissionId, result));
+  return writeRecord(recordResult(current, submissionId, result));
 }
 
 export async function runSubmission(submissionId) {
