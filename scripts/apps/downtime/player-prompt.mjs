@@ -1,25 +1,27 @@
 import { MESSAGES } from "../../downtime/messages.mjs";
+import { PRIMARY_ACTIONS, buildActionPayload, decideRollPolicy } from "../../downtime/action-payloads.mjs";
+import { buildLearnOptions, buildMasterOptions, getTechniqueApi } from "../../downtime/technique-adapter.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 const MODULE_ID = "naruto-d20-kaihou";
 const CHANNEL = `module.${MODULE_ID}`;
 
-export const PRIMARY_ACTIONS = Object.freeze([
-  "technique",
-  "npc",
-  "crafting",
-  "mission",
-  "shopping",
-  "other",
-]);
-
 /** Pure: shape the data the prompt template needs. Exported for tests. */
-export function buildPromptContext({ record, actor }) {
+export function buildPromptContext({ record, actor, selectedAction = "technique", api }) {
+  const isTechnique = selectedAction === "technique";
   return {
     actorName: actor?.name ?? "",
     block: record?.block ?? null,
     dateLabel: record?.date?.label ?? "",
     actions: [...PRIMARY_ACTIONS],
+    selectedAction,
+    isTechnique,
+    isNpc: selectedAction === "npc",
+    isCrafting: selectedAction === "crafting",
+    isShopping: selectedAction === "shopping",
+    isOther: selectedAction === "other",
+    learnOptions: isTechnique ? buildLearnOptions(actor, api) : [],
+    masterOptions: isTechnique ? buildMasterOptions(actor, api) : [],
   };
 }
 
@@ -27,8 +29,9 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
   static DEFAULT_OPTIONS = {
     id: "kaihou-downtime-prompt",
     tag: "form",
+    classes: ["kaihou-downtime"],
     window: { title: "Kaihou — Action Block" },
-    position: { width: 460, height: 520 },
+    position: { width: 460, height: 560 },
     actions: { submit: DowntimePrompt.#onSubmit },
   };
 
@@ -41,11 +44,13 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
 
   #record;
   #actor;
+  #selectedAction = "technique";
 
   static open(record, actor) {
     if (DowntimePrompt.#instance?.rendered) {
       DowntimePrompt.#instance.#record = record;
       DowntimePrompt.#instance.#actor = actor;
+      DowntimePrompt.#instance.#selectedAction = "technique";
       DowntimePrompt.#instance.render(true);
       return DowntimePrompt.#instance;
     }
@@ -58,27 +63,51 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
   }
 
   async _prepareContext() {
-    return buildPromptContext({ record: this.#record, actor: this.#actor });
+    return buildPromptContext({
+      record: this.#record,
+      actor: this.#actor,
+      selectedAction: this.#selectedAction,
+      api: getTechniqueApi(),
+    });
+  }
+
+  // Re-render the conditional panel when the primary action changes.
+  _onRender(context, options) {
+    super._onRender?.(context, options);
+    const select = this.element?.querySelector('select[name="action"]');
+    select?.addEventListener("change", (ev) => {
+      this.#selectedAction = ev.target.value;
+      this.render(false);
+    });
   }
 
   static async #onSubmit(event) {
     if (DowntimePrompt.#submitting) return;
     DowntimePrompt.#submitting = true;
     const form = event.currentTarget.closest("form");
-    if (!form) return;
+    if (!form) {
+      DowntimePrompt.#submitting = false;
+      return;
+    }
     const data = new FormData(form);
+    const action = data.get("action");
     const requestScene = data.get("requestScene") === "on";
+    const formObj = Object.fromEntries(data.entries());
+    if (action === "technique") {
+      formObj.itemUuid = formObj.mode === "master-owned" ? formObj.itemUuidMaster : formObj.itemUuid;
+    }
+    const payload = buildActionPayload(action, formObj);
     const submission = {
       id: foundry.utils.randomID(),
       userId: game.user.id,
       actorUuid: this.#actor.uuid,
       actorName: this.#actor.name,
       submittedAt: Date.now(),
-      action: data.get("action"),
+      action,
       requestScene,
-      payload: {},
+      payload,
       note: data.get("note") ?? "",
-      rollPolicy: requestScene ? "defer" : "auto",
+      rollPolicy: decideRollPolicy(action, requestScene),
     };
     game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_SUBMIT, userId: game.user.id, submission });
     this.close();
