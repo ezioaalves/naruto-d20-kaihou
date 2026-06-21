@@ -42,6 +42,7 @@ export default class DowntimeConsole extends HandlebarsApplicationMixin(Applicat
   static #instance = null;
 
   static open() {
+    if (!game.user?.isGM) return null;
     DowntimeConsole.#instance ??= new DowntimeConsole();
     DowntimeConsole.#instance.render(true);
     return DowntimeConsole.#instance;

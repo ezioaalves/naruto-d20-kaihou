@@ -101,26 +101,14 @@ export default [
       "no-var": "error",
     },
   },
-  // Wizard tests and implementation — runs under Node with Vitest.
+  // Wizard and downtime — pure modules + tests run under Node with Vitest.
   {
-    files: ["scripts/wizard/**/*.mjs", "tests/wizard/**/*.mjs"],
-    languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: "module",
-      globals: {
-        ...globals.node,
-        ...vitestGlobals,
-      },
-    },
-    rules: {
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
-      "prefer-const": "warn",
-      "no-var": "error",
-    },
-  },
-  // Downtime tests — runs under Node with Vitest.
-  {
-    files: ["tests/downtime/**/*.mjs"],
+    files: [
+      "scripts/wizard/**/*.mjs",
+      "scripts/downtime/**/*.mjs",
+      "tests/wizard/**/*.mjs",
+      "tests/downtime/**/*.mjs",
+    ],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "module",
