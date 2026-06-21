@@ -38,6 +38,6 @@ export async function runTechniqueAttempt({ submission, api, resolveItem }) {
   if (!item) return { ok: false, reason: "item-missing" };
   const fn = mode === "master-owned" ? api.attemptMasterTechnique : api.attemptLearnTechnique;
   if (typeof fn !== "function") return { ok: false, reason: "api-unavailable" };
-  const result = await fn(item);
+  const result = await fn.call(api, item);
   return { ok: true, mode, chatMessageId: result?.message?.id ?? result?.messageId ?? null };
 }
