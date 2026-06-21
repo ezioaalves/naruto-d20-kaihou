@@ -13,6 +13,8 @@ import { MESSAGES, validateSubmission } from "./messages.mjs";
 const MODULE_ID = "naruto-d20-kaihou";
 const CHANNEL = `module.${MODULE_ID}`;
 
+let _kernelRegistered = false;
+
 function calendariaApi() {
   return globalThis.CALENDARIA?.api ?? null;
 }
@@ -29,9 +31,10 @@ export async function setDowntimeMode(on) {
 
 /** Suggest { calendarId, date, block } from Calendaria, or null if unavailable. */
 export function suggestCurrentBlock() {
-  const clock = readClock(calendariaApi());
+  const api = calendariaApi();
+  const clock = readClock(api);
   if (!clock) return null;
-  const block = suggestBlock(clock.hour, sunTimesFor(calendariaApi()));
+  const block = suggestBlock(clock.hour, sunTimesFor(api));
   return { calendarId: clock.calendarId, date: clock.date, block };
 }
 
@@ -45,11 +48,11 @@ async function writeRecord(record) {
   return record;
 }
 
-function ensureRoster() {
+async function ensureRoster() {
   let roster = game.settings.get(MODULE_ID, "downtimeRoster") ?? [];
   if (roster.length === 0) {
     roster = seedRoster(game.users.contents.map((u) => ({ isGM: u.isGM, character: u.character })));
-    game.settings.set(MODULE_ID, "downtimeRoster", roster);
+    await game.settings.set(MODULE_ID, "downtimeRoster", roster);
   }
   return roster;
 }
@@ -67,6 +70,10 @@ export async function promptCurrentBlock(block) {
     ui.notifications?.warn("Downtime Mode is off.");
     return null;
   }
+  if (getCurrentBlockRecord()) {
+    ui.notifications?.warn("A block is already open.");
+    return null;
+  }
   const suggestion = suggestCurrentBlock();
   if (!suggestion) {
     ui.notifications?.warn("Calendaria is unavailable; cannot create a block.");
@@ -74,7 +81,7 @@ export async function promptCurrentBlock(block) {
   }
   const chosen = block ?? suggestion.block;
   const id = makeBlockId(suggestion.calendarId, suggestion.date, chosen);
-  const recipients = resolveRecipients(ensureRoster(), resolveActorFor);
+  const recipients = resolveRecipients(await ensureRoster(), resolveActorFor);
   let record = createBlockRecord({
     id,
     calendarId: suggestion.calendarId,
@@ -127,6 +134,8 @@ export function registerDowntimeSettings() {
 }
 
 export function registerDowntimeKernel() {
+  if (_kernelRegistered) return;
+  _kernelRegistered = true;
   game.socket.on(CHANNEL, handleSocket);
   game[MODULE_ID] = game[MODULE_ID] || {};
   game[MODULE_ID].downtime = {
@@ -136,7 +145,11 @@ export function registerDowntimeKernel() {
     suggestCurrentBlock,
     promptCurrentBlock,
     getCurrentBlockRecord,
-    closeCollection: async () => writeRecord(closeCollection(getCurrentBlockRecord())),
+    closeCollection: async () => {
+      const r = getCurrentBlockRecord();
+      if (!r) { ui.notifications?.warn("No open block to close."); return null; }
+      return writeRecord(closeCollection(r));
+    },
     resolveBlock: async (id) => {
       const ledger = getLedger();
       if (!ledger[id]) return null;

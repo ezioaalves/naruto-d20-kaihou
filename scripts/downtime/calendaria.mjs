@@ -14,5 +14,5 @@ export function readClock(api) {
 export function sunTimesFor(api) {
   const t = api?.getSunTimes?.();
   if (!t) return { ...DEFAULT_SUN_TIMES };
-  return { sunrise: t.sunrise, midday: t.midday, sunset: t.sunset };
+  return { ...DEFAULT_SUN_TIMES, ...t };
 }
