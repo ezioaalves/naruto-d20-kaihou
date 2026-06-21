@@ -169,6 +169,10 @@ export function registerDowntimeKernel() {
     resolveBlock: async (id) => {
       const ledger = getLedger();
       if (!ledger[id]) return null;
+      if (ledger[id].status !== "closed") {
+        ui.notifications?.warn("Cannot resolve a block that is not closed.");
+        return null;
+      }
       return writeRecord(resolveBlock(ledger[id]));
     },
   };

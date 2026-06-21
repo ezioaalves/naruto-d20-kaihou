@@ -18,7 +18,6 @@ export function buildConsoleContext({ mode, suggestion, record }) {
     suggestedBlock: suggestion?.block ?? null,
     dateLabel: suggestion?.date?.label ?? "",
     recipients: record?.recipients ?? [],
-    order: record?.order ?? [],
     queues: record?.queues ?? { scenes: [], other: [] },
   };
 }
@@ -43,7 +42,11 @@ export default class DowntimeConsole extends HandlebarsApplicationMixin(Applicat
 
   static open() {
     if (!game.user?.isGM) return null;
-    DowntimeConsole.#instance ??= new DowntimeConsole();
+    if (DowntimeConsole.#instance?.rendered) {
+      DowntimeConsole.#instance.render(true);
+      return DowntimeConsole.#instance;
+    }
+    DowntimeConsole.#instance = new DowntimeConsole();
     DowntimeConsole.#instance.render(true);
     return DowntimeConsole.#instance;
   }

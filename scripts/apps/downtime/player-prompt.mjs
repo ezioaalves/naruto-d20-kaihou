@@ -37,12 +37,15 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
   };
 
   static #instance = null;
+  static #submitting = false;
 
   #record;
   #actor;
 
   static open(record, actor) {
     if (DowntimePrompt.#instance?.rendered) {
+      DowntimePrompt.#instance.#record = record;
+      DowntimePrompt.#instance.#actor = actor;
       DowntimePrompt.#instance.render(true);
       return DowntimePrompt.#instance;
     }
@@ -59,6 +62,8 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
   }
 
   static async #onSubmit(event) {
+    if (DowntimePrompt.#submitting) return;
+    DowntimePrompt.#submitting = true;
     const form = event.currentTarget.closest("form");
     if (!form) return;
     const data = new FormData(form);
@@ -77,5 +82,11 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
     };
     game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_SUBMIT, userId: game.user.id, submission });
     this.close();
+    DowntimePrompt.#submitting = false;
+  }
+
+  async _onClose(options) {
+    DowntimePrompt.#submitting = false;
+    return super._onClose(options);
   }
 }
