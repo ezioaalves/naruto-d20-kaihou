@@ -101,6 +101,12 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
       formObj.itemUuid = formObj.mode === "master-owned" ? formObj.itemUuidMaster : formObj.itemUuid;
     }
     const payload = buildActionPayload(action, formObj);
+    // Guard: technique with no item selected
+    if (action === "technique" && !payload.itemUuid) {
+      ui.notifications?.warn("Select a technique before submitting.");
+      DowntimePrompt.#submitting = false;
+      return;
+    }
     const submission = {
       id: foundry.utils.randomID(),
       userId: game.user.id,

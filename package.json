@@ -32,7 +32,7 @@
     "test:js": "vitest run",
     "test:js:watch": "vitest",
     "build:css": "sass scss/kaihou.scss styles/theme/zen.css --style=compressed --no-source-map --load-path=scss && sass scss/apps/_twenty-questions-wizard.scss styles/apps/twenty-questions-wizard.css --style=compressed --no-source-map --load-path=scss && sass scss/apps/_downtime.scss styles/apps/downtime.css --style=compressed --no-source-map --load-path=scss",
-    "watch:css": "sass --watch scss/kaihou.scss:styles/theme/zen.css scss/apps/_twenty-questions-wizard.scss:styles/apps/twenty-questions-wizard.css --load-path=scss",
+    "watch:css": "sass --watch scss/kaihou.scss:styles/theme/zen.css scss/apps/_twenty-questions-wizard.scss:styles/apps/twenty-questions-wizard.css scss/apps/_downtime.scss:styles/apps/downtime.css --load-path=scss",
     "build": "npm run pack:all && npm run build:css",
     "test:css-fresh": "npm run build:css --silent && git diff --quiet styles/ || (echo 'CSS out of date - run npm run build:css and commit' && exit 1)"
   },
