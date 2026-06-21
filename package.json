@@ -31,7 +31,7 @@
     "test": "python3 -m pytest tests/ -v && npm run test:js && npm run test:css-fresh",
     "test:js": "vitest run",
     "test:js:watch": "vitest",
-    "build:css": "sass scss/kaihou.scss styles/theme/zen.css --style=compressed --no-source-map --load-path=scss && sass scss/apps/_twenty-questions-wizard.scss styles/apps/twenty-questions-wizard.css --style=compressed --no-source-map --load-path=scss",
+    "build:css": "sass scss/kaihou.scss styles/theme/zen.css --style=compressed --no-source-map --load-path=scss && sass scss/apps/_twenty-questions-wizard.scss styles/apps/twenty-questions-wizard.css --style=compressed --no-source-map --load-path=scss && sass scss/apps/_downtime.scss styles/apps/downtime.css --style=compressed --no-source-map --load-path=scss",
     "watch:css": "sass --watch scss/kaihou.scss:styles/theme/zen.css scss/apps/_twenty-questions-wizard.scss:styles/apps/twenty-questions-wizard.css --load-path=scss",
     "build": "npm run pack:all && npm run build:css",
     "test:css-fresh": "npm run build:css --silent && git diff --quiet styles/ || (echo 'CSS out of date - run npm run build:css and commit' && exit 1)"
