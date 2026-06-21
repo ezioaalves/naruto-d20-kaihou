@@ -82,6 +82,12 @@ describe("deriveQueues", () => {
     expect(deriveQueues(r)).toEqual({ scenes: ["s1"], other: ["s2"] });
     expect(r.queues).toEqual({ scenes: ["s1"], other: ["s2"] });
   });
+
+  it("requestScene wins over action:other — appears only in scenes", () => {
+    let r = openPrompt(baseRecord());
+    r = upsertSubmission(r, submission({ id: "s1", action: "other", requestScene: true }));
+    expect(deriveQueues(r)).toEqual({ scenes: ["s1"], other: [] });
+  });
 });
 
 describe("pruneResolvedBefore", () => {

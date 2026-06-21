@@ -20,8 +20,14 @@ export function openPrompt(record) {
 }
 
 export function deriveQueues(record) {
-  const scenes = record.order.filter((id) => record.submissions[id]?.requestScene);
-  const other = record.order.filter((id) => record.submissions[id]?.action === "other");
+  const scenes = [];
+  const other = [];
+  for (const id of record.order) {
+    const s = record.submissions[id];
+    if (!s) continue;
+    if (s.requestScene) scenes.push(id);
+    else if (s.action === "other") other.push(id);
+  }
   return { scenes, other };
 }
 
