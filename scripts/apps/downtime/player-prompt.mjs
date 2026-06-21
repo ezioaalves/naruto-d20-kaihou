@@ -18,6 +18,7 @@ export function buildPromptContext({ record, actor, selectedAction = "technique"
     isTechnique,
     isNpc: selectedAction === "npc",
     isCrafting: selectedAction === "crafting",
+    isMission: selectedAction === "mission",
     isShopping: selectedAction === "shopping",
     isOther: selectedAction === "other",
     learnOptions: isTechnique ? buildLearnOptions(actor, api) : [],
@@ -75,10 +76,13 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
   _onRender(context, options) {
     super._onRender?.(context, options);
     const select = this.element?.querySelector('select[name="action"]');
-    select?.addEventListener("change", (ev) => {
-      this.#selectedAction = ev.target.value;
-      this.render(false);
-    });
+    if (select && !select.dataset.kaihouBound) {
+      select.dataset.kaihouBound = "1";
+      select.addEventListener("change", (ev) => {
+        this.#selectedAction = ev.target.value;
+        this.render(false);
+      });
+    }
   }
 
   static async #onSubmit(event) {

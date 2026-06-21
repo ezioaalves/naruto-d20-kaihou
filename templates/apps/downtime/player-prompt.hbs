@@ -47,6 +47,8 @@
     {{else if isCrafting}}
       <label>Craft/skill <input type="text" name="skillLabel"></label>
       <input type="hidden" name="skillKey" value="cra">
+    {{else if isMission}}
+      <p class="hint">You'll join the party mission. The GM will assign a roll after collection closes.</p>
     {{else if isShopping}}
       <label>Store <input type="text" name="storeName"></label>
       <label>Other <input type="text" name="otherText"></label>
