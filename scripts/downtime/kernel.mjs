@@ -110,6 +110,18 @@ function userOwnsActor(userId, actorUuid) {
 
 /** Registered on the active GM client only: apply validated player submissions. */
 async function handleSocket(msg) {
+  if (msg?.action === MESSAGES.PROMPT_OPEN) {
+    const ledger = game.settings.get(MODULE_ID, "downtimeLedger") ?? {};
+    const record = ledger[msg.blockId];
+    if (!record) return;
+    const mine = record.recipients.find((r) => r.userId === game.user.id);
+    if (!mine) return;
+    const actor = fromUuidSync?.(mine.actorUuid);
+    if (!actor) return;
+    const { default: DowntimePrompt } = await import("../apps/downtime/player-prompt.mjs");
+    DowntimePrompt.open(record, actor);
+    return;
+  }
   if (game.user !== game.users.activeGM) return;
   if (msg?.action !== MESSAGES.PROMPT_SUBMIT) return;
   const record = getCurrentBlockRecord();
