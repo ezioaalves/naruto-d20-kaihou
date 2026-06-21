@@ -94,7 +94,7 @@ export async function promptCurrentBlock(block) {
   });
   record = openPrompt(record);
   await writeRecord(record);
-  game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_OPEN, blockId: id });
+  game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_OPEN, blockId: id, record });
   return record;
 }
 
@@ -159,8 +159,8 @@ function userOwnsActor(userId, actorUuid) {
 /** Handles socket messages for all clients; GM-only submission paths guarded below. */
 async function handleSocket(msg) {
   if (msg?.action === MESSAGES.PROMPT_OPEN) {
-    const ledger = getLedger();
-    const record = ledger[msg.blockId];
+    // Use the record from the payload to avoid the world-setting propagation race.
+    const record = msg.record ?? getLedger()[msg.blockId];
     if (!record) return;
     if (record.status !== "open") return;
     const mine = record.recipients.find((r) => r.userId === game.user.id);
