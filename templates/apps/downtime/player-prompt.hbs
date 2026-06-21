@@ -1,0 +1,20 @@
+<section class="kaihou-downtime-prompt">
+  <header>
+    <h2>{{actorName}}</h2>
+    <p class="block">{{dateLabel}} — {{block}}</p>
+  </header>
+
+  <label>Primary action
+    <select name="action">
+      {{#each actions as |a|}}<option value="{{a}}">{{a}}</option>{{/each}}
+    </select>
+  </label>
+
+  {{!-- Extension slot: child epics render the action-specific panel here. --}}
+  <section class="prompt-action-panel" data-prompt-action-panel></section>
+
+  <label class="scene"><input type="checkbox" name="requestScene"> Request a scene</label>
+  <label>Note to GM <textarea name="note" rows="2"></textarea></label>
+
+  <footer><button type="button" data-action="submit">Submit</button></footer>
+</section>
