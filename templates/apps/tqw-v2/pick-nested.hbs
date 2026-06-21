@@ -13,7 +13,7 @@
     {{/each}}
   </div>
   {{#if current.subPicker}}
-    <div class="tqw-v2__subpicker"{{#unless current.value}} hidden{{/unless}}>
+    <div class="tqw-v2__subpicker"{{#unless current.subPickerVisible}} hidden{{/unless}}>
       <div class="zen-card__label">{{current.subPicker.label}}</div>
       <select class="tqw-v2__select"
               data-action="tqw-subpicker-change"

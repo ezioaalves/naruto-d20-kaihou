@@ -20,15 +20,16 @@
             <em>{{label}}</em>
           {{/if}}
         </div>
-        {{#if browse}}
+        {{#each browseButtons}}
           <button type="button"
                   class="zen-drop-zone__browse"
                   data-action="tqw-browse"
-                  data-qid="{{../current.id}}"
-                  data-zone="{{@index}}">
-            <i class="fas fa-book-open"></i> {{browse.label}}
+                  data-qid="{{../../current.id}}"
+                  data-zone="{{zoneIdx}}"
+                  data-browse-idx="{{idx}}">
+            <i class="fas fa-book-open"></i> {{label}}
           </button>
-        {{/if}}
+        {{/each}}
       </div>
     {{/each}}
   </div>

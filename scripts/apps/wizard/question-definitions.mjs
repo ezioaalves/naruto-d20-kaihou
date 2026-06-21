@@ -368,7 +368,10 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "",
     markerFlag: "q9Level1Feat",
     dropAccepts: {type: "feat"},
-    browse: {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse Feats"},
+    browse: [
+      {kind: "compendium", pack: "naruto-d20.feats", filter: {subType: "feat"}, label: "Browse Naruto-D20 Feats"},
+      {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse System Feats"},
+    ],
   },
 
   // Q10 — Resentment / Flaw + Bonus Feat (drag-drop-coupled)
@@ -388,7 +391,10 @@ export const QUESTION_DEFINITIONS = [
       },
       {
         stateField: "q10_bonus_feat_uuid", label: "Bonus Feat", dropAccepts: {type: "feat"},
-        browse: {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse Feats"},
+        browse: [
+          {kind: "compendium", pack: "naruto-d20.feats", filter: {subType: "feat"}, label: "Browse Naruto-D20 Feats"},
+          {kind: "compendium", pack: "pf1.feats", filter: {subType: "feat"}, label: "Browse System Feats"},
+        ],
       },
     ],
   },
@@ -469,7 +475,10 @@ export const QUESTION_DEFINITIONS = [
     narrativePrompt: "Family, rivals, childhood friends. One of them gave you a Restricted Item (non-sealed) — name them, and drag the item here.",
     markerFlag: "q16RestrictedItem",
     dropAccepts: {typeIn: ["equipment", "weapon", "consumable", "loot"]},
-    browse: {kind: "compendium", pack: "pf1.items", label: "Browse Items"},
+    browse: [
+      {kind: "pack", id: "naruto-d20.equipments", label: "Browse Naruto-D20 Equipment"},
+      {kind: "compendium", pack: "pf1.items", label: "Browse System Items"},
+    ],
   },
 
   // Q17 — Parents / Parental Influence feat grant (unconditional on finish)

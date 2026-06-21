@@ -163,10 +163,17 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
     // Drag-drop coupled (zones array)
     if (question.pickType === "drag-drop-coupled" && Array.isArray(question.zones)) {
       enriched.zones = await Promise.all(
-        question.zones.map(async (zone) => ({
-          ...zone,
-          droppedItem: await this._resolveDroppedItem(this.wizardState[zone.stateField]),
-        })),
+        question.zones.map(async (zone, zoneIdx) => {
+          const zoneEnriched = {
+            ...zone,
+            droppedItem: await this._resolveDroppedItem(this.wizardState[zone.stateField]),
+          };
+          if (zone.browse) {
+            const list = Array.isArray(zone.browse) ? zone.browse : [zone.browse];
+            zoneEnriched.browseButtons = list.map((cfg, idx) => ({ ...cfg, idx, zoneIdx }));
+          }
+          return zoneEnriched;
+        }),
       );
     }
 
@@ -178,6 +185,14 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
     // Sub-picker current value
     if (question.subPicker?.stateField) {
       enriched.subPickerValue = this.wizardState[question.subPicker.stateField] ?? null;
+    }
+
+    // Sub-picker reveal condition
+    if (question.subPicker?.revealWhen) {
+      const { field, value } = question.subPicker.revealWhen;
+      enriched.subPickerVisible = this.wizardState[field] === value;
+    } else if (question.subPicker) {
+      enriched.subPickerVisible = Boolean(enriched.value);
     }
 
     // Roll-table current rolled value + outcome lookup.
