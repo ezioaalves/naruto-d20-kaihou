@@ -20,6 +20,10 @@ const TARGET_SELECTORS = [
   ".window-app.filepicker",
   ".window-app.technique",
   ".window-app.compendium-browser",
+  // v13 Journal Entry sheet renders as ApplicationV2 `.application.journal-entry.sheet`
+  // (no `.window-app`). Tag it so the journal structural partial applies.
+  ".application.journal-entry",
+  ".journal-entry.sheet",
 ];
 
 // ─── Body class lifecycle ──────────────────────────────────────────────

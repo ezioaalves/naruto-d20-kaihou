@@ -48,4 +48,123 @@ body.naruto-zen {
   --pf1-faint: var(--k-rule-soft);
   --color-text-dark-primary: var(--k-ink);
   --color-text-dark-secondary: var(--k-ink-mute);
+
+  // Core Foundry v13 text tokens. Foundry drives body/label text through these
+  // (light values in the default dark color-scheme). Redirect to ink so any
+  // surface we repaint to parchment reads correctly without per-window rules.
+  --color-text-primary: var(--k-ink);
+  --color-text-secondary: var(--k-ink-mute);
+  --color-text-emphatic: var(--k-ink);
+}
+
+// ─── Foundry v13 ApplicationV2 chrome variables (ROOT-CAUSE REMAP) ─────────
+// Foundry funnels EVERY ApplicationV2 surface through `--background` and the
+// `--color-*` / `--input-*` scale declared on `.window-app, .application`
+// (foundry2.css §325) and `body.theme-dark …` (§931). Inner panels read these
+// directly — e.g. `.journal-entry-content { background: var(--background) }`
+// (§9630) — so windows the theme never hand-painted stayed dark. Remapping the
+// variables at the source fixes the whole class at once; our zen.css loads
+// after foundry2.css, so equal-specificity selectors win on source order.
+// The theme's intentional dark chrome (window headers, sidebar) is painted by
+// separate rules that do NOT read `--background`, so it is unaffected.
+body.naruto-zen .application,
+body.naruto-zen .window-app {
+  --background: var(--k-paper); // solid parchment for inner surfaces (journals, etc.)
+  --color-border: var(--k-rule);
+  --color-fieldset-border: var(--k-rule-soft);
+  --color-form-label: var(--k-ink);
+  --color-form-label-hover: var(--k-seal);
+  --color-form-hint: var(--k-ink-mute);
+  --color-form-hint-hover: var(--k-ink);
+  --color-select-option-bg: var(--k-paper);
+}
+
+body.naruto-zen :is(input, select, textarea, code-mirror) {
+  --input-background-color: var(--k-input-bg-strong);
+  --input-text-color: var(--k-ink);
+  --input-border-color: var(--k-rule);
+  --input-placeholder-color: var(--k-ink-soft);
+  --input-focus-text-color: var(--k-ink);
+}
+
+// On focus, Foundry's dark theme flips text to a light color
+// (`body.theme-dark input:focus { --input-text-color: var(--color-light-1) }`)
+// at higher specificity — invisible while typing on parchment. Match it.
+body.naruto-zen :is(input, select, textarea, code-mirror):focus {
+  --input-text-color: var(--k-ink);
+}
+
+// ─── Macro / script CodeMirror editor (`<code-mirror>`) ──────────────────────
+// The editor surface uses `--input-background-color` (remapped to parchment
+// above) but its gutter, active-line, focus text, and syntax palette are tuned
+// for a DARK background (foundry2.css §559+, §4474+) — light text + dark gutter
+// on parchment leaves "only the current line visible". Retune for light bg.
+body.naruto-zen code-mirror {
+  --gutter-background-color: var(--k-paper-sunken);
+  --gutter-border-color: var(--k-rule);
+  --gutter-text-color: var(--k-ink-mute);
+  --active-line-color: rgba(178, 58, 46, 0.08); // subtle seal tint
+  // Syntax palette darkened for legibility on parchment (core ships white/light
+  // tokens for dark bg, e.g. --syntax-local-var-color:#fff).
+  --syntax-comment-color: var(--k-ink-mute);
+  --syntax-local-var-color: var(--k-ink);
+  --syntax-keyword-color: #7a3a8f;
+  --syntax-string-color: #3f7d3a;
+  --syntax-func-name-color: #2a5d9e;
+  --syntax-method-name-color: #2a5d9e;
+  --syntax-number-color: #9a6a1a;
+  --syntax-boolean-color: #9a6a1a;
+  --syntax-class-name-color: #8a5a1a;
+}
+
+// ─── Neutral buttons inside window content ───────────────────────────────────
+// Core neutral buttons default to a dark fill + light text (foundry2.css §411),
+// which reads as dark chrome on parchment windows (e.g. journal "Add Page",
+// macro footer). Redirect the neutral-button vars to a parchment card style.
+// Scope to `.window-content` so sidebar/hotbar/header-control chrome is
+// untouched, and exclude `.bright` so accent buttons keep their color.
+body.naruto-zen .window-content :is(a.button, button):not(.bright):not(.header-control) {
+  --button-background-color: var(--k-card-bg);
+  --button-text-color: var(--k-ink);
+  --button-border-color: var(--k-rule);
+  --button-hover-background-color: var(--k-row-hover);
+  --button-hover-border-color: var(--k-seal);
+  --button-hover-text-color: var(--k-seal);
+}
+
+// Disabled neutral buttons (e.g. the journal prev/next arrow on the first/last
+// page) — core pins a dark fill (foundry2.css §426). Give them a muted sunken
+// parchment so they read as disabled, not as a black block.
+body.naruto-zen .window-content :is(a.button, button)[disabled]:not(.bright):not(.header-control) {
+  --button-background-color: var(--k-paper-sunken);
+  --button-text-color: var(--k-ink-mute);
+  --button-border-color: var(--k-rule-soft);
+}
+
+// ─── Checkboxes / radios ─────────────────────────────────────────────────────
+// Foundry renders these as Font Awesome glyphs in ::before/::after colored by
+// the `--checkbox-*` vars (foundry2.css §398). The dark-theme palette uses a
+// dark fill + `--checkbox-font-weight: bold`, which makes the checked and
+// unchecked glyphs render at mismatched weights/sizes on parchment. Adopt
+// Foundry's own light-forms values (normal weight) keyed to our tokens.
+body.naruto-zen :is(input[type="checkbox"], input[type="radio"]) {
+  --checkbox-font-weight: unset;
+  --checkbox-background-color: var(--k-ink-mute); // unchecked box outline
+  --checkbox-checked-color: var(--color-warm-1);  // checked box fill (orange)
+  --checkbox-checkmark-color: var(--k-paper);      // checkmark cutout
+}
+
+// ─── ProseMirror rich-text editor toolbar/dropdowns ──────────────────────────
+// The editor menu bar uses `--menu-background` (dark, foundry2.css §444) with
+// transparent buttons whose icons take `--button-text-color`. Our content
+// button remap set that to ink → ink icons on a dark toolbar (invisible).
+// Repaint the toolbar + dropdown surfaces to parchment so the ink icons read.
+body.naruto-zen :is(.prosemirror, #prosemirror-dropdown, prose-mirror) {
+  --menu-background: var(--k-paper-sunken);
+  --dropdown-background: var(--k-paper);
+  --dropdown-border: var(--k-rule);
+  --dialog-background: var(--k-paper);
+  --dialog-border: var(--k-rule);
+  --button-text-color: var(--k-ink);
+  --color-form-label-hover: var(--k-seal);
 }

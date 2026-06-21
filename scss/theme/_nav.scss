@@ -1,72 +1,63 @@
 @use "colors";
 
-// -- Nav
-nav {
-    &.sheet-tabs {
-        height: 3rem;
-        line-height: 2rem;
-        font-family: colors.$font-tertiary;
-        letter-spacing: -0.05rem;
-        font-size: 1rem;
-        border: 0 none;
-        border-bottom: 1px solid var(--k-rule-soft);
-        margin-bottom: 0;
-        background: var(--k-ink);
-        color: var(--k-ink);
-        display: flex;
-        flex-direction: row;
-        --notchSize: 0.5rem;
-        clip-path: polygon(
-            0% var(--notchSize),
-            var(--notchSize) 0%,
-            calc(100% - var(--notchSize)) 0%,
-            100% var(--notchSize),
-            100% calc(100% - var(--notchSize)),
-            calc(100%) 100%,
-            var(--notchSize) 100%,
-            0% calc(100%)
-        );
-    }
-    .item {
+// -- Nav: core ApplicationV2 sheet tabs (`nav.sheet-tabs`) ────────────────────
+// Used by Foundry-core windows — Roll Table, Card Stack, Scene config, journal
+// page sheets, generic item sheets. (The Kaihou actor sheet uses PF1e's
+// `nav.sheet-navigation`, styled in _pf1-surfaces.scss — NOT this rule.)
+//
+// Previously this painted a dark `--k-ink` band and only styled `.item` tabs.
+// Foundry v13 renders tabs as `[data-tab]` anchors, so those windows got the
+// dark band but none of the tab treatment, and core's `--color-text-secondary`
+// / `--color-text-emphatic` (remapped to ink) left dark-on-dark text + a red
+// glow → invisible tabs. Align to the approved actor-sheet look instead:
+// parchment band, ink inactive tabs, seal hover, wine-stamp active. Cover both
+// `.item` (legacy) and `[data-tab]` (v13).
+nav.sheet-tabs {
+    height: auto;
+    line-height: 2;
+    font-family: var(--k-font-body);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02rem;
+    border: 0 none;
+    border-bottom: 1px solid var(--k-rule);
+    margin-bottom: 0;
+    background: transparent;
+    color: var(--k-ink);
+    display: flex;
+    flex-direction: row;
+
+    .item,
+    [data-tab] {
         flex: 1;
+        color: var(--k-ink);
+        background: transparent;
+        text-shadow: none;
+        transition: color 120ms ease, background-color 120ms ease;
+
         &:hover {
-            background-color: var(--k-ink-mute);
-            color: colors.$white-light;
-            text-shadow: none;
-            clip-path: polygon(
-                0% var(--notchSize),
-                var(--notchSize) 0%,
-                calc(100% - var(--notchSize)) 0%,
-                100% var(--notchSize),
-                100% 100%,
-                0 100%,
-                0% 0%,
-                0% 100%
-            );
+            color: var(--k-seal);
+            text-shadow: var(--k-glow);
         }
     }
-    .item.active {
-        // Wine-stamp tab: filled accent bg + hardcoded near-cream text.
-        // We can't use `var(--k-paper)` because in dark mode that flips
-        // to dark stone → dark-on-wine = invisible. Cream-on-wine works in
-        // both modes (it's the high-contrast complement of the accent).
+
+    // Wine-stamp active tab: filled seal accent + watercolor texture + cream
+    // text (high-contrast complement of the accent in both light/dark).
+    .item.active,
+    [data-tab].active {
         background-color: var(--k-seal);
+        background-image: url("../../assets/theme/textures/watercolor.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-blend-mode: multiply;
         color: rgb(252, 245, 225);
         text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
-        clip-path: polygon(
-            0% var(--notchSize),
-            var(--notchSize) 0%,
-            calc(100% - var(--notchSize)) 0%,
-            100% var(--notchSize),
-            100% 100%,
-            0 100%,
-            0% 0%,
-            0% 100%
-        );
 
         &:hover {
             background-color: var(--k-seal);
             color: rgb(252, 245, 225);
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
             cursor: default;
         }
     }

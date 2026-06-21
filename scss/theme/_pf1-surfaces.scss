@@ -75,6 +75,35 @@
     }
 }
 
+// ─── All window-app / ApplicationV2 surfaces — safety-net ───────────────────
+// Any window not caught by a more-specific rule below gets the canonical
+// parchment surface. Covers FormApplications (ActorSensesConfig,
+// ItemChangeEditor, FolderConfig, …) and ApplicationV2 non-dialog forms that
+// do NOT carry the `.dialog` class and therefore miss the `.window-app.dialog`
+// block below. More-specific rules (.pf1 .window-content, settings forms,
+// compendium browser) keep winning via specificity — no regression there.
+// Sidebar (#sidebar-content), hotbar, and canvas are NOT .window-app /
+// .application elements, so they are unaffected.
+.window-app .window-content,
+.application .window-content {
+    background-color: var(--k-paper);
+    background-image: var(--k-surface-washed);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    color: var(--k-ink);
+
+    // Foundry's own CSS sets .form-group label to a light-color variable that
+    // overrides inherited color — pin explicitly so labels are always readable.
+    label,
+    .form-group label,
+    .form-group .label,
+    .form-fields > label {
+        color: var(--k-ink);
+        font-family: var(--k-font-body);
+    }
+}
+
 // ─── Dialogs ─────────────────────────────────────────────────────────────────
 // Reset UA <dialog> inset anchors (inset-inline-start:0 / inset-inline-end:0).
 // Without this the native <dialog> element pins to the top-left corner on first
@@ -268,7 +297,7 @@ aside[role="tooltip"].pf1.source-breakdown {
         font-family: var(--k-font-body);
     }
 
-    input,
+    input:not([type="checkbox"]):not([type="radio"]),
     select,
     textarea {
         background: var(--k-input-bg);
@@ -703,11 +732,26 @@ aside[role="tooltip"].pf1.source-breakdown {
 }
 
 // ─── Generic <input>/<select>/<textarea> readability in our scope ────────────
-// Browsers don't inherit `color` into form controls reliably across all UAs;
-// pinning it here means form fields never get invisible-on-dark text.
-input,
-select,
-textarea {
+// Belt-and-suspenders: sets both background AND color so that any input inside
+// body.naruto-zen is always readable even if its parent window misses the
+// .window-app/.application surface rule above. Without the background here,
+// dark --k-ink text on Foundry's default dark window becomes invisible.
+//
+// EXCLUDE checkbox/radio: Foundry styles those via `--checkbox-*` vars with
+// their own appearance; painting our background + border over them draws a
+// stray parchment box around the checkmark (the artifact in the screenshots).
+// EXCLUDE the bespoke databook sheet (`.kaihou-databook-form`): it fully styles
+// its own inputs — boxed fields set explicit backgrounds, while inline-editable
+// readouts (gauge values .db-bar__in, attribute `input.value`, .db-mission) are
+// deliberately transparent with the box appearing only on :focus. The direct
+// background/border here would otherwise paint a permanent box over them. Any
+// unstyled databook input still gets parchment via the `--input-*` variable
+// remap in _tokens.scss, so excluding it from this direct rule is safe.
+input:not([type="checkbox"]):not([type="radio"]):not(.kaihou-databook-form *),
+select:not(.kaihou-databook-form *),
+textarea:not(.kaihou-databook-form *) {
+    background: var(--k-input-bg-strong);
+    border-color: var(--k-rule);
     color: var(--k-ink);
 
     &::placeholder {

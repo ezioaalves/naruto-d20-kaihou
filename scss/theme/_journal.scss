@@ -1,0 +1,159 @@
+/**
+ * Journal Entry sheet — structural polish on top of the root-cause variable
+ * remap in `_tokens.scss`.
+ *
+ * The variable remap repaints every surface that reads `var(--background)`
+ * (e.g. `.journal-entry-content`, foundry2.css §9630) to parchment + ink. This
+ * partial handles the journal-specific bits core styles with HARDCODED colors
+ * the remap can't reach:
+ *   - `.sheet.journal-entry { background: var(--color-cool-5-90) }` (§9560) —
+ *     the sheet root is pinned dark, not driven by --background.
+ *   - TOC page numbers `color: var(--color-dark-6)` (§9779) — light-on-light
+ *     once the sidebar is parchment.
+ *   - Page headings get a `--color-warm-3` underline rule (§9968).
+ *
+ * Scope: imported under `body.naruto-zen .naruto-zen-target { … }` from
+ * kaihou.scss, and `.naruto-zen-target` is added to the journal sheet root by
+ * the render hook in scripts/theme/main.mjs. `&` therefore refers to the sheet
+ * root element (which also carries `.journal-entry.sheet`).
+ */
+
+// ─── Sheet root + content surfaces ───────────────────────────────────────────
+&.journal-entry,
+&.sheet.journal-entry {
+    background-color: var(--k-paper);
+    background-image: var(--k-surface-washed);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .journal-entry-content {
+        background: var(--k-paper);
+        color: var(--k-ink);
+    }
+
+    // Entry title at the top of the sheet (`.journal-header .title`, an input
+    // in edit mode / heading in view mode).
+    .journal-header .title {
+        color: var(--k-ink);
+        font-family: var(--k-font-display);
+
+        &::placeholder {
+            color: var(--k-ink-soft);
+        }
+    }
+}
+
+// ─── Page body (rendered + edited) ───────────────────────────────────────────
+.journal-entry-page {
+    color: var(--k-ink);
+
+    // Core sets headings to inherited color + a warm-3 underline that reads as
+    // muddy red on parchment. Pin to ink + display font + an aged rule.
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--k-ink);
+        font-family: var(--k-font-display);
+    }
+
+    h1, h2 {
+        border-bottom-color: var(--k-rule);
+    }
+
+    p, blockquote, li, td, th, dd, dt {
+        color: var(--k-ink);
+    }
+
+    a.content-link,
+    a.inline-roll {
+        color: var(--k-seal);
+    }
+}
+
+// ─── Table of Contents (sidebar page list) ───────────────────────────────────
+.journal-sidebar {
+    // Core sets the sidebar base text to var(--color-light-1) (foundry2.css
+    // §9586) — light-on-light once the sidebar is parchment, which is why the
+    // page list reads faint. Pin the whole sidebar to ink so nothing inherits
+    // the light color; specific TOC rules below refine accents.
+    color: var(--k-ink);
+
+    // Toolbar buttons (folder / collapse / search-mode toggle / prev-next) —
+    // core pins --button-text-color: var(--color-light-1) (§9590), so the icons
+    // are nearly invisible on parchment. Redirect the button vars to ink.
+    button {
+        --button-text-color: var(--k-ink);
+        --button-border-color: var(--k-rule);
+        --button-hover-border-color: var(--k-seal);
+        color: var(--k-ink);
+    }
+
+    .toc {
+        .page-heading {
+            .page-title {
+                color: var(--k-ink);
+                font-family: var(--k-font-body);
+            }
+
+            // Page numbers/index — core pins var(--color-dark-6) (light), which
+            // vanishes on parchment. Use muted ink.
+            .page-number,
+            .page-index {
+                color: var(--k-ink-mute);
+            }
+        }
+
+        // Active page accents — core uses --color-warm-2 borders; align to seal.
+        li.page.active:first-of-type,
+        li.page.active:last-of-type,
+        li.page:not(.active) + .active,
+        li.page.active + :not(.active) {
+            border-top-color: var(--k-seal);
+        }
+
+        li.page.active .page-heading .page-title {
+            color: var(--k-seal);
+            font-weight: var(--k-weight-label);
+        }
+
+        li.category strong {
+            color: var(--k-ink);
+            font-family: var(--k-font-display);
+        }
+
+        .heading-link {
+            color: var(--k-ink-mute);
+
+            &:hover {
+                color: var(--k-seal);
+            }
+        }
+    }
+
+    // Sidebar search box. Core pins --input-text-color: var(--color-light-3)
+    // and a dark --input-background-color (§9595) more specifically than the
+    // global remap, so redirect the input vars here too.
+    search input,
+    input {
+        --input-text-color: var(--k-ink);
+        --input-placeholder-color: var(--k-ink-soft);
+        color: var(--k-ink);
+        background: var(--k-input-bg-strong);
+        border-color: var(--k-rule);
+
+        &::placeholder {
+            color: var(--k-ink-soft);
+        }
+    }
+}
+
+// ─── ProseMirror editor (page edit mode) ─────────────────────────────────────
+.journal-entry-page .editor-content,
+.journal-entry-page .ProseMirror,
+.editor .ProseMirror {
+    color: var(--k-ink);
+    background: var(--k-input-bg-strong);
+
+    :is(h1, h2, h3, h4, h5, h6) {
+        color: var(--k-ink);
+        font-family: var(--k-font-display);
+    }
+}
