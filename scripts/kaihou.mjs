@@ -56,6 +56,7 @@ const WIZARD_PARTIALS = [
 // our template never renders against an unregistered partial on load order drift.
 const SHEET_TEMPLATES = [
   "modules/naruto-d20-kaihou/templates/actor/kaihou-character-sheet.hbs",
+  `modules/${MODULE_ID}/templates/apps/downtime/gm-console.hbs`,
   "systems/pf1/templates/actors/parts/actor-summary.hbs",
   "systems/pf1/templates/actors/parts/actor-attributes.hbs",
   "systems/pf1/templates/actors/parts/actor-combat.hbs",

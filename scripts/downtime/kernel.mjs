@@ -139,7 +139,10 @@ export function registerDowntimeKernel() {
   game.socket.on(CHANNEL, handleSocket);
   game[MODULE_ID] = game[MODULE_ID] || {};
   game[MODULE_ID].downtime = {
-    openConsole: () => console.warn(`${MODULE_ID} | console arrives in the GM console task`),
+    openConsole: async () => {
+      const { default: DowntimeConsole } = await import("../apps/downtime/gm-console.mjs");
+      return DowntimeConsole.open();
+    },
     setDowntimeMode,
     getDowntimeMode,
     suggestCurrentBlock,

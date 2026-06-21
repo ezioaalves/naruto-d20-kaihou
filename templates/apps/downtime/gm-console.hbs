@@ -1,0 +1,39 @@
+<section class="kaihou-downtime-console">
+  <header class="downtime-mode">
+    <button type="button" data-action="toggleMode">
+      {{#if active}}End Downtime{{else}}Start Downtime{{/if}}
+    </button>
+    <span class="status">Downtime: {{#if active}}ON{{else}}OFF{{/if}}</span>
+  </header>
+
+  {{#if active}}
+    <section class="downtime-block">
+      <p class="date">{{dateLabel}}</p>
+      <div class="block-picker">
+        {{#each blocks as |b|}}
+          <button type="button" data-action="promptBlock" data-block="{{b}}"
+            class="{{#if (eq b ../suggestedBlock)}}suggested{{/if}}">{{b}}</button>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="downtime-recipients">
+      <h3>Recipients</h3>
+      <ul>
+        {{#each recipients as |r|}}<li>{{r.actorName}} — {{r.status}}</li>{{/each}}
+      </ul>
+    </section>
+
+    <section class="downtime-queues">
+      <h3>Scene queue</h3>
+      <ol>{{#each queues.scenes as |id|}}<li>{{id}}</li>{{/each}}</ol>
+      <h3>Other queue</h3>
+      <ol>{{#each queues.other as |id|}}<li>{{id}}</li>{{/each}}</ol>
+    </section>
+
+    {{!-- Extension slot: child epics (intake, missions) inject panels here. --}}
+    <section class="downtime-extensions" data-downtime-extensions></section>
+  {{else}}
+    <p class="downtime-inactive">Downtime Mode is off. Start downtime to prompt the party.</p>
+  {{/if}}
+</section>

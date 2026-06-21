@@ -118,6 +118,23 @@ export default [
       "no-var": "error",
     },
   },
+  // Downtime tests — runs under Node with Vitest.
+  {
+    files: ["tests/downtime/**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+        ...vitestGlobals,
+      },
+    },
+    rules: {
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
+      "prefer-const": "warn",
+      "no-var": "error",
+    },
+  },
   // Disable stylistic rules that conflict with Prettier.
   prettier,
 ];
