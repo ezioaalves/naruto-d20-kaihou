@@ -25,6 +25,7 @@ import { registerQuestionFeatEffects } from "./grants/question-effects.mjs";
 import { registerStatusEffects } from "./setup/status-effects.mjs";
 import { registerKaihouCharacterSheet } from "./sheets/kaihou-character-sheet.mjs";
 import { registerNotesRelay } from "./notes-relay.mjs";
+import { registerDowntimeSettings, registerDowntimeKernel } from "./downtime/kernel.mjs";
 
 // Theme layer — registers its own Hooks.once("init", ...) so must be loaded
 // at module-import time, before any Hooks.once events fire. Pure side-effect
@@ -94,6 +95,7 @@ Hooks.once("init", async () => {
     default: true,
   });
   registerKaihouCharacterSheet();
+  registerDowntimeSettings();
 });
 
 Hooks.once("ready", () => {
@@ -106,6 +108,7 @@ Hooks.once("ready", () => {
   registerOccupationAutoRevert();
   registerQuestionFeatEffects();
   registerNotesRelay();
+  registerDowntimeKernel();
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 
   // § 5.2 — The naruto-d20 Hero Statistics block is relocated into the masthead
