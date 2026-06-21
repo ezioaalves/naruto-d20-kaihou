@@ -98,7 +98,7 @@ describe("browse config kind validation", () => {
   const collectBrowses = (q) => {
     const out = [];
     if (q.browse) out.push(...(Array.isArray(q.browse) ? q.browse : [q.browse]));
-    if (Array.isArray(q.zones)) for (const z of q.zones) if (z.browse) out.push(z.browse);
+    if (Array.isArray(q.zones)) for (const z of q.zones) if (z.browse) out.push(...(Array.isArray(z.browse) ? z.browse : [z.browse]));
     return out;
   };
 
