@@ -7,8 +7,10 @@ import {
   upsertSubmission,
   closeCollection,
   resolveBlock,
+  recordResult,
 } from "./ledger.mjs";
 import { MESSAGES, validateSubmission } from "./messages.mjs";
+import { validateActionPayload } from "./action-payloads.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
 const CHANNEL = `module.${MODULE_ID}`;
@@ -102,6 +104,52 @@ export function getCurrentBlockRecord() {
   return open ?? null;
 }
 
+function lastResolvableRecord() {
+  const ledger = getLedger();
+  const records = Object.values(ledger).filter((x) => x.status === "closed" || x.status === "resolved");
+  return records.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))[0] ?? null;
+}
+
+async function runAndRecord(submissionId) {
+  const current = getCurrentBlockRecord();
+  if (!current) return null;
+  const sub = current.submissions[submissionId];
+  if (!sub) return null;
+  const { runTechniqueAttempt, getTechniqueApi } = await import("./technique-adapter.mjs");
+  const result = await runTechniqueAttempt({
+    submission: sub,
+    api: getTechniqueApi(),
+    resolveItem: (uuid) => (typeof fromUuid === "function" ? fromUuid(uuid) : null),
+  });
+  return writeRecord(recordResult(getCurrentBlockRecord() ?? current, submissionId, result));
+}
+
+export async function runSubmission(submissionId) {
+  if (!submissionId) return null;
+  return runAndRecord(submissionId);
+}
+
+export async function closeBlockCollection() {
+  const r = getCurrentBlockRecord();
+  if (!r) {
+    ui.notifications?.warn("No open block to close.");
+    return null;
+  }
+  const closed = await writeRecord(closeCollection(r));
+  game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_CLOSE, blockId: closed.id });
+  return closed;
+}
+
+export async function postBlockSummary() {
+  const r = getCurrentBlockRecord() ?? lastResolvableRecord();
+  if (!r) {
+    ui.notifications?.warn("No block to summarize.");
+    return;
+  }
+  const { buildChatSummary } = await import("./chat-summary.mjs");
+  await ChatMessage.create({ content: buildChatSummary(r) });
+}
+
 function userOwnsActor(userId, actorUuid) {
   const actor = fromUuidSync?.(actorUuid);
   const user = game.users.get(userId);
@@ -131,7 +179,15 @@ async function handleSocket(msg) {
     console.warn(`${MODULE_ID} | rejected submission: ${check.reason}`);
     return;
   }
+  const payloadCheck = validateActionPayload(msg.submission);
+  if (!payloadCheck.ok) {
+    console.warn(`${MODULE_ID} | rejected payload: ${payloadCheck.reason}`);
+    return;
+  }
   await writeRecord(upsertSubmission(record, msg.submission));
+  if (msg.submission.rollPolicy === "auto" && msg.submission.action === "technique") {
+    await runAndRecord(msg.submission.id);
+  }
 }
 
 export function registerDowntimeSettings() {
@@ -161,6 +217,9 @@ export function registerDowntimeKernel() {
     suggestCurrentBlock,
     promptCurrentBlock,
     getCurrentBlockRecord,
+    runSubmission,
+    closeBlockCollection,
+    postBlockSummary,
     closeCollection: async () => {
       const r = getCurrentBlockRecord();
       if (!r) { ui.notifications?.warn("No open block to close."); return null; }
