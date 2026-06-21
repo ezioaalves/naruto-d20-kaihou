@@ -40,4 +40,10 @@ describe("buildPromptContext", () => {
     expect(ctx.learnOptions).toEqual([]);
     expect(ctx.masterOptions).toEqual([]);
   });
+
+  it("sets isMission when action is mission", () => {
+    const ctx = buildPromptContext({ record, actor, selectedAction: "mission", api: null });
+    expect(ctx.isMission).toBe(true);
+    expect(ctx.isTechnique).toBe(false);
+  });
 });
