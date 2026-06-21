@@ -1,0 +1,269 @@
+/**
+ * Downtime surfaces (GM console + player prompt).
+ *
+ * Compilation target: styles/apps/downtime.css.
+ *
+ * "The day-book": the feudal-ledger theme applied to downtime. All rules are
+ * scoped under `.kaihou-downtime` (set on both ApplicationV2 roots via
+ * DEFAULT_OPTIONS.classes). NOTE: never set `position` on `.kaihou-downtime` —
+ * it sits on the application element next to core's `.application`, whose
+ * fixed positioning must win.
+ */
+
+@use "../tokens" as *;
+
+.kaihou-downtime {
+  background: var(--k-paper);
+  border: var(--k-bold-border);
+  color: var(--k-ink);
+  font-family: var(--k-font-body);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--k-bold-grain);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  h2,
+  h3,
+  legend {
+    font-family: var(--k-font-display);
+    color: var(--k-ink);
+    margin: 0 0 0.4em;
+  }
+
+  label {
+    display: block;
+    margin: 0.5em 0;
+    color: var(--k-ink-soft);
+    font-size: 0.9rem;
+  }
+
+  select,
+  input[type="text"],
+  textarea {
+    width: 100%;
+    background: var(--k-input-bg-strong);
+    border: var(--k-border-hair) solid var(--k-rule-ink);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    padding: 0.3em 0.45em;
+    font-family: var(--k-font-body);
+  }
+
+  button {
+    font-family: var(--k-font-util);
+    background: var(--k-card-bg);
+    border: var(--k-bold-border);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    padding: 0.35em 0.8em;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--k-input-bg-strong);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--k-seal);
+      outline-offset: 1px;
+    }
+  }
+
+  .hint {
+    color: var(--k-ink-mute);
+    font-size: 0.78rem;
+    font-style: italic;
+  }
+}
+
+/* ---- Signature: day-phase block picker ---- */
+.kaihou-downtime .block-picker {
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    flex: 1;
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+
+  button.suggested {
+    border-color: var(--k-seal);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      border-radius: var(--k-radius-round);
+      background: var(--k-seal);
+      box-shadow: 0 0 0 2px var(--k-paper);
+    }
+  }
+}
+
+/* ---- GM console: the duty ledger ---- */
+.kaihou-downtime-console {
+  padding: 0.75rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+
+  .downtime-mode {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .status {
+      font-family: var(--k-font-util);
+      color: var(--k-ink-mute);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+  }
+
+  .downtime-responses ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 0.35em 0 0.35em 0.7em;
+      border-left: var(--k-border-base) solid var(--k-rule-ink);
+      margin-bottom: 0.3em;
+
+      .result {
+        font-family: var(--k-font-util);
+        color: var(--k-ink-mute);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .note {
+        display: block;
+        color: var(--k-ink-soft);
+        font-style: italic;
+        font-size: 0.85rem;
+      }
+
+      button {
+        margin-left: 0.5em;
+        padding: 0.1em 0.6em;
+      }
+    }
+
+    li.empty {
+      border-left-color: transparent;
+      color: var(--k-ink-mute);
+      font-style: italic;
+    }
+  }
+
+  .downtime-queues {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .downtime-rolllog ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--k-font-util);
+    font-size: 0.8rem;
+    color: var(--k-ink-soft);
+  }
+
+  .downtime-actions {
+    display: flex;
+    gap: 0.6rem;
+    border-top: var(--k-bold-accent-rule);
+    padding-top: 0.7rem;
+  }
+
+  .downtime-inactive {
+    color: var(--k-ink-mute);
+    font-style: italic;
+    padding: 1.2rem 0.5rem;
+    text-align: center;
+  }
+}
+
+/* ---- Player prompt: the assignment slip ---- */
+.kaihou-downtime-prompt {
+  padding: 0.85rem 1rem 1rem;
+
+  header h2 {
+    font-family: var(--k-font-stamp);
+    font-size: 1.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  header .block {
+    font-family: var(--k-font-util);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--k-ink-mute);
+    font-size: 0.78rem;
+    margin: 0.1em 0 0.6em;
+  }
+
+  .prompt-action-panel {
+    margin: 0.4rem 0;
+  }
+
+  .tech-panel {
+    border: var(--k-border-hair) solid var(--k-rule-ink);
+    border-radius: var(--k-radius-md);
+    background: var(--k-card-bg);
+    padding: 0.5rem 0.75rem 0.75rem;
+  }
+
+  label.scene {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+
+    input {
+      width: auto;
+    }
+  }
+
+  footer {
+    margin-top: 0.8rem;
+    text-align: right;
+
+    button {
+      background: var(--k-bold-header-bg);
+      color: var(--k-paper);
+      border-color: var(--k-ink);
+      padding: 0.45em 1.4em;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kaihou-downtime * {
+    transition: none !important;
+  }
+}
