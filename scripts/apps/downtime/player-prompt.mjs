@@ -36,13 +36,20 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
     body: { template: `modules/${MODULE_ID}/templates/apps/downtime/player-prompt.hbs` },
   };
 
+  static #instance = null;
+
   #record;
   #actor;
 
   static open(record, actor) {
+    if (DowntimePrompt.#instance?.rendered) {
+      DowntimePrompt.#instance.render(true);
+      return DowntimePrompt.#instance;
+    }
     const app = new DowntimePrompt();
     app.#record = record;
     app.#actor = actor;
+    DowntimePrompt.#instance = app;
     app.render(true);
     return app;
   }
@@ -53,7 +60,9 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
 
   static async #onSubmit(event) {
     const form = event.currentTarget.closest("form");
+    if (!form) return;
     const data = new FormData(form);
+    const requestScene = data.get("requestScene") === "on";
     const submission = {
       id: foundry.utils.randomID(),
       userId: game.user.id,
@@ -61,10 +70,10 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
       actorName: this.#actor.name,
       submittedAt: Date.now(),
       action: data.get("action"),
-      requestScene: data.get("requestScene") === "on",
+      requestScene,
       payload: {},
       note: data.get("note") ?? "",
-      rollPolicy: data.get("requestScene") === "on" ? "defer" : "auto",
+      rollPolicy: requestScene ? "defer" : "auto",
     };
     game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_SUBMIT, userId: game.user.id, submission });
     this.close();

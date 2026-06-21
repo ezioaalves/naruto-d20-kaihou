@@ -108,12 +108,13 @@ function userOwnsActor(userId, actorUuid) {
   return Boolean(actor && user && actor.testUserPermission?.(user, "OWNER"));
 }
 
-/** Registered on the active GM client only: apply validated player submissions. */
+/** Handles socket messages for all clients; GM-only submission paths guarded below. */
 async function handleSocket(msg) {
   if (msg?.action === MESSAGES.PROMPT_OPEN) {
-    const ledger = game.settings.get(MODULE_ID, "downtimeLedger") ?? {};
+    const ledger = getLedger();
     const record = ledger[msg.blockId];
     if (!record) return;
+    if (record.status !== "open") return;
     const mine = record.recipients.find((r) => r.userId === game.user.id);
     if (!mine) return;
     const actor = fromUuidSync?.(mine.actorUuid);
