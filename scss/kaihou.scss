@@ -30,8 +30,21 @@
  *     POPPED-OUT sidebar tab by `AbstractSidebarTab#_onRender` — see the fix
  *     in `_tokens.scss` right after the ROOT-CAUSE REMAP block);
  *   - defines its OWN independent custom-property theme layer keyed to
- *     Foundry's native `body.theme-dark`, not ours (Campaign Codex's `--cc-*`
- *     tokens — see `_campaign-codex.scss`);
+ *     Foundry's native `body.theme-dark`, not ours. CONFIRMED TWICE now, in
+ *     two unrelated places — treat any third-party module/system's markup as
+ *     a candidate for this before assuming our root-cause remap reaches it:
+ *       - Campaign Codex's `--cc-*` tokens (see `_campaign-codex.scss`);
+ *       - PF1e's OWN `--pf1-v2-*` tokens, shipped for its ~25-dialog
+ *         ApplicationV2 migration (Change Editor, the target/context-note
+ *         pickers, Trait/Senses/Speed selectors, Roll Prompt, and more —
+ *         grep `pf1.js` for `classes:["pf1-v2"`) — completely separate from
+ *         the legacy `--color-*`/`--pf1-*` scale this file already remaps.
+ *         Defined only inside PF1e's own `.theme-light`/`.theme-dark` blocks,
+ *         same class hook as the popout fix just above it in `_tokens.scss`.
+ *         The tell that led here: a "safety net" background fix (generic
+ *         `.window-content` repaint) made a dialog's surface look parchment,
+ *         but its TEXT still didn't — that's the signature of a second,
+ *         un-remapped variable namespace underneath, not a missing selector.
  *   - styles a non-native element with a class core only themes by TAG (e.g.
  *     PF1e's Change Editor renders `<span class="value button ...">`, but
  *     our button remap and PF1e's own `--input-background-color` consumer

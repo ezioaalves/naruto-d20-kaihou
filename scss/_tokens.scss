@@ -114,6 +114,69 @@ body.naruto-zen .application.themed.theme-light {
   --sidebar-background: var(--k-paper);
 }
 
+// ─── PF1e's OWN parallel token namespace (--pf1-v2-*) — ROOT-CAUSE REMAP ───
+// PF1e v11.11 shipped a second, unrelated design-token system for its
+// ApplicationV2 migration: ~25 dialogs (Change Editor, the target/context-
+// note category pickers, Trait/Senses/Speed selectors, Roll Prompt, Apply
+// Damage, Point Buy, Troubleshooter, Help Browser, Changelog, and more —
+// grep `pf1.js` for `classes:["pf1-v2"` for the full list) now carry a
+// `pf1-v2` class instead of the legacy `pf1` class, and read `--pf1-v2-*`
+// vars for their text/background/border colors instead of the `--color-*`/
+// `--pf1-*` scale we already remap above. These vars are defined ONLY inside
+// PF1e's own `.theme-light { ... }` / `.theme-dark { ... }` blocks in
+// pf1.css — never in `:root` — so they follow Foundry's native interface
+// color-scheme setting exactly like the popout fix above, except this time
+// it's PF1e's OWN component styling reasserting itself, not Foundry core's.
+// VERIFIED LIVE (devtools computed-style walk on the "Select change target"
+// picker): `--pf1-v2-text-primary` resolved through `--pf1-v2-color-primary:
+// hsl(36, 100%, 70%)` (bright orange, the .theme-dark value) — text kaihou
+// never touched, sitting on a background OUR generic `.window-content`
+// safety net (_pf1-surfaces.scss) already repaints to parchment, which is
+// why only the TEXT looked wrong. Override the token OUTPUTS these
+// components actually consume (not the raw --pf1-v2-primary-h/-s/-l inputs,
+// which are only intermediate) so the whole class is fixed at once, the same
+// way the legacy-namespace remap above fixes its whole class at once.
+//
+// SELECTOR GOTCHA (caught live — first attempt used only the descendant
+// form and silently did nothing): unlike the popout fix above, where
+// `.theme-dark` lands on the popout's OWN root (a descendant of body),
+// here `.theme-dark`/`.theme-light` is added straight to `<body>` itself
+// (devtools: `body.vtt.game.system-pf1.naruto-zen…theme-dark…`) — the SAME
+// element as `body.naruto-zen`, not a descendant of it. A pure descendant
+// selector (`body.naruto-zen :is(.theme-dark, .theme-light)`) never matches
+// that case. Cover both: the compound form for when body carries the class
+// itself, the descendant form for when some other app root does (matching
+// the popout scenario above).
+body.naruto-zen {
+  &.theme-dark,
+  &.theme-light,
+  :is(.theme-dark, .theme-light) {
+    --pf1-v2-color-primary: var(--k-seal);
+    --pf1-v2-color-secondary: var(--k-seal-deep);
+    --pf1-v2-text: var(--k-ink);
+    --pf1-v2-text-muted: var(--k-ink-mute);
+    --pf1-v2-text-light: var(--k-paper);
+    --pf1-v2-text-dark: var(--k-ink);
+    --pf1-v2-text-inverted: var(--k-paper);
+    --pf1-v2-text-link: var(--k-seal);
+    --pf1-v2-text-highlight: var(--k-seal);
+    --pf1-v2-background-app: var(--k-paper);
+    --pf1-v2-background-app-header: var(--k-ink);
+    --pf1-v2-text-app-header: var(--k-paper);
+    --pf1-v2-border-app: var(--k-rule);
+    --pf1-v2-border-app-header: var(--k-ink);
+    --pf1-v2-background-input: var(--k-input-bg-strong);
+    --pf1-v2-background-fade-10: var(--k-row-hover);
+    --pf1-v2-background-fade-15: var(--k-row-hover);
+    --pf1-v2-background-fade-20: var(--k-row-hover);
+    --pf1-v2-background-fade-negative-10: var(--k-paper-sunken);
+    --pf1-v2-border-input: var(--k-rule);
+    --pf1-v2-border-muted: var(--k-rule-soft);
+    --pf1-v2-border-error: var(--k-seal-deep);
+    --pf1-v2-checkbox-color: var(--k-ink);
+  }
+}
+
 body.naruto-zen :is(input, select, textarea, code-mirror) {
   --input-background-color: var(--k-input-bg-strong);
   --input-text-color: var(--k-ink);
