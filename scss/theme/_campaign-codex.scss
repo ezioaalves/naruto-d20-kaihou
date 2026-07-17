@@ -1,0 +1,85 @@
+/**
+ * Compatibility fix — Campaign Codex (github.com/xthesaintx/cc13), a
+ * third-party module the vault's `push_campaign_codex.py` tool pushes
+ * NPC/Location lore into (via `journal.setFlag("campaign-codex", ...)`).
+ *
+ * Campaign Codex is NOT a native Foundry JournalEntry sheet — its root
+ * carries `.application.sheet.campaign-codex` (no `.journal-entry` class),
+ * so it never matches any selector in `scripts/theme/main.mjs`'s
+ * TARGET_SELECTORS, `.naruto-zen-target` is never added to it, and none of
+ * `_journal.scss`'s `&.journal-entry` / `&.sheet.journal-entry`-scoped rules
+ * reach it. Chrome-level fix only — needs `body.naruto-zen`, nothing more.
+ *
+ * Two separate leaks, confirmed from the module's public source
+ * (styles/campaign-codex.css, scripts/sheets/template-components.js):
+ *
+ * 1. The sheet root hardcodes its background straight to a Foundry dark-
+ *    theme variable — `.application.sheet.campaign-codex { background:
+ *    var(--color-cool-5-90); }` — bypassing the themeable `--background`
+ *    custom property our root-cause remap (`_tokens.scss`) redirects
+ *    everywhere else. Stays dark regardless of theme.
+ * 2. Campaign Codex's own UI (sidebar, cards, section headings, accent
+ *    color) is driven by its OWN `--cc-*` custom properties, defaulting to
+ *    a light/dark pair keyed off Foundry's native `body.theme-dark` (a
+ *    system independent of `body.naruto-zen`) — never our tokens.
+ *    `TemplateComponents.richTextSection()` additionally wraps the pushed
+ *    lore HTML in bare `.journal-entry-content` / `<prose-mirror>` (Foundry's
+ *    OWN journal content classes, reused outside a `.journal-entry` sheet),
+ *    so pushed headings/body text get no color from Campaign Codex's CSS at
+ *    all and are exposed to whatever inherits — pin them directly rather
+ *    than rely on inheritance being right.
+ */
+
+.application.sheet.campaign-codex,
+.app.window-app.sheet.journal-sheet.campaign-codex,
+.application.window-app.sheet.journal-sheet.campaign-codex {
+    background: var(--k-paper);
+}
+
+.campaign-codex {
+    // Campaign Codex's own token layer — light/dark pair it normally keys off
+    // `body.theme-dark`. Redirect straight to kaihou's palette so it tracks
+    // our theme instead of Foundry's independent one.
+    --cc-theme-main-bg: var(--k-paper);
+    --cc-theme-main-text: var(--k-ink);
+    --cc-theme-border: var(--k-rule);
+    --cc-theme-card-bg: var(--k-paper-raised);
+    --cc-theme-shadow: var(--k-elevation-card);
+
+    --cc-main-bg: var(--k-paper);
+    --cc-main-text: var(--k-ink);
+    --cc-border: var(--k-rule);
+    --cc-card-bg: var(--k-paper-raised);
+    --cc-shadow: var(--k-elevation-card);
+
+    --cc-sidebar-bg: var(--k-paper-sunken);
+    --cc-sidebar-text: var(--k-ink);
+    --cc-windowheader: var(--k-ink);
+
+    --cc-text-muted: var(--k-ink-mute);
+    --cc-accent: var(--k-seal);
+    --cc-accent80: var(--k-seal);
+    --cc-accent30: var(--k-row-hover);
+    --cc-accent10: var(--k-row-hover);
+    --cc-primary: var(--k-seal);
+
+    // Pushed lore content is wrapped in Foundry's own `.journal-entry-content`
+    // / `<prose-mirror>` classes but rendered OUTSIDE a `.journal-entry` sheet,
+    // so none of `_journal.scss`'s scoped rules reach it — pin directly.
+    .journal-entry-content,
+    .rich-text-content,
+    prose-mirror.cc-prosemirror {
+        color: var(--k-ink);
+
+        :is(h1, h2, h3, h4, h5, h6) {
+            color: var(--k-ink);
+            font-family: var(--k-font-display);
+            border-bottom-color: var(--k-rule);
+        }
+
+        a.content-link,
+        a.inline-roll {
+            color: var(--k-seal);
+        }
+    }
+}

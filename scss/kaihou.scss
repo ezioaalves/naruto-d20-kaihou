@@ -16,6 +16,56 @@
  * `@import` is required for the theme partials because `@use` cannot be nested
  * inside a selector. Each partial keeps its own `@use "colors"` for namespaced
  * Sass variables; `@font-face` in _fonts bubbles to the document root.
+ *
+ * ─── Before shipping a new/updated surface, check this failure mode ────────
+ * The `--background` / `--color-text-*` remap in `_tokens.scss` ("ROOT-CAUSE
+ * REMAP") only repaints elements that actually READ those custom properties.
+ * It does nothing wherever Foundry core, PF1e, or a third-party module:
+ *   - hardcodes a color/background instead of reading a var (e.g. Campaign
+ *     Codex's sheet root: `background: var(--color-cool-5-90)` — a specific
+ *     dark-theme var, not the themeable `--background`);
+ *   - re-declares the SAME variable at higher specificity or directly on the
+ *     element itself, which wins regardless of our source order (e.g.
+ *     Foundry's own `.themed.theme-dark`/`.theme-light`, auto-added to every
+ *     POPPED-OUT sidebar tab by `AbstractSidebarTab#_onRender` — see the fix
+ *     in `_tokens.scss` right after the ROOT-CAUSE REMAP block);
+ *   - defines its OWN independent custom-property theme layer keyed to
+ *     Foundry's native `body.theme-dark`, not ours. CONFIRMED TWICE now, in
+ *     two unrelated places — treat any third-party module/system's markup as
+ *     a candidate for this before assuming our root-cause remap reaches it:
+ *       - Campaign Codex's `--cc-*` tokens (see `_campaign-codex.scss`);
+ *       - PF1e's OWN `--pf1-v2-*` tokens, shipped for its ~25-dialog
+ *         ApplicationV2 migration (Change Editor, the target/context-note
+ *         pickers, Trait/Senses/Speed selectors, Roll Prompt, and more —
+ *         grep `pf1.js` for `classes:["pf1-v2"`) — completely separate from
+ *         the legacy `--color-*`/`--pf1-*` scale this file already remaps.
+ *         Defined only inside PF1e's own `.theme-light`/`.theme-dark` blocks,
+ *         same class hook as the popout fix just above it in `_tokens.scss`.
+ *         The tell that led here: a "safety net" background fix (generic
+ *         `.window-content` repaint) made a dialog's surface look parchment,
+ *         but its TEXT still didn't — that's the signature of a second,
+ *         un-remapped variable namespace underneath, not a missing selector.
+ *   - styles a non-native element with a class core only themes by TAG (e.g.
+ *     PF1e's Change Editor renders `<span class="value button ...">`, but
+ *     our button remap and PF1e's own `--input-background-color` consumer
+ *     are both scoped to real `<button>`/`<input>` — see the fix in
+ *     `_pf1-surfaces.scss`).
+ * CONVERSELY — and just as easy to ship by accident — our OWN broad,
+ * unscoped selectors can reach INTO a third-party module's markup and stomp
+ * a color it was already cascading correctly. `_fonts.scss`'s
+ * `:is(h1, h2, h3) { color: var(--k-ink) }` compiles to `body.naruto-zen
+ * :is(h1, h2, h3)` — every heading anywhere in body.naruto-zen, not just
+ * kaihou/PF1e surfaces — so it silently overrode simpler-quests' own
+ * (correct) light-on-dark quest-title color (verified live via a devtools
+ * computed-style walk: the module's cascade was fine right up to the `h3`
+ * itself). A color set directly on an element always beats one the element
+ * would otherwise have inherited. Any global, tag-only selector we add is a
+ * candidate for this in reverse — check what it might reach into before
+ * widening one.
+ * Each of these needs an explicit per-surface pin (`_journal.scss`,
+ * `_compatibility-modules.scss`, `_pf1-surfaces.scss`, `_campaign-codex.scss`
+ * are all worked examples). Before shipping, actually LOOK at the surface —
+ * screenshot won't lie, the variable remap alone might.
  */
 
 @use "kaihou-tokens"; // canonical --k-* layer — MUST come first; legacy tokens alias into it
@@ -37,6 +87,7 @@ body.naruto-zen {
     @import "theme/ui";
     @import "theme/nav";
     @import "theme/compatibility-modules";
+    @import "theme/campaign-codex";
     @import "theme/v13-chrome";
     @import "theme/pf1-surfaces";
     @import "theme/occupation-selector";

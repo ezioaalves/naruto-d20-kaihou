@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.20 — 2026-07-17
+
+### Fixed
+- **Low-contrast text across popped-out sidebar tabs, several PF1e dialogs, and two compatibility modules.** Foundry auto-tags popped-out sidebar tabs (e.g. the Combat Tracker) with its own light/dark theme classes, which silently overrode the module's parchment remap — fixed generically so any popped-out tab is covered, not just Combat Tracker. Also fixed: the PF1e Change Editor's "Target: Invalid" pill; the "Select change target" category picker and ~25 other PF1e dialogs that read from a separate, previously un-themed `--pf1-v2-*` token set; the simpler-quests "Active Quests" widget (a broad kaihou heading-color rule was overriding its own correct colors); and Campaign Codex NPC/Location sheets (traced via the module's public source, since it's only installed on the production server).
+
+### Changed
+- Softened the module's primary red accent (`--k-seal`) to a more muted/pastel tone — it read as too intense once it started appearing as solid fills (active category, invalid-target pill) rather than just text/border accents.
+
 ## v2.1.19 — 2026-06-21
 
 ### Fixed
