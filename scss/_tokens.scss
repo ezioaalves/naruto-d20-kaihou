@@ -79,6 +79,41 @@ body.naruto-zen .window-app {
   --color-select-option-bg: var(--k-paper);
 }
 
+// ─── Popped-out sidebar tabs (Combat Tracker, etc.) ────────────────────────
+// `AbstractSidebarTab#_onRender` (client/applications/sidebar/sidebar-tab.mjs)
+// adds `themed theme-{light|dark}` DIRECTLY to the popout's own app-root
+// element, driven by the user's core "interface color scheme" setting — a
+// theme system independent of ours. `foundry2.css`'s `.themed.theme-dark`
+// (and `.themed.theme-dark .application`) re-declare --background/--color-
+// text-* on that same element (§~1197-1237). Because those vars are declared
+// directly on the element itself (not just inherited from an ancestor), they
+// win over our `body.naruto-zen .application` remap above regardless of
+// specificity or source order — inheritance only applies when nothing
+// declares the property on the element in question. Any popped-out sidebar
+// tab (Combat Tracker included — see the "Encounter Tracker" window) reverts
+// to Foundry's native dark palette because of this, independent of whichever
+// specific child selectors (e.g. `.encounter-title`, `.combatant .name`) core
+// scopes to `.combat-sidebar` — those are skipped for popouts entirely (see
+// `_initializeApplicationOptions`, which only pushes the `-sidebar` class for
+// the docked/frameless tab), so the inherited app-root color is what actually
+// renders. Re-declare on the exact same classes so kaihou's palette wins here
+// too, whichever interface color scheme the user has picked.
+body.naruto-zen .application.themed.theme-dark,
+body.naruto-zen .application.themed.theme-light {
+  --background: var(--k-paper);
+  --color-text-emphatic: var(--k-ink);
+  --color-text-primary: var(--k-ink);
+  --color-text-secondary: var(--k-ink-mute);
+  --color-border: var(--k-rule);
+  --color-fieldset-border: var(--k-rule-soft);
+  --color-form-label: var(--k-ink);
+  --color-form-label-hover: var(--k-seal);
+  --color-form-hint: var(--k-ink-mute);
+  --color-form-hint-hover: var(--k-ink);
+  --color-select-option-bg: var(--k-paper);
+  --sidebar-background: var(--k-paper);
+}
+
 body.naruto-zen :is(input, select, textarea, code-mirror) {
   --input-background-color: var(--k-input-bg-strong);
   --input-text-color: var(--k-ink);

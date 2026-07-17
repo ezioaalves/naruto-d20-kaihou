@@ -104,6 +104,40 @@
     }
 }
 
+// ─── Change Editor — "Target: Invalid" pill ──────────────────────────────────
+// PF1e's ChangeEditor (css/apps/change-editor.css, template apps/change-
+// editor.hbs) renders the target selector as `<span class="value button
+// change-target[.invalid]">` — a <span>, not an <a>/<button>. Our
+// --input-background-color remap (_tokens.scss) is tag-restricted to
+// `input, select, textarea, code-mirror`, so it never reaches this span; and
+// PF1e's own `.pf1 :where(.window-content) .button { background: var(
+// --input-background-color) }` (pf1.css) then resolves against PF1e's own
+// un-remapped default (a light/salmon fill) instead of ours, low-contrast
+// against whichever text color wins the cascade. Pin the pill directly rather
+// than widening the generic button remap, which could catch other `.button`
+// spans elsewhere in PF1e we haven't audited.
+//
+// VERIFIED LIVE: the installed PF1e build's window root carries `.pf1-v2`,
+// not `.pf1` (version drift vs. the bundled pf1.css this was first written
+// against — a devtools computed-style check on `.change-target` showed only
+// `background: rgba(255,255,255,.05)`, proving the original `.pf1.application
+// ...` selector never matched at all). Drop the `.pf1`/`.pf1-v2` requirement
+// entirely — `.application.sheet.change-editor` is specific enough on its own
+// and survives whichever PF1e ships next.
+.application.sheet.change-editor {
+    .value.button.change-target {
+        background-color: var(--k-card-bg);
+        border-color: var(--k-rule);
+        color: var(--k-ink);
+
+        &.invalid {
+            background-color: var(--k-seal);
+            border-color: var(--k-seal-deep);
+            color: var(--k-paper);
+        }
+    }
+}
+
 // ─── Dialogs ─────────────────────────────────────────────────────────────────
 // Reset UA <dialog> inset anchors (inset-inline-start:0 / inset-inline-end:0).
 // Without this the native <dialog> element pins to the top-left corner on first

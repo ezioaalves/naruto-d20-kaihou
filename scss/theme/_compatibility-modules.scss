@@ -17,3 +17,41 @@
 #OneJournalShell.maximized > .window-header {
     z-index: 20;
 }
+
+// Fix simpler-quests "Active Quests" widget (sidebar-docked AND floating
+// "dock" panel — verified live against both). Two separate issues:
+//
+// 1. `.mythics-simpler-quests-sidebar` (simpler-quests/styles/sidebar.css,
+//    used when docked as a Foundry sidebar TAB) is an empty rule, unlike
+//    `.mythics-simpler-quests` (the pop-out root), which defines --dark-text/
+//    --dark-border/--dark-background/etc. If that sidebar-tab mode is ever
+//    used, nothing defines those vars there — re-declare them to match.
+// 2. VERIFIED LIVE (devtools computed-style walk): the module's OWN cascade
+//    already gets --dark-text (#d3d3d3) correctly down to the quest-title
+//    `h3` in every mode (including the floating "dock" panel, whose root
+//    carries BOTH `.mythics-simpler-quests` and `.mythics-simpler-quests-
+//    dock`) — right up until the `h3` element itself, where our own
+//    `_fonts.scss` sets `color: var(--k-ink)` directly on EVERY `h1, h2, h3`
+//    in `body.naruto-zen`, unscoped to kaihou/PF1e surfaces. A color set
+//    directly on an element always wins over one inherited from an ancestor,
+//    so simpler-quests' correctly-cascaded light text gets stomped with dark
+//    ink on its own near-black background — the actual "dark maroon title on
+//    a near-black panel" the GM saw, not a missing-variable gap. Undo it
+//    specifically for this module's headings; `color: inherit` lets the
+//    module's own (correct) cascade take back over.
+.mythics-simpler-quests-sidebar {
+    --dark-background: #0a0a0a;
+    --dark-tertiary: #1f1f1f;
+    --dark-border: #a0a0a0;
+    --dark-text: #d3d3d3;
+    --dark-secret: #fa64fa;
+    --dark-failed: #ff0000;
+
+    color: var(--dark-text);
+}
+
+.mythics-simpler-quests {
+    :is(h1, h2, h3, h4, h5, h6) {
+        color: inherit;
+    }
+}
