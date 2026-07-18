@@ -22,12 +22,9 @@ import {
 } from "./wizard-state.mjs";
 import { openBrowse } from "./browse.mjs";
 import { finishWizard, FinishValidationError } from "./finish-orchestrator.mjs";
+import { KaihouApplication } from "../kaihou-application.mjs";
 
-const MODULE_ID = "naruto-d20-kaihou";
-
-const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-
-export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class TwentyQuestionsWizard extends KaihouApplication {
   static DEFAULT_OPTIONS = {
     id: "twenty-questions-wizard-v2",
     classes: ["tqw-v2"],
@@ -38,6 +35,7 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
       resizable: true,
     },
     position: { width: 640, height: 720 },
+    kaihou: { centerOnFirstRender: true },
     actions: {
       "tqw-back":              TwentyQuestionsWizard._onBack,
       "tqw-next":              TwentyQuestionsWizard._onNext,
@@ -59,10 +57,10 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
   };
 
   static PARTS = {
-    header:   { template: `modules/${MODULE_ID}/templates/apps/tqw-v2/header.hbs` },
-    progress: { template: `modules/${MODULE_ID}/templates/apps/tqw-v2/progress.hbs` },
-    content:  { template: `modules/${MODULE_ID}/templates/apps/tqw-v2/content.hbs` },
-    footer:   { template: `modules/${MODULE_ID}/templates/apps/tqw-v2/footer.hbs` },
+    header:   { template: KaihouApplication.kaihouTemplate("apps/tqw-v2/header.hbs") },
+    progress: { template: KaihouApplication.kaihouTemplate("apps/tqw-v2/progress.hbs") },
+    content:  { template: KaihouApplication.kaihouTemplate("apps/tqw-v2/content.hbs") },
+    footer:   { template: KaihouApplication.kaihouTemplate("apps/tqw-v2/footer.hbs") },
   };
 
   _renderLock = false;
@@ -449,51 +447,15 @@ export default class TwentyQuestionsWizard extends HandlebarsApplicationMixin(Ap
   _onRender(_context, _options) {
     super._onRender?.(_context, _options);
     this._wireDropZones();
-    this._wireChangeActions();
-  }
-
-  /**
-   * Force-centre the wizard on first open. ApplicationV2 computes its own
-   * initial placement when the frame is inserted, which happens AFTER
-   * _onFirstRender — so an immediate setPosition here gets overridden.
-   * Schedule the centring for the next animation frame, after insertion.
-   */
-  _onFirstRender(context, options) {
-    super._onFirstRender?.(context, options);
-    requestAnimationFrame(() => {
-      const w = this.position?.width ?? 640;
-      const h = this.position?.height ?? 720;
-      this.setPosition({
-        left: Math.max(0, Math.round((window.innerWidth - w) / 2)),
-        top: Math.max(0, Math.round((window.innerHeight - h) / 2)),
-      });
-    });
-  }
-
-  /**
-   * ApplicationV2's `actions` map only delegates click events. Selects,
-   * textareas, and most inputs fire `change` / `input` instead, so the
-   * `data-action="tqw-*-change"` attributes get ignored unless we wire
-   * a change-event delegator here.
-   */
-  _wireChangeActions() {
-    const root = this.element;
-    if (!root) return;
-    const CHANGE_ACTIONS = {
+    // Change-event delegation: ApplicationV2 `actions` dispatch on CLICK only,
+    // and a native <select> emits a click when opened — registering these as
+    // click actions would re-render mid-open and snap the popup shut. The
+    // base-class delegator wires `change` once per app root.
+    this._wireChangeActions({
       "tqw-select-change":    TwentyQuestionsWizard._onSelectChange,
       "tqw-subpicker-change": TwentyQuestionsWizard._onSubpickerChange,
       "tqw-narrative-change": TwentyQuestionsWizard._onNarrativeChange,
-    };
-    const handler = (event) => {
-      const target = event.target.closest?.("[data-action]");
-      if (!target) return;
-      const action = target.dataset.action;
-      const fn = CHANGE_ACTIONS[action];
-      if (fn) fn.call(this, event, target);
-    };
-    // `change` only — `input` would fire per-keystroke in the narrative
-    // textarea and trigger a full re-render mid-typing.
-    root.addEventListener("change", handler);
+    });
   }
 
   _wireDropZones() {

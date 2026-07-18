@@ -12,17 +12,18 @@
 
 @use "../tokens" as *;
 @use "../components/index" as *;
+@use "kaihou-window" as *;
 @use "bio-section";
 
 .tqw-v2 {
-  background: var(--k-paper);
+  @include kaihou-window;
+  // Wizard divergences from the baseline (declared after the include so
+  // they win): heavier sumi-e border + card shadow.
   border: var(--k-bold-border-heavy);
   box-shadow: 0 4px 12px rgba(94, 67, 39, 0.3),
               inset 0 0 12px rgba(195, 165, 130, 0.2);
   // NOTE: never set `position` here — this class sits on the ApplicationV2
   // root next to core's .application, whose fixed positioning must win.
-  font-family: var(--k-font-body);
-  color: var(--k-ink);
   // Stack header / progress / content / footer; let content take the
   // remaining space and scroll on overflow (Q18 rolltable + narrative
   // are taller than the fixed-height window).
@@ -30,20 +31,6 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
-}
-
-.tqw-v2::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--k-bold-grain);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.tqw-v2 > * {
-  position: relative;
-  z-index: 1;
 }
 
 .tqw-v2__header {

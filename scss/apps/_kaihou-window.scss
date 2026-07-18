@@ -1,0 +1,98 @@
+/**
+ * @mixin kaihou-window — the shared visual baseline for every kaihou
+ * ApplicationV2 window ("The Shinobi Record": parchment, ink, wax seal).
+ *
+ * Usage — FIRST rule inside the app's root class:
+ *   @use "kaihou-window" as *;
+ *   .my-app { @include kaihou-window; } // app-specific rules below
+ *
+ * App-specific declarations placed after the include override the baseline
+ * (last declaration wins at equal specificity).
+ *
+ * NEVER set `position` on the app root class — it sits on the application
+ * element beside core's `.application`, whose fixed positioning must win.
+ *
+ * Consumes only --k-* custom properties (scss/_kaihou-tokens.scss, on :root).
+ * Pattern spec: docs/superpowers/specs/2026-07-18-appv2-window-pattern-design.md
+ */
+
+@mixin kaihou-window {
+  background: var(--k-paper);
+  border: var(--k-bold-border);
+  color: var(--k-ink);
+  font-family: var(--k-font-body);
+
+  // Parchment grain overlay. The AppV2 root is positioned by core, so the
+  // absolute pseudo-element resolves against it; children get lifted above.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--k-bold-grain);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  h2,
+  h3,
+  legend {
+    font-family: var(--k-font-display);
+    color: var(--k-ink);
+    margin: 0 0 0.4em;
+  }
+
+  label {
+    display: block;
+    margin: 0.5em 0;
+    color: var(--k-ink-soft);
+    font-size: 0.9rem;
+  }
+
+  select,
+  input[type="text"],
+  textarea {
+    width: 100%;
+    background: var(--k-input-bg-strong);
+    border: var(--k-border-hair) solid var(--k-rule-ink);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    padding: 0.3em 0.45em;
+    font-family: var(--k-font-body);
+  }
+
+  button {
+    font-family: var(--k-font-util);
+    background: var(--k-card-bg);
+    border: var(--k-bold-border);
+    border-radius: var(--k-radius-sm);
+    color: var(--k-ink);
+    padding: 0.35em 0.8em;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--k-input-bg-strong);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--k-seal);
+      outline-offset: 1px;
+    }
+  }
+
+  .hint {
+    color: var(--k-ink-mute);
+    font-size: 0.78rem;
+    font-style: italic;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+    }
+  }
+}
