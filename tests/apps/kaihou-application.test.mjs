@@ -116,14 +116,15 @@ describe("_wireChangeActions", () => {
 
   it("dispatches to the mapped handler with (event, target), bound to the app", () => {
     const app = makeApp();
-    const handler = vi.fn();
+    let capturedThis;
+    const handler = vi.fn(function() { capturedThis = this; });
     app._wireChangeActions({ "my-change": handler });
     const listener = app.element.addEventListener.mock.calls[0][1];
     const actionEl = { dataset: { action: "my-change" } };
     const event = { target: { closest: () => actionEl } };
     listener(event);
     expect(handler).toHaveBeenCalledWith(event, actionEl);
-    expect(handler.mock.instances[0]).toBe(app);
+    expect(capturedThis).toBe(app);
   });
 
   it("ignores events with no data-action ancestor and unmapped actions", () => {

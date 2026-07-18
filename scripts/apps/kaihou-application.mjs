@@ -34,8 +34,7 @@ export class KaihouApplication extends HandlebarsApplicationMixin(ApplicationV2)
   // own. Append it here instead, after the normal merge.
   static _initializeApplicationOptions(options) {
     const opts = super._initializeApplicationOptions?.(options) ?? options;
-    opts.classes = Array.from(new Set([...(opts.classes ?? []), "kaihou-app"]));
-    return opts;
+    return { ...opts, classes: Array.from(new Set([...(opts.classes ?? []), "kaihou-app"])) };
   }
 
   // ── Singleton lifecycle ────────────────────────────────────────────────
@@ -59,6 +58,9 @@ export class KaihouApplication extends HandlebarsApplicationMixin(ApplicationV2)
     }
     const app = new this(...args);
     KaihouApplication.#instances.set(this, app);
+    // NOTE: the instance is registered before render() resolves. If render()
+    // rejects (e.g. missing template), `instance` transiently returns this
+    // unrendered app until the next open() call creates a fresh one.
     app.render(true);
     return app;
   }
@@ -74,9 +76,16 @@ export class KaihouApplication extends HandlebarsApplicationMixin(ApplicationV2)
   // ── Change-event delegation ────────────────────────────────────────────
   /**
    * Wire `data-action` handlers for `change` events. Wires ONCE per app
-   * (guarded via the root's dataset — the AppV2 frame element persists
-   * across re-renders while part content is replaced underneath it), which
-   * is safe to call from _onRender on every render.
+   * (guarded via the frame root's dataset — the AppV2 frame element persists
+   * across part re-renders, so this flag survives). Safe to call from
+   * `_onRender` on every render cycle.
+   *
+   * IMPORTANT: only the first call's `map` is ever wired. The map must be
+   * constant across renders (same keys, same handler references). Passing
+   * a dynamically-built map whose shape changes per render will silently
+   * leave later renders using the first render's handlers.
+   *
+   * Call from _onRender: `this._wireChangeActions({ "my-change": Handler })`
    */
   _wireChangeActions(map) {
     const root = this.element;

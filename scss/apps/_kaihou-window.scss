@@ -4,7 +4,7 @@
  *
  * Usage — FIRST rule inside the app's root class:
  *   @use "kaihou-window" as *;
- *   .my-app { @include kaihou-window; // app-specific rules below
+ *   .my-app { @include kaihou-window; /* app-specific rules below */ }
  *
  * App-specific declarations placed after the include override the baseline
  * (last declaration wins at equal specificity).
