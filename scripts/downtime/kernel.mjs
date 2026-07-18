@@ -9,13 +9,13 @@ import {
   resolveBlock,
   recordResult,
 } from "./ledger.mjs";
-import { MESSAGES, validateSubmission } from "./messages.mjs";
+import { validateSubmission } from "./messages.mjs";
 import { validateActionPayload } from "./action-payloads.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
-const CHANNEL = `module.${MODULE_ID}`;
 
 let _kernelRegistered = false;
+let _socket = null;
 
 function calendariaApi() {
   return globalThis.CALENDARIA?.api ?? null;
@@ -27,7 +27,7 @@ export function getDowntimeMode() {
 
 export async function setDowntimeMode(on) {
   await game.settings.set(MODULE_ID, "downtimeMode", on === true);
-  game.socket.emit(CHANNEL, { action: MESSAGES.MODE_CHANGE, on: on === true });
+  _socket?.executeForEveryone("modeChange", on === true);
   return on === true;
 }
 
@@ -51,11 +51,9 @@ async function writeRecord(record) {
 }
 
 async function ensureRoster() {
-  let roster = game.settings.get(MODULE_ID, "downtimeRoster") ?? [];
-  if (roster.length === 0) {
-    roster = seedRoster(game.users.contents.map((u) => ({ isGM: u.isGM, character: u.character })));
-    await game.settings.set(MODULE_ID, "downtimeRoster", roster);
-  }
+  // Always rebuild from current users so stale character assignments don't persist.
+  const roster = seedRoster(game.users.contents.map((u) => ({ isGM: u.isGM, character: u.character })));
+  await game.settings.set(MODULE_ID, "downtimeRoster", roster);
   return roster;
 }
 
@@ -94,7 +92,8 @@ export async function promptCurrentBlock(block) {
   });
   record = openPrompt(record);
   await writeRecord(record);
-  game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_OPEN, blockId: id, record });
+  const userIds = [...new Set(recipients.map((r) => r.userId).filter(Boolean))];
+  _socket?.executeForUsers("openPrompt", userIds, record);
   return record;
 }
 
@@ -136,7 +135,7 @@ export async function closeBlockCollection() {
     return null;
   }
   const closed = await writeRecord(closeCollection(r));
-  game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_CLOSE, blockId: closed.id });
+  _socket?.executeForEveryone("closePrompt", closed.id);
   return closed;
 }
 
@@ -156,38 +155,62 @@ function userOwnsActor(userId, actorUuid) {
   return Boolean(actor && user && actor.testUserPermission?.(user, "OWNER"));
 }
 
-/** Handles socket messages for all clients; GM-only submission paths guarded below. */
-async function handleSocket(msg) {
-  if (msg?.action === MESSAGES.PROMPT_OPEN) {
-    // Use the record from the payload to avoid the world-setting propagation race.
-    const record = msg.record ?? getLedger()[msg.blockId];
-    if (!record) return;
-    if (record.status !== "open") return;
-    const mine = record.recipients.find((r) => r.userId === game.user.id);
-    if (!mine) return;
-    const actor = fromUuidSync?.(mine.actorUuid);
-    if (!actor) return;
-    const { default: DowntimePrompt } = await import("../apps/downtime/player-prompt.mjs");
-    DowntimePrompt.open(record, actor);
-    return;
-  }
-  if (game.user !== game.users.activeGM) return;
-  if (msg?.action !== MESSAGES.PROMPT_SUBMIT) return;
+/** Called on the targeted player's client when a block opens. */
+async function onOpenPrompt(record) {
+  console.log(`${MODULE_ID} | onOpenPrompt called`, { userId: game.user.id, record });
+  if (!record || record.status !== "open") { console.warn(`${MODULE_ID} | onOpenPrompt: bad record status`); return; }
+  const mine = record.recipients.find((r) => r.userId === game.user.id);
+  if (!mine) { console.warn(`${MODULE_ID} | onOpenPrompt: user not in recipients`); return; }
+  const actor = fromUuidSync?.(mine.actorUuid);
+  if (!actor) { console.warn(`${MODULE_ID} | onOpenPrompt: actor not found`, mine.actorUuid); return; }
+  const { default: DowntimePrompt } = await import("../apps/downtime/player-prompt.mjs");
+  DowntimePrompt.open(record, actor);
+}
+
+/** Called on every client when a block collection closes. */
+async function onClosePrompt(blockId) {
+  const { default: DowntimePrompt } = await import("../apps/downtime/player-prompt.mjs");
+  DowntimePrompt.closeIfOpen(blockId);
+}
+
+/** Called on every client when downtime mode changes. */
+async function onModeChange(on) {
+  if (on) return;
+  const { default: DowntimePrompt } = await import("../apps/downtime/player-prompt.mjs");
+  DowntimePrompt.closeIfOpen(null);
+}
+
+/** Called as GM when a player submits an action. */
+async function onSubmitAction(submission) {
   const record = getCurrentBlockRecord();
-  const check = validateSubmission(record, msg, userOwnsActor);
+  const check = validateSubmission(record, { userId: submission.userId, submission }, userOwnsActor);
   if (!check.ok) {
     console.warn(`${MODULE_ID} | rejected submission: ${check.reason}`);
     return;
   }
-  const payloadCheck = validateActionPayload(msg.submission);
+  const payloadCheck = validateActionPayload(submission);
   if (!payloadCheck.ok) {
     console.warn(`${MODULE_ID} | rejected payload: ${payloadCheck.reason}`);
     return;
   }
-  await writeRecord(upsertSubmission(record, msg.submission));
-  if (msg.submission.rollPolicy === "auto" && msg.submission.action === "technique") {
-    await runAndRecord(msg.submission.id);
+  await writeRecord(upsertSubmission(record, submission));
+  if (submission.rollPolicy === "auto" && submission.action === "technique") {
+    await runAndRecord(submission.id);
   }
+}
+
+/** Register the four socketlib handlers. Called from kaihou.mjs on socketlib.ready. */
+export function registerDowntimeSocket(libSocket) {
+  _socket = libSocket;
+  _socket.register("openPrompt", onOpenPrompt);
+  _socket.register("closePrompt", onClosePrompt);
+  _socket.register("modeChange", onModeChange);
+  _socket.register("submitAction", onSubmitAction);
+}
+
+/** Player-side: send a submission to the GM via socketlib. */
+export function submitDowntimeAction(submission) {
+  return _socket.executeAsGM("submitAction", submission);
 }
 
 export function registerDowntimeSettings() {
@@ -205,7 +228,6 @@ export function registerDowntimeSettings() {
 export function registerDowntimeKernel() {
   if (_kernelRegistered) return;
   _kernelRegistered = true;
-  game.socket.on(CHANNEL, handleSocket);
   game[MODULE_ID] = game[MODULE_ID] || {};
   game[MODULE_ID].downtime = {
     openConsole: async () => {

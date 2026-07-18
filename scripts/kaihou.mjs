@@ -25,7 +25,7 @@ import { registerQuestionFeatEffects } from "./grants/question-effects.mjs";
 import { registerStatusEffects } from "./setup/status-effects.mjs";
 import { registerKaihouCharacterSheet } from "./sheets/kaihou-character-sheet.mjs";
 import { registerNotesRelay } from "./notes-relay.mjs";
-import { registerDowntimeSettings, registerDowntimeKernel } from "./downtime/kernel.mjs";
+import { registerDowntimeSettings, registerDowntimeKernel, registerDowntimeSocket } from "./downtime/kernel.mjs";
 
 // Theme layer — registers its own Hooks.once("init", ...) so must be loaded
 // at module-import time, before any Hooks.once events fire. Pure side-effect
@@ -70,6 +70,11 @@ const SHEET_TEMPLATES = [
 
 registerStatusEffects();
 
+Hooks.once("socketlib.ready", () => {
+  const socket = socketlib.registerModule(MODULE_ID);
+  registerDowntimeSocket(socket);
+});
+
 Hooks.once("init", async () => {
   console.log(`${MODULE_ID} | init`);
   if (!Handlebars.helpers.eq) {
@@ -108,6 +113,13 @@ Hooks.once("ready", () => {
   registerOccupationAutoRevert();
   registerQuestionFeatEffects();
   registerNotesRelay();
+  // Fallback: if socketlib.ready fired before our listener was registered,
+  // register now. The modules map check prevents double-registration.
+  if (globalThis.socketlib && !socketlib.modules?.has(MODULE_ID)) {
+    console.log(`${MODULE_ID} | socketlib.ready missed — registering in ready hook`);
+    const socket = socketlib.registerModule(MODULE_ID);
+    registerDowntimeSocket(socket);
+  }
   registerDowntimeKernel();
   console.log(`${MODULE_ID} | school and occupation auto-apply ready`);
 

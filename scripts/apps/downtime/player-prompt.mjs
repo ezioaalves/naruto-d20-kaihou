@@ -1,10 +1,9 @@
-import { MESSAGES } from "../../downtime/messages.mjs";
+import { submitDowntimeAction } from "../../downtime/kernel.mjs";
 import { PRIMARY_ACTIONS, buildActionPayload, decideRollPolicy } from "../../downtime/action-payloads.mjs";
 import { buildLearnOptions, buildMasterOptions, getTechniqueApi } from "../../downtime/technique-adapter.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 const MODULE_ID = "naruto-d20-kaihou";
-const CHANNEL = `module.${MODULE_ID}`;
 
 /** Pure: shape the data the prompt template needs. Exported for tests. */
 export function buildPromptContext({ record, actor, selectedAction = "technique", api }) {
@@ -63,6 +62,17 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
     return app;
   }
 
+  /**
+   * Close the prompt if it belongs to the given block, or unconditionally when
+   * blockId is null (used by mode-off). Called by kernel socket handlers.
+   */
+  static closeIfOpen(blockId) {
+    const inst = DowntimePrompt.#instance;
+    if (!inst?.rendered) return;
+    if (blockId !== null && inst.#record?.id !== blockId) return;
+    inst.close();
+  }
+
   async _prepareContext() {
     return buildPromptContext({
       record: this.#record,
@@ -119,7 +129,7 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
       note: data.get("note") ?? "",
       rollPolicy: decideRollPolicy(action, requestScene),
     };
-    game.socket.emit(CHANNEL, { action: MESSAGES.PROMPT_SUBMIT, userId: game.user.id, submission });
+    await submitDowntimeAction(submission);
     this.close();
     DowntimePrompt.#submitting = false;
   }
