@@ -19,10 +19,11 @@ hand-rolls its own solutions to the same three problems:
    bug: it re-wires on every render with no guard); the player prompt
    hand-rolls a per-element `dataset.kaihouBound` guard for the same need.
 3. **Visual baseline** — each app's SCSS re-implements the parchment surface,
-   grain overlay, ink text, input, and button styling. Windows that skip a
-   piece (the wizard sets no parchment baseline at all) fall through to
-   Foundry/PF1e dark-theme values, producing the scattered low-contrast bugs
-   swept in v2.1.20.
+   grain overlay, ink text, input, and button styling. Each window's baseline
+   drifts independently — the wizard, for example, duplicates
+   `background`/`ink`/`font-family` with its own variations, and windows that
+   skip any piece fall through to Foundry/PF1e dark-theme values, producing
+   the scattered low-contrast bugs swept in v2.1.20.
 
 ## Decision
 
@@ -169,11 +170,10 @@ Recipe for every future window:
 | `player-prompt.mjs` | same; move record/actor refresh into `_onReopen`; `closeIfOpen` reads `this.instance`; replace `dataset.kaihouBound` select wiring with `_wireChangeActions` |
 | `twenty-questions-wizard.mjs` | `extends KaihouApplication`; drop local `MODULE_ID`; drop bespoke `_onFirstRender` centering (set `kaihou.centerOnFirstRender: true`); drop bespoke `_wireChangeActions` (use base) |
 | `scss/apps/_downtime.scss` | replace hand-rolled baseline with `@include kaihou-window` |
-| `scss/apps/_twenty-questions-wizard.scss` | add `@include kaihou-window` under `.tqw-v2` (closes its missing-baseline gap) |
+| `scss/apps/_twenty-questions-wizard.scss` | add `@include kaihou-window` under `.tqw-v2` (dedupes its hand-rolled baseline; keeps its heavier border + shadow as post-include overrides) |
 
 Non-goals: no PARTS restructuring, no template changes beyond what the JS
-migration forces, no visual redesign — windows must look identical after
-migration (except the wizard gaining the parchment baseline it lacked).
+migration forces, no visual redesign — windows must look identical after migration, full stop.
 
 ## Testing
 
@@ -192,7 +192,12 @@ migration (except the wizard gaining the parchment baseline it lacked).
 
 ## Relationship to other branches
 
-Independent of `feat/socketlib-downtime` (unmerged, needs rebase). Both
-touch the downtime app files, so whichever merges second resolves small
-conflicts in `gm-console.mjs` / `player-prompt.mjs` — the JS migration here
-is deliberately mechanical to keep that cheap.
+NOT independent of `feat/socketlib-downtime` as originally assumed: that
+unmerged branch heavily rewrites `gm-console.mjs`, `player-prompt.mjs`, their
+templates, and `_downtime.scss`. Decision (2026-07-18): this PR ships the
+pattern + wizard migration only, off `main`. The downtime apps migrate in a
+follow-up performed on/after the socketlib branch, against the current code —
+that follow-up covers the `open()`/`_onReopen` adoption, `closeIfOpen` via
+`instance`, replacing the `dataset.kaihouBound` select wiring with
+`_wireChangeActions` (requires adding a `data-action` to the prompt's action
+`<select>`), and `@include kaihou-window` in `_downtime.scss`.
