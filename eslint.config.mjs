@@ -101,13 +101,15 @@ export default [
       "no-var": "error",
     },
   },
-  // Wizard and downtime — pure modules + tests run under Node with Vitest.
+  // Wizard, downtime, and shared apps — pure modules + tests run under Node with Vitest.
   {
     files: [
       "scripts/wizard/**/*.mjs",
       "scripts/downtime/**/*.mjs",
+      "scripts/apps/kaihou-application.mjs",
       "tests/wizard/**/*.mjs",
       "tests/downtime/**/*.mjs",
+      "tests/apps/**/*.mjs",
     ],
     languageOptions: {
       ecmaVersion: 2022,
