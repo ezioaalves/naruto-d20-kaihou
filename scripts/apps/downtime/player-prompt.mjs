@@ -1,9 +1,7 @@
+import { KaihouApplication } from "../kaihou-application.mjs";
 import { submitDowntimeAction } from "../../downtime/kernel.mjs";
 import { PRIMARY_ACTIONS, buildActionPayload, decideRollPolicy } from "../../downtime/action-payloads.mjs";
 import { buildLearnOptions, buildMasterOptions, getTechniqueApi } from "../../downtime/technique-adapter.mjs";
-
-const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-const MODULE_ID = "naruto-d20-kaihou";
 
 /** Pure: shape the data the prompt template needs. Exported for tests. */
 export function buildPromptContext({ record, actor, selectedAction = "technique", api }) {
@@ -25,7 +23,7 @@ export function buildPromptContext({ record, actor, selectedAction = "technique"
   };
 }
 
-export default class DowntimePrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class DowntimePrompt extends KaihouApplication {
   static DEFAULT_OPTIONS = {
     id: "kaihou-downtime-prompt",
     tag: "form",
@@ -36,30 +34,26 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
   };
 
   static PARTS = {
-    body: { template: `modules/${MODULE_ID}/templates/apps/downtime/player-prompt.hbs` },
+    body: { template: KaihouApplication.kaihouTemplate("apps/downtime/player-prompt.hbs") },
   };
 
-  static #instance = null;
   static #submitting = false;
 
   #record;
   #actor;
   #selectedAction = "technique";
 
-  static open(record, actor) {
-    if (DowntimePrompt.#instance?.rendered) {
-      DowntimePrompt.#instance.#record = record;
-      DowntimePrompt.#instance.#actor = actor;
-      DowntimePrompt.#instance.#selectedAction = "technique";
-      DowntimePrompt.#instance.render(true);
-      return DowntimePrompt.#instance;
-    }
-    const app = new DowntimePrompt();
-    app.#record = record;
-    app.#actor = actor;
-    DowntimePrompt.#instance = app;
-    app.render(true);
-    return app;
+  constructor(record, actor, ...rest) {
+    super(...rest);
+    this.#record = record;
+    this.#actor = actor;
+  }
+
+  /** Refresh state when the base singleton open() finds the window already up. */
+  _onReopen(record, actor) {
+    this.#record = record;
+    this.#actor = actor;
+    this.#selectedAction = "technique";
   }
 
   /**
@@ -67,7 +61,7 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
    * blockId is null (used by mode-off). Called by kernel socket handlers.
    */
   static closeIfOpen(blockId) {
-    const inst = DowntimePrompt.#instance;
+    const inst = DowntimePrompt.instance;
     if (!inst?.rendered) return;
     if (blockId !== null && inst.#record?.id !== blockId) return;
     inst.close();
@@ -85,14 +79,14 @@ export default class DowntimePrompt extends HandlebarsApplicationMixin(Applicati
   // Re-render the conditional panel when the primary action changes.
   _onRender(context, options) {
     super._onRender?.(context, options);
-    const select = this.element?.querySelector('select[name="action"]');
-    if (select && !select.dataset.kaihouBound) {
-      select.dataset.kaihouBound = "1";
-      select.addEventListener("change", (ev) => {
-        this.#selectedAction = ev.target.value;
-        this.render(false);
-      });
-    }
+    this._wireChangeActions({
+      "action-change": DowntimePrompt.#onActionChange,
+    });
+  }
+
+  static #onActionChange(event, target) {
+    this.#selectedAction = target.value;
+    this.render(false);
   }
 
   static async #onSubmit(event) {

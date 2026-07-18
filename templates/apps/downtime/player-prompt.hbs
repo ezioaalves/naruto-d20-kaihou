@@ -5,7 +5,7 @@
   </header>
 
   <label>Primary action
-    <select name="action">
+    <select name="action" data-action="action-change">
       {{#each actions as |a|}}
         <option value="{{a}}" {{#if (eq a ../selectedAction)}}selected{{/if}}>{{a}}</option>
       {{/each}}
