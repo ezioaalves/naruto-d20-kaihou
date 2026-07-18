@@ -48,6 +48,32 @@ describe("TQW action wiring — a native <select> must open without re-rendering
   });
 });
 
+describe("TQW — KaihouApplication migration", () => {
+  it("extends KaihouApplication", async () => {
+    const { KaihouApplication } = await import("../../scripts/apps/kaihou-application.mjs");
+    expect(Object.getPrototypeOf(TwentyQuestionsWizard)).toBe(KaihouApplication);
+  });
+
+  it("opts in to first-render centering", () => {
+    expect(TwentyQuestionsWizard.DEFAULT_OPTIONS.kaihou).toEqual({ centerOnFirstRender: true });
+  });
+
+  it("uses the inherited once-guarded change delegator (no bespoke copy)", () => {
+    // The bespoke _wireChangeActions re-wired on every render (duplicate
+    // listeners). The base-class version is guarded — the wizard must not
+    // shadow it.
+    expect(Object.prototype.hasOwnProperty.call(
+      TwentyQuestionsWizard.prototype, "_wireChangeActions",
+    )).toBe(false);
+  });
+
+  it("does not shadow the base _onFirstRender centering", () => {
+    expect(Object.prototype.hasOwnProperty.call(
+      TwentyQuestionsWizard.prototype, "_onFirstRender",
+    )).toBe(false);
+  });
+});
+
 describe("TQW validation messages are localized, never raw field keys", () => {
   // Regression: the REQUIRED/SUB_REQUIRED messages used to interpolate the raw
   // state-field name (e.g. "q1_village_uuid is required."), which surfaced as a
