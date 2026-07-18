@@ -157,7 +157,6 @@ function userOwnsActor(userId, actorUuid) {
 
 /** Called on the targeted player's client when a block opens. */
 async function onOpenPrompt(record) {
-  console.log(`${MODULE_ID} | onOpenPrompt called`, { userId: game.user.id, record });
   if (!record || record.status !== "open") { console.warn(`${MODULE_ID} | onOpenPrompt: bad record status`); return; }
   const mine = record.recipients.find((r) => r.userId === game.user.id);
   if (!mine) { console.warn(`${MODULE_ID} | onOpenPrompt: user not in recipients`); return; }
@@ -210,7 +209,7 @@ export function registerDowntimeSocket(libSocket) {
 
 /** Player-side: send a submission to the GM via socketlib. */
 export function submitDowntimeAction(submission) {
-  return _socket.executeAsGM("submitAction", submission);
+  return _socket?.executeAsGM("submitAction", submission) ?? null;
 }
 
 export function registerDowntimeSettings() {
