@@ -7,6 +7,7 @@ import {
   resolveBlock,
   deriveQueues,
   pruneResolvedBefore,
+  recordResult,
 } from "../../scripts/downtime/ledger.mjs";
 
 function baseRecord() {
@@ -97,5 +98,25 @@ describe("pruneResolvedBefore", () => {
     const ledger = { [resolved.id]: resolved, [open.id]: open };
     const pruned = pruneResolvedBefore(ledger, (date) => date.year < 2);
     expect(Object.keys(pruned)).toEqual([open.id]);
+  });
+});
+
+describe("recordResult", () => {
+  it("attaches a rollResult to the named submission", () => {
+    let rec = openPrompt(baseRecord());
+    rec = upsertSubmission(rec, submission({ id: "s1" }));
+    const out = recordResult(rec, "s1", { ok: true, mode: "learn-owned", chatMessageId: "m1" });
+    expect(out.submissions.s1.rollResult).toEqual({ ok: true, mode: "learn-owned", chatMessageId: "m1" });
+  });
+  it("is a no-op for an unknown submission id", () => {
+    const rec = openPrompt(baseRecord());
+    expect(recordResult(rec, "nope", { ok: true })).toBe(rec);
+  });
+  it("does not mutate the input record", () => {
+    let rec = openPrompt(baseRecord());
+    rec = upsertSubmission(rec, submission({ id: "s1" }));
+    const snapshot = JSON.stringify(rec);
+    recordResult(rec, "s1", { ok: true });
+    expect(JSON.stringify(rec)).toBe(snapshot);
   });
 });

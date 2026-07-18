@@ -67,3 +67,10 @@ export function pruneResolvedBefore(ledger, isBefore) {
   }
   return out;
 }
+
+export function recordResult(record, submissionId, result) {
+  const sub = record.submissions[submissionId];
+  if (!sub) return record;
+  const submissions = { ...record.submissions, [submissionId]: { ...sub, rollResult: result } };
+  return { ...record, submissions };
+}

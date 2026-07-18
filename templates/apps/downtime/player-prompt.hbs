@@ -6,12 +6,56 @@
 
   <label>Primary action
     <select name="action">
-      {{#each actions as |a|}}<option value="{{a}}">{{a}}</option>{{/each}}
+      {{#each actions as |a|}}
+        <option value="{{a}}" {{#if (eq a ../selectedAction)}}selected{{/if}}>{{a}}</option>
+      {{/each}}
     </select>
   </label>
 
-  {{!-- Extension slot: child epics render the action-specific panel here. --}}
-  <section class="prompt-action-panel" data-prompt-action-panel></section>
+  <section class="prompt-action-panel" data-prompt-action-panel>
+    {{#if isTechnique}}
+      <fieldset class="tech-panel">
+        <legend>Technique</legend>
+        <label>Mode
+          <select name="mode">
+            <option value="learn-owned">Learn</option>
+            <option value="master-owned">Master</option>
+          </select>
+        </label>
+        <label>Learn (unlearned on sheet)
+          <select name="itemUuid" data-tech-list="learn">
+            {{#each learnOptions as |o|}}
+              <option value="{{o.itemUuid}}">{{o.name}} — rank {{o.rank}} ({{o.discipline}})</option>
+            {{else}}
+              <option value="" disabled>No unlearned techniques on sheet</option>
+            {{/each}}
+          </select>
+        </label>
+        <label>Master (learned, below max)
+          <select name="itemUuidMaster" data-tech-list="master">
+            {{#each masterOptions as |o|}}
+              <option value="{{o.itemUuid}}">{{o.name}} — rank {{o.rank}} ({{o.discipline}})</option>
+            {{else}}
+              <option value="" disabled>No masterable techniques</option>
+            {{/each}}
+          </select>
+        </label>
+        <p class="hint">Add a new technique to your sheet from the Chakra tab, then it appears under Learn.</p>
+      </fieldset>
+    {{else if isNpc}}
+      <label>NPC name <input type="text" name="npcName"></label>
+    {{else if isCrafting}}
+      <label>Craft/skill <input type="text" name="skillLabel"></label>
+      <input type="hidden" name="skillKey" value="cra">
+    {{else if isMission}}
+      <p class="hint">You'll join the party mission. The GM will assign a roll after collection closes.</p>
+    {{else if isShopping}}
+      <label>Store <input type="text" name="storeName"></label>
+      <label>Other <input type="text" name="otherText"></label>
+    {{else if isOther}}
+      <label>What are you doing? <input type="text" name="text" required></label>
+    {{/if}}
+  </section>
 
   <label class="scene"><input type="checkbox" name="requestScene"> Request a scene</label>
   <label>Note to GM <textarea name="note" rows="2"></textarea></label>

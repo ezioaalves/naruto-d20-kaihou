@@ -3,12 +3,14 @@
   "title": "Naruto D20 — Kaihou Campaign Content",
   "description": "Kaihou-specific identity content (base classes, villages, flaws, schools, occupations, bloodlines, advanced classes) extending the public naruto-d20 module.",
   "version": "2.1.20",
+  "socket": true,
   "esmodules": [
     "scripts/kaihou.mjs"
   ],
   "styles": [
     "styles/theme/zen.css",
-    "styles/apps/twenty-questions-wizard.css"
+    "styles/apps/twenty-questions-wizard.css",
+    "styles/apps/downtime.css"
   ],
   "compatibility": {
     "minimum": "11",
@@ -31,6 +33,10 @@
         "compatibility": {
           "minimum": "1.0.10"
         }
+      },
+      {
+        "id": "socketlib",
+        "type": "module"
       }
     ]
   },

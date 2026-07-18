@@ -44,6 +44,8 @@ const foundryGlobals = {
   // pf1 system
   pf1: "readonly",
   RollPF: "readonly",
+  // socketlib module
+  socketlib: "readonly",
 };
 
 /**

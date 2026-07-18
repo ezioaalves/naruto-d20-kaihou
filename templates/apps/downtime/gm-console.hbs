@@ -17,21 +17,54 @@
       </div>
     </section>
 
-    <section class="downtime-recipients">
-      <h3>Recipients</h3>
-      <ul>
-        {{#each recipients as |r|}}<li>{{r.actorName}} — {{r.status}}</li>{{/each}}
-      </ul>
-    </section>
+    {{#if hasBlock}}
+      <section class="downtime-recipients">
+        <h3>Recipients</h3>
+        <ul>{{#each recipients as |r|}}<li>{{r.actorName}} — {{r.status}}</li>{{/each}}</ul>
+      </section>
 
-    <section class="downtime-queues">
-      <h3>Scene queue</h3>
-      <ol>{{#each queues.scenes as |id|}}<li>{{id}}</li>{{/each}}</ol>
-      <h3>Other queue</h3>
-      <ol>{{#each queues.other as |id|}}<li>{{id}}</li>{{/each}}</ol>
-    </section>
+      <section class="downtime-responses">
+        <h3>Responses (in order)</h3>
+        <ol>
+          {{#each responses as |r|}}
+            <li>
+              <b>{{r.actorName}}</b>: {{r.action}}{{#if r.scene}} <em>(scene)</em>{{/if}}
+              — <span class="result">{{r.resultLabel}}</span>
+              {{#if r.note}}<span class="note">"{{r.note}}"</span>{{/if}}
+              {{#if r.canRun}}
+                <button type="button" data-action="runOne" data-submission-id="{{r.id}}">Run</button>
+              {{/if}}
+            </li>
+          {{else}}
+            <li class="empty">No responses yet.</li>
+          {{/each}}
+        </ol>
+      </section>
 
-    {{!-- Extension slot: child epics (intake, missions) inject panels here. --}}
+      <section class="downtime-queues">
+        <h3>Scene queue</h3>
+        <ol>
+          {{#each sceneRows as |r|}}
+            <li>{{r.actorName}} — {{r.action}}
+              {{#if r.canRun}}<button type="button" data-action="runOne" data-submission-id="{{r.id}}">Run</button>{{/if}}
+            </li>
+          {{else}}<li class="empty">Empty.</li>{{/each}}
+        </ol>
+        <h3>Other queue</h3>
+        <ol>{{#each otherRows as |r|}}<li>{{r.actorName}} — {{r.action}}</li>{{else}}<li class="empty">Empty.</li>{{/each}}</ol>
+      </section>
+
+      <section class="downtime-rolllog">
+        <h3>Roll log</h3>
+        <ul>{{#each rollLog as |r|}}<li>{{r.actorName}}: {{r.resultLabel}}</li>{{else}}<li class="empty">No resolved rolls.</li>{{/each}}</ul>
+      </section>
+
+      <footer class="downtime-actions">
+        <button type="button" data-action="closeCollection">Close collection</button>
+        <button type="button" data-action="postSummary">Post chat summary</button>
+      </footer>
+    {{/if}}
+
     <section class="downtime-extensions" data-downtime-extensions></section>
   {{else}}
     <p class="downtime-inactive">Downtime Mode is off. Start downtime to prompt the party.</p>
