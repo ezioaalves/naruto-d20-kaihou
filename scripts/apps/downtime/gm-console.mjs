@@ -1,3 +1,4 @@
+import { KaihouApplication } from "../kaihou-application.mjs";
 import { BLOCKS } from "../../downtime/block-identity.mjs";
 import {
   getDowntimeMode,
@@ -5,10 +6,10 @@ import {
   suggestCurrentBlock,
   promptCurrentBlock,
   getCurrentBlockRecord,
+  runSubmission,
+  closeBlockCollection,
+  postBlockSummary,
 } from "../../downtime/kernel.mjs";
-
-const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-const MODULE_ID = "naruto-d20-kaihou";
 
 function resultLabel(sub) {
   if (sub.rollResult?.ok) return "resolved";
@@ -51,7 +52,7 @@ export function buildConsoleContext({ mode, suggestion, record }) {
   };
 }
 
-export default class DowntimeConsole extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class DowntimeConsole extends KaihouApplication {
   static DEFAULT_OPTIONS = {
     id: "kaihou-downtime-console",
     tag: "form",
@@ -68,20 +69,12 @@ export default class DowntimeConsole extends HandlebarsApplicationMixin(Applicat
   };
 
   static PARTS = {
-    body: { template: `modules/${MODULE_ID}/templates/apps/downtime/gm-console.hbs` },
+    body: { template: KaihouApplication.kaihouTemplate("apps/downtime/gm-console.hbs") },
   };
-
-  static #instance = null;
 
   static open() {
     if (!game.user?.isGM) return null;
-    if (DowntimeConsole.#instance?.rendered) {
-      DowntimeConsole.#instance.render(true);
-      return DowntimeConsole.#instance;
-    }
-    DowntimeConsole.#instance = new DowntimeConsole();
-    DowntimeConsole.#instance.render(true);
-    return DowntimeConsole.#instance;
+    return super.open();
   }
 
   async _prepareContext() {
@@ -94,31 +87,25 @@ export default class DowntimeConsole extends HandlebarsApplicationMixin(Applicat
 
   static async #onToggleMode() {
     await setDowntimeMode(!getDowntimeMode());
-    DowntimeConsole.#instance?.render(false);
+    this.render(false);
   }
 
   static async #onPromptBlock(event, target) {
     await promptCurrentBlock(target?.dataset?.block);
-    DowntimeConsole.#instance?.render(false);
+    this.render(false);
   }
 
-  // Dynamic imports: runSubmission, closeBlockCollection, postBlockSummary are
-  // Task 5 kernel exports — not yet available. Dynamic import prevents load-time
-  // failure so the module boots and the pure buildConsoleContext test passes now.
   static async #onRunOne(event, target) {
-    const { runSubmission } = await import("../../downtime/kernel.mjs");
     await runSubmission(target?.dataset?.submissionId);
-    DowntimeConsole.#instance?.render(false);
+    this.render(false);
   }
 
   static async #onCloseCollection() {
-    const { closeBlockCollection } = await import("../../downtime/kernel.mjs");
     await closeBlockCollection();
-    DowntimeConsole.#instance?.render(false);
+    this.render(false);
   }
 
   static async #onPostSummary() {
-    const { postBlockSummary } = await import("../../downtime/kernel.mjs");
     await postBlockSummary();
   }
 }
