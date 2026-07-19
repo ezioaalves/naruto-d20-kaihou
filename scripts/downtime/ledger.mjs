@@ -38,7 +38,10 @@ export function upsertSubmission(record, submission) {
   };
   const order = record.order.includes(stored.id) ? record.order : [...record.order, stored.id];
   const submissions = { ...record.submissions, [stored.id]: stored };
-  const next = { ...record, order, submissions };
+  const recipients = record.recipients.map((r) =>
+    r.actorUuid === stored.actorUuid ? { ...r, status: "submitted" } : r,
+  );
+  const next = { ...record, order, submissions, recipients };
   next.queues = deriveQueues(next);
   return next;
 }

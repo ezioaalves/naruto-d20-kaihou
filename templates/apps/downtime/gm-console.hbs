@@ -28,7 +28,7 @@
         <ol>
           {{#each responses as |r|}}
             <li>
-              <b>{{r.actorName}}</b>: {{r.action}}{{#if r.scene}} <em>(scene)</em>{{/if}}
+              <b>{{r.actorName}}</b>: {{r.action}}{{#if r.detail}} ({{r.detail}}){{/if}}{{#if r.scene}} <em>(scene)</em>{{/if}}
               — <span class="result">{{r.resultLabel}}</span>
               {{#if r.note}}<span class="note">"{{r.note}}"</span>{{/if}}
               {{#if r.canRun}}

@@ -54,6 +54,13 @@ describe("lifecycle", () => {
     expect(r.submissions.s1.payload).toEqual({ changed: true });
   });
 
+  it("marks the submitting actor's recipient as submitted immediately", () => {
+    let r = openPrompt(baseRecord());
+    r = upsertSubmission(r, submission({ id: "s1", userId: "u1", actorUuid: "Actor.a" }));
+    const byActor = Object.fromEntries(r.recipients.map((x) => [x.actorUuid, x.status]));
+    expect(byActor).toEqual({ "Actor.a": "submitted", "Actor.b": "pending" });
+  });
+
   it("forces defer when a scene is requested", () => {
     let r = openPrompt(baseRecord());
     r = upsertSubmission(r, submission({ requestScene: true, rollPolicy: "auto" }));

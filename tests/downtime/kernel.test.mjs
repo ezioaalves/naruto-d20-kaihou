@@ -5,7 +5,7 @@ vi.mock("../../scripts/apps/downtime/player-prompt.mjs", () => ({
   default: { open: vi.fn(), closeIfOpen: vi.fn() },
 }));
 vi.mock("../../scripts/apps/downtime/gm-console.mjs", () => ({
-  default: { open: vi.fn() },
+  default: { open: vi.fn(), instance: { render: vi.fn() } },
 }));
 vi.mock("../../scripts/downtime/technique-adapter.mjs", () => ({
   runTechniqueAttempt: vi.fn().mockResolvedValue({ outcome: "success" }),
@@ -25,6 +25,7 @@ import {
   submitDowntimeAction,
 } from "../../scripts/downtime/kernel.mjs";
 import { default as DowntimePrompt } from "../../scripts/apps/downtime/player-prompt.mjs";
+import { default as DowntimeConsole } from "../../scripts/apps/downtime/gm-console.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
 
@@ -233,6 +234,7 @@ describe("socket handler: onSubmitAction", () => {
         }),
       }),
     );
+    expect(DowntimeConsole.instance.render).toHaveBeenCalledWith(false);
   });
 
   it("rejects when there is no open block", async () => {
