@@ -19,11 +19,34 @@ function resultLabel(sub) {
   return "—";
 }
 
-function rowFor(sub) {
+/** Pure: one-line human summary of what the player actually picked. */
+function detailFor(sub, resolveItemName) {
+  const p = sub.payload ?? {};
+  switch (sub.action) {
+    case "technique": {
+      const name = p.itemUuid ? (resolveItemName?.(p.itemUuid) ?? p.itemUuid) : "";
+      if (!name) return "";
+      return `${p.mode === "master-owned" ? "master" : "learn"}: ${name}`;
+    }
+    case "npc":
+      return p.npcName ?? "";
+    case "crafting":
+      return p.skillLabel ?? "";
+    case "shopping":
+      return [p.storeName, p.otherText].filter(Boolean).join(" — ");
+    case "other":
+      return p.text ?? "";
+    default:
+      return "";
+  }
+}
+
+function rowFor(sub, resolveItemName) {
   return {
     id: sub.id,
     actorName: sub.actorName,
     action: sub.action,
+    detail: detailFor(sub, resolveItemName),
     scene: sub.requestScene === true,
     note: sub.note ?? "",
     resultLabel: resultLabel(sub),
@@ -32,10 +55,10 @@ function rowFor(sub) {
 }
 
 /** Pure: shape the data the console template needs. Exported for tests. */
-export function buildConsoleContext({ mode, suggestion, record }) {
+export function buildConsoleContext({ mode, suggestion, record, resolveItemName }) {
   const order = record?.order ?? [];
   const subs = record?.submissions ?? {};
-  const rows = order.map((id) => subs[id]).filter(Boolean).map(rowFor);
+  const rows = order.map((id) => subs[id]).filter(Boolean).map((s) => rowFor(s, resolveItemName));
   const queues = record?.queues ?? { scenes: [], other: [] };
   const rowById = Object.fromEntries(rows.map((r) => [r.id, r]));
   return {
@@ -82,6 +105,7 @@ export default class DowntimeConsole extends KaihouApplication {
       mode: getDowntimeMode(),
       suggestion: suggestCurrentBlock(),
       record: getCurrentBlockRecord(),
+      resolveItemName: (uuid) => fromUuidSync?.(uuid)?.name ?? null,
     });
   }
 

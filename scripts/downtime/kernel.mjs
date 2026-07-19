@@ -196,6 +196,10 @@ async function onSubmitAction(submission) {
   if (submission.rollPolicy === "auto" && submission.action === "technique") {
     await runAndRecord(submission.id);
   }
+  // Live-refresh the GM console if it's open. Dynamic import: gm-console.mjs
+  // statically imports this module, so a static import here would be a cycle.
+  const { default: DowntimeConsole } = await import("../apps/downtime/gm-console.mjs");
+  DowntimeConsole.instance?.render(false);
 }
 
 /** Register the four socketlib handlers. Called from kaihou.mjs on socketlib.ready. */
