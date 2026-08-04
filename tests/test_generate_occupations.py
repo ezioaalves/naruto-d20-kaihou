@@ -74,6 +74,15 @@ def test_generate_one_uses_trait_item_shape_without_preselecting_all_skills():
     assert data["img"].startswith("modules/naruto-d20-kaihou/assets/theme/icons/")
 
 
+def test_grants_bonus_feat_change_when_feat_options_present():
+    data = generate_occupations.generate_one(_fixture_occupation())
+    changes = data["system"]["changes"]
+    assert len(changes) == 1
+    assert changes[0]["target"] == "bonusFeats"
+    assert changes[0]["operator"] == "add"
+    assert changes[0]["formula"] == "1"
+
+
 def test_description_notes_source():
     data = generate_occupations.generate_one(_fixture_occupation())
     desc = data["system"]["description"]["value"]

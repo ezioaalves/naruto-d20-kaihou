@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## v2.1.21 — 2026-08-04
 
 ### Fixed
+- **Schools and occupations now grant their bonus feat for free.** The auto-applied bonus feat from a school/occupation was a real embedded feat item with nothing offsetting it, so PF1e's own feat-count accounting flagged it as an "excess" feat on the character sheet — as if the player had taken an extra feat they weren't entitled to. Every school and occupation now carries a PF1e `change` (`target: bonusFeats`, `+1`) so the granted feat is covered by the character's allowance instead of reading as free-floating overage.
 - **School bonus-feat/starting-technique grants silently dropped from the school item's own record.** If the actor already had a matching item (e.g. granted by an earlier 20 Questions wizard step), the school's automatic grant logic skipped the item entirely — including omitting it from the school item's Links → Supplements list — even though the character legitimately had the feat/technique. The school item now always records the link; only the duplicate item *creation* is skipped.
 - Compendium-lookup failures during school/occupation grant application (a referenced feat or technique name that doesn't exist in any linked compendium) now also log a `console.warn`, not just an easily-missed toast notification.
 

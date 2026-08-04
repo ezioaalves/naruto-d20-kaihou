@@ -98,6 +98,23 @@ def generate_uuid(slug: str) -> str:
     return hashlib.md5(slug.encode("utf-8")).hexdigest()[:16]
 
 
+def _bonus_feat_change() -> dict[str, Any]:
+    """PF1e change granting +1 to the actor's bonus-feat allowance.
+
+    Without this, the embedded feat item created by the occupation's auto-apply
+    grant (scripts/grants/occupation-apply.mjs) counts against the actor's
+    normal feat slots and PF1e's sheet reports it as an "excess" feat, even
+    though it was freely granted.
+    """
+    return {
+        "_id": hashlib.md5(b"bonusFeats-occupation").hexdigest()[:8],
+        "formula": "1",
+        "target": "bonusFeats",
+        "operator": "add",
+        "priority": 0,
+    }
+
+
 def slugify(value: str) -> str:
     """Convert text to a stable kebab-case slug."""
     value = value.strip().lower().replace("&", "and")
@@ -488,7 +505,7 @@ def generate_one(occupation: dict[str, Any]) -> dict[str, Any]:
         "description": {"value": _description_to_html(occupation)},
         "tags": occupation.get("tags", []),
         "classSkills": {},
-        "changes": [],
+        "changes": [_bonus_feat_change()] if occupation["feat_options"] else [],
         "links": {"supplements": []},
     }
     return {

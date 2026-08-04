@@ -37,8 +37,16 @@ def test_generate_one_basic_shape():
     assert data["name"] == "Test School"
     assert data["type"] == "feat"
     assert data["system"]["subType"] == "trait"
-    assert data["system"]["changes"] == []
     assert len(data["_id"]) == 16
+
+
+def test_grants_bonus_feat_change():
+    data = generate_schools.generate_one(_active_fixture_school())
+    changes = data["system"]["changes"]
+    assert len(changes) == 1
+    assert changes[0]["target"] == "bonusFeats"
+    assert changes[0]["operator"] == "add"
+    assert changes[0]["formula"] == "1"
 
 
 def test_has_foundry_leveldb_key():

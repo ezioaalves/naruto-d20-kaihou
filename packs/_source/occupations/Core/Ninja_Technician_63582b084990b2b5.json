@@ -13,7 +13,15 @@
       "Core"
     ],
     "classSkills": {},
-    "changes": [],
+    "changes": [
+      {
+        "_id": "0b90ba58",
+        "formula": "1",
+        "target": "bonusFeats",
+        "operator": "add",
+        "priority": 0
+      }
+    ],
     "links": {
       "supplements": []
     }

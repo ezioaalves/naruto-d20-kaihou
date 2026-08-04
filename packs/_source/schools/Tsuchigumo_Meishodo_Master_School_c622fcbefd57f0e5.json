@@ -13,7 +13,15 @@
       "Kiringakure",
       "Tsuchigumo"
     ],
-    "changes": []
+    "changes": [
+      {
+        "_id": "b245c29f",
+        "formula": "1",
+        "target": "bonusFeats",
+        "operator": "add",
+        "priority": 0
+      }
+    ]
   },
   "img": "modules/naruto-d20-kaihou/assets/theme/icons/clans/unicorn.svg",
   "flags": {
