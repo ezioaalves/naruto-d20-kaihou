@@ -41,13 +41,19 @@ export async function applySchoolPackage(actor, schoolItem, school) {
   const linkRows = [];
 
   for (const grant of grants) {
-    if (actorHasGrant(actor, school.slug, grant.name)) continue;
-
     const doc = await findCompendiumItemByName(grant.name, grant.packIds, grant.type);
     if (!doc) {
       missing.push(grant.name);
+      console.warn(`${MODULE_ID} | school grant missing from compendia: ${grant.name}`);
       continue;
     }
+
+    // Always record the link, even if the actor already has a matching item
+    // from elsewhere (e.g. a different wizard step) — the school should still
+    // show what it grants. Only the embedded-item creation is skipped for dupes.
+    linkRows.push(linkRowFromDocument(doc));
+
+    if (actorHasGrant(actor, school.slug, grant.name)) continue;
 
     const itemData = buildEmbeddedGrantData(
       doc,
@@ -60,15 +66,17 @@ export async function applySchoolPackage(actor, schoolItem, school) {
       },
     );
     created.push(itemData);
-    linkRows.push(linkRowFromDocument(doc));
   }
 
   if (created.length) {
     await actor.createEmbeddedDocuments("Item", created);
+  }
+  if (linkRows.length) {
     await schoolItem.update({ "system.links.supplements": linkRows });
   }
 
   if (missing.length) {
+    console.warn(`${MODULE_ID} | ${schoolItem.name}: could not find in compendia: ${missing.join(", ")}`);
     ui.notifications?.warn(
       `${schoolItem.name}: could not find in compendia: ${missing.join(", ")}`,
     );

@@ -78,12 +78,14 @@ export async function applyOccupationFromItem(actor, occupationItem, occupation)
     ? await findCompendiumItemByName(selections.featName, FEAT_PACK_IDS, "feat")
     : null;
   if (selections.featName && !selectedFeatDoc) {
+    console.warn(`${MODULE_ID} | occupation feat missing from compendia: ${selections.featName}`);
     ui.notifications?.warn(`${occupationItem.name}: could not find feat in compendia: ${selections.featName}`);
   }
   const selectedTechniqueDoc = selections.techniqueName
     ? await findCompendiumItemByName(selections.techniqueName, TECHNIQUE_PACK_IDS)
     : null;
   if (selections.techniqueName && !selectedTechniqueDoc) {
+    console.warn(`${MODULE_ID} | occupation technique missing from compendia: ${selections.techniqueName}`);
     ui.notifications?.warn(
       `${occupationItem.name}: could not find technique in compendia: ${selections.techniqueName}`,
     );

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.21 — 2026-08-04
+
+### Fixed
+- **School bonus-feat/starting-technique grants silently dropped from the school item's own record.** If the actor already had a matching item (e.g. granted by an earlier 20 Questions wizard step), the school's automatic grant logic skipped the item entirely — including omitting it from the school item's Links → Supplements list — even though the character legitimately had the feat/technique. The school item now always records the link; only the duplicate item *creation* is skipped.
+- Compendium-lookup failures during school/occupation grant application (a referenced feat or technique name that doesn't exist in any linked compendium) now also log a `console.warn`, not just an easily-missed toast notification.
+
+### Added
+- ApplicationV2 window pattern: shared `KaihouApplication` base class + `kaihou-window` mixin for consistent theming across module windows (20 Questions wizard, downtime apps).
+- Downtime: socketlib-based RPC migration, fixing a settings-sync race condition between GM and player clients.
+
+### Changed
+- Downtime GM console and player prompt migrated onto the shared `KaihouApplication` pattern, removing bespoke window chrome/SCSS.
+
 ## v2.1.20 — 2026-07-17
 
 ### Fixed
