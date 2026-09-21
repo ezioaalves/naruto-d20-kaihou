@@ -223,6 +223,31 @@ describe("kaihou character sheet template", () => {
     expect(scss).not.toContain('assets/theme/icons/natures/lightning.png');
   });
 
+  it("keeps the Biography Player Notes flex-growth chain unbroken", () => {
+    const themeCss = readFileSync(
+      resolve(import.meta.dirname, "../../styles/theme/zen.css"),
+      "utf8",
+    );
+    const wizardCss = readFileSync(
+      resolve(import.meta.dirname, "../../styles/apps/twenty-questions-wizard.css"),
+      "utf8",
+    );
+    const containerRule = wizardCss.match(/\.tab\[data-tab=biography\] \.tqw-bio-container\{([^}]*)\}/)?.[1] ?? "";
+    const gridRule = wizardCss.match(/\.tab\[data-tab=biography\] \.tqw-bio-grid\{([^}]*)\}/)?.[1] ?? "";
+    const leftRule = wizardCss.match(/\.tab\[data-tab=biography\] \.tqw-bio-grid \.tqw-bio-left\{([^}]*)\}/)?.[1] ?? "";
+    const biographyRule = themeCss.match(/\.kaihou-databook-form \.db-biography\{([^}]*)\}/)?.[1] ?? "";
+    const notesRule = themeCss.match(/\.kaihou-databook-form \.db-bio-notes\{([^}]*)\}/)?.[1] ?? "";
+    const editorRule = themeCss.match(/\.kaihou-databook-form \.db-bio-notes \.editor,\.kaihou-databook-form \.db-bio-notes \.editor-content\{([^}]*)\}/)?.[1] ?? "";
+
+    expect(containerRule).toMatch(/height:100%;min-height:0/);
+    expect(gridRule).toMatch(/display:grid/);
+    expect(gridRule).toMatch(/height:100%/);
+    expect(leftRule).toMatch(/display:flex;flex-direction:column/);
+    expect(biographyRule).toMatch(/flex:1 1 auto;min-height:0/);
+    expect(notesRule).toMatch(/min-height:180px;flex:1 1 auto/);
+    expect(editorRule).toMatch(/flex:1 1 auto;min-height:140px/);
+  });
+
   it("gates character-only warnings and normalizes PF1e Summary without removing NPC CR", () => {
     const sheet = readFileSync(
       resolve(import.meta.dirname, "../../scripts/sheets/kaihou-character-sheet.mjs"),
