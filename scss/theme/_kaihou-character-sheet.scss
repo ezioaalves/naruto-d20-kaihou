@@ -544,7 +544,14 @@
   }
   .db-notes textarea:focus { outline: 1px solid var(--k-seal); }
 
-  .db-biography { padding: var(--k-space-3); display: flex; flex-direction: column; gap: var(--k-space-3); min-height: 0; }
+  .db-biography {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--k-space-3);
+    padding: var(--k-space-3);
+  }
   .db-bio-field { display: flex; gap: var(--k-space-3); align-items: center; padding: 2px 0; }
   .db-bio-field label { flex: 0 0 9rem; font: var(--k-text-xs)/1.4 var(--k-font-util); text-transform: uppercase; letter-spacing: 0.06em; color: var(--k-ink-mute); }
   .db-bio-field input {
@@ -584,7 +591,9 @@
     .db-panel__h { margin: 0; }
     .db-bio-class-add { display: inline-flex; gap: 6px; }
   }
-  .db-bio-notes { min-height: 180px; display: flex; flex-direction: column; }
+  // Let the editor use the remaining Biography-column height instead of
+  // stopping at its minimum height when ProseMirror enters edit mode.
+  .db-bio-notes { min-height: 180px; flex: 1 1 auto; display: flex; flex-direction: column; }
   .db-bio-notes .editor,
   .db-bio-notes .editor-content { flex: 1 1 auto; min-height: 140px; }
   .db-bio-20q { margin-top: var(--k-space-3); }
