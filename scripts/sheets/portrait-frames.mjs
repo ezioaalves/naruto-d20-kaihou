@@ -1,6 +1,7 @@
 import { VILLAGE_CHOICES, villageChoice } from "../apps/wizard/village-choices.mjs";
 
-const ASSET_DIRECTORY = "modules/naruto-d20-kaihou/assets/portrait_frames";
+const MODULE_ID = "naruto-d20-kaihou";
+const ASSET_DIRECTORY = `modules/${MODULE_ID}/assets/portrait_frames`;
 export const PORTRAIT_FRAME_CHOICES = [
   { value: "common", label: "Common" },
   ...VILLAGE_CHOICES.map(({ frame, label }) => ({ value: frame, label })),
@@ -86,4 +87,10 @@ export function portraitView(settings, villageItem) {
       `--db-portrait-zoom:${zoom}`,
     ].join(";"),
   };
+}
+
+export function actorPortraitView(actor, villageItem = actor.items?.find?.(
+  (item) => item.flags?.[MODULE_ID]?.wizard?.q1Village === true,
+)) {
+  return portraitView(actor.flags?.[MODULE_ID]?.portrait, villageItem);
 }

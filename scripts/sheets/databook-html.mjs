@@ -174,13 +174,14 @@ export function metaRail(resources, { levelLabel = "LVL" } = {}) {
   ].join("");
 }
 
-export function renderPortrait(img, view = portraitView(), { editable = true, configureLabel = "" } = {}) {
+export function renderPortrait(img, view = portraitView(), { editable = true, configureLabel = "", compact = false } = {}) {
+  const loading = compact ? ' loading="lazy"' : "";
   return [
-    `<div class="db-portrait" data-frame="${esc(view.frame)}" style="${esc(view.style)}"${configureLabel ? ` tabindex="0" title="${esc(configureLabel)}"` : ""}>`,
+    `<div class="db-portrait${compact ? " db-portrait--compact" : ""}" data-frame="${esc(view.frame)}" style="${esc(view.style)}"${configureLabel ? ` tabindex="0" title="${esc(configureLabel)}"` : ""}>`,
     `<div class="db-portrait__clip"><div class="db-portrait__opening">`,
-    `<img class="db-portrait__art" src="${esc(img || "icons/svg/mystery-man.svg")}" alt="" draggable="false"${editable ? ' data-edit="img"' : ""}>`,
+    `<img class="db-portrait__art" src="${esc(img || "icons/svg/mystery-man.svg")}" alt="" draggable="false"${loading}${editable ? ' data-edit="img"' : ""}>`,
     `</div></div>`,
-    `<img class="db-portrait__frame" src="${esc(view.src)}" alt="" draggable="false">`,
+    `<img class="db-portrait__frame" src="${esc(view.src)}" alt="" draggable="false"${loading}>`,
     `</div>`,
   ].join("");
 }

@@ -62,6 +62,34 @@
   pointer-events: none;
 }
 
+.directory-item > .db-portrait--compact,
+.message-header > .db-portrait--compact {
+  flex: 0 0 auto;
+  width: 28px;
+  align-self: center;
+}
+
+.message-header:has(> .db-portrait--compact) {
+  column-gap: 6px;
+
+  // Chat Portrait may insert its avatar after Foundry's render hook returns.
+  > img[class*="chat-portrait-message-portrait-"] {
+    display: none !important;
+  }
+
+  > .message-sender {
+    min-width: 0;
+    align-self: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+  }
+
+  > .message-metadata {
+    flex: 0 0 auto;
+  }
+}
+
 .db-portrait-editor {
   display: grid;
   grid-template-columns: minmax(0, 160px) minmax(0, 1fr);

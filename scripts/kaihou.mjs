@@ -24,6 +24,7 @@ import {
 import { registerQuestionFeatEffects } from "./grants/question-effects.mjs";
 import { registerStatusEffects } from "./setup/status-effects.mjs";
 import { registerKaihouCharacterSheet } from "./sheets/kaihou-character-sheet.mjs";
+import { renderActorDirectoryPortraits, renderChatSpeakerPortrait } from "./sheets/portrait-surfaces.mjs";
 import { registerNotesRelay } from "./notes-relay.mjs";
 import { registerDowntimeSettings, registerDowntimeKernel, registerDowntimeSocket } from "./downtime/kernel.mjs";
 
@@ -69,6 +70,7 @@ const SHEET_TEMPLATES = [
 ];
 
 registerStatusEffects();
+Hooks.on("renderActorDirectory", renderActorDirectoryPortraits);
 
 Hooks.once("socketlib.ready", () => {
   const socket = socketlib.registerModule(MODULE_ID);
@@ -77,6 +79,7 @@ Hooks.once("socketlib.ready", () => {
 
 Hooks.once("init", async () => {
   console.log(`${MODULE_ID} | init`);
+  Hooks.on(game.release.generation >= 13 ? "renderChatMessageHTML" : "renderChatMessage", renderChatSpeakerPortrait);
   if (!Handlebars.helpers.eq) {
     Handlebars.registerHelper("eq", (a, b) => a === b);
   }

@@ -13,7 +13,7 @@
 
 import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
 import { headerBand, radarSvg, missionRecord, renderPortrait } from "./databook-html.mjs";
-import { portraitView } from "./portrait-frames.mjs";
+import { actorPortraitView } from "./portrait-frames.mjs";
 import { editPortrait } from "./portrait-editor.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
@@ -68,7 +68,7 @@ function getKaihouActorSheetClass(actorType) {
           img: this.actor.img,
           village,
           villageCrest: crest ? `modules/${MODULE_ID}/assets/theme/icons/villages/${crest}.svg` : "",
-          portrait: portraitView(khFlags.portrait, villageItem),
+          portrait: actorPortraitView(this.actor, villageItem ?? null),
           configurePortraitLabel: globalThis.game?.user?.isGM
             ? game.i18n.localize("Kaihou.Sheet.Portrait.ConfigureHint")
             : "",
