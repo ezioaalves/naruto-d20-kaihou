@@ -11,9 +11,9 @@
 // the Chakra tab keeps injecting. All databook view data is built, Foundry-free,
 // in view-model.mjs + databook-html.mjs and handed to the template as `kaihou.*`.
 
-import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
+import { buildKaihouViewModel } from "./view-model.mjs";
 import { headerBand, radarSvg, missionRecord, renderPortrait } from "./databook-html.mjs";
-import { actorPortraitView } from "./portrait-frames.mjs";
+import { actorPortraitView, findActorVillage } from "./portrait-frames.mjs";
 import { editPortrait } from "./portrait-editor.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
@@ -60,14 +60,11 @@ function getKaihouActorSheetClass(actorType) {
       try {
         const vm = buildKaihouViewModel(this.actor);
         const khFlags = this.actor.flags?.[MODULE_ID] ?? {};
-        const villageItem = this._markedItem("q1Village");
-        const village = villageItem?.name ?? "";
-        const crest = villageCrest(village);
+        const villageItem = findActorVillage(this.actor);
         const meta = {
           name: this.actor.name,
           img: this.actor.img,
-          village,
-          villageCrest: crest ? `modules/${MODULE_ID}/assets/theme/icons/villages/${crest}.svg` : "",
+          village: villageItem?.name ?? "",
           portrait: actorPortraitView(this.actor, villageItem ?? null),
           configurePortraitLabel: globalThis.game?.user?.isGM
             ? game.i18n.localize("Kaihou.Sheet.Portrait.ConfigureHint")

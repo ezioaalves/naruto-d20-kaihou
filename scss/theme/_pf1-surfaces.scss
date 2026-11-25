@@ -376,6 +376,11 @@ aside[role="tooltip"].pf1.source-breakdown {
             color: var(--k-ink-mute);
             font-family: var(--k-font-body);
         }
+
+        .db-chat-identity > .message-sender {
+            color: var(--k-ink);
+            font-family: var(--k-font-display);
+        }
     }
 }
 

@@ -89,8 +89,10 @@ export function portraitView(settings, villageItem) {
   };
 }
 
-export function actorPortraitView(actor, villageItem = actor.items?.find?.(
-  (item) => item.flags?.[MODULE_ID]?.wizard?.q1Village === true,
-)) {
+export function findActorVillage(actor) {
+  return actor.items?.find?.((item) => item.flags?.[MODULE_ID]?.wizard?.q1Village === true);
+}
+
+export function actorPortraitView(actor, villageItem = findActorVillage(actor)) {
   return portraitView(actor.flags?.[MODULE_ID]?.portrait, villageItem);
 }

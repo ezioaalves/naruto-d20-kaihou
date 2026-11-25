@@ -6,6 +6,7 @@
 
 import { axisPoints, valuePoints, pointsAttr } from "./radar.mjs";
 import { portraitView } from "./portrait-frames.mjs";
+import { villageCrest } from "./view-model.mjs";
 
 export function esc(s) {
   const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
@@ -175,28 +176,34 @@ export function metaRail(resources, { levelLabel = "LVL" } = {}) {
 }
 
 export function renderPortrait(img, view = portraitView(), { editable = true, configureLabel = "", compact = false } = {}) {
-  const loading = compact ? ' loading="lazy"' : "";
+  const src = String(img || "icons/svg/mystery-man.svg");
+  const cssUrl = compact ? src.replace(/["\\\n\r\f]/g, (char) => `\\${char.codePointAt(0).toString(16)} `) : "";
+  const art = compact
+    ? `<div class="db-portrait__compact-art" style="background-image: url(&quot;${esc(cssUrl)}&quot;)"></div>`
+    : `<img class="db-portrait__art" src="${esc(src)}" alt="" draggable="false"${editable ? ' data-edit="img"' : ""}>`;
   return [
     `<div class="db-portrait${compact ? " db-portrait--compact" : ""}" data-frame="${esc(view.frame)}" style="${esc(view.style)}"${configureLabel ? ` tabindex="0" title="${esc(configureLabel)}"` : ""}>`,
     `<div class="db-portrait__clip"><div class="db-portrait__opening">`,
-    `<img class="db-portrait__art" src="${esc(img || "icons/svg/mystery-man.svg")}" alt="" draggable="false"${loading}${editable ? ' data-edit="img"' : ""}>`,
+    art,
     `</div></div>`,
-    `<img class="db-portrait__frame" src="${esc(view.src)}" alt="" draggable="false"${loading}>`,
+    `<img class="db-portrait__frame" src="${esc(view.src)}" alt="" draggable="false"${compact ? ' loading="lazy"' : ""}>`,
     `</div>`,
+  ].join("");
+}
+
+export function renderIdentityDetails({ alias, village }) {
+  const crest = villageCrest(village);
+  const emblem = crest
+    ? `<img class="db-badge__crest" src="modules/naruto-d20-kaihou/assets/theme/icons/villages/${crest}.svg" alt="">`
+    : "";
+  return [
+    alias ? `<div class="db-band__alias">${esc(alias)}</div>` : "",
+    village ? `<div class="db-band__badges"><span class="db-badge db-badge--village">${emblem}${esc(village)}</span></div>` : "",
   ].join("");
 }
 
 /** vm = view-model; meta is actor display data collected by the sheet. */
 export function headerBand(vm, meta) {
-  const { alias } = vm.identity;
-  const villageCrest = meta.villageCrest
-    ? `<img class="db-badge__crest" src="${esc(meta.villageCrest)}" alt="">`
-    : "";
-  // Rank badge removed per design iteration 2 — only the village badge remains
-  // (and only when a village is set).
-  const badges = meta.village
-    ? `<span class="db-badge db-badge--village">${villageCrest}${esc(meta.village)}</span>`
-    : "";
   // Keep the `rest` class so PF1e's inherited _onRest binding still fires; the
   // sheet relocates this button into the quick-actions strip as a circular FAB.
   const rest = `<button type="button" class="rest db-rest" title="Rest"><i class="fa-solid fa-bed"></i></button>`;
@@ -211,8 +218,7 @@ export function headerBand(vm, meta) {
     `</div>`,
     `<div class="db-band__title">`,
     `<div class="db-band__name">${esc(meta.name)}</div>`,
-    alias ? `<div class="db-band__alias">${esc(alias)}</div>` : "",
-    badges ? `<div class="db-band__badges">${badges}</div>` : "",
+    renderIdentityDetails({ alias: vm.identity.alias, village: meta.village }),
     `</div>`,
     vitalsPanel(vm.resources),
     rest,

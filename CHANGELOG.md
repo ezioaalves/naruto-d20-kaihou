@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.24 — 2026-11-25
+
+### Fixed
+
+- Actors directory portraits keep Foundry's original thumbnail slot size and share the chat crop.
+  The directory updates the portrait when the actor image or crop changes.
+- Chat sender names are left-aligned and display the actor's title and village badge when set.
+
 ## v2.1.23 — 2026-11-25
 
 ### Added

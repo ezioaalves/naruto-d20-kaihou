@@ -37,8 +37,8 @@
 
 // Quick Upload wraps the editable image, so both the wrapper and the art fill its opening.
 .db-portrait .fqu-hover-container,
-.db-portrait img.db-portrait__art,
-.db-portrait img.db-portrait__frame {
+.db-portrait[data-frame] img.db-portrait__art,
+.db-portrait[data-frame] img.db-portrait__frame {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -50,43 +50,111 @@
   box-shadow: none;
 }
 
-.db-portrait__art {
-  object-fit: cover;
-  object-position: var(--db-portrait-x) var(--db-portrait-y);
+.db-portrait[data-frame] img.db-portrait__art,
+.db-portrait__compact-art {
   transform: scale(var(--db-portrait-zoom));
   transform-origin: var(--db-portrait-x) var(--db-portrait-y);
 }
 
-.db-portrait__frame {
+.db-portrait[data-frame] img.db-portrait__art {
+  object-fit: cover;
+  object-position: var(--db-portrait-x) var(--db-portrait-y);
+}
+
+// Compact portraits share one crop without inheriting Foundry's thumbnail styling.
+.db-portrait__compact-art {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: var(--db-portrait-x) var(--db-portrait-y);
+}
+
+.db-portrait[data-frame] img.db-portrait__frame {
   object-fit: contain;
   pointer-events: none;
 }
 
-.directory-item > .db-portrait--compact,
-.message-header > .db-portrait--compact {
-  flex: 0 0 auto;
-  width: 28px;
-  align-self: center;
+.directory-item:has(> .db-directory-portrait) > img.thumbnail {
+  display: none;
+}
+
+.directory-item > .db-directory-portrait {
+  display: grid;
+  place-items: center;
+  flex: 0 0 var(--sidebar-item-height, 48px);
+  width: var(--sidebar-item-height, 48px);
+  height: var(--sidebar-item-height, 48px);
+
+  > .db-portrait {
+    width: calc(100% * 2 / 3);
+    height: 100%;
+  }
 }
 
 .message-header:has(> .db-portrait--compact) {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  grid-template-areas: "portrait name name" "portrait title metadata" "portrait village village";
   column-gap: 6px;
+  margin-bottom: 4px;
 
   // Chat Portrait may insert its avatar after Foundry's render hook returns.
   > img[class*="chat-portrait-message-portrait-"] {
     display: none !important;
   }
 
-  > .message-sender {
-    min-width: 0;
-    align-self: center;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    line-height: 1.25;
+  > .db-portrait--compact {
+    grid-area: portrait;
+  }
+
+  > .db-chat-identity {
+    display: contents;
+
+    > .message-sender {
+      grid-area: name;
+      justify-self: stretch;
+      margin: 0;
+      font: 700 var(--k-text-sm) / 1.2 var(--k-font-display);
+      font-variant: normal;
+      letter-spacing: normal;
+      text-transform: none;
+      text-align: start;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    > .db-band__alias {
+      grid-area: title;
+      align-self: center;
+      font: italic var(--k-text-xs) / 1.2 var(--k-font-body);
+      overflow-wrap: anywhere;
+    }
+
+    > .db-band__badges {
+      grid-area: village;
+      line-height: 1.2;
+    }
+
+    .db-badge--village {
+      padding: 1px 4px;
+      color: var(--k-ink);
+    }
+
+    .db-badge__crest {
+      width: 14px;
+      height: 14px;
+      object-fit: contain;
+    }
   }
 
   > .message-metadata {
-    flex: 0 0 auto;
+    grid-area: metadata;
+    white-space: nowrap;
+  }
+
+  > :is(.whisper-to, .flavor-text) {
+    grid-column: 1 / -1;
   }
 }
 
