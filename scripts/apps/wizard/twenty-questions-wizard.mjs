@@ -12,7 +12,7 @@
  * persisted to the actor only on `tqw-finish`.
  */
 
-import { questions } from "./question-definitions.mjs";
+import { questionForOrigin, questions } from "./question-definitions.mjs";
 import {
   defaultState,
   loadFromActor,
@@ -84,7 +84,7 @@ export default class TwentyQuestionsWizard extends KaihouApplication {
   async _prepareContext(_options) {
     const currentId = this.wizardState.currentId ?? "q1";
     const currentIdx = questions.findIndex((q) => q.id === currentId);
-    const current = questions[currentIdx];
+    const current = questionForOrigin(questions[currentIdx], this.wizardState.q1_village_uuid);
 
     const enriched = await this._enrichCurrent(current);
 
@@ -115,7 +115,7 @@ export default class TwentyQuestionsWizard extends KaihouApplication {
   _questionsForStrip() {
     return questions.map((q) => ({
       id: q.id,
-      sidebarLabel: q.sidebarLabel,
+      sidebarLabel: questionForOrigin(q, this.wizardState.q1_village_uuid).sidebarLabel,
       isAnswered: this._isQuestionAnswered(q),
     }));
   }
@@ -128,8 +128,9 @@ export default class TwentyQuestionsWizard extends KaihouApplication {
   //   - pickType "none" → narrative non-empty
   //   - mechanical pick → stateField (or any of its array entries) non-null
   _isQuestionAnswered(question) {
+    question = questionForOrigin(question, this.wizardState.q1_village_uuid);
     if (question.pickType === "none") {
-      return (this.wizardState.narratives?.[question.id] ?? "").length > 0;
+      return Boolean(this.wizardState.narratives?.[question.id]?.trim());
     }
     const fields = Array.isArray(question.stateField)
       ? question.stateField
@@ -283,6 +284,7 @@ export default class TwentyQuestionsWizard extends KaihouApplication {
     const L = (key) => game.i18n.localize(`NARUTO_D20_KAIHOU.WIZARD.${key}`);
     switch (error?.code) {
       case "REQUIRED":     return L("VALIDATION_REQUIRED");
+      case "NARRATIVE_REQUIRED": return L("VALIDATION_NARRATIVE_REQUIRED");
       case "SUB_REQUIRED": return L("VALIDATION_SUB_REQUIRED");
       case "Q10_COUPLED":  return L("VALIDATION_COUPLED");
       default:             return L("VALIDATION_DEFAULT");

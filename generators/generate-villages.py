@@ -71,6 +71,8 @@ def translate_minor_benefit(kind: str, value: int) -> dict[str, Any]:
         out["changes"].append(_change("mhp", value))
     elif kind == "init":
         out["changes"].append(_change("init", value))
+    elif kind == "damage":
+        out["changes"].append(_change("damage", value))
     elif kind == "will":
         out["changes"].append(_change("saves.will", value))
     elif kind == "fort":
@@ -81,6 +83,8 @@ def translate_minor_benefit(kind: str, value: int) -> dict[str, Any]:
         out["flags"]["actionPoints"] = value
     elif kind == "reputation":
         out["flags"]["reputation"] = value
+    elif kind == "starting_boat":
+        out["description_extra"] = "<p><b>Starting Boat:</b> Begin play with one boat.</p>"
     elif kind == "point_build":
         out["description_extra"] = (
             f"<p><b>Point Build:</b> +{value} to point-buy at character creation "

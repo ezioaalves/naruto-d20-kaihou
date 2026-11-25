@@ -1,3 +1,5 @@
+import { NUKENIN_ORIGIN, villageChoice } from "./village-choices.mjs";
+
 /**
  * Wizard State Model
  *
@@ -131,7 +133,7 @@ export function loadFromActor(actor) {
   // Q1 — Village (marker flag q1Village)
   const q1Item = findItemByMarker(actor, "q1Village");
   if (q1Item) {
-    state.q1_village_uuid = q1Item._id;
+    state.q1_village_uuid = villageChoice(q1Item)?.value ?? q1Item._id ?? q1Item.id;
   }
 
   // Q2 — Occupation (marker flag q2OccupationItem; auto-apply hook in
@@ -305,12 +307,14 @@ export function diffStates(prev, next) {
 export function validate(state) {
   const errors = [];
 
-  if (state.q1_village_uuid == null) errors.push({ field: "q1_village_uuid", code: "REQUIRED" });
+  const isNukenin = state.q1_village_uuid === NUKENIN_ORIGIN;
+  if (!state.q1_village_uuid) errors.push({ field: "q1_village_uuid", code: "REQUIRED" });
   if (state.q4_affinity == null) errors.push({ field: "q4_affinity", code: "REQUIRED" });
-  if (state.q7_relationship == null) errors.push({ field: "q7_relationship", code: "REQUIRED" });
+  if (isNukenin && !state.narratives?.q7?.trim()) errors.push({ field: "q7", code: "NARRATIVE_REQUIRED" });
+  if (!isNukenin && state.q7_relationship == null) errors.push({ field: "q7_relationship", code: "REQUIRED" });
   if (state.q8_code == null) errors.push({ field: "q8_code", code: "REQUIRED" });
 
-  if (state.q7_relationship === "outsider" && state.q7_outsider_class_skill == null) {
+  if (!isNukenin && state.q7_relationship === "outsider" && state.q7_outsider_class_skill == null) {
     errors.push({ field: "q7_outsider_class_skill", code: "SUB_REQUIRED" });
   }
 if (state.q13_mentor_technique_uuid != null && state.q13_class_skill == null) {
@@ -347,6 +351,9 @@ export function canJumpTo(state, qid) {
 
   // Unknown qid — only q1–q20 are valid question ids.
   if (!/^q([1-9]|1[0-9]|20)$/.test(qid)) return false;
+  if (qid === "q7" && state.q1_village_uuid === NUKENIN_ORIGIN) {
+    return Boolean(state.narratives?.q7?.trim());
+  }
 
   // Structural "answered" check — a question is considered answered iff any
   // top-level state key starting with `${qid}_` has a truthy value.

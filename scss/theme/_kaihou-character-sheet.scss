@@ -15,6 +15,69 @@
 // PF1e's functional tabs (summary/combat/skills/…) — they keep their native
 // look; the databook identity is the band + Identity tab + the red tab strip.
 
+.db-portrait {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  width: 100%;
+  isolation: isolate;
+}
+
+.db-portrait__clip {
+  position: absolute;
+  inset: 0;
+  clip-path: var(--db-portrait-clip);
+  background: var(--k-paper-raised, #312b28);
+}
+
+.db-portrait__opening {
+  position: absolute;
+  inset: var(--db-portrait-inset);
+  overflow: hidden;
+}
+
+// Quick Upload wraps the editable image, so both the wrapper and the art fill its opening.
+.db-portrait .fqu-hover-container,
+.db-portrait img.db-portrait__art,
+.db-portrait img.db-portrait__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.db-portrait__art {
+  object-fit: cover;
+  object-position: var(--db-portrait-x) var(--db-portrait-y);
+  transform: scale(var(--db-portrait-zoom));
+  transform-origin: var(--db-portrait-x) var(--db-portrait-y);
+}
+
+.db-portrait__frame {
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.db-portrait-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 160px) minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+}
+
+.db-portrait-editor__controls {
+  display: grid;
+  gap: 8px;
+
+  label { display: grid; gap: 4px; }
+
+  select, input { width: 100%; }
+}
+
 .kaihou-databook-form {
   // --- Phase 2 (option B): functional-tab palette re-skin ----------------------
   // Remap PF1e's OWN custom properties so its existing markup (skills tables,
@@ -167,59 +230,18 @@
   .db-badge--village { gap: 6px; }
   .db-badge__crest { width: 22px; height: 22px; object-fit: contain; }
 
-  // ── Footer dock (Direction A) ─────────────────────────────────────────────
-  // The sheet relocates the portrait + a main wrapper (quick-actions strip over
-  // the footer band) into the dock. The dock's height is set by the main column;
-  // the portrait is absolutely pinned top-to-bottom so it ALWAYS fills that
-  // height (flex/grid stretch did not). main is offset by the portrait width.
-  // (Built in _normalizeSummaryTab.)
-  // Flex row: the portrait and the main column are flex siblings. align-items:
-  // stretch makes the portrait match the main column's height. The main column's
-  // content sets that height; the portrait image is taken out of flow (absolute)
-  // so it fills the cell WITHOUT ever driving the footer's height.
-  //
-  // Why flex and not display:table — a table-cell does NOT reliably establish a
-  // containing block for absolutely-positioned descendants in Chromium/Electron
-  // even with position:relative, so the fqu wrapper's inset:0 collapsed to the
-  // top. A positioned flex item is a reliable containing block.
+  // _normalizeSummaryTab moves the framed portrait beside the quick-actions dock.
   .db-dock {
-    flex: 0 0 auto; // don't grow within the form's flex column
+    flex: 0 0 auto;
     display: flex;
     align-items: stretch;
     width: 100%;
-    border-bottom: 2px solid var(--k-seal); // masthead sits above the tab strip
+    border-bottom: 2px solid var(--k-seal);
     background: var(--k-paper-raised);
   }
-  // Cell stretched to the main column's height; its WIDTH is derived from that
-  // height via aspect-ratio so the whole image shows with no cropping and the
-  // footer grows wider (not taller) for portrait/landscape art. The image is
-  // absolute (out of flow) so it never feeds back into the height. --db-port-ratio
-  // is set per-image in JS (_normalizeSummaryTab) from the file's natural size;
-  // the 3/4 fallback covers the brief moment before the image loads.
   .db-dock > .db-band__portrait {
-    flex: 0 0 160px;
-    align-self: stretch;
-    position: relative; // containing block for the out-of-flow image
-    overflow: hidden;
-    border-right: 1px solid var(--k-rule);
-  }
-  // The Quick-Upload module (fqu) wraps the portrait <img> in a
-  // .fqu-hover-container, so target by descendant (not direct child). The wrapper
-  // fills the cell; with the cell already matching the image ratio, cover shows
-  // the whole image edge-to-edge without cropping.
-  .db-dock > .db-band__portrait .fqu-hover-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: block;
-  }
-  .db-dock > .db-band__portrait .db-band__port {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
+    flex: 0 0 clamp(96px, 22%, 160px);
+    align-self: center;
   }
   .db-dock__main {
     flex: 1 1 auto;
@@ -263,8 +285,7 @@
   .db-footer .db-band__badges { margin-top: 2px; }
   // Fallback only (no-JS): if the portrait is never relocated it stays in the
   // band — keep it from ballooning.
-  .db-footer .db-band__portrait { align-self: flex-start; }
-  .db-footer .db-band__port { width: 88px; height: auto; }
+  .db-footer .db-band__portrait { align-self: flex-start; width: 88px; }
 
   // Vitals panel — three gauges stacked over the defense strip.
   .db-band__vitals {
@@ -411,22 +432,6 @@
   }
   .db-rest--fab i { margin: 0; }
 
-  // Village crest stamped flush on the portrait's lower-right corner (no padding,
-  // no ring) — the actor's faction mark on the record photo.
-  .db-band__portrait .db-band__crest {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    border: none; // PF1e gives sheet <img>s a frame; the crest takes none
-    background: none;
-    filter: drop-shadow(0 1px 2px rgba(46, 39, 29, 0.45));
-    pointer-events: none;
-    z-index: 2;
-  }
-
   // --- Databook-red tab strip — equal-width, labels only, no icons -----------
   // The primary nav is a fixed-height flex child between the warning strip and
   // the tab body, so moving the header band into the footer cannot collapse it.
@@ -479,14 +484,11 @@
     gap: var(--k-space-3);
     align-items: stretch;
   }
-  .db-identity-portrait img {
-    width: 100%;
-    height: 100%;
-    min-height: 150px;
-    object-fit: cover;
-    border: 2px solid var(--k-ink);
-    border-radius: var(--k-radius-sm);
-    background: #ded2b2;
+  .db-identity-portrait {
+    align-self: start;
+    min-width: 0;
+    width: min(100%, 200px);
+    justify-self: center;
   }
   .db-identity-info {
     min-width: 0;

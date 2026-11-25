@@ -71,6 +71,21 @@ def test_minor_benefit_init(tmp_path):
     assert any(c["target"] == "init" and c["formula"] == "1" for c in data["system"]["changes"])
 
 
+def test_minor_benefit_damage(tmp_path):
+    fp = _make_fixture(tmp_path, "damage", 1)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    assert any(c["target"] == "damage" and c["formula"] == "1" for c in data["system"]["changes"])
+
+
+def test_minor_benefit_starting_boat(tmp_path):
+    fp = _make_fixture(tmp_path, "starting_boat", 1)
+    data = generate_villages.generate_one(fp, MAPPING_PATH)
+    assert data["system"]["changes"] == []
+    assert "starting boat" in data["system"]["description"]["value"].lower()
+    mapper = generate_villages.SkillKeyMapper(MAPPING_PATH)
+    assert mapper.translate("athletics") == "ath"
+
+
 @pytest.mark.parametrize("kind,target", [("will", "saves.will"), ("fort", "saves.fort"), ("ref", "saves.ref")])
 def test_minor_benefit_saves(tmp_path, kind, target):
     fp = _make_fixture(tmp_path, kind, 1)

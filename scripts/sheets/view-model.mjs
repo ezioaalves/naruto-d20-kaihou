@@ -32,8 +32,10 @@ export const MISSION_RANKS = ["D", "C", "B", "A", "S"];
 export const VILLAGE_CRESTS = {
   hisui: "imperial",
   houoh: "phoenix",
+  kamakiri: "mantis",
   kani: "crab",
   kirin: "unicorn",
+  nukenin: "ronin",
   ryuu: "dragon",
   sasori: "scorpion",
   shishi: "lion",

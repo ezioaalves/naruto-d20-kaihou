@@ -1,0 +1,21 @@
+{
+  "_id": "f76623ecdf172b6b",
+  "_key": "!items!f76623ecdf172b6b",
+  "name": "Kamakirigakure",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>Raised in Kamakirigakure, the Mantis village. Athletics becomes a class skill.</p><p><b>Starting Boat:</b> Begin play with one boat.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "ath": true
+    },
+    "changes": []
+  },
+  "img": "modules/naruto-d20-kaihou/assets/theme/icons/villages/mantis.svg"
+}

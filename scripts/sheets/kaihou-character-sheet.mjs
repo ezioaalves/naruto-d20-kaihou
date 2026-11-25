@@ -12,7 +12,9 @@
 // in view-model.mjs + databook-html.mjs and handed to the template as `kaihou.*`.
 
 import { buildKaihouViewModel, villageCrest } from "./view-model.mjs";
-import { headerBand, radarSvg, missionRecord } from "./databook-html.mjs";
+import { headerBand, radarSvg, missionRecord, renderPortrait } from "./databook-html.mjs";
+import { portraitView } from "./portrait-frames.mjs";
+import { editPortrait } from "./portrait-editor.mjs";
 
 export const MODULE_ID = "naruto-d20-kaihou";
 
@@ -58,13 +60,18 @@ function getKaihouActorSheetClass(actorType) {
       try {
         const vm = buildKaihouViewModel(this.actor);
         const khFlags = this.actor.flags?.[MODULE_ID] ?? {};
-        const village = this._villageName();
+        const villageItem = this._markedItem("q1Village");
+        const village = villageItem?.name ?? "";
         const crest = villageCrest(village);
         const meta = {
           name: this.actor.name,
           img: this.actor.img,
           village,
           villageCrest: crest ? `modules/${MODULE_ID}/assets/theme/icons/villages/${crest}.svg` : "",
+          portrait: portraitView(khFlags.portrait, villageItem),
+          configurePortraitLabel: globalThis.game?.user?.isGM
+            ? game.i18n.localize("Kaihou.Sheet.Portrait.ConfigureHint")
+            : "",
           rank: khFlags.rank ?? "",
           levelLabel: this.actor.type === "npc" ? "HD" : "LVL",
         };
@@ -73,6 +80,7 @@ function getKaihouActorSheetClass(actorType) {
         // triple-stache. The builders escape all caller text internally.
         vm.fragments = {
           headerBand: headerBand(vm, meta),
+          identityPortrait: renderPortrait(meta.img, meta.portrait, { configureLabel: meta.configurePortraitLabel }),
           abilityRadar: radarSvg(vm.radars.abilities, { max: 20, variant: "ability" }),
           disciplineRadar: radarSvg(vm.radars.disciplines, {
             max: 10,
@@ -105,6 +113,17 @@ function getKaihouActorSheetClass(actorType) {
       super.activateListeners(html);
       const root = html?.[0] ?? html;
       root?.addEventListener?.("click", (e) => this._onKaihouActionClick(e), { capture: true });
+      if (globalThis.game?.user?.isGM) {
+        root?.addEventListener?.("contextmenu", (event) => {
+          if (!event.target.closest?.(".db-portrait")) return;
+          event.preventDefault();
+          event.stopPropagation();
+          editPortrait(this.actor, this._markedItem("q1Village")).catch((error) => {
+            ui.notifications.error(game.i18n.localize("Kaihou.Sheet.Portrait.SaveError"));
+            console.error(`${MODULE_ID} | portrait settings`, error);
+          });
+        }, { capture: true });
+      }
       root?.querySelectorAll?.("details")?.forEach?.((el) => {
         el.addEventListener("toggle", () => this._persistKaihouUiState());
       });
@@ -594,17 +613,16 @@ function getKaihouActorSheetClass(actorType) {
       details.appendChild(learn);
     }
 
-    // Name of the actor item the 20Q wizard tagged with
+    // The actor item the 20Q wizard tagged with
     // flags["naruto-d20-kaihou"].wizard.<marker> = true (village/school/…).
-    _markedItemName(marker) {
-      const item = this.actor.items?.find?.(
+    _markedItem(marker) {
+      return this.actor.items?.find?.(
         (i) => i.flags?.[MODULE_ID]?.wizard?.[marker] === true,
       );
-      return item?.name ?? "";
     }
 
-    _villageName() {
-      return this._markedItemName("q1Village");
+    _markedItemName(marker) {
+      return this._markedItem(marker)?.name ?? "";
     }
   };
 }

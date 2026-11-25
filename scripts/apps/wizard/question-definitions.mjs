@@ -16,17 +16,19 @@
  * - markerFlag: the marker flag key (or array)
  */
 
-// Q1 — Village options
-const Q1_VILLAGE_OPTIONS = [
-  {value: "bc053d4ef2995ea0", label: "Hisuigakure (Jade)"},
-  {value: "033fcee4e14089b8", label: "Houohgakure (Phoenix)"},
-  {value: "ffac9cdf75b27810", label: "Kanigakure (Crab)"},
-  {value: "021058ee37acb649", label: "Kiringakure (Kirin)"},
-  {value: "d93ae7cd1e0ba7e2", label: "Ryuugakure (Dragon)"},
-  {value: "a18ed55e5e90130b", label: "Sasorigakure (Scorpion)"},
-  {value: "a8318ef3f955ee6f", label: "Shishigakure (Lion)"},
-  {value: "bf4e2f24f90bb464", label: "Tsurugakure (Crane)"},
-];
+import { NUKENIN_ORIGIN, VILLAGE_CHOICES } from "./village-choices.mjs";
+
+export function questionForOrigin(question, origin) {
+  if (question?.id !== "q7" || origin !== NUKENIN_ORIGIN) return question;
+  return {
+    id: "q7",
+    pickType: "none",
+    required: true,
+    questionText: "Why did your character become a Nukenin?",
+    sidebarLabel: "Becoming Nukenin",
+    narrativePrompt: "What made them leave their village?",
+  };
+}
 
 // Q4 — Affinity options. Values stay English (the naruto-d20 nature flag
 // and its consumers key on them); labels are the Japanese release names.
@@ -244,10 +246,10 @@ export const QUESTION_DEFINITIONS = [
     pickType: "select",
     stateField: "q1_village_uuid",
     required: true,
-    questionText: "Which Great Village does your character come from?",
+    questionText: "Which village does your character come from, or are they Nukenin?",
     sidebarLabel: "Village",
     narrativePrompt: "What does this village feel like in your character's bones? Memories of the streets, the academy, the household — what shaped them before they were a shinobi?",
-    options: Q1_VILLAGE_OPTIONS,
+    options: VILLAGE_CHOICES,
     markerFlag: "q1Village",
   },
 

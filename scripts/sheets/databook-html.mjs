@@ -5,6 +5,7 @@
 // All caller-supplied text is escaped here.
 
 import { axisPoints, valuePoints, pointsAttr } from "./radar.mjs";
+import { portraitView } from "./portrait-frames.mjs";
 
 export function esc(s) {
   const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
@@ -173,16 +174,23 @@ export function metaRail(resources, { levelLabel = "LVL" } = {}) {
   ].join("");
 }
 
-/** vm = view-model; meta = {name,img,village,rank} pulled from the actor by the sheet. */
+export function renderPortrait(img, view = portraitView(), { editable = true, configureLabel = "" } = {}) {
+  return [
+    `<div class="db-portrait" data-frame="${esc(view.frame)}" style="${esc(view.style)}"${configureLabel ? ` tabindex="0" title="${esc(configureLabel)}"` : ""}>`,
+    `<div class="db-portrait__clip"><div class="db-portrait__opening">`,
+    `<img class="db-portrait__art" src="${esc(img || "icons/svg/mystery-man.svg")}" alt="" draggable="false"${editable ? ' data-edit="img"' : ""}>`,
+    `</div></div>`,
+    `<img class="db-portrait__frame" src="${esc(view.src)}" alt="" draggable="false">`,
+    `</div>`,
+  ].join("");
+}
+
+/** vm = view-model; meta is actor display data collected by the sheet. */
 export function headerBand(vm, meta) {
   const { alias } = vm.identity;
   const villageCrest = meta.villageCrest
     ? `<img class="db-badge__crest" src="${esc(meta.villageCrest)}" alt="">`
     : "";
-  // Village crest stamped flush on the portrait's lower-right corner — falls
-  // back to the crab (Kaihou / Kanigakure emblem) when no village is set.
-  const cornerCrest = meta.villageCrest || "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg";
-  const crest = `<img class="db-band__crest" src="${esc(cornerCrest)}" alt="" title="${esc(meta.village ?? "")}">`;
   // Rank badge removed per design iteration 2 — only the village badge remains
   // (and only when a village is set).
   const badges = meta.village
@@ -198,8 +206,7 @@ export function headerBand(vm, meta) {
   return [
     `<header class="db-band db-band--vitals">`,
     `<div class="db-band__portrait">`,
-    `<img class="db-band__port" src="${esc(meta.img)}" alt="" data-edit="img">`,
-    crest, // village crest — portrait lower-right corner (CSS)
+    renderPortrait(meta.img, meta.portrait, { configureLabel: meta.configurePortraitLabel }),
     `</div>`,
     `<div class="db-band__title">`,
     `<div class="db-band__name">${esc(meta.name)}</div>`,

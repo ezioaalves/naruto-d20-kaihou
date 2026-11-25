@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { describe, it, expect } from "vitest";
 import { radarSvg, naturesRow, missionRecord, headerBand, headlineNature } from "../../scripts/sheets/databook-html.mjs";
 import { buildKaihouViewModel } from "../../scripts/sheets/view-model.mjs";
+import { portraitView, PORTRAIT_FRAME_CHOICES } from "../../scripts/sheets/portrait-frames.mjs";
 
 const vm = buildKaihouViewModel({
   system: {
@@ -72,12 +73,12 @@ describe("missionRecord & headerBand", () => {
     expect(missions).toContain("db-mission-row");
     expect(missions).toContain("db-mission-total");
     expect(missions).toContain(">41<"); // total still rendered as static
-    const band = headerBand(vm, { name: "Uchiha <b>Takeshi</b>", img: "p.png", village: "Kanigakure", villageCrest: "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg", rank: "Chūnin" });
+    const band = headerBand(vm, { name: "Uchiha <b>Takeshi</b>", img: "p.png", village: "Kanigakure", villageCrest: "modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg", portrait: portraitView({}, { name: "Kanigakure" }), rank: "Chūnin" });
     expect(band).toContain("Crimson Mirage");
     expect(band).not.toContain("db-badge--rank"); // rank badge removed (iteration 2)
     expect(band).toContain('class="db-badge__crest"'); // village crest image rendered
     expect(band).toContain("villages/crab.svg");
-    expect(band).toContain('class="db-band__crest" src="modules/naruto-d20-kaihou/assets/theme/icons/villages/crab.svg"'); // corner crest
+    expect(band).toContain('class="db-portrait__frame" src="modules/naruto-d20-kaihou/assets/portrait_frames/crab.png"');
     expect(band).toContain('data-edit="img"');
     expect(band).toContain("Uchiha &lt;b&gt;Takeshi&lt;/b&gt;"); // escaped, no raw tag injection
     expect(band).not.toContain("<b>Takeshi</b>");
@@ -125,8 +126,20 @@ describe("missionRecord & headerBand", () => {
     expect(band).toContain("db-meta__cell--level");
     // Rest keeps the `rest` class so PF1e's _onRest binding fires after relocation.
     expect(band).toContain('class="rest db-rest"');
-    expect(band).toContain('class="db-band__crest"'); // corner crest always renders…
-    expect(band).toContain("villages/crab.svg"); // …defaulting to crab when no village crest
+    expect(band).toContain("portrait_frames/common.png");
+  });
+
+  it("resolves saved origins and GM overrides to bundled frames", () => {
+    for (const { value } of PORTRAIT_FRAME_CHOICES) {
+      const { src } = portraitView({ frame: value });
+      expect(readFileSync(resolve(src.replace("modules/naruto-d20-kaihou/", ""))).length).toBeGreaterThan(0);
+    }
+    expect(portraitView({}, { name: "Kamakirigakure" }).frame).toBe("mantis");
+    expect(portraitView({}, { name: "Nukenin" }).src).toContain("ronin.png");
+    const override = portraitView({ frame: "kirin", zoom: 9, x: -2, y: 65 }, { name: "Nukenin" });
+    expect(override.src).toContain("kirin.png");
+    expect(override.style).toContain("--db-portrait-x:0%;--db-portrait-y:65%;--db-portrait-zoom:4");
+    expect(portraitView({ frame: "constructor" }).frame).toBe("common");
   });
 
   it("labels the masthead level cell as HD for NPCs", () => {

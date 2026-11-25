@@ -47,6 +47,7 @@
       "DROP_TYPE_REJECTED": "Only items can be dropped here.",
       "DROP_WRONG_TYPE": "Wrong item type — expected {expected}, got {got}.",
       "VALIDATION_REQUIRED": "Por favor, faça uma seleção antes de continuar.",
+      "VALIDATION_NARRATIVE_REQUIRED": "Por favor, responda à pergunta antes de continuar.",
       "VALIDATION_SUB_REQUIRED": "Por favor, responda a subpergunta antes de continuar.",
       "VALIDATION_COUPLED": "Selecione tanto a falha quanto o talento bônus, ou nenhum dos dois.",
       "VALIDATION_DEFAULT": "Por favor, complete esta pergunta antes de continuar."
@@ -58,6 +59,15 @@
     }
   },
   "Kaihou.Sheet.Label": "Kaihou — Databook",
+  "Kaihou.Sheet.Portrait.Title": "Editar moldura do retrato",
+  "Kaihou.Sheet.Portrait.ConfigureHint": "Clique com o botão direito para mudar a moldura ou o recorte",
+  "Kaihou.Sheet.Portrait.Automatic": "Automática (origem ou comum)",
+  "Kaihou.Sheet.Portrait.Frame": "Moldura",
+  "Kaihou.Sheet.Portrait.Zoom": "Zoom",
+  "Kaihou.Sheet.Portrait.Horizontal": "Posição horizontal",
+  "Kaihou.Sheet.Portrait.Vertical": "Posição vertical",
+  "Kaihou.Sheet.Portrait.ResetCrop": "Redefinir recorte",
+  "Kaihou.Sheet.Portrait.SaveError": "Não foi possível salvar as configurações do retrato.",
   "Kaihou.Settings.SheetDefault.Name": "Ficha Databook Kaihou como padrão",
   "Kaihou.Settings.SheetDefault.Hint": "Usar a ficha de personagem databook Kaihou como padrão para atores do tipo personagem e NPC. Cada ator ainda pode voltar à ficha do PF1e na configuração de ficha."
 }

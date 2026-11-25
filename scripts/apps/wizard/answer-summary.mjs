@@ -4,17 +4,21 @@
  * flags, narratives from module flags (legacy bio-region parse as fallback).
  */
 
-import { QUESTION_DEFINITIONS, ALL_SKILL_OPTIONS } from "./question-definitions.mjs";
+import { QUESTION_DEFINITIONS, ALL_SKILL_OPTIONS, questionForOrigin } from "./question-definitions.mjs";
 import { getOutcomeByRoll } from "./heritage-table.mjs";
 import { parse as parseBiography } from "./biography-renderer.mjs";
+import { villageChoice } from "./village-choices.mjs";
 
 const MODULE_ID = "naruto-d20-kaihou";
 
-function itemNameByMarker(actor, markerKey) {
-  const item = Array.from(actor.items ?? []).find(
+function itemByMarker(actor, markerKey) {
+  return Array.from(actor.items ?? []).find(
     (i) => i.flags?.[MODULE_ID]?.wizard?.[markerKey] === true
   );
-  return item?.name ?? null;
+}
+
+function itemNameByMarker(actor, markerKey) {
+  return itemByMarker(actor, markerKey)?.name ?? null;
 }
 
 function wizardFlag(actor, key) {
@@ -82,8 +86,10 @@ export function buildAnswerRows(actor) {
     : parseBiography(actor.system?.details?.biography?.value ?? "").narratives;
 
   const rows = [];
-  for (const q of QUESTION_DEFINITIONS) {
-    const mechanical = mechanicalSummary(actor, q.id);
+  const origin = villageChoice(itemByMarker(actor, "q1Village"))?.value;
+  for (const question of QUESTION_DEFINITIONS) {
+    const q = questionForOrigin(question, origin);
+    const mechanical = q.pickType === "none" ? null : mechanicalSummary(actor, q.id);
     const narrative = (narratives?.[q.id] ?? "").trim();
     if (!mechanical && !narrative) continue;
     rows.push({

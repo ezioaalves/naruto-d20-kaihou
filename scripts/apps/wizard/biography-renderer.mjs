@@ -1,3 +1,5 @@
+import { questionForOrigin } from "./question-definitions.mjs";
+
 /**
  * Biography renderer for D2.3b wizard.
  * Renders wizard state to HTML, parses HTML back to state, and splices wizard regions into actor biographies.
@@ -53,7 +55,7 @@ export function render(state, options) {
     const narrative = state.narratives?.[qKey] || "";
 
     if (narrative.trim()) {
-      const qDef = questionDefs.find((q) => q.id === qKey);
+      const qDef = questionForOrigin(questionDefs.find((q) => q.id === qKey), state.q1_village_uuid);
       const qText = qDef?.questionText || `Question ${i}`;
       const escapedNarrative = escapeHtml(narrative).replace(/\n/g, "<br>");
 

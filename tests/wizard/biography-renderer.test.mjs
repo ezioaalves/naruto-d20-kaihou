@@ -42,7 +42,7 @@ describe("render", () => {
     s.narratives.q1 = "I am from Kanigakure.";
     s.narratives.q5 = "Protect the heir.";
     const html = render(s, { questionDefs: QUESTION_DEFINITIONS });
-    expect(html).toMatch(/<h3 data-q="1">Q1: Which Great Village does your character come from\?<\/h3>\s*<p>I am from Kanigakure\.<\/p>/);
+    expect(html).toMatch(/<h3 data-q="1">Q1: Which village does your character come from, or are they Nukenin\?<\/h3>\s*<p>I am from Kanigakure\.<\/p>/);
     expect(html).toMatch(/<h3 data-q="5">[^<]+<\/h3>\s*<p>Protect the heir\.<\/p>/);
     expect(html).not.toMatch(/<h3 data-q="2">/); // q2 empty -> omitted
   });

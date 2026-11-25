@@ -27,9 +27,9 @@ def vault_village_yamls():
     if not villages_dir.exists():
         pytest.skip(f"Vault villages directory not found: {villages_dir}")
 
-    # Collect all .yaml files (should be exactly 8)
+    # Include the nine villages and the Nukenin origin.
     yaml_files = sorted(villages_dir.glob("*.yaml"))
-    assert len(yaml_files) == 8, f"Expected 8 village YAML files, found {len(yaml_files)}: {yaml_files}"
+    assert len(yaml_files) == 10, f"Expected 10 origin YAML files, found {len(yaml_files)}: {yaml_files}"
 
     return yaml_files
 
@@ -51,7 +51,7 @@ def skill_mapping():
 def test_all_vault_village_skills_have_mappings(vault_village_yamls, skill_mapping):
     """Verify every skill slug in vault village YAMLs has a mapping entry.
 
-    For each of the 8 vault village YAML files:
+    For each vault origin YAML file:
     - Load the YAML
     - Extract the class_skills list (if present)
     - Collect all unique skill slugs

@@ -39,6 +39,7 @@ import {
   revertQ18Heritage,
 } from "./mechanic-applier.mjs";
 import { findCompendiumItemByName } from "../../grants/item-grants.mjs";
+import { MANTIS_ORIGIN, NUKENIN_ORIGIN } from "./village-choices.mjs";
 
 export class FinishValidationError extends Error {
   constructor(errors) {
@@ -56,6 +57,10 @@ export async function finishWizard(actor, state) {
   const validResult = validate(state);
   if (!validResult.ok) {
     throw new FinishValidationError(validResult.errors);
+  }
+
+  if (state.q1_village_uuid === NUKENIN_ORIGIN) {
+    state = { ...state, q7_relationship: null, q7_outsider_class_skill: null };
   }
 
   const originalState = loadFromActor(actor);
@@ -95,6 +100,8 @@ export async function finishWizard(actor, state) {
     await actor.deleteEmbeddedDocuments("Item", deletes);
   }
 
+  if (state.q1_village_uuid === MANTIS_ORIGIN) await grantStartingBoat(actor);
+
   // Unconditional Q17 grant: Parental Influence feat (once per actor)
   const q17Plan = await buildQ17Grant(actor);
   if (q17Plan.creates.length > 0) {
@@ -131,7 +138,13 @@ async function planForField(actor, field, originalState, newState) {
     const revert = oldValue != null ? revertQ1Village(actor) : null;
     if (!(wasSet && typeof newValue === "string")) return revert;
     const data = await fetchItemData(actor, { id: newValue, pack: "naruto-d20-kaihou.villages" });
-    return mergeTwo(revert, data ? applyQ1Village(actor, data) : null);
+    if (!data) {
+      if ([MANTIS_ORIGIN, NUKENIN_ORIGIN].includes(newValue)) {
+        throw new Error("20 Questions could not load the selected origin from the Village Origins compendium.");
+      }
+      return null;
+    }
+    return mergeTwo(revert, applyQ1Village(actor, data));
   }
 
   if (field in DRAGDROP_MARKERS) {
@@ -304,4 +317,24 @@ async function buildQ17Grant(actor) {
   if (!doc) return emptyPlan();
 
   return applyQ17ParentalInfluence(doc.toObject());
+}
+
+async function grantStartingBoat(actor) {
+  const flag = "q1StartingBoat";
+  const scope = "naruto-d20-kaihou";
+  if (actor.flags?.[scope]?.wizard?.[flag]) return;
+
+  // If the item survived a previous finish that failed before saving the flag,
+  // record the grant without creating a second boat.
+  const hasBoat = actor.items?.some((item) => item.flags?.[scope]?.wizard?.[flag]);
+  if (!hasBoat) {
+    await actor.createEmbeddedDocuments("Item", [{
+      name: "Starting Boat",
+      type: "loot",
+      img: "icons/environment/settlement/ship.webp",
+      system: { quantity: 1, description: { value: "<p>A small boat from Kamakirigakure.</p>" } },
+      flags: { [scope]: { wizard: { [flag]: true } } },
+    }]);
+  }
+  await actor.update({ [`flags.${scope}.wizard.${flag}`]: true });
 }

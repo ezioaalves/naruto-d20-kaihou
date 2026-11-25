@@ -1,0 +1,29 @@
+{
+  "_id": "4dc6f82ae8e07048",
+  "_key": "!items!4dc6f82ae8e07048",
+  "name": "Nukenin",
+  "type": "feat",
+  "system": {
+    "subType": "trait",
+    "description": {
+      "value": "<p>A shinobi who left their village. Gain +1 on damage rolls. Survival becomes a class skill.</p>"
+    },
+    "tags": [
+      "Village",
+      "20 Perguntas Q1"
+    ],
+    "classSkills": {
+      "sur": true
+    },
+    "changes": [
+      {
+        "_id": "59110fae",
+        "formula": "1",
+        "target": "damage",
+        "operator": "add",
+        "priority": 0
+      }
+    ]
+  },
+  "img": "modules/naruto-d20-kaihou/assets/theme/icons/villages/ronin.svg"
+}

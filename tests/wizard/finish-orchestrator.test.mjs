@@ -54,6 +54,7 @@ globalThis.game = {
 };
 
 import {finishWizard} from "../../scripts/apps/wizard/finish-orchestrator.mjs";
+import {MANTIS_ORIGIN, NUKENIN_ORIGIN} from "../../scripts/apps/wizard/village-choices.mjs";
 
 function makeActor(overrides = {}) {
   return {
@@ -92,6 +93,40 @@ function validState() {
     },
   };
 }
+
+describe("new Q1 origins", () => {
+  it("requires the Nukenin Q7 narrative and removes the previous village stance", async () => {
+    const actor = makeActor({
+      items: [{ _id: "old-loyalist", flags: { "naruto-d20-kaihou": { wizard: { q7Loyalist: true } } } }],
+    });
+    const state = { ...validState(), q1_village_uuid: NUKENIN_ORIGIN };
+    await expect(finishWizard(actor, state)).rejects.toMatchObject({
+      errors: [{ field: "q7", code: "NARRATIVE_REQUIRED" }],
+    });
+    globalThis.fromUuid.mockResolvedValueOnce(makeQuestionsDoc("Nukenin", { classSkills: { sur: true } }));
+    await finishWizard(actor, { ...state, narratives: { ...state.narratives, q7: "They refused an order." } });
+    const items = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    expect(items.map((item) => item.name)).toContain("Nukenin");
+    expect(items.map((item) => item.name)).not.toContain("Village Loyalist");
+    expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith("Item", ["old-loyalist"]);
+  });
+
+  it("gives Kamakirigakure one boat even when the wizard is run again", async () => {
+    const actor = makeActor();
+    const state = { ...validState(), q1_village_uuid: MANTIS_ORIGIN };
+    globalThis.fromUuid.mockResolvedValueOnce(makeQuestionsDoc("Kamakirigakure", { classSkills: { ath: true } }));
+    await finishWizard(actor, state);
+    const items = actor.createEmbeddedDocuments.mock.calls.flatMap(([, items]) => items);
+    expect(items.find((item) => item.name === "Starting Boat")).toMatchObject({ type: "loot", system: { quantity: 1 } });
+    expect(actor.update).toHaveBeenCalledWith({ "flags.naruto-d20-kaihou.wizard.q1StartingBoat": true });
+
+    actor.flags["naruto-d20-kaihou"] = { wizard: { q1StartingBoat: true } };
+    actor.items = items.map((item) => ({ ...item, _id: `embedded-${item.name}` }));
+    actor.createEmbeddedDocuments.mockClear();
+    await finishWizard(actor, state);
+    expect(actor.createEmbeddedDocuments).not.toHaveBeenCalled();
+  });
+});
 
 describe("finishWizard Q17 unconditional grant", () => {
   beforeEach(() => {
