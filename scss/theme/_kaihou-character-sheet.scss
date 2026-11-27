@@ -75,6 +75,15 @@
   pointer-events: none;
 }
 
+.db-portrait__compact-frame {
+  position: absolute;
+  inset: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+
 .directory-item:has(> .db-directory-portrait) > img.thumbnail {
   display: none;
 }

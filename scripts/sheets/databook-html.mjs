@@ -175,18 +175,26 @@ export function metaRail(resources, { levelLabel = "LVL" } = {}) {
   ].join("");
 }
 
+function backgroundImageStyle(src) {
+  const cssUrl = src.replace(/["\\\n\r\f]/g, (char) => `\\${char.codePointAt(0).toString(16)} `);
+  return `background-image: url(&quot;${esc(cssUrl)}&quot;)`;
+}
+
 export function renderPortrait(img, view = portraitView(), { editable = true, configureLabel = "", compact = false } = {}) {
   const src = String(img || "icons/svg/mystery-man.svg");
-  const cssUrl = compact ? src.replace(/["\\\n\r\f]/g, (char) => `\\${char.codePointAt(0).toString(16)} `) : "";
   const art = compact
-    ? `<div class="db-portrait__compact-art" style="background-image: url(&quot;${esc(cssUrl)}&quot;)"></div>`
+    ? `<div class="db-portrait__compact-art" style="${backgroundImageStyle(src)}"></div>`
     : `<img class="db-portrait__art" src="${esc(src)}" alt="" draggable="false"${editable ? ' data-edit="img"' : ""}>`;
+  // Foundry waits for chat images before scrolling. Decorative backgrounds load independently.
+  const frame = compact
+    ? `<div class="db-portrait__compact-frame" style="${backgroundImageStyle(view.src)}"></div>`
+    : `<img class="db-portrait__frame" src="${esc(view.src)}" alt="" draggable="false">`;
   return [
     `<div class="db-portrait${compact ? " db-portrait--compact" : ""}" data-frame="${esc(view.frame)}" style="${esc(view.style)}"${configureLabel ? ` tabindex="0" title="${esc(configureLabel)}"` : ""}>`,
     `<div class="db-portrait__clip"><div class="db-portrait__opening">`,
     art,
     `</div></div>`,
-    `<img class="db-portrait__frame" src="${esc(view.src)}" alt="" draggable="false"${compact ? ' loading="lazy"' : ""}>`,
+    frame,
     `</div>`,
   ].join("");
 }

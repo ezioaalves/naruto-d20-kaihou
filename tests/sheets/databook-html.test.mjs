@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, it, expect } from "vitest";
-import { radarSvg, naturesRow, missionRecord, headerBand, headlineNature } from "../../scripts/sheets/databook-html.mjs";
+import { radarSvg, naturesRow, missionRecord, headerBand, headlineNature, renderPortrait } from "../../scripts/sheets/databook-html.mjs";
 import { buildKaihouViewModel } from "../../scripts/sheets/view-model.mjs";
 import { portraitView, PORTRAIT_FRAME_CHOICES } from "../../scripts/sheets/portrait-frames.mjs";
 
@@ -127,6 +127,14 @@ describe("missionRecord & headerBand", () => {
     // Rest keeps the `rest` class so PF1e's _onRest binding fires after relocation.
     expect(band).toContain('class="rest db-rest"');
     expect(band).toContain("portrait_frames/common.png");
+  });
+
+  it("renders compact chat portraits without images that can block Foundry's scroll", () => {
+    const html = renderPortrait("portrait.png", portraitView({}, { name: "Kanigakure" }), { compact: true });
+
+    expect(html).not.toContain("<img");
+    expect(html).toContain('class="db-portrait__compact-art" style="background-image: url(&quot;portrait.png&quot;)"');
+    expect(html).toContain('class="db-portrait__compact-frame" style="background-image: url(&quot;modules/naruto-d20-kaihou/assets/portrait_frames/crab.png&quot;)"');
   });
 
   it("resolves saved origins and GM overrides to bundled frames", () => {

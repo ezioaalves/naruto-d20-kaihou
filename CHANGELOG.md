@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.1.25 — 2026-11-26
+
+### Fixed
+
+- Chat follows new messages again when you are at the bottom of the log. Compact portrait
+  frames no longer delay Foundry's automatic scrolling.
+
 ## v2.1.24 — 2026-11-25
 
 ### Fixed
